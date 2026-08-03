@@ -1,28 +1,36 @@
 ---
-sourceId: "37919946-ca76-80ca-8deb-e99c5967f5c9"
-title: "데이터베이스와 SQL"
+tag: ["SQL","RDBMS"]
+description: "데이터베이스 개발 영역에서 RDBMS와 SQL은 복잡한 비즈니스 흐름을 안전한 트랜잭션 단위로 묶고 무결성(ACID)이라는 엄격한 규칙으로 제어할 수 있기 때문에, 오랜 기간 백엔드 개발이 중심을 두고 온 핵심 기술입니다. 이에 따라 검증된 엔터프라이즈 환경을 구축하기 위해서는 MySQL, Oracle, MSSQL 등이 가진 독자적인 엔진 아키텍처와 고유한 확장 문법(Dialect)의 차이를 이해하고, 비즈니스의 성격에 맞춰 명확히 구분하여 활용할 줄 알아야 합니다.\n\n더 나아가 현대의 개발자는 데이터의 관리 범위를 관계형(Relational) 아키텍처 너머로 확장하는 시야를 가져야 합니다. 컴퓨팅 자원이 비약적으로 향상됨에 따라, 가공 이전의 방대한 데이터를 전수 조사하고 활용하는 구조가 점차 주류로 자리 잡고 있기 때문입니다. 이러한 요구를 충족하기 위해 등장한 영역이 바로 NoSQL입니다. 대량의 비정형 데이터 속에서 원하는 정보를 초고속으로 추출하는 Document 방식의 Elasticsearch나, 세션 및 토큰 검증처럼 실시간 인증/인가 처리에 특화된 Key-Value 방식의 Redis가 그 패러다임의 변화를 증명하는 대표적인 예시입니다.\n\n결국 현대 백엔드 아키텍처를 온전히 이해하고 다루기 위해서는 시스템의 역할을 핵심 비즈니스 영역과 대용량 데이터 처리 영역으로 명확히 나누어 바라보아야 합니다. 단편적인 RDBMS 중심의 프로그래밍에 갇히지 않고, 데이터의 성격과 트래픽의 흐름에 따라 각 저장소를 적재적소에 배치하고 융합하는 능력을 키우는 것이야말로 더 나은 아키텍처를 설계하는 개발자로 성장하는 확실한 방향이라고 생각합니다."
+subcategory: "2026"
+created_date: "2026-06-09"
+회차: "[교육 17일차]"
+category: "education"
 slug: "process-and-thread"
-date: "2026-07-23"
-tags: ["SQL", "RDBMS"]
+title: "데이터베이스와 SQL"
+page_id: "37919946-ca76-80ca-8deb-e99c5967f5c9"
+source_id: "37919946ca7680ca8debe99c5967f5c9"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/SQL-37919946ca7680ca8debe99c5967f5c9"
+id: "37919946ca7680ca8debe99c5967f5c9"
+sourceId: "37919946-ca76-80ca-8deb-e99c5967f5c9"
+date: "2026-06-09"
+tags: ["SQL","RDBMS"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/SQL-37919946ca7680ca8debe99c5967f5c9"
 ---
 
-
-<NotionToggle title="1. 데이터베이스란?" level="3">
+## **1. 데이터베이스란?**
 
 데이터베이스(DB)는 **여러 시스템이나 사용자가 공유하고 사용할 목적으로 통합하여 관리되는 데이터의 집합**입니다. 단순히 데이터를 모아두는 것을 넘어, 데이터의 중복을 최소화하고 무결성을 유지하며, 다수의 트랜잭션이 동시에 발생하더라도 데이터를 안전하게 처리(동시성 제어)할 수 있도록 설계된 시스템 기반입니다.
 
-
-<NotionToggle title="트랙잰션">
+### 트랙잰션
 
 데이터베이스의 상태를 변화시키기 위해 수행하는 하나의 논리적인 작업 단위입니다.
 
 즉, 트랜잭션이란 **"전부 다 완벽하게 성공하거나, 아니면 아예 처음부터 없던 일로 되돌리거나(All or Nothing) 둘 중 하나만 허용하는 최소한의 업무 단위"**라고 할 수 있습니다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="ACID (”데이터의 무.결.성.을 유지하는 데이터베이스 성질”)">
+### ACID (”데이터의 무.결.성.을 유지하는 데이터베이스 성질”)
 
 - **원자성 (Atomicity)**
 트랜잭션에 포함된 작업들은 "모두 성공(All)" 하거나 "모두 실패(Nothing)" 해야 합니다. 부분적으로만 실행되는 일은 없습니다.
@@ -32,85 +40,49 @@ tags: ["SQL", "RDBMS"]
 둘 이상의 트랜잭션이 동시에 실행될 때, 어떤 트랜잭션도 다른 트랜잭션의 연산에 끼어들 수 없습니다. 서로의 작업 내역을 중간에 볼 수 없습니다.
 - **지속성 (Durability)**
 성공적으로 완료(Commit)된 트랜잭션의 결과는 시스템 장애가 발생하더라도 영구적으로 데이터베이스에 반영되어야 합니다.
+## **2. RDBMS, SQL 란?**
 
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="2. RDBMS, SQL 란?" level="3">
-
-
-<NotionToggle title="1) RDBMS (Relational Database Management System)란?">
+### **1) RDBMS (Relational Database Management System)란?**
 
 관계형 데이터베이스 관리 시스템으로, 데이터를 2차원 테이블(행과 열) 형태로 저장하고 관리합니다.
 각 테이블은 고유한 기본 키(Primary Key)를 가지며, 외래 키(Foreign Key)를 통해 테이블 간의 관계(Relation)를 정의합니다. 엄격한 스키마를 준수하며 트랜잭션의 ACID(원자성, 일관성, 고립성, 지속성) 속성을 보장하는 것이 핵심입니다.
 
+### **2) SQL (Structured Query Language)이란?**
+RDBMS에서 데이터를 정의(DDL), 조작(DML), 제어(DCL)하기 위해 사용하는 표준 언어입니다.
 
-</NotionToggle>
-
-
-<NotionToggle title="SQL (Structured Query Language)이란?
-RDBMS에서 데이터를 정의(DDL), 조작(DML), 제어(DCL)하기 위해 사용하는 표준 언어입니다.">
-
-
-</NotionToggle>
-
-
-<NotionToggle title="2) 대표적인 SQL 의 종류?">
+### **3) 대표적인 SQL 의 종류?**
 
 **Oracle, MySQL, PostgreSQL** 등이 있으며, 최대 장점은 **데이터의 무결성과 정합성 보장**입니다. 
 복잡한 비즈니스 로직이나 금융 거래 등 데이터의 정확성이 최우선인 시스템에 필수적입니다. 
 또한, 표준화된 쿼리 언어를 통해 복잡한 데이터 조인(Join)과 집계 처리가 가능합니다.
 
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="3. SQL(RDBMS)의 대표적인 종류와 특징" level="3">
+## **3. SQL(RDBMS)의 대표적인 종류와 특징**
 
 (참고: MySQL, Oracle 등은 정확히는 RDBMS 제품명이며, 이 제품들이 사용하는 **SQL 방언(Dialect)이 조금씩 다릅니다.**)
 
-
-<NotionToggle title="1) 각 SQL(RDBMS) 종류가 구분되는 이유">
+### **1) SQL(RDBMS) 종류가 구분되는 이유**
 
 ANSI SQL이라는 국제 표준이 존재하지만, 각 벤더사(Oracle, MS 등)가 ‘**자사 DB 엔진의 성능 최적화와 고유 기능을 지원’**하기 위해 표준을 확장한 독자적인 문법과 절차적 언어(예: Oracle의 PL/SQL, MS의 T-SQL)를 개발했기 때문입니다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="2) 각 RDBMS의 특징">
+### **2) RDBMS의 특징**
 
 
 <NotionTable>
   <tbody>
     <tr><td>**비교 기준**</td><td>**MySQL (by Oracle)**</td><td>**Oracle Database**</td><td>**MSSQL (SQL Server by Microsoft)**</td></tr>
-    <tr><td>**공식 홈페이지의 메인 슬로건 방향**</td><td>"세계에서 가장 인기 있는 오픈 소스 데이터베이스"<br/>(가성비, 웹 최적화, 클라우드 확장성 강조)</td><td>"최고의 성능, 가용성, 보안을 제공하는 엔터프라이즈 DB"<br/>(미션 크리티컬 시스템, 자동화, 통합 플랫폼 강조)</td><td>"하이브리드 데이터 플랫폼 및 인텔리전트 DB"<br/>(AI 및 클라우드 통합, 업계 리딩 가성비와 보안 강조)</td></tr>
-    <tr><td>**1. 제조사가 강조하는 성능 최적화 기술**</td><td>* **MySQL HeatWave**: 대규모 데이터 분석(OLAP)과 트랜잭션(OLTP)을 하나의 DB에서 가속화하는 인메모리 질의 처리 엔진을 강조합니다.<br/>* **InnoDB 엔진 고도화**: 웹 서비스의 초고속 읽기/쓰기를 지원하기 위한 MVCC 및 버퍼 풀 아키텍처의 효율성을 내세웁니다.</td><td>* **Exadata 및 Autonomous Database**: 하드웨어와 소프트웨어가 통합된 독점 아키텍처를 통해 스스로 튜닝, 패치, 복구하는 '자율운영(Autonomous)' 성능을 전면에 내세웁니다.<br/>* **Real Application Clusters (RAC)**: 무중단 확장과 다운타임 제로를 보장하는 독보적인 클러스터링 기술을 최우선 장점으로 꼽습니다.</td><td>* **Intelligent Query Processing (IQP)**: 별도의 코드 수정 없이 데이터베이스 엔진이 스스로 학습하여 쿼리 실행 계획을 최적화하는 내장 인텔리전스를 강조합니다.<br/>* **In-Memory OLTP & Columnstore**: 실시간 트랜잭션 성능을 수십 배 향상시키는 인메모리 기술과 분석을 위한 컬럼 기반 인덱싱을 장점으로 내세웁니다.</td></tr>
-    <tr><td>**2. 공식 문서 기준 차별화된 고유 기능**</td><td>* **플러그형 스토리지 아키텍처**: 애플리케이션의 특성(트랜잭션용, 단순 조회용, 로그 저장용)에 따라 데이터 저장 엔진을 자유롭게 선택할 수 있는 유연성을 강조합니다.<br/>* **높은 웹 생태계 호환성**: LAMP/LEMP 스택 등 전 세계 주요 웹 프레임워크와의 완벽한 기본 연동성을 내세웁니다.</td><td>* **Multitenant 아키텍처**: 하나의 컨테이너 DB(CDB) 내에 수많은 플러거블 DB(PDB)를 독립적으로 격리·운영하여 클라우드 자원 효율을 극대화하는 기능을 강조합니다.<br/>* **Advanced Security**: 행(Row) 및 열(Column) 단위의 미세 보강 제어(VPD)와 강력한 기본 데이터 암호화 기능을 내세웁니다.</td><td>* **Azure 하이브리드 확장성**: 온프레미스(자체 서버)와 가상 머신, 클라우드(Azure SQL) 간의 원활한 데이터 이동 및 비즈니스 연속성(Link 기능)을 강조합니다.<br/>* **통합 분석 플랫폼**: DB 내부에 R, Python, AI 모델을 심어 데이터를 외부로 유출하지 않고도 그 자리에서 즉시 예측 분석이 가능한 내장 기능을 장점으로 꼽습니다.</td></tr>
+    <tr><td>**공식 홈페이지의 메인 슬로건 방향**</td><td>"세계에서 가장 인기 있는 오픈 소스 데이터베이스"<br />(가성비, 웹 최적화, 클라우드 확장성 강조)</td><td>"최고의 성능, 가용성, 보안을 제공하는 엔터프라이즈 DB"<br />(미션 크리티컬 시스템, 자동화, 통합 플랫폼 강조)</td><td>"하이브리드 데이터 플랫폼 및 인텔리전트 DB"<br />(AI 및 클라우드 통합, 업계 리딩 가성비와 보안 강조)</td></tr>
+    <tr><td>**1. 제조사가 강조하는 성능 최적화 기술**</td><td>* **MySQL HeatWave**: 대규모 데이터 분석(OLAP)과 트랜잭션(OLTP)을 하나의 DB에서 가속화하는 인메모리 질의 처리 엔진을 강조합니다.<br />* **InnoDB 엔진 고도화**: 웹 서비스의 초고속 읽기/쓰기를 지원하기 위한 MVCC 및 버퍼 풀 아키텍처의 효율성을 내세웁니다.</td><td>* **Exadata 및 Autonomous Database**: 하드웨어와 소프트웨어가 통합된 독점 아키텍처를 통해 스스로 튜닝, 패치, 복구하는 '자율운영(Autonomous)' 성능을 전면에 내세웁니다.<br />* **Real Application Clusters (RAC)**: 무중단 확장과 다운타임 제로를 보장하는 독보적인 클러스터링 기술을 최우선 장점으로 꼽습니다.</td><td>* **Intelligent Query Processing (IQP)**: 별도의 코드 수정 없이 데이터베이스 엔진이 스스로 학습하여 쿼리 실행 계획을 최적화하는 내장 인텔리전스를 강조합니다.<br />* **In-Memory OLTP & Columnstore**: 실시간 트랜잭션 성능을 수십 배 향상시키는 인메모리 기술과 분석을 위한 컬럼 기반 인덱싱을 장점으로 내세웁니다.</td></tr>
+    <tr><td>**2. 공식 문서 기준 차별화된 고유 기능**</td><td>* **플러그형 스토리지 아키텍처**: 애플리케이션의 특성(트랜잭션용, 단순 조회용, 로그 저장용)에 따라 데이터 저장 엔진을 자유롭게 선택할 수 있는 유연성을 강조합니다.<br />* **높은 웹 생태계 호환성**: LAMP/LEMP 스택 등 전 세계 주요 웹 프레임워크와의 완벽한 기본 연동성을 내세웁니다.</td><td>* **Multitenant 아키텍처**: 하나의 컨테이너 DB(CDB) 내에 수많은 플러거블 DB(PDB)를 독립적으로 격리·운영하여 클라우드 자원 효율을 극대화하는 기능을 강조합니다.<br />* **Advanced Security**: 행(Row) 및 열(Column) 단위의 미세 보강 제어(VPD)와 강력한 기본 데이터 암호화 기능을 내세웁니다.</td><td>* **Azure 하이브리드 확장성**: 온프레미스(자체 서버)와 가상 머신, 클라우드(Azure SQL) 간의 원활한 데이터 이동 및 비즈니스 연속성(Link 기능)을 강조합니다.<br />* **통합 분석 플랫폼**: DB 내부에 R, Python, AI 모델을 심어 데이터를 외부로 유출하지 않고도 그 자리에서 즉시 예측 분석이 가능한 내장 기능을 장점으로 꼽습니다.</td></tr>
     <tr><td>**3. 라이선스 및 비용에 대한 제조사의 공식 입장**</td><td>* **극대화된 TCO 절감**: 엔터프라이즈급 기능을 상용 DB 대비 최대 90% 저렴한 비용(Total Cost of Ownership)으로 구현할 수 있음을 강력하게 내세웁니다.</td><td>* **타협 없는 엔터프라이즈 가치**: 고비용이지만 금융, 물류 등 단 1초의 중단도 허용되지 않는 미션 크리티컬(Mission-Critical) 환경에서 최고의 자산 보호와 안정성을 제공함을 강조합니다.</td><td>* **최고의 가성비 (Price-Performance)**: 타 상용 DB 대비 훨씬 합리적인 라이선스 비용으로 고성능 엔터프라이즈 기능과 보안 요소를 추가 비용 없이 기본 포함(All-inclusive)해 제공함을 내세웁니다.</td></tr>
   </tbody>
 </NotionTable>
 
+## **4. 빅데이터 시대와 NoSQL**
 
-</NotionToggle>
+### **1) NoSQL의 종류와 대표적인 언어(데이터 모델)**
 
-
-</NotionToggle>
-
-
-<NotionToggle title="4. 빅데이터 시대와 NoSQL" level="3">
-
-
-<NotionToggle title="1) NoSQL의 종류와 대표적인 언어(데이터 모델)
 NoSQL은 'Not Only SQL'의 약자로, 스키마가 없거나 유연하며 대용량 데이터의 분산 처리와 확장성에 특화되어 있습니다. 
-SQL 대신 각자의 API 명령어를 사용합니다.">
+SQL 대신 각자의 API 명령어를 사용합니다.
 
 - **Key-Value Store**
 Redis, Memcached (초고속 캐싱)
@@ -121,21 +93,13 @@ Cassandra, HBase (대규모 데이터 쓰기와 분산 저장)
 - **Graph Store:**
 Neo4j (소셜 네트워크 등 노드 간의 관계 탐색)
 
-<NotionImage src="/images/notion/37d19946-ca76-802f-b9d0-f7e4de8c9b2e.png" caption="image" />
+<NotionImage src="/images/notion/37d19946ca76802fb9d0f7e4de8c9b2e.png" caption="image" />
 
-
-</NotionToggle>
-
-
-<NotionToggle title="2) Document 베이스인 Elasticsearch란?">
+### **2) Document 베이스인 Elasticsearch란?**
 
 Elasticsearch는 Apache Lucene 기반의 분산형 RESTful 검색 및 분석 엔진입니다. 기본적으로 JSON 형태의 Document를 저장하므로 Document DB로 분류되기도 합니다. 단순한 데이터 저장을 넘어 텍스트 전체에 대한 **'전문 검색(Full-text Search)' 기능에 특화**되어 있습니다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="3) Elasticsearch 활용 시 좋은 점/특이점">
+### **3) Elasticsearch 활용 시 좋은 점/특이점**
 
 - **역색인(Inverted Index) 구조**
 특정 단어가 어느 문서에 포함되어 있는지 색인화하여, 방대한 데이터 속에서도 특정 키워드를 매우 빠르게 검색할 수 있습니다. (RDBMS의 B-Tree 인덱스로는 한계가 있는 LIKE 검색 등의 속도 문제 해결)
@@ -143,10 +107,4 @@ Elasticsearch는 Apache Lucene 기반의 분산형 RESTful 검색 및 분석 엔
 클러스터링을 통해 샤드(Shard)와 레플리카(Replica) 단위로 데이터를 분산 저장하므로 스케일 아웃(Scale-out)이 매우 용이합니다.
 - **실시간에 가까운(Near Real-Time) 검색**
 데이터 색인 후 1초 내외로 검색이 가능합니다. 보통 Logstash, Kibana와 함께 ELK 스택으로 구성되어 애플리케이션 로그, 시스템 메트릭 모니터링 등에 강력한 시각화와 분석 기능을 제공합니다.
-
-
-</NotionToggle>
-
-
-</NotionToggle>
 

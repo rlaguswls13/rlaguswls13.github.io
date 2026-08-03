@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { codePopupContent, CodePopupItem } from "@/data/pages/detail/codePopupContent";
+import { codePopupContent, CodePopupItem } from "@/content/detail/codePopupContent";
 
 interface CodePopupProps {
   name: string;

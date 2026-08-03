@@ -3,16 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import devlogData from "@/data/indexes/devlog.json";
+import journalData from "@/data/indexes/journal.json";
 import engagementData from "@/data/indexes/engagement.json";
-import personalData from "@/data/pages/main/notion/personal.json";
-import educationData from "@/data/pages/main/notion/education.json";
 import type { DevlogCategory, DevlogEntry } from "@/types";
 import { CalendarIcon, CloseIcon, CommentIcon } from "@/components/ui/Icons";
 import { TagList } from "@/components/ui/TagBadge";
-import { normalizeEducationEntry, parseDate, sortByDateDesc } from "@/lib/utils";
+import { parseDate, sortByDateDesc } from "@/lib/utils";
 import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
-import { getDevlogHref, getDevlogStorageId } from "@/lib/devlog-slugs";
+import { getDevlogHref } from "@/lib/devlog-slugs";
 
 type HomeContentCategory = DevlogCategory | "education";
 type HomeFilter = Exclude<DevlogCategory, "blog"> | "journal";
@@ -42,21 +41,11 @@ const devlogCategories: Exclude<DevlogCategory, "blog">[] = [
 const fixedDevlogEntries: HomeEntry[] = devlogCategories.flatMap((category) =>
   ((devlogData[category] || []) as DevlogEntry[]).map((entry) => ({ ...entry, category })),
 );
-const blogEntries: HomeEntry[] = (personalData as DevlogEntry[])
+const blogEntries: HomeEntry[] = (journalData.personal as DevlogEntry[])
   .map((entry) => ({ ...entry, category: "blog" }));
 const devlogEntries: HomeEntry[] = [...fixedDevlogEntries, ...blogEntries];
-const educationEntries: HomeEntry[] = (educationData as unknown[])
-  .map((entry) => normalizeEducationEntry(entry))
-  .filter((entry): entry is NonNullable<ReturnType<typeof normalizeEducationEntry>> => entry !== null)
-  .map((entry) => ({
-    id: getDevlogStorageId("education", entry.id),
-    title: entry.blogTitle || entry.title,
-    date: entry.date,
-    tags: entry.keywords,
-    description: entry.impression || "작성된 내용이 없습니다.",
-    package: "education",
-    category: "education",
-  }));
+const educationEntries: HomeEntry[] = (journalData.education as DevlogEntry[])
+  .map((entry) => ({ ...entry, category: "education" }));
 const allEntries: HomeEntry[] = [...devlogEntries, ...educationEntries];
 const sortedHomeEntries = sortByDateDesc(allEntries);
 
@@ -85,6 +74,12 @@ function compareByEngagement(left: HomeEntry, right: HomeEntry) {
 
 const popularEntries = [...sortedHomeEntries].sort(compareByEngagement);
 
+function getCategoryListHref(category: HomeFilter) {
+  return category === "journal"
+    ? "/journal?category=education&page=1"
+    : `/devlog?tab=${category}&pkg=All&page=1`;
+}
+
 export default function TechBlogHome() {
   const [activeCategory, setActiveCategory] = useState<"all" | HomeFilter>("all");
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
@@ -107,7 +102,7 @@ export default function TechBlogHome() {
   const categoryListHref = activeCategory === "all"
     ? "/devlog"
     : activeCategory === "journal"
-      ? "/devlog?tab=journal&journal=education&pkg=All&page=1"
+      ? "/journal?category=education&page=1"
       : `/devlog?tab=${activeCategory}&pkg=All&page=1`;
 
   const getFilterCount = (filter: HomeFilter) => filter === "journal"
@@ -194,16 +189,15 @@ export default function TechBlogHome() {
 
           <div className="tech-category-cards">
             {filters.map((category) => (
-              <button
+              <Link
                 key={category}
-                type="button"
+                href={getCategoryListHref(category)}
                 className={`tech-category-card${activeCategory === category ? " active" : ""}`}
-                onClick={() => selectCategory(category, true)}
               >
                 <span>{String(getFilterCount(category)).padStart(2, "0")}</span>
                 <div><strong>{filterInfo[category].label}</strong><p>{filterInfo[category].description}</p></div>
                 <b>→</b>
-              </button>
+              </Link>
             ))}
           </div>
         </section>

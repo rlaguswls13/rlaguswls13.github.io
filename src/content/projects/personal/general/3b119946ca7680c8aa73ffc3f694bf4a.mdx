@@ -1,0 +1,36 @@
+---
+slug: "a"
+created_date: "2026-08-03"
+description: "대량/대용량 파일 업로드 시 발생하는 메모리 과부하 및 타임아웃 문제를 해결하기 위해, 청크(Chunk) 기반 분할 업로드 및 비동기 처리 파이프라인을 구현한 개인 프로젝트입니다."
+category: "personal"
+start: "2026-06-01"
+end: ""
+subcategory: "전체"
+tags: ["Java8","Spring Boot","File Upload","Performance"]
+title: "파일 업로드"
+page_id: "3b119946-ca76-80c8-aa73-ffc3f694bf4a"
+source_id: "3b119946ca7680c8aa73ffc3f694bf4a"
+last_edited_time: "2026-08-03T03:49:00.000Z"
+notion_url: "https://app.notion.com/p/3b119946ca7680c8aa73ffc3f694bf4a"
+id: "3b119946ca7680c8aa73ffc3f694bf4a"
+sourceId: "3b119946-ca76-80c8-aa73-ffc3f694bf4a"
+date: "2026-08-03"
+package: "전체"
+notionUrl: "https://app.notion.com/p/3b119946ca7680c8aa73ffc3f694bf4a"
+---
+
+### 1. 도입 배경 및 과제 (Background & Problem)
+
+웹 브라우저 환경에서 수 기가바이트(GB) 단위의 대용량 파일을 단일 파일 스트림으로 업로드하는 경우, 서버 사이드의 일시적인 메모리 급증 현상(Out of Memory) 및 HTTP 세션 타임아웃 장애가 빈번하게 발생하여 업로드 안정성이 심각하게 저해되는 한계가 있었습니다.
+
+### 2. 기술적 구현 및 적용 (Technical Implementation)
+
+- 프론트엔드 레벨에서 파일을 고정 크기(예: 5MB)의 청크(Chunk) 조각으로 쪼개어 멀티파트(Multipart) 병렬 전송 로직 구현
+- Spring Boot 백엔드에서 전송된 청크 조각들을 임시 디스크 버퍼 공간에서 랜덤 액세스(RandomAccessFile) 방식으로 무중단 병합 처리
+- 업로드 중단 시 이미 전송 성공한 청크 이후부터 전송을 재개할 수 있는 이어올리기(Resume Upload) 메커니즘 연동
+- 비동기 논블로킹(Async/Non-blocking) 스레드 풀을 활용해 파일 검증 및 메타데이터 DB 기록 파이프라인 형성
+### 3. 성과 및 유용성 (Result & Benefit)
+
+- 네트워크 연결이 일시적으로 끊어지더라도 파일 전체를 처음부터 다시 올릴 필요가 없는 안정적인 복원 성능 확보
+- 서버 내부 Heap 메모리 점유율을 파일 크기에 무관하게 항상 일정 수준(Chunk 크기) 이하로 고정하여 서비스 가용성을 획기적으로 상승
+

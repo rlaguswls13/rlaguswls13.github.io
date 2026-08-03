@@ -1,61 +1,59 @@
 ---
-sourceId: "39119946-ca76-806d-bd0f-c549ddde2532"
-title: "JDBC란?"
+tag: ["JDBC","SpringFramework"]
+description: "JDBC를 쓸 때는 매번 연결을 맺고 끊을 때 발생하는 네트워크 오버헤드와 자원 누수(Leak) 문제를 가장 유의해야 합니다. 이를 방지하기 위해 HikariCP 같은 커넥션 풀 관리 툴을 적절히 활용하면, 미리 생성된 연결을 재사용하면서 성능을 극대화하고 복잡한 데이터베이스 설정을 하이레벨에서 깔끔하게 통제할 수 있습니다. 결과적으로 로우레벨의 무거운 소켓 제어 로직을 검증된 관리 툴의 룰 베이스 위로 올리는 것이 대규모 서비스의 안정성과 유지보수 면에서 훨씬 유리하다고 할 수 있습니다."
+subcategory: "2026"
+created_date: "2026-07-02"
+회차: "[교육 34일차]"
+category: "education"
 slug: "jdbc-fundamentals"
-date: "2026-07-23"
-tags: ["JDBC", "SpringFramework"]
+title: "JDBC란?"
+page_id: "39119946-ca76-806d-bd0f-c549ddde2532"
+source_id: "39119946ca76806dbd0fc549ddde2532"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/JDBC-39119946ca76806dbd0fc549ddde2532"
+id: "39119946ca76806dbd0fc549ddde2532"
+sourceId: "39119946-ca76-806d-bd0f-c549ddde2532"
+date: "2026-07-02"
+tags: ["JDBC","SpringFramework"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/JDBC-39119946ca76806dbd0fc549ddde2532"
 ---
 
-
-<NotionToggle title="1. JDBC(Java Database Connectivity)란?" level="2">
+## 1. JDBC(Java Database Connectivity)란?
 
 JDBC는 자바 애플리케이션이 데이터베이스에 접근하여 SQL 문을 실행할 수 있도록 자바 표준 스펙(JDK)에서 제공하는 **인터페이스 기반의 API**입니다.
 
 자바스크립트가 브라우저 종류(크롬, 사파리 등)와 상관없이 표준 DOM API를 통해 화면을 제어하듯, 자바 개발자 역시 어떤 데이터베이스 엔진(MySQL, Oracle 등)을 쓰든 상관없이 동일한 자바 코드(`Connection`, `Statement`, `ResultSet`)로 DB를 제어할 수 있도록 추상화된 규칙(룰 베이스)을 제공하는 역할을 합니다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="2. JDBC 연결을 위한 라이브러리(Lib)와 DB 엔진" level="2">
+## 2. JDBC 연결을 위한 라이브러리(Lib)와 DB 엔진
 
 JDBC는 껍데기(인터페이스)일 뿐이므로, 실제 특정 DB 엔진과 통신하려면 그 엔진의 언어로 번역해 줄 수 있는 **드라이버 라이브러리(Jar)** 파일이 필요합니다.
 
 - **JDBC DB 엔진:** 실제 데이터가 저장되고 SQL이 실행되는 서버 소프트웨어입니다. (예: MySQL, Oracle, PostgreSQL, H2 등)
 - **연결 라이브러리(JDBC Driver):** 자바와 DB 엔진 사이의 통신 규약을 맞추기 위해 벤더사들이 제공하는 구체적인 구현체입니다.
 
-
 <NotionTable>
   <tbody>
     <tr><td>**데이터베이스 엔진**</td><td>**필요한 드라이버 라이브러리 (Dependencies)**</td><td>**내부 Driver 클래스 경로**</td></tr>
     <tr><td>**MySQL**</td><td>`mysql-connector-j`</td><td>`com.mysql.cj.jdbc.Driver`</td></tr>
     <tr><td>**Oracle**</td><td>`ojdbc8` / `ojdbc11`</td><td>`oracle.jdbc.driver.OracleDriver`</td></tr>
-    <tr><td>**PostgreSQL**</td><td>`postgresql`</td><td>`org.postgresql.Driver`  </td></tr>
+    <tr><td>**PostgreSQL**</td><td>`postgresql`</td><td>`org.postgresql.Driver` </td></tr>
   </tbody>
 </NotionTable>
 
-
-</NotionToggle>
-
-
-<NotionToggle title="3. JDBC 엔진(커넥션)을 관리하는 툴" level="2">
+## 3. JDBC 엔진(커넥션)을 관리하는 툴
 
 기본적으로 자바 내장 API에는 드라이버를 로드하고 연결을 맺어주는 `DriverManager`가 존재합니다. 하지만 실무 환경에서 `DriverManager`를 직접 쓰면 쿼리를 날릴 때마다 네트워크 커넥션을 새로 맺고 끊어야 하므로 비용이 엄청나게 발생합니다.
 
 이러한 로우레벨 커넥션 생성 메커니즘을 효율적인 규칙으로 통제하기 위해 사용하는 커넥션 관리 툴이 바로 Connection Pool(대표적으로 HikariCP)입니다.
 
-
-<NotionToggle title="HikariCP(커넥션 풀)를 사용하면 좋은 점" level="3">
+### 1) HikariCP(커넥션 풀)를 사용하면 좋은 점
 
 - **압도적인 성능 향상:** 미리 일정 개수의 DB 커넥션을 메모리에 생성해 두고(Pool), 필요할 때마다 대여하고 반납하는 방식을 취하므로 커넥션 생성 오버헤드가 제로에 가까워집니다.
 - **시스템 과부하 방지:** 동시 사용자가 폭증해도 무한정 커넥션을 늘리지 않고 정해진 풀 크기 내에서 대기시키므로, DB 엔진이 리소스 고갈로 다운되는 대참사를 방지합니다.
 - **커넥션 유효성 검사:** 백그라운드에서 죽은 커넥션을 자동으로 정리하고 다시 살려주는 관리를 대행합니다.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="세팅 방식 (Spring Boot / application.yml 예시)" level="3">
+### 2) 세팅 방식 (Spring Boot / application.yml 예시)
 
 현대적인 자바 백엔드 환경에서는 스프링 부트가 기본 커넥션 풀로 HikariCP를 채택하고 있으므로, 설정 파일에 아래와 같은 규칙성 있는 데이터(설정값)만 주입해 주면 엔진이 알아서 구동됩니다.
 
@@ -78,14 +76,7 @@ spring:
       pool-name: MyHikariPool
 ```
 
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="4. 네이티브 JDBC 연결 소스 코드 예시" level="2">
+## 4. 네이티브 JDBC 연결 소스 코드 예시
 
 전통적인 자바 코드로 커넥션 풀 없이 연결할 때는 자원 누수(Memory/Socket Leak)를 막기 위해 반드시 **try-with-resources** 문법을 사용하여 사용이 끝난 연결을 확실하게 닫아주어야 합니다.
 
@@ -135,25 +126,14 @@ public class NativeJdbcExample{
 }
 ```
 
-
-</NotionToggle>
-
-
-<NotionToggle title="5. 커넥션 풀(Pool)이 없을 때 발생하는 아키텍처적 한계" level="2">
+## 5. 커넥션 풀(Pool)이 없을 때 발생하는 아키텍처적 한계
 
 하이레벨 관리 영역에서 네이티브 방식을 실무 대규모 서비스에 도입하지 않는 이유는 명확합니다. 매 요청마다 위의 3, 4번 단계(TCP 연결 및 인증)를 반복하기 때문입니다.
 
 - **네트워크 오버헤드 폭발:** 웹 서비스에 1초에 1,000명의 사용자가 동시 접속한다면, 1,000번의 TCP 핸드셰이크와 1,000번의 DB 인증 처리가 동시에 일어나면서 서버와 DB 엔진의 CPU 리소스가 순식간에 고갈됩니다.
 - **연결 유실 및 관리 불가능:** 간혹 네트워크 불안정으로 끊어진 연결이 메모리에 고스트 소켓으로 남아있거나, 개발자가 실수로 `close()`를 누락하면 DB 엔진의 최대 연결 수(`max_connections`) 제한에 걸려 시스템 전체가 마비될 수 있습니다.
+## 6. 구동 메커니즘 흐름
 
 
-</NotionToggle>
-
-
-<NotionToggle title="6. 구동 메커니즘 흐름" level="2">
-
-<NotionImage src="/images/notion/39119946-ca76-805f-98e5-ce63eefc7a91.png" caption="image" />
-
-
-</NotionToggle>
+<NotionImage src="/images/notion/39119946ca76805f98e5ce63eefc7a91.png" caption="image" />
 

@@ -2062,6 +2062,25 @@ a.category-tab .category-tab-ext {
   width: 100%;
 }
 
+.projects-filter-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 18px 0 24px;
+}
+
+.projects-search {
+  margin-top: 0;
+  width: min(100%, 280px);
+}
+
+.projects-search .pkg-pill {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+
 /* Package Pill Styles */
 .pkg-pill {
   padding: 8px 12px;

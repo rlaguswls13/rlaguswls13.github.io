@@ -1,159 +1,161 @@
 ---
-sourceId: "36e19946-ca76-8099-b9e1-ed827b7817fd"
-title: "java 상속을 활용한 기능 구현"
+tag: ["상속"]
+description: "9일차 까지 진행한 문제풀이에서 적용한 코드 컨벤션을 유지하면서 더 유연성있는 코드 작성을 위해서 spring 미사용시 Bean 등록하여 사용할 수 있는 것처럼 AppConfig 라는 의존성 팩토리 클래스생성하여 매번 new 생성자를 생성하지 않고 실행시 최초 생성하여 주입받는 형태로 개선을 유도해봤습니다. 그리고 상속을 통해서 반복되는 필드 작성을 피하고, 동일한 method이지만 상속된 자식 객체에서 변형된 method를 작성하여, 원하는 공식을 알맞게 적용할 수 있었습니다."
+subcategory: "2026"
+created_date: "2026-05-28"
+회차: "[교육 10일차]"
+category: "education"
 slug: "java-inheritance-feature-implementation"
-date: "2026-07-23"
+title: "java 상속을 활용한 기능 구현"
+page_id: "36e19946-ca76-8099-b9e1-ed827b7817fd"
+source_id: "36e19946ca768099b9e1ed827b7817fd"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
+id: "36e19946ca768099b9e1ed827b7817fd"
+sourceId: "36e19946-ca76-8099-b9e1-ed827b7817fd"
+date: "2026-05-28"
 tags: ["상속"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 ---
 
+## 1. 도형(원·사각형) 정보 계산 프로그램
 
-<NotionToggle title="[문제 1] 도형(원·사각형) 정보 계산 프로그램" level="2">
-
-
-<NotionToggle title="구성 클래스 및 역할" level="3">
+### 구성 클래스 및 역할
 
 
-<NotionIndent>
+<NotionToggle title="Point" level="4">
 
 - **필드**
-  - `x : int` — X 좌표
-  - `y : int` — Y 좌표
+- `x : int` — X 좌표
+- `y : int` — Y 좌표
 
 - **생성자**
-  - `Point()` — 기본 생성자
-  - `Point(int x, int y)` — 좌표 초기화 생성자
+- `Point()` — 기본 생성자
+- `Point(int x, int y)` — 좌표 초기화 생성자
 
 - **메서드**
-
-  - 각 필드별 **getter / setter** 직접 구현
-  - `toString(): String` → `"x, y"` 형식의 문자열 반환
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **상속**
-  - **Point**
-
-- **필드**
-  - `radius : int` — 반지름
-
-- **생성자**
-  - `Circle()` — 기본 생성자
-  - `Circle(int x, int y, int radius)` — 좌표·반지름 초기화 생성자
-
-- **메서드**
-
-  - 각 필드별 **getter / setter** 직접 구현
-  - `toString(): String` → `"x, y, radius"` 형식의 문자열 반환
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **상속**
-  - **Point**
-
-- **필드**
-  - `width : int` — 너비
-  - `height : int` — 높이
-
-- **생성자**
-  - `Rectangle()` — 기본 생성자
-  - `Rectangle(int x, int y, int width, int height)` — 좌표·너비·높이 초기화 생성자
-
-- **메서드**
-
-  - 각 필드별 **getter / setter** 직접 구현
-  - `toString(): String` → `"x, y, width, height"` 형식의 문자열 반환
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **필드**
-  - `c : Circle = new Circle()` — 원 객체
-
-- **메서드**
-
-  - `calcArea(int x, int y, int radius): String`
-    - 필드 초기화 후 `"x, y, radius / 면적"` 문자열 반환
-    - 면적 공식: `Math.PI * radius * radius`
-
-  - `calcCircum(int x, int y, int radius): String`
-
-    - 필드 초기화 후 `"x, y, radius / 둘레"` 문자열 반환
-    - 둘레 공식: `Math.PI * radius * 2`
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **필드**
-  - `r : Rectangle = new Rectangle()` — 사각형 객체
-
-- **메서드**
-
-  - `calcArea(int x, int y, int height, int width): String`
-    - 필드 초기화 후 `"x, y, height, width / 면적"` 문자열 반환
-    - 면적 공식: `width * height`
-
-  - `calcPerimeter(int x, int y, int height, int width): String`
-
-    - 필드 초기화 후 `"x, y, height, width / 둘레"` 문자열 반환
-    - 둘레 공식: `2 * (width + height)`
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **필드**
-  - `sc : Scanner = new Scanner(System.in)`
-  - `cc : CircleController = new CircleController()`
-  - `rc : RectangleController = new RectangleController()`
-
-- **메서드**
-
-  - `mainMenu(): void`
-    - 메인 메뉴 출력 및 선택 처리 (1. 원, 2. 사각형, 9. 종료)
-
-  - `circleMenu(): void`
-    - 원 메뉴 출력 (1. 둘레, 2. 넓이, 9. 메인으로)
-
-  - `rectangleMenu(): void`
-    - 사각형 메뉴 출력 (1. 둘레, 2. 넓이, 9. 메인으로)
-
-  - `calcCircum(): void`
-    - 좌표·반지름 입력 → `cc.calcCircum()` 호출 및 출력
-
-  - `calcCircleArea(): void`
-    - 좌표·반지름 입력 → `cc.calcArea()` 호출 및 출력
-
-  - `calcPerimeter(): void`
-    - 좌표·너비·높이 입력 → `rc.calcPerimeter()` 호출 및 출력
-
-  - `calcRectArea(): void`
-
-    - 좌표·너비·높이 입력 → `rc.calcArea()` 호출 및 출력
-
-
-</NotionIndent>
+- 각 필드별 **getter / setter** 직접 구현
+- `toString(): String` → `"x, y"` 형식의 문자열 반환
 
 
 </NotionToggle>
 
 
-<NotionToggle title="실행 예시" level="3">
+<NotionToggle title="Circle" level="4">
+
+- **상속**
+- **Point**
+
+- **필드**
+- `radius : int` — 반지름
+
+- **생성자**
+- `Circle()` — 기본 생성자
+- `Circle(int x, int y, int radius)` — 좌표·반지름 초기화 생성자
+
+- **메서드**
+- 각 필드별 **getter / setter** 직접 구현
+- `toString(): String` → `"x, y, radius"` 형식의 문자열 반환
+
+
+</NotionToggle>
+
+
+<NotionToggle title="Rectangle" level="4">
+
+- **상속**
+- **Point**
+
+- **필드**
+- `width : int` — 너비
+- `height : int` — 높이
+
+- **생성자**
+- `Rectangle()` — 기본 생성자
+- `Rectangle(int x, int y, int width, int height)` — 좌표·너비·높이 초기화 생성자
+
+- **메서드**
+- 각 필드별 **getter / setter** 직접 구현
+- `toString(): String` → `"x, y, width, height"` 형식의 문자열 반환
+
+
+</NotionToggle>
+
+
+<NotionToggle title="CircleController" level="4">
+
+- **필드**
+- `c : Circle = new Circle()` — 원 객체
+
+- **메서드**
+- `calcArea(int x, int y, int radius): String`
+- 필드 초기화 후 `"x, y, radius / 면적"` 문자열 반환
+- 면적 공식: `Math.PI * radius * radius`
+
+- `calcCircum(int x, int y, int radius): String`
+- 필드 초기화 후 `"x, y, radius / 둘레"` 문자열 반환
+- 둘레 공식: `Math.PI * radius * 2`
+
+
+
+</NotionToggle>
+
+
+<NotionToggle title="RectangleController" level="4">
+
+- **필드**
+- `r : Rectangle = new Rectangle()` — 사각형 객체
+
+- **메서드**
+- `calcArea(int x, int y, int height, int width): String`
+- 필드 초기화 후 `"x, y, height, width / 면적"` 문자열 반환
+- 면적 공식: `width * height`
+
+- `calcPerimeter(int x, int y, int height, int width): String`
+- 필드 초기화 후 `"x, y, height, width / 둘레"` 문자열 반환
+- 둘레 공식: `2 * (width + height)`
+
+
+
+</NotionToggle>
+
+
+<NotionToggle title="PointMenu" level="4">
+
+- **필드**
+- `sc : Scanner = new Scanner(System.in)`
+- `cc : CircleController = new CircleController()`
+- `rc : RectangleController = new RectangleController()`
+
+- **메서드**
+- `mainMenu(): void`
+- 메인 메뉴 출력 및 선택 처리 (1. 원, 2. 사각형, 9. 종료)
+
+- `circleMenu(): void`
+- 원 메뉴 출력 (1. 둘레, 2. 넓이, 9. 메인으로)
+
+- `rectangleMenu(): void`
+- 사각형 메뉴 출력 (1. 둘레, 2. 넓이, 9. 메인으로)
+
+- `calcCircum(): void`
+- 좌표·반지름 입력 → `cc.calcCircum()` 호출 및 출력
+
+- `calcCircleArea(): void`
+- 좌표·반지름 입력 → `cc.calcArea()` 호출 및 출력
+
+- `calcPerimeter(): void`
+- 좌표·너비·높이 입력 → `rc.calcPerimeter()` 호출 및 출력
+
+- `calcRectArea(): void`
+- 좌표·너비·높이 입력 → `rc.calcArea()` 호출 및 출력
+
+
+
+</NotionToggle>
+
+### 실행 예시
 
 
 ```text
@@ -221,145 +223,128 @@ y 좌표 : 4
 
 ```
 
+## 2. 학생·사원 정보 관리 프로그램
 
-</NotionToggle>
-
-
-</NotionToggle>
+### 구성 클래스 및 역할
 
 
-<NotionToggle title="[문제 2] 학생·사원 정보 관리 프로그램" level="2">
-
-
-<NotionToggle title="구성 클래스 및 역할" level="3">
-
-
-<NotionIndent>
+<NotionToggle title="Person" level="4">
 
 - **필드**
-  - `name : String` — 이름
-  - `age : int` — 나이
-  - `height : double` — 키
-  - `weight : double` — 몸무게
+- `name : String` — 이름
+- `age : int` — 나이
+- `height : double` — 키
+- `weight : double` — 몸무게
 
 - **생성자**
-  - `Person()` — 기본 생성자
-  - `Person(String name, int age, double height, double weight)` — 필드 초기화 생성자
+- `Person()` — 기본 생성자
+- `Person(String name, int age, double height, double weight)` — 필드 초기화 생성자
 
 - **메서드**
-
-  - 각 필드별 **getter / setter** 직접 구현
-  - `toString(): String` → `"name, age, height, weight"` 형식의 문자열 반환
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **필드**
-  - `grade : int` — 학년
-  - `major : String` — 전공
-
-- **생성자**
-  - `Student()` — 기본 생성자
-  - `Student(String name, int age, double height, double weight, int grade, String major)` — 필드 초기화 생성자
-
-- **메서드**
-
-  - 각 필드별 **getter / setter** 직접 구현
-  - `toString(): String` → `"name, age, height, weight, grade, major"` 형식 문자열 반환
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **필드**
-  - `salary : int` — 급여
-  - `dept : String` — 부서
-
-- **생성자**
-  - `Employee()` — 기본 생성자
-  - `Employee(String name, int age, double height, double weight, int salary, String dept)` — 필드 초기화 생성자
-
-- **메서드**
-
-  - 각 필드별 **getter / setter** 직접 구현
-  - `toString(): String` → `"name, age, height, weight, salary, dept"` 형식 문자열 반환
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **필드**
-  - `s : Student[] = new Student[3]` — 학생 객체 배열
-  - `e : Employee[] = new Employee[10]` — 사원 객체 배열
-
-- **메서드**
-
-  - `personCount(): int[]`
-    - 학생·사원 배열에 저장된 객체 수 반환
-
-  - `insertStudent(String name, int age, double height, double weight, int grade, String major): void`
-    - 학생 객체 생성 후 배열에 저장
-
-  - `printStudent(): Student[]`
-    - 학생 배열 반환
-
-  - `insertEmployee(String name, int age, double height, double weight, int salary, String dept): void`
-    - 사원 객체 생성 후 배열에 저장
-
-  - `printEmployee(): Employee[]`
-
-    - 사원 배열 반환
-
-
-</NotionIndent>
-
-
-<NotionIndent>
-
-- **필드**
-  - `sc : Scanner = new Scanner(System.in)`
-  - `pc : PersonController = new PersonController()`
-
-- **메서드**
-
-  - `mainMenu(): void`
-    - 전체 메뉴 출력 및 선택 처리
-    - (학생 수 3명 초과 시 추가 불가, 사원 수 10명 초과 시 추가 불가)
-
-  - `studentMenu(): void`
-    - 학생 메뉴 출력 (1. 추가, 2. 보기, 9. 메인으로)
-
-  - `employeeMenu(): void`
-    - 사원 메뉴 출력 (1. 추가, 2. 보기, 9. 메인으로)
-
-  - `insertStudent(): void`
-    - 학생 정보 입력 후 `pc.insertStudent()` 호출
-
-  - `printStudent(): void`
-    - 저장된 학생 정보 출력
-
-  - `insertEmployee(): void`
-    - 사원 정보 입력 후 `pc.insertEmployee()` 호출
-
-  - `printEmployee(): void`
-
-    - 저장된 사원 정보 출력
-
-
-</NotionIndent>
+- 각 필드별 **getter / setter** 직접 구현
+- `toString(): String` → `"name, age, height, weight"` 형식의 문자열 반환
 
 
 </NotionToggle>
 
 
-<NotionToggle title="실행 예시" level="3">
+<NotionToggle title="Student" level="4">
+
+- **필드**
+- `grade : int` — 학년
+- `major : String` — 전공
+
+- **생성자**
+- `Student()` — 기본 생성자
+- `Student(String name, int age, double height, double weight, int grade, String major)` — 필드 초기화 생성자
+
+- **메서드**
+- 각 필드별 **getter / setter** 직접 구현
+- `toString(): String` → `"name, age, height, weight, grade, major"` 형식 문자열 반환
+
+
+</NotionToggle>
+
+
+<NotionToggle title="Employee" level="4">
+
+- **필드**
+- `salary : int` — 급여
+- `dept : String` — 부서
+
+- **생성자**
+- `Employee()` — 기본 생성자
+- `Employee(String name, int age, double height, double weight, int salary, String dept)` — 필드 초기화 생성자
+
+- **메서드**
+- 각 필드별 **getter / setter** 직접 구현
+- `toString(): String` → `"name, age, height, weight, salary, dept"` 형식 문자열 반환
+
+
+</NotionToggle>
+
+
+<NotionToggle title="PersonController" level="4">
+
+- **필드**
+- `s : Student[] = new Student[3]` — 학생 객체 배열
+- `e : Employee[] = new Employee[10]` — 사원 객체 배열
+
+- **메서드**
+- `personCount(): int[]`
+- 학생·사원 배열에 저장된 객체 수 반환
+
+- `insertStudent(String name, int age, double height, double weight, int grade, String major): void`
+- 학생 객체 생성 후 배열에 저장
+
+- `printStudent(): Student[]`
+- 학생 배열 반환
+
+- `insertEmployee(String name, int age, double height, double weight, int salary, String dept): void`
+- 사원 객체 생성 후 배열에 저장
+
+- `printEmployee(): Employee[]`
+- 사원 배열 반환
+
+
+
+</NotionToggle>
+
+
+<NotionToggle title="PersonMenu" level="4">
+
+- **필드**
+- `sc : Scanner = new Scanner(System.in)`
+- `pc : PersonController = new PersonController()`
+
+- **메서드**
+- `mainMenu(): void`
+- 전체 메뉴 출력 및 선택 처리
+- (학생 수 3명 초과 시 추가 불가, 사원 수 10명 초과 시 추가 불가)
+
+- `studentMenu(): void`
+- 학생 메뉴 출력 (1. 추가, 2. 보기, 9. 메인으로)
+
+- `employeeMenu(): void`
+- 사원 메뉴 출력 (1. 추가, 2. 보기, 9. 메인으로)
+
+- `insertStudent(): void`
+- 학생 정보 입력 후 `pc.insertStudent()` 호출
+
+- `printStudent(): void`
+- 저장된 학생 정보 출력
+
+- `insertEmployee(): void`
+- 사원 정보 입력 후 `pc.insertEmployee()` 호출
+
+- `printEmployee(): void`
+- 저장된 사원 정보 출력
+
+
+
+</NotionToggle>
+
+### 실행 예시
 
 
 ```text
@@ -393,12 +378,4 @@ y 좌표 : 4
 
 
 ```
-
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-[https://github.com/rlaguswls13/practice/tree/practice3](https://github.com/rlaguswls13/practice/tree/practice3)
 

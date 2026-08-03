@@ -1,13 +1,18 @@
-import devlogSlugs from "@/data/config/devlog-slugs.json";
+import devlogSlugs from "@/data/config/slugs.json";
+import devlogRoutes from "@/data/config/routes.json";
 
 type SlugMap = Record<string, Record<string, string>>;
+type RouteMap = Record<string, {
+  byPageId: Record<string, string>;
+  bySlug: Record<string, { id: string; url: string }>;
+}>;
 
 const slugMap = devlogSlugs as SlugMap;
-const notionCategories = new Set(["blog", "education"]);
+const routeMap = devlogRoutes as RouteMap;
 
 export function getDevlogStorageId(category: string, id: string) {
   const value = String(id || "").trim();
-  return notionCategories.has(category) ? value.replaceAll("-", "") : value;
+  return value.replaceAll("-", "");
 }
 
 export function getDevlogSlug(category: string, id: string) {
@@ -16,10 +21,11 @@ export function getDevlogSlug(category: string, id: string) {
 }
 
 export function getDevlogHref(category: string, id: string) {
-  return `/devlog/${category}/${getDevlogSlug(category, id)}`;
+  const storageId = getDevlogStorageId(category, id);
+  return routeMap[category]?.byPageId[storageId]
+    || `/devlog/${category}/${getDevlogSlug(category, id)}`;
 }
 
 export function getDevlogIdBySlug(category: string, slug: string) {
-  return Object.entries(slugMap[category] || {})
-    .find(([, mappedSlug]) => mappedSlug === slug)?.[0];
+  return routeMap[category]?.bySlug[slug]?.id;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import projectsData from "@/data/pages/main/projects.json";
+import projectsData from "@/data/indexes/projects.json";
 import { TagList } from "@/components/ui/TagBadge";
 import { formatPeriods, calculateTotalPeriod, sortByDateDesc } from "@/lib/utils";
 import Link from "next/link";
@@ -13,6 +13,15 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getProjectThumbnail } from "@/lib/thumbnails";
 import { LoadingPlaceholder } from "@/components/ui/DeferredContent";
+import { TabGroup } from "@/components/ui/TabGroup";
+
+type ProjectTab = "all" | "enterprise" | "personal";
+
+const projectTabs = [
+  { key: "all", label: "전체" },
+  { key: "enterprise", label: "참여 작업" },
+  { key: "personal", label: "토이프로젝트" },
+];
 
 function ProjectsContent() {
   const searchParams = useSearchParams();
@@ -20,24 +29,27 @@ function ProjectsContent() {
 
   const initialSearch = searchParams.get("q") || "";
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
-  const initialTab = (searchParams.get("tab") === "personal" ? "personal" : "enterprise") as "enterprise" | "personal";
+  const requestedTab = searchParams.get("tab") || "all";
+  const initialTab = projectTabs.some((tab) => tab.key === requestedTab)
+    ? requestedTab as ProjectTab
+    : "all";
 
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [isSearchOpen, setIsSearchOpen] = useState(!!initialSearch);
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [activeTab, setActiveTab] = useState<"enterprise" | "personal">(initialTab);
+  const [activeTab, setActiveTab] = useState<ProjectTab>(initialTab);
   const itemsPerPage = 6; // 6 cards per page
 
   useEffect(() => {
     const currentQ = searchParams.get("q") || "";
     const currentPg = searchParams.get("page");
-    const currentTab = searchParams.get("tab") || "enterprise";
+    const currentTab = searchParams.get("tab") || "all";
 
     if (currentQ !== searchQuery || currentPg !== String(currentPage) || currentTab !== activeTab) {
       const params = new URLSearchParams();
       if (searchQuery) params.set("q", searchQuery);
       if (currentPage > 1) params.set("page", String(currentPage));
-      if (activeTab !== "enterprise") params.set("tab", activeTab);
+      if (activeTab !== "all") params.set("tab", activeTab);
 
       const qParam = params.toString() ? `?${params.toString()}` : "";
       router.replace(`/projects${qParam}`, { scroll: false });
@@ -51,7 +63,11 @@ function ProjectsContent() {
     let result = allProjects;
 
     // 1. Filter by Active Tab
-    result = result.filter(p => p.type === activeTab || (!p.type && activeTab === "enterprise"));
+    if (activeTab !== "all") {
+      result = result.filter((project) =>
+        (project.type || project.category || "enterprise") === activeTab,
+      );
+    }
 
     // 2. Filter by Search Query
     if (searchQuery.trim()) {
@@ -76,8 +92,10 @@ function ProjectsContent() {
     setCurrentPage(1);
   };
 
-  const handleTabChange = (tab: "enterprise" | "personal") => {
-    setActiveTab(tab);
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab as ProjectTab);
+    setSearchQuery("");
+    setIsSearchOpen(false);
     setCurrentPage(1);
   };
 
@@ -86,37 +104,23 @@ function ProjectsContent() {
       <PageHeader
         eyebrow="SELECTED WORK"
         title="작업과 해결 과정"
-        description={activeTab === "enterprise" ? "참여한 주요 엔터프라이즈 작업과 담당 역할을 소개합니다." : "직접 기획하고 구현한 개인 작업을 소개합니다."}
+        description={activeTab === "enterprise"
+          ? "참여한 주요 엔터프라이즈 작업과 담당 역할을 소개합니다."
+          : activeTab === "personal"
+            ? "직접 기획하고 구현한 토이프로젝트를 소개합니다."
+            : "참여 작업과 직접 구현한 토이프로젝트를 함께 소개합니다."}
         marker="02"
       />
 
       <div className="devlog-container">
-        <div className="devlog-layout" style={{ marginTop: "30px" }}>
-          <aside className="devlog-sidebar">
-            <nav>
-              <button
-                onClick={() => handleTabChange("enterprise")}
-                className={`pkg-pill ${activeTab === "enterprise" ? "active" : ""}`}
-              >
-                참여 작업
-              </button>
-              <button
-                onClick={() => handleTabChange("personal")}
-                className={`pkg-pill ${activeTab === "personal" ? "active" : ""}`}
-              >
-                개인 작업
-              </button>
-            </nav>
-            <div className="sidebar-search">
+        <TabGroup tabs={projectTabs} activeTab={activeTab} onTabChange={handleTabChange} />
+
+        <div className="projects-filter-toolbar">
+          <div className="sidebar-search projects-search">
               {!isSearchOpen ? (
                 <button
+                  type="button"
                   onClick={() => setIsSearchOpen(true)}
-                  style={{
-                    background: "transparent", border: "none", cursor: "pointer",
-                    display: "flex", alignItems: "center", gap: "8px",
-                    color: "var(--text-secondary)", padding: "8px 12px",
-                    borderRadius: "6px", width: "100%", fontSize: "0.95rem"
-                  }}
                   className="pkg-pill"
                 >
                   <SearchIcon style={{ position: 'relative', left: '0', transform: 'none' }} /> 검색
@@ -138,15 +142,15 @@ function ProjectsContent() {
                   />
                 </div>
               )}
-            </div>
-          </aside>
+          </div>
+        </div>
 
-          <main className="devlog-main">
+        <main className="devlog-main">
             <div className="projects-grid">
               {paginatedProjects.map((p, index) => (
                 <Link
                   key={p.id}
-                  href={`/projects/${p.id}?page=${currentPage}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""}${activeTab !== "enterprise" ? `&tab=${activeTab}` : ""}`}
+                  href={`/projects/${p.slug || p.id}?page=${currentPage}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""}${activeTab !== "all" ? `&tab=${activeTab}` : ""}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div className="project-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -178,8 +182,7 @@ function ProjectsContent() {
                 ))}
               </div>
             )}
-          </main>
-        </div>
+        </main>
       </div>
     </>
   );

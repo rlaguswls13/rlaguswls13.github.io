@@ -8,7 +8,7 @@ Devlog 상세 페이지는 Giscus를 사용합니다. 공개 URL과 discussion t
 - MDX 파일: `src/content/devlog/{category}/{id}.mdx`
 - Giscus discussion term: `/devlog/{category}/{id}`
 
-라우트는 `src/data/config/devlog-slugs.json`의 `id → slug` 맵을 역조회해 ID 이름의 원본을 찾습니다. Giscus는 `specific` 매핑과 ID 기반 term을 사용하므로 slug가 바뀌어도 같은 Discussion을 사용합니다.
+라우트는 `src/data/config/slugs.json`의 `source_id → slug` 맵을 역조회해 source_id 이름의 원본을 찾습니다. Giscus는 `specific` 매핑과 ID 기반 term을 사용하므로 slug가 바뀌어도 같은 Discussion을 사용합니다.
 
 ## 설정
 

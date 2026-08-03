@@ -10,7 +10,8 @@
 - `Home`: 페이지 이동 없이 카테고리별 최신 글을 전환하고 인기 태그를 탐색하는 기술 블로그 홈
 - `About`: `/about`에서 제공하는 프로필, 핵심 경험, 참여/개인 작업 쇼케이스, 기술 및 관심사
 - `Projects`: 참여/개인 작업 탭, 검색, 페이지네이션, 프로젝트 상세 화면
-- `Devlog`: 카테고리·패키지 필터, 검색, 교육일지/개인일지, MDX 상세 문서
+- `Devlog`: 카테고리·패키지 필터, 검색, MDX 상세 문서
+- `Journal`: 교육일지/개인일지, MDX 상세 문서
 - `Career`: `/career`에서 제공하는 경력·학력·자격증 타임라인
 - `Contact`: 이메일, 전화, GitHub 연락 수단
 - 라이트/다크 테마와 모바일·태블릿·데스크톱 반응형 UI
@@ -114,13 +115,12 @@ blog/
 
 ## 콘텐츠 흐름
 
-1. `scripts/notion/fetch.mjs`가 `education`, `personal` 소스를 기능별 핸들러로 전달합니다.
-2. 기존 JSON의 `lastEditedTime`과 ID 이름의 MDX 존재 여부를 확인해 변경된 페이지만 변환합니다.
-3. Notion 블록은 MDX로, 원격 이미지는 `public/images/notion/`의 로컬 파일로 저장합니다.
-4. 교육일지는 `src/data/pages/main/notion/education.json`, 개인일지는 `personal.json`으로 분리합니다. 개인일지의 공개 Devlog 카테고리와 콘텐츠 경로는 기존 호환성을 위해 `blog`를 유지합니다.
-5. `scripts/slug/generate.mjs`가 frontmatter의 slug를 읽어 `src/data/config/devlog-slugs.json`에 `id → slug` 맵을 생성합니다. MDX와 썸네일 파일명은 바꾸지 않습니다.
-6. 공개 URL `/devlog/[category]/[slug]`는 slug를 ID로 역조회한 뒤 ID 이름의 MDX를 읽습니다. Giscus discussion term도 ID 기반이라 slug가 바뀌어도 기존 댓글 연결이 유지됩니다.
-7. 추천 콘텐츠와 댓글 수는 `src/data/indexes/`에 생성하고, `next build`는 결과물을 `out/`에 static export합니다.
+1. `scripts/notion/connect/fetch.mjs`가 Notion API의 데이터베이스 열을 조회해 `src/data/indexes/notion/*.json`에 저장합니다.
+2. `scripts/notion/connect/`에는 API 인증·조회·JSON 통신 코드만 둡니다.
+3. `scripts/notion/transfer/`는 JSON↔MDX 변환, UTF 인코딩과 줄바꿈 정규화, MDX 컴포넌트 이름 매핑을 담당합니다.
+4. `npm run transfer-notion-json -- <input.json> <output-dir> [page-name]`으로 JSON을 MDX로 변환할 수 있습니다.
+5. `scripts/slug/generate.mjs`가 frontmatter의 slug를 읽어 `src/data/config/slugs.json`에 `source_id → slug` 맵을 생성합니다.
+6. 추천 콘텐츠와 댓글 수는 `src/data/indexes/`에 생성하고, `next build`는 결과물을 `out/`에 static export합니다.
 
 Notion 동기화 없이 작업할 때는 `dev:no-fetch` 또는 `build:no-fetch`를 사용하세요. `build:no-fetch`도 댓글 수 갱신은 시도하며, 요청이 실패하면 기존 `engagement.json`을 유지합니다.
 

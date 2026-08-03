@@ -1,0 +1,79 @@
+---
+category: "tech_study"
+created_date: "2026-05-15"
+tag: ["DevOps","Container","Podman","Kubernetes"]
+slug: "docker-to-podman-migration"
+subcategory: "container"
+description: "여전히 강력한 컨테이너 기술 생태계에서, Docker 대신 Podman이 대안으로 떠오르는 이유와 K8s 전환 측면에서의 장단점을 분석합니다."
+title: "DevOps 패러다임 전환: Docker에서 Podman으로?"
+page_id: "3b019946-ca76-806e-849f-f6e0fb57ac3d"
+source_id: "3b019946ca76806e849ff6e0fb57ac3d"
+last_edited_time: "2026-08-02T18:18:00.000Z"
+notion_url: "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6e0fb57ac3d"
+id: "3b019946ca76806e849ff6e0fb57ac3d"
+sourceId: "3b019946-ca76-806e-849f-f6e0fb57ac3d"
+date: "2026-05-15"
+tags: ["DevOps","Container","Podman","Kubernetes"]
+package: "container"
+notionUrl: "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6e0fb57ac3d"
+---
+
+컨테이너라는 추상화 기술 자체는 DevOps 아키텍처에 영구적으로 남겠지만, 컨테이너를 구동하는 주체인 런타임 엔진 시장에서는 **Podman**이 강력한 대안으로 시장의 파이를 가져가고 있습니다.
+
+
+<NotionDivider />
+
+## 1. Docker와 Podman 벤치마킹 및 우위 비교
+
+공식 아키텍처 문서들을 참고하여 두 기술의 태생적 차이점을 비교해 봅니다.
+
+- **아키텍처 (Daemon vs Daemonless)**
+- **Docker:** 백그라운드에 무거운 `dockerd` 데몬이 항상 실행되어 클라이언트 요청을 대기합니다. 데몬이 죽으면 모든 컨테이너 관리 기능이 멈추는 단일 장애점(SPOF) 리스크가 있습니다.
+- **Podman:** 데몬 없이 프로세스 형태로 실행되는 데몬리스 구조를 띄고 있어, 시스템 자원을 훨씬 효율적으로 사용하고 개별적인 실행 안정성이 뛰어납니다.
+
+- **보안 (Root vs Rootless)**
+- **Docker:** 데몬은 기본적으로 시스템 최고 권한인 `root`로 동작하여 보안 탈취 위험성에 다소 취약합니다.
+- **Podman:** 시작부터 `root` 권한 없이 컨테이너 환경을 통제할 수 있도록(Rootless) 설계되어 철저한 보안을 요구하는 엔터프라이즈 환경에서 매우 높은 평가를 받고 있습니다.
+
+- **CLI 호환성**
+- Podman은 Docker CLI 명령어 체계를 100% 동일하게 구현하여, 사용자가 리눅스 `alias docker=podman` 단축키 하나로 기존 스크립트 수정 없이 학습 비용 제로(0) 수준으로 전환할 수 있습니다.
+
+
+<NotionDivider />
+
+## 2. 네트워크 아키텍처 비교 (Network Architecture)
+
+도커와 포드맨 네트워크의 가장 큰 차이점은 아키텍처(데몬의 유무)에서 비롯됩니다. 도커는 중앙 백그라운드 데몬이 네트워크를 관리하지만, 포드맨은 데몬 없이 사용자 프로세스로 동작하며 호스트의 네트워킹 유틸리티를 직접 활용합니다.
+
+- **Docker 네트워크:** 클라이언트-서버 구조로, 도커 데몬이 브릿지(docker0) 등 가상 네트워크를 전면적으로 관리합니다. 설정이 간편하고 여러 호스트에 걸친 오버레이 네트워크 구성에 유리합니다. 다만, 데몬이 `root` 권한으로 방화벽 규칙(iptables)을 수정하므로 데몬 탈취 시 호스트 전체 네트워크 제어권이 넘어갈 수 있습니다.
+- **Podman 네트워크:** 데몬리스(Daemonless) 및 기본 Rootless 구조입니다. `slirp4netns`나 `pasta` 유틸리티를 사용해 네트워크 트래픽을 가상화하여, 호스트의 실제 네트워크 카드에 직접 접근하는 것을 원천 차단합니다. 또한, 여러 컨테이너를 하나의 Pod으로 묶어 `localhost`를 통해 안전하게 내부 통신을 격리할 수 있습니다.
+
+<NotionDivider />
+
+## 3. Rootless 모드 심층 비교: 도커를 Rootless로 설정한다면?
+
+도커 데몬을 일반 사용자 권한으로 실행하는 Rootless 모드를 설정하면 보안성을 높일 수 있지만, 태생이 Rootless인 Podman과 비교할 때 구조적 한계가 존재합니다.
+
+- **Docker Rootless의 한계:**
+- **공격 표면 존재:** 여전히 백그라운드에 데몬(`dockerd`) 프로세스가 상주하며 명령을 대기합니다. 해당 데몬 자체에 취약점이 있다면 일반 사용자 권한을 가진 채 실행되더라도 사용자의 전체 데이터가 탈취될 수 있습니다.
+- **기능적 제약:** 호스트의 1024번 이하 특권 포트 바인딩이 바로 불가능하고, 볼륨 마운트 시 권한 매핑(subuid/subgid) 꼬임이 잦으며, AppArmor 등 호스트 강력 보안 프로필과의 연동이 매끄럽지 않습니다.
+
+- **Podman의 우위:** 상시 켜져 있는 데몬 자체가 없어 공격 경로(Attack Surface)를 획기적으로 줄였습니다. 보안이 최우선인 환경이라면 도커를 복잡하게 개조하는 것보다 기본 상태가 Rootless인 Podman을 사용하는 것이 더 안전합니다.
+
+<NotionDivider />
+
+## 4. Kubernetes(K8s) 환경으로의 손쉬운 전환
+
+이름 자체에서도 알 수 있듯, Podman은 쿠버네티스의 최소 배포 단위인 **Pod**의 개념을 내장하고 있습니다.
+
+- **Docker:** 여러 컨테이너를 묶어서 관리하려면 별도의 도구인 `docker-compose`를 써야 하며, 이 구성 파일을 나중에 쿠버네티스 YAML로 바꾸려면 다시 재작업을 거쳐야 합니다.
+- **Podman:** 로컬 머신에서 여러 컨테이너를 하나의 Pod으로 묶어 실행해본 뒤, `podman generate kube` 명령어를 타이핑하는 즉시 실제 쿠버네티스에서 가동될 수 있는 완벽한 K8s Manifest(YAML) 파일을 자동 추출해 줍니다. K8s 징검다리 역할로서 최강의 편의성을 자랑합니다.
+
+<NotionDivider />
+
+## 5. 결론: 가장 중요한 핵심은 'Shell Script'와 '컨테이너 이해도'
+
+엔진 트렌드가 Docker에서 Podman으로 넘어가고 있더라도, 도구의 이름은 현상일 뿐 본질이 아닙니다.
+
+결국 어떤 엔진을 사용하든 리눅스 운영체제 기반의 시스템 자원 격리, 네트워킹 구성, 볼륨 마운트의 작동 원리를 깊이 이해해야 합니다. 특히 인프라를 자유자재로 다루기 위해서는 복잡한 Dockerfile 및 `entry.sh`를 작성하여 런타임 환경을 능수능란하게 조작할 수 있는 쉘 스크립트(Shell Script) 활용 능력이 가장 강력하고 영구적인 자산이 될 것입니다.
+

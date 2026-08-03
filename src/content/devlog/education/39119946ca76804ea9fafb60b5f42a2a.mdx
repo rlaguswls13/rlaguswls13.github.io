@@ -1,56 +1,48 @@
 ---
-sourceId: "39119946-ca76-804e-a9fa-fb60b5f42a2a"
-title: "Jquery와 Bootstrap (추가개념 : 네트워크 통신 ajax와 대체제)"
+tag: ["jquery","bootstrap"]
+description: "jQuery와 Bootstrap은 나름의 가치가 있고 레거시 제품의 유지보수를 위해 사용법을 알아두는 것이 좋지만, React나 Next.js 같은 현대적 프레임워크 환경으로 진입하면 이야기가 달라집니다. 물리적 DOM을 직접 타격하는 jQuery는 프레임워크의 렌더링 메커니즘과 충돌하기 쉽고, Bootstrap은 대규모 커스텀 CSS를 입힐 때 기존 규칙을 덮어쓰느라 하이레벨 코드가 오히려 지저분해지기 때문입니다.\n 따라서, 프로젝트의 구조적 확장성을 확보하고 유연하게 디자인을 제어하려면, 이에 최적화된 현대적 대체제들을 앞으로 깊이 있게 익혀나가는 점이 매우 중요합니다. 자유로운 스타일링이 가능한 Tailwind CSS나 데이터 바인딩 규칙과 완벽히 융합되는 MUI 같은 모던 도구들을 다룰 줄 알아야 장기적인 유지보수 영역에서 생산성을 극대화할 수 있습니다. 궁극적으로는 바닐라 js와 그 메커니즘을 아는것도 중요하지만 하이레벨영역에서 규칙화된 도구들도 잘 다룰줄 알아야한다는 점입니다."
+subcategory: "2026"
+created_date: "2026-07-01"
+회차: "[교육 33일차]"
+category: "education"
 slug: "jquery-bootstrap-and-ajax"
-date: "2026-07-23"
-tags: ["jquery", "bootstrap"]
+title: "Jquery와 Bootstrap (추가개념 : 네트워크 통신 ajax와 대체제)"
+page_id: "39119946-ca76-804e-a9fa-fb60b5f42a2a"
+source_id: "39119946ca76804ea9fafb60b5f42a2a"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/Jquery-Bootstrap-ajax-39119946ca76804ea9fafb60b5f42a2a"
+id: "39119946ca76804ea9fafb60b5f42a2a"
+sourceId: "39119946-ca76-804e-a9fa-fb60b5f42a2a"
+date: "2026-07-01"
+tags: ["jquery","bootstrap"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/Jquery-Bootstrap-ajax-39119946ca76804ea9fafb60b5f42a2a"
 ---
 
+## 1. jQuery
 
-<NotionToggle title="1. jQuery" level="2">
-
-
-<NotionToggle title="jQuery란 무엇인가" level="3">
+### 1) jQuery란 무엇인가
 
 jQuery는 브라우저 간의 악명 높은 크로스 브라우징(Cross Browsing) 이슈를 해결하고, 복잡한 바닐라 DOM API를 직관적이고 간결한 문법으로 다룰 수 있도록 등장한 자바스크립트 라이브러리다. `document.querySelector`조차 없던 시절, `$('#id').textContent`와 같은 형태로 DOM 선택 및 조작, 이벤트 바인딩, AJAX 통신을 획기적으로 단순화해 주었다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="jQuery의 현재 사용 추세" level="3">
+### 2) jQuery의 현재 사용 추세
 
 현재 신규 대규모 프로젝트에서 jQuery가 도입되는 경우는 극히 드물다. 모바일 환경의 중심 이동과 브라우저 표준(ES6+)의 발전으로 인해 바닐라 자바스크립트 자체가 jQuery의 편의 기능을 대거 흡수했기 때문이다. 그러나 여전히 전 세계 수많은 레거시 시스템과 워드프레스(WordPress) 기반의 웹사이트 뼈대를 지탱하고 있어, 완전히 사라지지 않고 유지 보수 영역에서 굳건히 자리를 지키고 있다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="현대 프런트엔드 프레임워크와의 충돌 메커니즘" level="3">
+### 3) 현대 프런트엔드 프레임워크와의 충돌 메커니즘
 
 리액트(React)나 뷰(Vue) 같은 현대적 프레임워크와 jQuery는 **DOM을 제어하는 근본적인 메커니즘이 정반대**이기 때문에 심각한 충돌을 유반한다.
 
 - 리액트는 데이터 상태를 기준으로 가상 DOM(Virtual DOM)을 생성하고 이전 스냅샷과 비교하여 화면을 변경하는 규칙을 따른다.
 - 반면 jQuery는 실제 물리적 DOM을 **직접 타격하여 강제로 조작**한다.
-
 리액트가 관리하는 컴포넌트 내부를 jQuery가 임의로 조작해 버리면, 리액트 엔진의 상태 스냅샷과 실제 브라우저 DOM 트리 사이에 불일치가 발생한다. 이로 인해 프레임워크의 상태 변경에 따른 재렌더링 메커니즘이 오작동하거나 데이터 바인딩이 깨지는 치명적인 에러가 발생하게 된다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="그렇다면 jQuery는 언제 사용하면 좋은가" level="3">
+### 4) 그렇다면 jQuery는 언제 사용하면 좋은가
 
 빌드 도구(Webpack, Vite 등)나 복잡한 패키지 관리자(npm) 세팅 없이 단 하나의 HTML 파일 안에서 간단한 스크립트 조작이 필요할 때 여전히 유용하다. 랜딩 페이지나 정적 홍보 페이지처럼 상태 관리가 필요 없고 단순한 UI 애니메이션이나 AJAX 통신 몇 개만 빠르게 구현해야 하는 경우, 혹은 기존에 구축된 거대한 레거시 시스템을 유지 보수해야 할 때는 jQuery가 가장 가볍고 빠른 선택지가 될 수 있다.
 
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="추가개념) 네트워크 통신 도구 비교 (Feature Comparison Matrix)" level="3">
+### 추가개념) 네트워크 통신 도구 비교 (Feature Comparison Matrix)
 
 웹 개발에서 데이터 바인딩의 기초가 되는 비동기 통신 기술들을 매트릭스로 명확히 비교해 보았다. 과거 jQuery 중심의 AJAX부터 현대 브라우저 표준, 그리고 서드파티 라이브러리까지의 핵심 차이를 확인할 수 있다.
 
@@ -68,38 +60,21 @@ jQuery는 브라우저 간의 악명 높은 크로스 브라우징(Cross Browsin
   </tbody>
 </NotionTable>
 
+## 2. Bootstrap과 현대 스타일링 생태계
 
-</NotionToggle>
-
-
-<NotionToggle title="2. Bootstrap과 현대 스타일링 생태계" level="2">
-
-
-<NotionToggle title="Bootstrap이란 무엇인가" level="3">
+### 1) Bootstrap이란 무엇인가
 
 Bootstrap은 트위터에서 개발한 오픈소스 CSS 프레임워크로, 개발자가 웹 디자인에 큰 공을 들이지 않아도 반응형 레이아웃과 정형화된 컴포넌트(버튼, 모달, 네비게이션 바 등)를 클래스명 조각들로 빠르게 조립할 수 있게 도와주는 도구다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="부트스트랩은 마냥 편리한가 (한계점)" level="3">
+### 2) 부트스트랩은 마냥 편리한가 (한계점)
 
 초기 프로토타이핑 속도를 올리는 데는 압도적으로 편리하지만, 서비스가 고도화될수록 거대한 제약 조건으로 다가온다. 모든 사이트가 똑같아 보이는 이른바 '부트스트랩 스타일' 탈피가 어렵고, 기업 고유의 세밀한 디자인 시스템을 반영하기 시작하면 기존 스타일을 덮어쓰기 위해 수많은 레이어의 CSS 분기문과 `!important` 남발이 이어지며 코드가 지저분해진다. 또한, 사용하지 않는 수많은 컴포넌트 스타일까지 배포 파일에 포함되어 용량이 무거워진다는 단점이 있다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="커스텀 디자인 영역에서의 개별 CSS 관리론" level="3">
+### 3) 커스텀 디자인 영역에서의 개별 CSS 관리론
 
 정교하고 독창적인 UI/UX를 요구하는 프로젝트라면 부트스트랩 같은 통짜형 프레임워크보다 개별 커스텀 CSS(혹은 컴포넌트 단위 스타일링)를 작성하는 것이 장기적인 하이레벨 유지 보수 영역에서 훨씬 이롭다. 부트스트랩이 강제하는 룰을 부수고 수정하는 데 드는 비용이, 처음부터 바닐라 CSS나 현대적인 스타일링 도구로 규칙을 설계하는 비용보다 커지기 때문이다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="현대 프런트엔드 시장에서의 대표적인 대체제" level="3">
+### 4) 현대 프런트엔드 시장에서의 대표적인 대체제
 
 - **Tailwind CSS (Utility-First)**
 부트스트랩처럼 만들어진 컴포넌트를 주는 것이 아니라, `flex`, `pt-4`, `text-center` 같은 원시 CSS 속성 클래스를 조합해 화면을 만든다. 디자인 제약이 전혀 없어 커스텀 디자인에 최적화되어 있으며, 빌드 시 사용하지 않는 클래스는 완전히 제거되므로 배포 파일이 극도로 가벼워진다.
@@ -107,10 +82,4 @@ Bootstrap은 트위터에서 개발한 오픈소스 CSS 프레임워크로, 개�
 구글의 매content리얼 디자인 지침을 철저하게 따르는 리액트 전용 컴포넌트 라이브러리다. 컴포넌트 내부의 상태 관리 메커니즘이 리액트와 완벽히 융합되어 있어, 대규모 백오피스나 어드민 대시보드처럼 일관되고 고도화된 기능 중심의 컴포넌트가 필요할 때 압도적인 생산성을 보여준다.
 - **Shoelace (Framework-Agnostic Web Components)**
 리액트, 뷰, 스벨트 등 어떤 프레임워크 환경이든 상관없이 바닐라 웹 컴포넌트(Web Components) 표준을 기반으로 동작하는 라이브러리다. 매우 가볍고 사용성이 뛰어나며, 프레임워크의 변화에 종속되지 않는 영속적인 UI 시스템을 구축하고 싶을 때 훌륭한 대안이 된다.
-
-
-</NotionToggle>
-
-
-</NotionToggle>
 

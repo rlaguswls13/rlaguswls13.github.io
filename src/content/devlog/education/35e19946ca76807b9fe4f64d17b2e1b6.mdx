@@ -1,21 +1,49 @@
 ---
-sourceId: "35e19946-ca76-807b-9fe4-f64d17b2e1b6"
-title: "Java 환경 구축 및 기본 문법"
+tag: ["eclipse 설치","변수","java설치"]
+description: "오늘 교육은 이전에 해본 경험이 있어서 쉬운 내용이 였습니다.\n앞으로의 목표는 지각하지 않고 성실하게 교육 참여하고 꾸준히 교육 내용 정리해서 작성하는 게  1번 입니다 . :)"
+subcategory: "2026"
+created_date: "2026-05-12"
+회차: "[교육 1일차]"
+category: "education"
 slug: "java-development-environment-and-basic-syntax"
-date: "2026-07-23"
-tags: ["eclipse 설치", "변수", "java설치"]
+title: "Java 환경 구축 및 기본 문법"
+page_id: "35e19946-ca76-807b-9fe4-f64d17b2e1b6"
+source_id: "35e19946ca76807b9fe4f64d17b2e1b6"
+last_edited_time: "2026-08-03T03:40:00.000Z"
+notion_url: "https://app.notion.com/p/Java-35e19946ca76807b9fe4f64d17b2e1b6"
+id: "35e19946ca76807b9fe4f64d17b2e1b6"
+sourceId: "35e19946-ca76-807b-9fe4-f64d17b2e1b6"
+date: "2026-05-12"
+tags: ["eclipse 설치","변수","java설치"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/Java-35e19946ca76807b9fe4f64d17b2e1b6"
 ---
 
+## 1. Java 및 IDE 설치 환경 구성
 
-<NotionToggle title="1. Java 및 IDE 설치 환경 구성" level="2">
+### Java 다운로드
 
-### Java 수동 설치 및 환경 변수 등록
+- 바이너리 파일([Binary](/p/35e19946ca76807b9fe4f64d17b2e1b6#3ab19946ca76808aa755f0385cf56ac7)) 다운로드하여 커스텀
+- 윈도우 표준 설치 패키지 파일(.[msi](/p/35e19946ca76807b9fe4f64d17b2e1b6#35f19946ca768072bffbd93bd7c95399)) 다운로드
+*다운로드 참고 URL
 
-- **설치 방식**: Java 설치 패키지(.exe)를 실행하는 대신 **Source(Binary)** 파일을 다운로드하여 원하는 경로에 압축 해제 후 관리.
-- **환경 변수 설정**:
-  - **JAVA_HOME**: JDK가 설치된 경로를 시스템 변수로 지정.
-  - **Path (environment-path)**: `%JAVA_HOME%\bin`을 등록하여 어디서든 Java 명령어를 사용할 수 있게 함.
-  - **CLASSPATH**: Java 클래스 라이브러리를 참조하기 위한 경로 설정.
+
+<NotionTable>
+  <tbody>
+    <tr><td>jdk 아카이브</td><td>오라클</td></tr>
+    <tr><td>[https://jdk.java.net/java-se-ri/8-MR6](https://jdk.java.net/java-se-ri/8-MR6)</td><td>[https://www.oracle.com/java/technologies/downloads/#jdk26-mac](https://www.oracle.com/java/technologies/downloads/#jdk26-mac)</td></tr>
+  </tbody>
+</NotionTable>
+
+### Java 설치 및 환경 변수 등록
+
+- **설치 방식**
+Java 설치 패키지(.exe)를 실행하는 대신 binary 파일을 다운로드하여 원하는 경로에 압축 해제 후 관리.
+- **환경 변수 설정**
+- **JAVA_HOME**: JDK가 설치된 경로를 시스템 변수로 지정.
+- **Path (environment-path)**: `%JAVA_HOME%\bin`을 등록하여 어디서든 Java 명령어를 사용할 수 있게 함.
+- **CLASSPATH**: Java 클래스 라이브러리를 참조하기 위한 경로 설정.
 
 - **설정 목적**: 특정 버전에 종속되지 않고, 사용자가 원하는 Java 버전을 직접 등록하여 유연하게 사용하기 위함.
 
@@ -24,19 +52,14 @@ tags: ["eclipse 설치", "변수", "java설치"]
 - **패키지** : `Eclipse IDE for Enterprise Java and Web Developers` (Web Developer 기준) 설치.
 - **환경설정** :  워크스페이스 인코딩(UTF-8) 설정 및 컴파일러 환경 세팅 완료.
 
-
-</NotionToggle>
-
 <NotionDivider />
 
-
-<NotionToggle title="2. Java 실행 원리 (Compile & Runtime)" level="2">
+## 2. Java 실행 원리 (Compile & Runtime)
 
 ### 개념 확인
 
 - **Compile (컴파일)**: 개발자가 작성한 `.java` 소스 코드를 컴퓨터(JVM)가 이해할 수 있는 `.class` (바이트코드) 파일로 변환하는 과정.
 - **Runtime (런타임)**: 컴파일된 파일을 실제 실행 환경(JVM)에서 메모리에 올려 프로그램을 구동하는 단계.
-
 ### HelloWorld.java 실행 예시
 
 
@@ -60,23 +83,16 @@ java -cp . HelloWorld
 ```
 
 
-</NotionToggle>
-
 <NotionDivider />
 
-
-<NotionToggle title="3. 변수(Variable)와 타입(Type)" level="2">
+## 3. 변수(Variable)와 타입(Type)
 
 - **변수**: 데이터를 저장하기 위해 할당받은 메모리 공간의 이름.
 - **타입**: 변수에 저장할 데이터의 종류와 크기를 결정 (예: 정수형 int, 실수형 double, 문자열 String 등).
 
-
-</NotionToggle>
-
 <NotionDivider />
 
-
-<NotionToggle title="4. 표준 출력과 에러 출력 (sout, serr)" level="2">
+## 4. 표준 출력과 에러 출력 (sout, serr)
 
 각 변수 타입별 출력 예시입니다. `System.out`은 일반 출력, `System.err`은 에러 메시지 출력에 사용됩니다.
 
@@ -105,12 +121,9 @@ public class OutputExample {
 ```
 
 
-</NotionToggle>
-
 <NotionDivider />
 
-
-<NotionToggle title="5. 특수 문자 표기 방법 (Escape Sequence)" level="2">
+## 5. 특수 문자 표기 방법 (Escape Sequence)
 
 문자열 내에서 특수한 기능을 수행하거나 따옴표 등을 표현할 때 사용하는 **Escape 문자** 예시입니다.
 
@@ -131,12 +144,11 @@ public class EscapeExample {
 ```
 
 
-</NotionToggle>
-
 <NotionDivider />
 
+## 6. 다양한 변수 사용에 앞서 고민할 사항
 
-<NotionToggle title="6. 다양한 변수 사용에 앞서 고민할 사항" level="2">
+## 1. 기본형(Primitive) vs 래퍼 클래스(Wrapper Class)
 
 
 <NotionIndent>
@@ -147,18 +159,15 @@ Java 개발 시 가장 먼저 마주하는 선택은 데이터를 기본형으�
 
 - 기본형 -> 주머니 속의 현금: 별도의 절차 없이 즉시 계산에 사용할 수 있으며 가볍고 빠릅니다. 하지만 은행의 자동 이체나 명세서 발행과 같은 부가 서비스는 이용할 수 없습니다.
 - 래퍼 클래스 -> 은행 계좌: 현금을 입금하거나 출금하는 과정이 필요하여 조금 더 무겁지만, 계좌 잔고가 없는 상태(null)를 표현할 수 있고 은행이 제공하는 다양한 금융 서비스(메서드)를 활용할 수 있습니다.
-
 ### 실무적 선택 기준
 
 - 성능 최적화가 필요한 대량 연산 -> 기본형 사용: 반복문 내에서 수백만 번의 산술 연산이 일어난다면 메모리 사용량이 적고 접근 속도가 빠른 기본형이 압도적으로 유리합니다.
 - 데이터베이스 연동 및 결측치 처리 -> 래퍼 클래스 사용: DB의 특정 컬럼이 비어 있을 때(NULL), 이를 Java의 0으로 받을 것인지 아니면 실제 데이터가 없음을 뜻하는 null로 받을 것인지 구분해야 할 때 래퍼 클래스가 필수적입니다.
 - 제네릭(Generics) 활용 -> 래퍼 클래스 사용: ArrayList와 같이 컬렉션 프레임워크를 사용할 때는 반드시 객체 타입인 래퍼 클래스를 사용해야 합니다.
-
 ### Nullable 처리 시 주의점
 
 - 래퍼 클래스는 null을 허용하기 때문에 산술 연산 시 자동으로 기본형으로 변환되는 과정(Unboxing)에서 NullPointerException이 발생할 위험이 큽니다.
 - 실무에서는 Optional 클래스나 삼항 연산자를 사용하여 값이 없을 경우의 기본값을 명시적으로 지정하는 방식을 권장합니다.
-
 ### 주제 1 관련 예시 코드
 
 
@@ -195,6 +204,8 @@ public class PrimitiveWrapperComparison {
 
 </NotionIndent>
 
+## 2. 가변(Mutable) vs 불변(Immutable) 객체
+
 
 <NotionIndent>
 
@@ -204,17 +215,14 @@ public class PrimitiveWrapperComparison {
 
 - 가변 객체 -> 화이트보드: 누구나 언제든지 적힌 내용을 지우고 새로 쓸 수 있습니다. 효율적이지만, 잠시 자리를 비운 사이 누가 내용을 바꿨는지 추적하기 어렵습니다.
 - 불변 객체 -> 인쇄된 보고서: 한 번 출력되면 내용을 고칠 수 없습니다. 수정이 필요하면 새로운 보고서를 다시 출력해야 하지만, 보고서를 읽는 모든 사람이 동일한 내용을 보고 있다는 확신을 가질 수 있습니다.
-
 ### 구분의 이유와 장단점
 
 - 가변(Mutable) 객체 -> 상태를 자주 변경해야 하는 경우 유리합니다. (예: StringBuilder) 새로운 객체를 계속 생성하지 않아도 되므로 메모리 절약이 가능합니다. 하지만 데이터가 언제 어디서 바뀌었는지 파악하기 힘든 부작용(Side-Effect)이 발생할 수 있습니다.
 - 불변(Immutable) 객체 -> 상태가 변하지 않으므로 신뢰도가 높습니다. 멀티스레드 환경에서 별도의 동기화 작업 없이 공유가 가능하며, 값이 바뀔 염려가 없어 디버깅이 매우 쉽습니다.
-
 ### 불변 설계를 위한 Builder 패턴의 효용성
 
 - 필드가 많은 객체를 불변으로 만들 때, 모든 필드를 생성자에 넣으면 가독성이 떨어집니다.
 - Builder 패턴을 사용하면 필요한 데이터만 선택적으로 입력하면서도, 최종적으로 생성된 객체는 수정이 불가능한 상태로 유지할 수 있어 실무에서 선호되는 방식입니다.
-
 ### 주제 2 관련 예시 코드
 
 
@@ -296,6 +304,7 @@ public class MutableImmutableTest {
 - 비즈니스 로직의 대부분에서는 **불변 객체와 래퍼 클래스를 사용하여 데이터의 안정성을 높이는 것이 유리**합니다.
 - 그러나 **대규모 트래픽을 처리하거나 실시간 연산이 핵심인 모듈에서는 의도적으로 가변 객체와 기본형**을 사용하여 시스템 부하를 최소화하는 전략이 필요합니다.
 
+*msi : 마이크로소프트 인스톨러(Microsoft Installer)
 
-</NotionToggle>
+*binary : 소스 코드를 컴퓨터가 즉시 실행할 수 있는 영문과 숫자의 집합(기계어)으로 변환한 파일 구조를 바이너리
 

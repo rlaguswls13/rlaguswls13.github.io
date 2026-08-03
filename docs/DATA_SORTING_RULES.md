@@ -8,7 +8,7 @@
 src/data/
 ├─ config/
 │  ├─ site.json                    # 공개 사이트/Giscus 기본 설정
-│  └─ devlog-slugs.json            # category별 id → slug 맵
+│  └─ slugs.json                   # category별 source_id → slug 맵
 ├─ pages/
 │  ├─ main/
 │  │  ├─ notion/
@@ -49,10 +49,9 @@ Notion 소스 키는 다음처럼 분리합니다.
 
 ### Notion 목록
 
-- 교육일지: Notion의 수정 시각과 날짜를 기준으로 최신 항목이 먼저 오도록 저장합니다.
-- 개인일지: 게시 날짜 내림차순으로 `personal.json`에 저장합니다.
-
-동일한 추출 기반을 사용하지만 카테고리별 출력 데이터와 콘텐츠 변환 규칙은 `scripts/notion/handlers/education.mjs`, `personal.mjs`로 분리되어 있습니다.
+- Journal, Devlog, Project는 `scripts/notion/connect/fetch.mjs`에서 `created_date` 내림차순으로 저장합니다.
+- API 연결과 JSON 저장은 `connect/`, JSON·MDX 형식 변환은 `transfer/`로 분리합니다.
+- 페이지별 예외 열 이름과 기본값은 `connect/fetch.mjs`의 `SPECIAL_CASES`에서 선언합니다.
 
 ### 인기 콘텐츠
 
@@ -60,13 +59,13 @@ Notion 소스 키는 다음처럼 분리합니다.
 
 ### 프로젝트
 
-프로젝트 원본은 `src/data/pages/main/projects.json`, 상세 데이터는 `src/data/pages/detail/project-detail.json`에서 관리합니다. 화면의 탭·검색·페이지네이션은 원본을 변경하지 않고 렌더링 단계에서 처리합니다.
+프로젝트 원본은 `src/data/pages/main/projects.json`, 상세 데이터는 `../src/content/detail/project-detail.json`에서 관리합니다. 화면의 탭·검색·페이지네이션은 원본을 변경하지 않고 렌더링 단계에서 처리합니다.
 
 ## ID와 slug 규칙
 
 - MDX 파일명과 썸네일 파일명은 안정적인 Notion/콘텐츠 ID를 사용합니다.
 - frontmatter의 `slug`는 공개 URL에만 사용합니다.
-- `src/data/config/devlog-slugs.json`은 `id → slug` 라우팅 지도입니다.
+- `src/data/config/slugs.json`은 `source_id → slug` 라우팅 지도입니다.
 - `/devlog/[category]/[slug]`에서 slug를 ID로 역조회한 뒤 ID 이름의 MDX를 읽습니다.
 - slug 생성 때문에 원본 파일명을 바꾸지 않습니다.
 

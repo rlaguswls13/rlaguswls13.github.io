@@ -1,64 +1,58 @@
 ---
-sourceId: "37219946-ca76-809a-847e-cd89ced12913"
-title: "예외처리(예외)에 대한 정리"
+tag: ["예외처리"]
+description: "예외처리 시에 무분별한 throws나 ignore 정책을 지양 해야한다는 점입니다.  빠른 코드 작성을 위해서 throws를 남발하게 되면, 에러로그나 위치를 광범위하게 표기하여 실제 에러 지점이나 원인 분석에 어려움이 많아지게 됩니다. 그리고 ignore로 공백 란으로 비우게면 실제 데이터 손실이나 시스템 장애가 발생해도 어느 시점에서 발생된 exception이 찾기가 매우 어려워집니다. 그래서 AOP로 exception을 관리하거나, 최소한 log.wran, error 같은 걸로 쉽게 찾을 수 있도록 세팅하여 관리하는게 좋다고 생각됩니다."
+subcategory: "2026"
+created_date: "2026-06-01"
+회차: "[교육 12일차]"
+category: "education"
 slug: "network-fundamentals"
-date: "2026-07-23"
+title: "예외처리(예외)에 대한 정리"
+page_id: "37219946-ca76-809a-847e-cd89ced12913"
+source_id: "37219946ca76809a847ecd89ced12913"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/37219946ca76809a847ecd89ced12913"
+id: "37219946ca76809a847ecd89ced12913"
+sourceId: "37219946-ca76-809a-847e-cd89ced12913"
+date: "2026-06-01"
 tags: ["예외처리"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/37219946ca76809a847ecd89ced12913"
 ---
 
+## 1. 예외 구조의 본질과 분류 (사용자 입력 기준)
 
-<NotionToggle title="1. 예외 구조의 본질과 분류 (사용자 입력 기준)" level="2">
-
-
-<NotionToggle title="예외 최상위 계층 (Throwable - Exception)" level="3">
+### 예외 최상위 계층 (Throwable - Exception)
 
 자바의 모든 예외는 `Throwable` 클래스를 상속받으며, 실무적인 예외 처리는 최상위인 `Exception` 클래스를 중심으로 이루어집니다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="Checked vs Unchecked Exception의 핵심 차이" level="3">
+### Checked vs Unchecked Exception의 핵심 차이
 
 무분별하게 최상위 `Exception`으로 `throws`를 던지거나, 적절한 사후 조치(Action) 없이 예외를 방치하면 시스템 에러의 정확한 위치와 원인을 파악하기가 극도로 어려워집니다. 예외는 컴파일 시점과 런타임 시점의 동작 방식에 따라 두 가지로 엄격히 분류됩니다.
 
-- **Checked Exception (예:** `**IOException**`**,** `**SQLException**`**)**
-  - `Exception`을 직접 상속받는 예외들입니다.
-  - 컴파일 시점에 예외 처리(`try-catch` 또는 `throws`)를 강제합니다.
-  - **트랜잭션 주의점:** 스프링 환경에서 기본적으로 **롤백(Rollback)되지 않고 커밋**되므로 설계 시 주의가 필요합니다.
+- **Checked Exception (예:** **`IOException`****,** **`SQLException`****)**
+- `Exception`을 직접 상속받는 예외들입니다.
+- 컴파일 시점에 예외 처리(`try-catch` 또는 `throws`)를 강제합니다.
+- **트랜잭션 주의점:** 스프링 환경에서 기본적으로 **롤백(Rollback)되지 않고 커밋**되므로 설계 시 주의가 필요합니다.
 
-- **Unchecked / Runtime Exception (예:** `**NullPointerException**`**,** `**IllegalArgumentException**`**)**
+- **Unchecked / Runtime Exception (예:** **`NullPointerException`****,** **`IllegalArgumentException`****)**
+- `RuntimeException`을 상속받는 예외들입니다.
+- 컴파일 시점에 예외 처리를 강제하지 않으며, 런타임 중에 예외가 발생하면 별도의 처리가 없을 시 스레드가 중단되거나 시스템이 멈출 수 있습니다.
+- **트랜잭션 주의점:** 스프링 환경에서 예외 발생 시 기본적으로 **트랜잭션 롤백**이 수행됩니다.
 
-  - `RuntimeException`을 상속받는 예외들입니다.
-  - 컴파일 시점에 예외 처리를 강제하지 않으며, 런타임 중에 예외가 발생하면 별도의 처리가 없을 시 스레드가 중단되거나 시스템이 멈출 수 있습니다.
-  - **트랜잭션 주의점:** 스프링 환경에서 예외 발생 시 기본적으로 **트랜잭션 롤백**이 수행됩니다.
-
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="2. 실무적인 해결책: 커스텀 예외와 전역 예외 처리 (AOP)" level="2">
+## 2. 실무적인 해결책: 커스텀 예외와 전역 예외 처리 (AOP)
 
 예외 처리의 파편화를 막고, 클라이언트에게 일관된 에러 응답 메세지를 전달하기 위해 커스텀 예외(Custom Exception)와 AOP 관점의 전역 예외 핸들러(Global Exception Handler)를 결합하여 시스템을 관리합니다.
 
-
-<NotionToggle title="전역 예외 처리의 가치" level="3">
+### 전역 예외 처리의 가치
 
 1. **클라이언트 응답 용이성:** 포맷이 통일된 에러 객체를 반환하여 클라이언트(프론트엔드/외부 API)가 에러를 일관되게 처리할 수 있도록 돕습니다.
 1. **커스텀 예외 관리의 비결:** 커스텀 예외가 무분별하게 많아지면 클래스가 난립하여 오히려 관리가 어려워집니다. 따라서 공통적인 도메인 에러(예: 내부 서버 에러, 잘못된 요청 에러, 리소스 부재 에러)를 대표하는 몇 개의 커스텀 예외만 생성하고, 내부 메세지나 에러 코드로 상세 내용을 분기하는 것이 효율적입니다.
 1. **로깅(Logging)의 중요성:** 핸들러 내부에서 반드시 에러 로그(`log.error`)를 남겨 시스템 에러의 정확한 위치(Stack Trace)와 이유를 추적할 수 있도록 해야 합니다.
+### [예시]
 
 
-</NotionToggle>
-
-
-<NotionToggle title="[예시]" level="2">
-
-
-<NotionToggle title="[1] 대표 커스텀 예외 클래스 설계" level="3">
+<NotionToggle title="[1] 대표 커스텀 예외 클래스 설계" level="4">
 
 클래스의 난립을 막기 위해 상위 커스텀 예외를 두고, 생성 시점에 `ErrorCode`를 주입받도록 설계합니다.
 
@@ -101,7 +95,7 @@ public class EntityNotFoundException extends BusinessException{
 </NotionToggle>
 
 
-<NotionToggle title="[2] AOP 기반 전역 예외 핸들러 (@RestControllerAdvice)" level="3">
+<NotionToggle title="[2] AOP 기반 전역 예외 핸들러 (@RestControllerAdvice)" level="4">
 
 컨트롤러 레이어 하위에서 발생하는 모든 예외를 인터셉트하여 로그를 남기고 응답을 제어합니다.
 
@@ -146,37 +140,21 @@ public class GlobalExceptionHandler{
 
 </NotionToggle>
 
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="[참고] 트랜잭션(Transaction) 관리와 롤백(Rollback) 전략" level="2">
+## [참고] 트랜잭션(Transaction) 관리와 롤백(Rollback) 전략
 
 예외 처리 시 에러 메시지를 찾고 전송하는 것만큼 중요한 것이 데이터의 일관성을 지키는 후처리(롤백) 작업입니다.
 
+### 스프링의 기본 롤백 규칙 (Declarative Transaction)
 
-<NotionToggle title="스프링의 기본 롤백 규칙 (Declarative Transaction)" level="3">
+스프링의 `@Transactional` 어노테이션은 기본적으로 **`RuntimeException`****과** **`Error`****가 발생했을 때만 트랜잭션을 롤백**합니다. 앞서 언급한 `Checked Exception`이 발생하면 개발자가 예외를 인지하고 복구할 수 있다고 판단하여 데이터를 그대로 `Commit` 해버립니다.
 
-스프링의 `@Transactional` 어노테이션은 기본적으로 `**RuntimeException**`**과** `**Error**`**가 발생했을 때만 트랜잭션을 롤백**합니다. 앞서 언급한 `Checked Exception`이 발생하면 개발자가 예외를 인지하고 복구할 수 있다고 판단하여 데이터를 그대로 `Commit` 해버립니다.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="데이터 손실 방지를 위한 롤백 제어 전략" level="3">
+### 데이터 손실 방지를 위한 롤백 제어 전략
 
 만약 `Checked Exception`이 발생하는 비즈니스 로직(예: 외부 파일 I/O 작업 실패, 특정 SQL 연동 예외 등)에서 전체 데이터를 안전하게 롤백해야 한다면, 다음과 같은 두 가지 방법으로 후처리를 통제해야 합니다.
 
-- **방법 1:** `**rollbackFor**` **속성 명시 (추천)**`@Transactional(rollbackFor = Exception.class)` 처럼 명시적 설정을 추가하여 Checked Exception 발생 시에도 무조건 트랜잭션이 롤백되도록 유도합니다.
+- **방법 1:** **`rollbackFor`** **속성 명시 (추천)**`@Transactional(rollbackFor = Exception.class)` 처럼 명시적 설정을 추가하여 Checked Exception 발생 시에도 무조건 트랜잭션이 롤백되도록 유도합니다.
 - **방법 2: Unchecked 예외로 전환(Wrapping)**
 Checked Exception이 발생하는 구간을 `try-catch`로 감싸서 catch 블록 내부에서 방어적인 비즈니스 로직을 수행하거나, 시스템이 인지할 수 있는 `BusinessException`으로 재투척(throw)하여 자연스럽게 롤백이 동작하도록 아키텍처를 유연하게 가져갑니다.
-
-
-</NotionToggle>
-
 
 ```java
 @Service
@@ -201,7 +179,4 @@ public class OrderService{
     }
 }
 ```
-
-
-</NotionToggle>
 

@@ -3,14 +3,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import devlogData from "@/data/indexes/devlog.json";
-import personalData from "@/data/pages/main/notion/personal.json";
-import educationData from "@/data/pages/main/notion/education.json";
 import type { DevlogEntry, DevlogCategory } from "@/types";
 import { TagList } from "@/components/ui/TagBadge";
 import { BlogIcon, CalendarIcon, CloseIcon, CommentIcon } from "@/components/ui/Icons";
 
-import { normalizeEducationEntry } from "@/lib/utils";
-import { getDevlogHref, getDevlogStorageId } from "@/lib/devlog-slugs";
+import { getDevlogHref } from "@/lib/devlog-slugs";
 
 type FlowItem = {
   id: string;
@@ -31,22 +28,14 @@ type FlowSection = {
   items: FlowItem[];
 };
 
-const DEVLOG_TAB_ORDER: { key: DevlogCategory | "education_log" | "blog"; label: string }[] = [
+const DEVLOG_TAB_ORDER: { key: Exclude<DevlogCategory, "blog">; label: string }[] = [
   { key: "tech_study", label: "기술 학습 기록" },
   { key: "problem_solving", label: "문제 해결 기록" },
   { key: "competition_event", label: "대회/행사" },
-  { key: "education_log", label: "교육일지" },
-  { key: "blog", label: "개인일지" },
 ];
 
 const CARDS_PER_VIEW = 3;
 const AUTO_FLOW_MS = 9000;
-
-function truncateText(text: string, maxLength: number): string {
-  if (!text) return "";
-  if (text.length <= maxLength) return text;
-  return `${text.slice(0, maxLength)}...`;
-}
 
 function parseFlexibleDate(date: string): number {
   if (!date) return 0;
@@ -78,40 +67,8 @@ function chunkArray<T>(items: T[], chunkSize: number): T[][] {
 
 function normalizeDevlogSections(): FlowSection[] {
   const devlogMap = devlogData as Record<DevlogCategory, DevlogEntry[]>;
-  const rawEduList: unknown[] = Array.isArray(educationData) ? educationData : [];
-  const education = rawEduList
-    .map((rawItem) => normalizeEducationEntry(rawItem))
-    .filter((entry): entry is NonNullable<ReturnType<typeof normalizeEducationEntry>> => entry !== null)
-    .map((entry) => {
-      const rawSummary = entry.impression?.trim() || entry.blogTitle?.trim() || "작성중";
-
-      return {
-        id: getDevlogStorageId("education", entry.id),
-        title: entry.round || entry.blogTitle || "교육일지",
-        date: entry.date,
-        description: truncateText(rawSummary, 50),
-        fullDescription: rawSummary,
-        keywords: entry.keywords || [],
-        href: "/devlog?tab=education_log",
-        notionUrl: entry.notionUrl,
-        external: false,
-        isEducation: true,
-      };
-    })
-    .sort((a, b) => parseFlexibleDate(b.date) - parseFlexibleDate(a.date));
-
-
-
   const sections = DEVLOG_TAB_ORDER.map(({ key, label }) => {
-    if (key === "education_log") {
-      return {
-        key,
-        label,
-        items: education,
-      };
-    }
-
-    const sourceEntries = key === "blog" ? personalData : devlogMap[key as DevlogCategory] || [];
+    const sourceEntries = devlogMap[key] || [];
     const list = (sourceEntries as DevlogEntry[])
       .map((entry) => ({
         id: entry.id,

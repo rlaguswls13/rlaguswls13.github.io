@@ -1,223 +1,103 @@
 "use client";
 
-import { useState, useEffect, Suspense, useMemo } from "react";
-import devlogData from "@/data/indexes/devlog.json";
-import personalData from "@/data/pages/main/notion/personal.json";
-import { TabGroup } from "@/components/ui/TabGroup";
-import { TagList } from "@/components/ui/TagBadge";
-import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
-import { EducationLog } from "@/components/ui/EducationLog";
-import { sortByDateDesc } from "@/lib/utils";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Pagination } from "@/components/ui/Pagination";
-import { useSearchParams, useRouter } from "next/navigation";
-import type { DevlogCategory, DevlogEntry } from "@/types";
+import { useRouter, useSearchParams } from "next/navigation";
+import devlogData from "@/data/indexes/devlog.json";
 import { PageHeader } from "@/components/layout/PageHeader";
-import journalCategories from "@/data/pages/main/journal-categories.json";
-import { JournalSectionHeader } from "@/components/ui/JournalSectionHeader";
-import { DevlogSectionHeader } from "@/components/ui/DevlogSectionHeader";
-import educationData from "@/data/pages/main/notion/education.json";
-import { normalizeEducationEntry } from "@/lib/utils";
-import { CardThumbnail } from "@/components/ui/CardThumbnail";
-import { getDevlogThumbnail } from "@/lib/thumbnails";
-import { getDevlogHref, getDevlogStorageId } from "@/lib/devlog-slugs";
 import { LoadingPlaceholder } from "@/components/ui/DeferredContent";
+import { TabGroup } from "@/components/ui/TabGroup";
+import { DevlogSectionHeader } from "@/components/ui/DevlogSectionHeader";
+import { Pagination } from "@/components/ui/Pagination";
+import { TagList } from "@/components/ui/TagBadge";
+import { CardThumbnail } from "@/components/ui/CardThumbnail";
+import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
+import { getDevlogHref } from "@/lib/devlog-slugs";
+import { getDevlogThumbnail } from "@/lib/thumbnails";
+import { sortByDateDesc } from "@/lib/utils";
+import type { DevlogCategory, DevlogEntry } from "@/types";
 
-type TabKey = DevlogCategory | "journal" | "all";
-type DisplayCategory = DevlogCategory | "education";
-type DisplayEntry = DevlogEntry & { category: DisplayCategory };
+type CoreCategory = Exclude<DevlogCategory, "blog">;
+type TabKey = CoreCategory | "all";
+type DisplayEntry = DevlogEntry & { category: CoreCategory };
 
-const devlogCategoryLabels: Record<DisplayCategory, string> = {
+const categories: CoreCategory[] = ["tech_study", "problem_solving", "competition_event"];
+const labels: Record<CoreCategory, string> = {
   tech_study: "기술 학습",
   problem_solving: "문제 해결",
   competition_event: "대회·행사",
-  blog: "개인일지",
-  education: "교육일지",
 };
-
-const categoryCollator = new Intl.Collator("ko", { numeric: true, sensitivity: "base" });
-
-function compareCategoryLabels(left: string, right: string) {
-  const leftIsLatin = /^[A-Za-z]/.test(left);
-  const rightIsLatin = /^[A-Za-z]/.test(right);
-  if (leftIsLatin !== rightIsLatin) return leftIsLatin ? -1 : 1;
-  return categoryCollator.compare(left, right);
-}
-
-function getPackageLabel(pkg: string) {
-  if (pkg === "journal") return "일지";
-  return pkg.toUpperCase();
-}
+const tabs = [
+  { key: "all", label: "전체 글" },
+  ...categories.map((key) => ({ key, label: labels[key] })),
+];
+const indexedEntries = devlogData as Record<CoreCategory, DevlogEntry[]>;
 
 function DevlogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  const tabs = [
-    { key: "all", label: "전체 글" },
-    { key: "tech_study", label: "기술 학습 기록" },
-    { key: "problem_solving", label: "문제 해결 기록" },
-    { key: "competition_event", label: "대회/행사" },
-    { key: "journal", label: "일지" },
-  ];
-
-  const requestedTab = searchParams.get("tab") || tabs[0].key;
-  const initialTab = requestedTab === "blog" || requestedTab === "education_log" ? "journal" : requestedTab;
-  const initialPkg = searchParams.get("pkg") || "All";
-  const initialJournal = searchParams.get("journal")
-    || (requestedTab === "blog" ? "personal" : requestedTab === "education_log" ? "education" : "")
-    || journalCategories[0]?.key
-    || "education";
-  const initialSearch = searchParams.get("q") || "";
-  const initialPage = parseInt(searchParams.get("page") || "1", 10);
-
-  const [activeTab, setActiveTab] = useState<TabKey>(initialTab as TabKey);
-  const [activePkg, setActivePkg] = useState(initialPkg);
-  const [activeJournal, setActiveJournal] = useState(initialJournal);
-  const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [isSearchOpen, setIsSearchOpen] = useState(!!initialSearch);
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const requestedTab = searchParams.get("tab") || "all";
+  const initialTab = tabs.some((tab) => tab.key === requestedTab) ? requestedTab as TabKey : "all";
+  const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
+  const [activePkg, setActivePkg] = useState(searchParams.get("pkg") || "All");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
+  const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchParams.get("q")));
+  const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
   const itemsPerPage = 6;
-  const sortedJournalCategories = useMemo(
-    () => [...journalCategories].sort((left, right) => compareCategoryLabels(left.label, right.label)),
-    [],
-  );
 
   useEffect(() => {
-    const currentTab = searchParams.get("tab");
-    const currentPkg = searchParams.get("pkg");
-    const currentQ = searchParams.get("q") || "";
-    const currentPg = searchParams.get("page");
-    const currentJournal = searchParams.get("journal");
-    if (currentTab !== activeTab || currentPkg !== activePkg || currentQ !== searchQuery || currentPg !== String(currentPage) || (activeTab === "journal" && currentJournal !== activeJournal)) {
-      const qParam = searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : "";
-      const journalParam = activeTab === "journal" ? `&journal=${activeJournal}` : "";
-      router.replace(`/devlog?tab=${activeTab}${journalParam}&pkg=${activePkg}${qParam}&page=${currentPage}`, { scroll: false });
+    if (["journal", "blog", "education_log"].includes(requestedTab)) {
+      const category = requestedTab === "education_log"
+        ? "education"
+        : searchParams.get("journal") === "education" ? "education" : "personal";
+      router.replace(`/journal?category=${category}`, { scroll: false });
+      return;
     }
-  }, [activeTab, activeJournal, activePkg, searchQuery, currentPage, router, searchParams]);
-
-  const allEntries = useMemo(() => {
-    let entries: DisplayEntry[] = [];
-    if (activeTab === "journal" && activeJournal === "education") {
-      return [];
-    }
-
-    if (activeTab === "all") {
-      const contentCategories: Exclude<DevlogCategory, "blog">[] = [
-        "tech_study",
-        "problem_solving",
-        "competition_event",
-      ];
-      entries = contentCategories.flatMap((category) =>
-        ((devlogData[category] || []) as DevlogEntry[]).map((entry) => ({ ...entry, category })),
-      );
-      entries.push(
-        ...(personalData as DevlogEntry[]).map((entry) => ({ ...entry, category: "blog" as const })),
-      );
-      const educationEntries: DisplayEntry[] = (educationData as unknown[])
-        .map((entry) => normalizeEducationEntry(entry))
-        .filter((entry): entry is NonNullable<ReturnType<typeof normalizeEducationEntry>> => entry !== null)
-        .map((entry) => ({
-          id: getDevlogStorageId("education", entry.id),
-          title: entry.blogTitle || entry.title,
-          date: entry.date.replace(/-/g, "."),
-          tags: entry.keywords,
-          description: entry.impression || "작성된 내용이 없습니다.",
-          package: "education",
-          category: "education",
-        }));
-      entries.push(...educationEntries);
-
-      const regularEntries = entries.filter((entry) => entry.category !== "education" && entry.category !== "blog");
-      const journalEntries = entries.filter((entry) => entry.category === "education" || entry.category === "blog");
-      return [
-        ...sortByDateDesc(regularEntries),
-        ...sortByDateDesc(journalEntries),
-      ];
-    } else if (activeTab === "journal") {
-      if (activeJournal !== "personal") return [];
-      entries = (personalData as DevlogEntry[]).map((entry) => ({ ...entry, category: "blog" }));
-    } else {
-      const category = activeTab as DevlogCategory;
-      const categoryEntries = category === "blog" ? personalData : devlogData[category] || [];
-      entries = (categoryEntries as DevlogEntry[]).map((entry) => ({ ...entry, category }));
-    }
-    return sortByDateDesc(entries);
-  }, [activeTab, activeJournal]);
-  
-  // Extract unique packages
-  const packages = useMemo(() => {
-    const pkgs = new Set<string>();
-    allEntries.forEach(e => {
-      if (e.package) pkgs.add(e.package);
+    const query = new URLSearchParams({
+      tab: activeTab,
+      pkg: activePkg,
+      page: String(currentPage),
     });
-    const sortedPkgs = Array.from(pkgs).sort((left, right) =>
-      compareCategoryLabels(getPackageLabel(left), getPackageLabel(right)),
-    );
-    if (activeTab === "all") {
-      const regularPkgs = sortedPkgs.filter((pkg) => pkg !== "education" && pkg !== "blog");
-      const combinedCategories = [...regularPkgs, "journal"].sort((left, right) =>
-        compareCategoryLabels(getPackageLabel(left), getPackageLabel(right)),
-      );
-      return ["All", ...combinedCategories];
-    }
-    return ["All", ...sortedPkgs];
-  }, [activeTab, allEntries]);
+    if (searchQuery) query.set("q", searchQuery);
+    const next = `/devlog?${query.toString()}`;
+    if (`/devlog?${searchParams.toString()}` !== next) router.replace(next, { scroll: false });
+  }, [activePkg, activeTab, currentPage, requestedTab, router, searchParams, searchQuery]);
 
-  // Filter entries
+  const allEntries = useMemo<DisplayEntry[]>(() => {
+    const selected = activeTab === "all" ? categories : [activeTab];
+    return sortByDateDesc(selected.flatMap((category) =>
+      (indexedEntries[category] || []).map((entry) => ({ ...entry, category })),
+    ));
+  }, [activeTab]);
+
+  const packages = useMemo(
+    () => ["All", ...new Set(allEntries.map((entry) => entry.package).filter(Boolean) as string[])],
+    [allEntries],
+  );
+
   const filteredEntries = useMemo(() => {
-    let result = allEntries;
-    if (activePkg === "journal") {
-      result = result.filter((entry) => entry.category === "education" || entry.category === "blog");
-    } else if (activePkg !== "All") {
-      result = result.filter(e => e.package === activePkg);
-    }
-    if (searchQuery.trim()) {
-      const lowerQ = searchQuery.toLowerCase();
-      result = result.filter(e => 
-        e.title.toLowerCase().includes(lowerQ) ||
-        e.description?.toLowerCase().includes(lowerQ) ||
-        e.tags?.some(t => t.toLowerCase().includes(lowerQ))
-      );
-    }
-    return result;
-  }, [allEntries, activePkg, searchQuery]);
-
-  const activeSectionTitle = activeTab === "all"
-    ? "전체 글"
-    : activeTab === "journal"
-      ? journalCategories.find((category) => category.key === activeJournal)?.label || `${activeJournal} 일지`
-      : devlogCategoryLabels[activeTab as DevlogCategory];
+    const query = searchQuery.trim().toLowerCase();
+    return allEntries.filter((entry) => {
+      const packageMatches = activePkg === "All" || entry.package === activePkg;
+      const searchMatches = !query
+        || entry.title.toLowerCase().includes(query)
+        || entry.description.toLowerCase().includes(query)
+        || entry.tags.some((tag) => tag.toLowerCase().includes(query));
+      return packageMatches && searchMatches;
+    });
+  }, [activePkg, allEntries, searchQuery]);
 
   const totalPages = Math.ceil(filteredEntries.length / itemsPerPage);
   const paginatedEntries = filteredEntries.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
-  const handleTabChange = (key: string) => {
+  const changeTab = (key: string) => {
     setActiveTab(key as TabKey);
     setActivePkg("All");
-    setCurrentPage(1);
     setSearchQuery("");
     setIsSearchOpen(false);
-  };
-
-  const handlePkgChange = (pkg: string) => {
-    setActivePkg(pkg);
-    setCurrentPage(1);
-  };
-
-  const handleJournalChange = (key: string) => {
-    setActiveJournal(key);
-    setActivePkg("All");
-    setCurrentPage(1);
-    setSearchQuery("");
-    setIsSearchOpen(false);
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
     setCurrentPage(1);
   };
 
@@ -226,138 +106,98 @@ function DevlogContent() {
       <PageHeader
         eyebrow="ENGINEERING LOG"
         title="기술 학습과 문제 해결 기록"
-        description="새롭게 학습한 기술과 실무 문제를 분석하고 해결한 과정을 기록합니다."
+        description="학습한 기술과 실무 문제를 분석하고 해결한 과정을 기록합니다."
         marker="03"
       />
 
       <div className="devlog-container">
-        <TabGroup
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-        />
+        <TabGroup tabs={tabs} activeTab={activeTab} onTabChange={changeTab} />
 
         <div className="devlog-layout" style={{ marginTop: "30px" }}>
-            <aside className="devlog-sidebar">
-              <nav aria-label={activeTab === "journal" ? "일지 카테고리" : "패키지 필터"}>
-                {activeTab === "journal"
-                  ? sortedJournalCategories.map((category) => (
-                    <button
-                      key={category.key}
-                      type="button"
-                      className={`pkg-pill ${activeJournal === category.key ? "active" : ""}`}
-                      onClick={() => handleJournalChange(category.key)}
-                    >
-                      {category.label}
-                    </button>
-                  ))
-                  : packages.map((pkg) => (
-                    <button
-                      key={pkg}
-                      className={`pkg-pill ${activePkg === pkg ? "active" : ""}`}
-                      onClick={() => handlePkgChange(pkg)}
-                    >
-                      {pkg === "All" ? "전체 보기" : getPackageLabel(pkg)}
-                    </button>
-                  ))}
-              </nav>
-              <div className="sidebar-search">
-                {!isSearchOpen ? (
-                  <button 
-                    onClick={() => setIsSearchOpen(true)}
-                    style={{ 
-                      background: "transparent", border: "none", cursor: "pointer", 
-                      display: "flex", alignItems: "center", gap: "8px", 
-                      color: "var(--text-secondary)", padding: "8px 12px", 
-                      borderRadius: "6px", width: "100%", fontSize: "0.95rem"
-                    }}
-                    className="pkg-pill"
-                  >
-                    <SearchIcon style={{ position: 'relative', left: '0', transform: 'none' }} /> 검색
-                  </button>
-                ) : (
-                  <div style={{ position: "relative" }}>
-                    <span 
-                      onClick={() => setIsSearchOpen(false)} 
-                      style={{ cursor: "pointer", position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", zIndex: 10, display: "flex" }}
-                    >
-                      <SearchIcon style={{ position: "relative", left: "0", transform: "none" }} />
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="검색어 입력..."
-                      value={searchQuery}
-                      onChange={handleSearchChange}
-                      autoFocus
-                    />
-                  </div>
-                )}
-              </div>
-            </aside>
+          <aside className="devlog-sidebar">
+            <nav aria-label="패키지 필터">
+              {packages.map((pkg) => (
+                <button
+                  key={pkg}
+                  type="button"
+                  className={`pkg-pill ${activePkg === pkg ? "active" : ""}`}
+                  onClick={() => {
+                    setActivePkg(pkg);
+                    setCurrentPage(1);
+                  }}
+                >
+                  {pkg === "All" ? "전체 보기" : pkg.toUpperCase()}
+                </button>
+              ))}
+            </nav>
 
-            <main className="devlog-main">
-              {activeTab === "journal" && activeJournal === "education" ? (
-                <EducationLog key={searchQuery} searchQuery={searchQuery} />
+            <div className="sidebar-search">
+              {!isSearchOpen ? (
+                <button type="button" className="pkg-pill" onClick={() => setIsSearchOpen(true)}>
+                  <SearchIcon style={{ position: "relative", left: 0, transform: "none" }} /> 검색
+                </button>
               ) : (
-                <>
-                  {activeTab === "journal" && (
-                    <JournalSectionHeader
-                      categoryKey={activeJournal}
-                      title={journalCategories.find((category) => category.key === activeJournal)?.label || `${activeJournal} 일지`}
-                      count={filteredEntries.length}
-                    />
-                  )}
-                  {activeTab !== "journal" && (
-                    <DevlogSectionHeader
-                      title={activeSectionTitle}
-                      count={filteredEntries.length}
-                      context={activePkg === "All" ? undefined : activePkg === "journal" ? "일지" : activePkg.toUpperCase()}
-                    />
-                  )}
-                  {filteredEntries.length === 0 ? (
-                    <div className="devlog-empty-state">해당 카테고리에 등록된 문서가 없습니다.</div>
-                  ) : (
-                    <>
-                      <div className="devlog-grid">
-                        {paginatedEntries.map((entry, index) => (
-                          <Link
-                            key={entry.id}
-                            href={`${getDevlogHref(entry.category, entry.id)}?pkg=${activePkg}&page=${currentPage}`}
-                            className="devlog-card-link"
-                            style={{ textDecoration: "none", color: "inherit" }}
-                          >
-                            <div className="devlog-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-                              {entry.category !== "blog" && (
-                                <CardThumbnail src={getDevlogThumbnail(entry.category, entry.id)} alt="" className="devlog-card-thumbnail" priority={index === 0} />
-                              )}
-                              <div className="devlog-card-topline">
-                                <span className="devlog-card-category">{devlogCategoryLabels[entry.category]}</span>
-                                <div className="devlog-meta">
-                                <span><CalendarIcon /> {entry.date}</span>
-                                </div>
-                              </div>
-                              <div className="item-title" style={{ marginTop: 0, marginBottom: "12px" }}>{entry.title}</div>
-                              <TagList tags={entry.tags} />
-                              <p className="devlog-description" style={{ color: "var(--text-secondary)", marginTop: "12px", flexGrow: 1, lineHeight: "1.5" }}>
-                                {entry.description}
-                              </p>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-
-                      <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                        maxPageButtons={5}
-                      />
-                    </>
-                  )}
-                </>
+                <input
+                  type="text"
+                  placeholder="검색어 입력..."
+                  value={searchQuery}
+                  onChange={(event) => {
+                    setSearchQuery(event.target.value);
+                    setCurrentPage(1);
+                  }}
+                  autoFocus
+                />
               )}
-            </main>
-          </div>
+            </div>
+          </aside>
+
+          <main className="devlog-main">
+            <DevlogSectionHeader
+              title={activeTab === "all" ? "전체 글" : labels[activeTab]}
+              count={filteredEntries.length}
+              context={activePkg === "All" ? undefined : activePkg.toUpperCase()}
+            />
+
+            {paginatedEntries.length === 0 ? (
+              <div className="devlog-empty-state">조건에 맞는 Devlog가 없습니다.</div>
+            ) : (
+              <>
+                <div className="devlog-grid">
+                  {paginatedEntries.map((entry, index) => (
+                    <Link
+                      key={entry.id}
+                      href={`${getDevlogHref(entry.category, entry.id)}?pkg=${activePkg}&page=${currentPage}`}
+                      className="devlog-card-link"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <div className="devlog-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                        <CardThumbnail
+                          src={getDevlogThumbnail(entry.category, entry.id)}
+                          alt=""
+                          className="devlog-card-thumbnail"
+                          priority={index === 0}
+                        />
+                        <div className="devlog-card-topline">
+                          <span className="devlog-card-category">{labels[entry.category]}</span>
+                          <span className="devlog-meta"><CalendarIcon /> {entry.date}</span>
+                        </div>
+                        <div className="item-title" style={{ marginTop: 0, marginBottom: "12px" }}>{entry.title}</div>
+                        <TagList tags={entry.tags} />
+                        <p className="devlog-description" style={{ flexGrow: 1 }}>{entry.description}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  maxPageButtons={5}
+                />
+              </>
+            )}
+          </main>
+        </div>
       </div>
     </>
   );
@@ -365,7 +205,7 @@ function DevlogContent() {
 
 export default function DevlogPage() {
   return (
-    <Suspense fallback={<LoadingPlaceholder label="일지 목록 불러오는 중" minHeight={360} />}>
+    <Suspense fallback={<LoadingPlaceholder label="Devlog 목록 불러오는 중" minHeight={360} />}>
       <DevlogContent />
     </Suspense>
   );

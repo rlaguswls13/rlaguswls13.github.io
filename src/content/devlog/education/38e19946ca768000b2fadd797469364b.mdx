@@ -1,39 +1,41 @@
 ---
-sourceId: "38e19946-ca76-8000-b2fa-dd797469364b"
-title: "DOM/BOM, 이벤트 위임, 버블링 특성과 제어"
+tag: ["DOM","BOM"]
+description: "자바스크립트의 최하단 구동 엔진 메커니즘을 파악하고 나면, 브라우저 환경을 구성하는 BOM(Browser Object Model)과 DOM(Document Object Model)은 자바스크립트로 제어 가능한 객체들의 집합일 뿐임을 알 수 있습니다. 브라우저 창 전체를 제어하는 규칙인 BOM의 계층 구조 내에서, 실제 HTML 문서의 뼈대를 이루는 DOM 객체들이 유기적으로 상호작용하게 됩니다. 이 DOM 트리 위에서 발생하는 이벤트는 자식에서 부모로 자연스럽게 흐르는 버블링(Bubbling) 특성을 가지며, 이 메커니즘을 활용해 최상위 요소에서 하위 액션들을 한 번에 통제하는 이벤트 위임(Event Delegation)이라는 영리한 제약 조건이 성립합니다. 결국 바닐라 자바스크립트 환경에서의 웹 개발이란, 브라우저가 제공하는 이 원시적인 객체 구조 속에서 이벤트(Event)의 흐름과 데이터(Data)의 상태를 적절히 조합하여 일관된 실행 규칙을 만들어가는 과정입니다.\n 이러한 이벤트와 데이터의 조합 규칙과 앞서 공부했던 리액트(React) 생태계에 대입해 보면, 프레임워크가 강제하는 데이터 바인딩과 수명 주기의 본질을 한층 더 깊이 있게 이해할 수 있습니다.  컴포넌트의 마운트(Mount)와 언마운트(Unmount)는 계산된 가상 DOM 스냅샷을 브라우저의 원시 DOM API(appendChild, removeChild)를 통해 물리적인 트리 구조에 삽입하고 제거하는 규칙의 추상화입니다. 결과적으로 프런트엔드의 생명주기 관리란 하이레벨에서 정립된 고도화된 약속의 집합체인 것입니다."
+subcategory: "2026"
+created_date: "2026-06-29"
+회차: "[교육 31일차]"
+category: "education"
 slug: "dom-bom-event-delegation-bubbling"
-date: "2026-07-23"
-tags: ["DOM", "BOM"]
+title: "DOM/BOM, 이벤트 위임, 버블링 특성과 제어"
+page_id: "38e19946-ca76-8000-b2fa-dd797469364b"
+source_id: "38e19946ca768000b2fadd797469364b"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/DOM-BOM-38e19946ca768000b2fadd797469364b"
+id: "38e19946ca768000b2fadd797469364b"
+sourceId: "38e19946-ca76-8000-b2fa-dd797469364b"
+date: "2026-06-29"
+tags: ["DOM","BOM"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/DOM-BOM-38e19946ca768000b2fadd797469364b"
 ---
 
+## 1. 브라우저 객체 모델과 이벤트 (DOM, BOM, Event)
 
-<NotionToggle title="1. 브라우저 객체 모델과 이벤트 (DOM, BOM, Event)" level="2">
-
-
-<NotionToggle title="1) DOM (Document Object Model) 이란?" level="3">
+### 1) DOM (Document Object Model) 이란?
 
 DOM은 HTML 문서의 구조를 객체로 표현한 것입니다. 브라우저가 HTML 코드를 파싱하여 트리 구조(Tree Structure)의 객체 모델로 만들며, 자바스크립트는 이 DOM을 통해 웹 페이지의 요소들을 추가, 삭제, 수정할 수 있습니다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="2) BOM (Browser Object Model) 이란?" level="3">
+### 2) BOM (Browser Object Model) 이란?
 
 BOM은 웹 브라우저 환경의 다양한 기능들을 객체로 다루는 모델입니다. DOM이 '문서 내부'를 다룬다면, BOM은 '브라우저 창 자체'의 제어를 담당합니다. 자바스크립트의 최상위 객체인 `window`가 BOM의 핵심이며, 하위에 `location`, `navigator`, `history`, `screen` 등이 포함됩니다. DOM(`window.document`) 역시 엄밀히 말하면 BOM의 한 부분입니다.
 
-
-</NotionToggle>
-
-
-<NotionToggle title="3) Event와 이벤트 버블링, 이벤트 위임" level="3">
+### 3) Event와 이벤트 버블링, 이벤트 위임
 
 - **Event:** 웹 페이지에서 일어나는 모든 동적인 신호(클릭, 키보드 입력, 스크롤 등)를 의미합니다.
 - **이벤트 버블링 (Event Bubbling):** 특정 화면 요소에서 이벤트가 발생했을 때, 해당 이벤트가 더 상위의 부모 요소들로 전달되어 올라가는 특성입니다. 물속의 거품이 위로 올라가는 모양과 같아 버블링이라 부릅니다.
 - **이벤트 위임 (Event Delegation):** 하위 요소마다 리스너를 수십 개씩 달지 않고, 버블링을 활용해 **상위 부모 요소 하나에만 이벤트 리스너를 장착**하여 하위 요소들의 이벤트를 제어하는 설계 패턴입니다.
-
-
-<NotionToggle title="이벤트 위임 예시 코드" level="3">
+### 이벤트 위임 예시 코드
 
 
 ```javascript
@@ -57,20 +59,15 @@ parent.addEventListener('click', (event) => {
 ```
 
 
-</NotionToggle>
+## 2. 이벤트 위임 / 방지
 
-
-<NotionToggle title="추가개념 1) 이벤트 위임 / 방지" level="3">
-
-
-<NotionToggle title="1. 이벤트 위임 (Event Delegation)" level="3">
+### 1) 이벤트 위임 (Event Delegation)
 
 이벤트 위임은 하위 요소 각각에 이벤트 리스너를 일일이 붙이지 않고, **부모 요소에만 리스너를 달아 하위 요소들의 이벤트를 한꺼번에 제어하는 기법**입니다.
 
 이것이 가능한 이유는 브라우저 엔진의 **'이벤트 버블링(Event Bubbling)'** 메커니즘 때문입니다. 자식 요소에서 발생한 이벤트는 자바스크립트 엔진의 순리에 따라 부모, 조상 요소를 거쳐 최상위 `window` 객체까지 마치 물방울이 솟구치듯 위로 전파됩니다.
 
-
-<NotionIndent>
+#### 예시
 
 
 ```javascript
@@ -85,22 +82,14 @@ menuList.addEventListener('click', function(event){
 });
 ```
 
-
-</NotionIndent>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="2. 원치 않는 이벤트 위임 방지" level="3">
+### 2) 원치 않는 이벤트 위임 방지
 
 부모에게 이벤트를 위임해 두었는데, 정작 특정 자식 요소를 클릭했을 때는 **부모의 이벤트 로직이 실행되지 않아야 하거나 브라우저 고유의 기본 동작을 막아야 하는 상황**이 있습니다. 이때 브라우저 엔진의 순리를 인위적으로 끊어버리는 제약 조건을 주입하는 것이 이벤트 위임 방지입니다.
 
-- `**e.stopPropagation()**`: 이벤트가 부모 요소로 더 이상 올라가지 않도록 버블링 체인을 물리적으로 끊어버립니다.
-- `**e.preventDefault()**`: HTML 태그 고유의 동작(예: `<a>` 링크 이동, `<form>` 새로고침 제출)을 엔진 레벨에서 차단합니다.
+- **`e.stopPropagation()`**: 이벤트가 부모 요소로 더 이상 올라가지 않도록 버블링 체인을 물리적으로 끊어버립니다.
+- **`e.preventDefault()`**: HTML 태그 고유의 동작(예: `<a>` 링크 이동, `<form>` 새로고침 제출)을 엔진 레벨에서 차단합니다.
 
-
-<NotionIndent>
+<NotionToggle title="예시" level="4">
 
 리스트 아이템(`<li>`)을 클릭하면 상세 페이지로 이동하는 위임 로직이 걸려 있는데, 그 `<li>` 내부에 있는 '삭제 버튼'을 누를 때는 상세 페이지로 이동하면 안 됩니다. 오직 삭제 로직만 돌고 버블링이 멈춰야 합니다.
 
@@ -117,20 +106,16 @@ deleteButton.addEventListener('click', function(event){
 ```
 
 
-</NotionIndent>
-
-
 </NotionToggle>
 
-
-<NotionToggle title="3. 적절한 이벤트 위임과 방지란?" level="3">
+### 3) 적절한 이벤트 위임과 방지란?
 
 적절한 위임과 방지란, **"메모리 효율성(위임)"과 "동작의 독립성(방지)" 사이의 균형을 맞추는 규칙**을 세우는 것입니다.
 
 무조건 모든 이벤트를 최상위 `body`에 위임하면 엔진이 모든 클릭을 검사해야 하므로 하이레벨 영역에서 분기문(조건문)이 지저분해집니다. 반대로 모든 자식에게 이벤트를 다 붙이면 메모리가 낭비됩니다. 구조적으로 연관된 '공통 관심사 그룹' 단위로 위임을 묶고, 그 안에서 독립적으로 튀어야 하는 액션만 정밀하게 타격하여 방지하는 것이 가장 이상적입니다.
 
 
-<NotionIndent>
+<NotionToggle title="예시" level="4">
 
 하나의 피드 카드 컴포넌트 내부에 '카드 전체 클릭(상세보기)', '좋아요 버튼', '공유 링크'가 섞여 있는 경우의 적절한 설계 예시입니다.
 
@@ -163,28 +148,12 @@ feedContainer.addEventListener('click', function(e){
 ```
 
 
-</NotionIndent>
-
-
 </NotionToggle>
 
-
-</NotionToggle>
-
-
-<NotionToggle title="추가개념 2) iframe의 위험성과 이벤트 위임 여부" level="3">
+## 3. iframe의 위험성과 이벤트 위임 여부
 
 `<iframe>`은 현재 웹 페이지 내에 다른 웹 페이지를 임베드하는 태그입니다.
 
 - **iframe의 위험성:** 악의적인 사이트를 투명하게 겹쳐 클릭을 유도하는 **클릭재킹(Clickjacking)** 공격이나, 악성 스크립트가 실행되는 **XSS(Cross-Site Scripting)** 통로가 될 수 있습니다. 브라우저는 이를 막기 위해 크로스 도메인일 경우 서로의 내부에 접근하지 못하도록 동일 출처 정책(SOP)을 엄격히 적용합니다.
-- **iframe 내부 요소에 대한 이벤트 위임 여부:**  **불가능합니다.**  `iframe`은 내부적으로 완전히 독립된 전역 객체(`window`)와 문서 객체(`document`)를 가집니다. 따라서 부모 페이지의 `document`에 이벤트 위임을 걸어두어도, `iframe` 내부에서 발생한 이벤트는 부모 페이지의 DOM 트리로 **버블링되지 않습니다.** > **블로그 보충 정보 (iframe 통신 방법):** iframe 내부 이벤트를 부모에게 전달하려면, iframe 내부 스크립트에서 이벤트를 감지한 뒤 `window.parent.postMessage()` API를 이용해 부모 창으로 명시적인 메시지를 던져주어야 합니다.
-
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-</NotionToggle>
+- **iframe 내부 요소에 대한 이벤트 위임 여부:** **불가능합니다.** `iframe`은 내부적으로 완전히 독립된 전역 객체(`window`)와 문서 객체(`document`)를 가집니다. 따라서 부모 페이지의 `document`에 이벤트 위임을 걸어두어도, `iframe` 내부에서 발생한 이벤트는 부모 페이지의 DOM 트리로 **버블링되지 않습니다.** > **블로그 보충 정보 (iframe 통신 방법):** iframe 내부 이벤트를 부모에게 전달하려면, iframe 내부 스크립트에서 이벤트를 감지한 뒤 `window.parent.postMessage()` API를 이용해 부모 창으로 명시적인 메시지를 던져주어야 합니다.
 

@@ -1,0 +1,37 @@
+---
+slug: "h"
+created_date: "2026-08-03"
+description: "대규모 트래픽 기반의 청구서 발송 시 발생하는 첨부 파일 처리 병목 현상을 해결하기 위해 커스텀 발송 아키텍처를 설계하고 구현했습니다. 서버 이중화 및 클러스터링 기반의 하이브리드 인프라를 구축하고, 운영 자동화용 통합 쉘 스크립트를 개발하여 시스템 성능과 관리 효율성을 극대화했습니다."
+category: "enterprise"
+start: "2025-08-01"
+end: "2026-02-01"
+subcategory: "전체"
+tags: ["Hybrid(Win/Linux)","Java8","GC Tuning","RedHat"]
+title: "이메일 대용량 처리 서버 커스텀 개발 및 최적화"
+page_id: "3b119946-ca76-8042-8a58-e2052585afec"
+source_id: "3b119946ca7680428a58e2052585afec"
+last_edited_time: "2026-08-03T03:49:00.000Z"
+notion_url: "https://app.notion.com/p/3b119946ca7680428a58e2052585afec"
+id: "3b119946ca7680428a58e2052585afec"
+sourceId: "3b119946-ca76-8042-8a58-e2052585afec"
+date: "2026-08-03"
+package: "전체"
+notionUrl: "https://app.notion.com/p/3b119946ca7680428a58e2052585afec"
+---
+
+### 1. 도입 배경 및 과제 (Background & Problem)
+
+대규모 트래픽 기반의 청구서 및 결재 내역 발송 시 발생하는 첨부 파일 처리 병목 현상을 해결하고, 엔터프라이즈 환경에서 요구되는 고가용성 메일 처리 서버를 구축하는 것이 핵심 과제였습니다.
+
+### 2. 기술적 구현 및 적용 (Technical Implementation)
+
+- 표준 이메일 발송 엔진의 한계를 넘어 대용량 청구서 처리에 특화된 커스텀 발송 아키텍처 설계 및 구현
+- Java Segment Block 및 GC(Garbage Collection) 정책 최적화를 통해 대용량 파일 처리 시의 자원 효율성 극대화
+- 시스템 과부하 및 셧다운 방지를 위해 메모리 사용량을 실시간 모니터링하고 제어하는 방어 로직 구현
+- Global/Static 변수 제거 및 메모리 참조 구조 개선을 통해 Heap 메모리 점유율 최적화 및 성능 핫픽스 수행
+### 3. 성과 및 유용성 (Result & Benefit)
+
+- 대량 발송 환경에서도 안정적인 퍼포먼스를 유지하는 엔진을 완성하였으며, 더미(Dummy) 데이터 생성용 테스터 모듈을 개발하여 유지보수 및 사전 검증 편의성을 대폭 향상
+- 엔터프라이즈급 대용량 비즈니스 메일 발송에 최적화된 전용 로직을 확보하여 서비스 신뢰도 제고
+📎 **Flow Diagram:** `resources/diagrams/email-large-scale.html`
+

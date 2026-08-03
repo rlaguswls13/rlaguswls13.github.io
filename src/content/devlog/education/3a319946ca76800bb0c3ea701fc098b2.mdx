@@ -1,8 +1,133 @@
 ---
-sourceId: "3a319946-ca76-800b-b0c3-ea701fc098b2"
-title: "JSP와 JSTL 사용법"
+tag: ["JSP","JSTL"]
+description: "JSP와 JSTL은 보안 이슈, Spring Boot의 지원 축소, 프론트엔드와 백엔드의 역할 분리 및 프론트엔드 생태계의 발전으로 인해 점차 사용이 줄어드는 추세입니다. 하지만 기존에 JSP와 JSTL로 개발된 레거시 시스템이 많고, 이를 전면적으로 변경하려면 상당한 비용과 리소스가 필요하므로 기본적인 사용법은 여전히 알아둘 필요가 있습니다.\n새로운 기능을 구현하거나 기존 코드를 개선할 때는 JSP와 JSTL에 대한 의존성을 최소화하고, 가능한 부분을 바닐라 JavaScript로 구현하는 것이 좋습니다. 이렇게 구성하면 향후 React나 Vue와 같은 최신 프론트엔드 프레임워크를 도입할 때 기존 코드를 전환하는 데 필요한 비용과 리소스를 줄일 수 있습니다."
+subcategory: "2026"
+created_date: "2026-07-07"
+회차: "[교육 37일차]"
+category: "education"
 slug: "jsp-and-jstl"
-date: "2026-07-23"
-tags: ["JSP", "JSTL", "Selector"]
+title: "JSP와 JSTL 사용법"
+page_id: "3a319946-ca76-800b-b0c3-ea701fc098b2"
+source_id: "3a319946ca76800bb0c3ea701fc098b2"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/JSP-JSTL-3a319946ca76800bb0c3ea701fc098b2"
+id: "3a319946ca76800bb0c3ea701fc098b2"
+sourceId: "3a319946-ca76-800b-b0c3-ea701fc098b2"
+date: "2026-07-07"
+tags: ["JSP","JSTL"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/JSP-JSTL-3a319946ca76800bb0c3ea701fc098b2"
 ---
+
+## 1. JSP란? JSTL이란?
+
+### 1) JSP (JavaServer Pages)
+
+JSP는 Java를 이용하여 웹 페이지를 동적으로 생성하는 **서버 사이드 템플릿 엔진**입니다.
+HTML 코드 안에 Java 코드를 직접 작성할 수 있게 해 주며, 클라이언트가 요청을 보내면 WAS(Tomcat 등)가 이 JSP 파일을 서블릿(Servlet, 순수 Java 코드)으로 변환한 뒤 실행하여 그 결과물(완성된 HTML)을 브라우저에 보내줍니다.
+
+### 2) JSTL (JSP Standard Tag Library)
+
+JSP 파일 안에 Java 코드(스크립틀릿, `<% %>`)가 너무 많아지면 HTML과 섞여 코드가 매우 지저분해지고 유지보수가 어려워집니다. 이를 해결하기 위해 **JSP에서 자주 사용하는 Java 로직(조건문, 반복문 등)을 HTML 태그처럼 사용할 수 있게 만든 표준 라이브러리**가 JSTL입니다. 주로 EL(Expression Language, `${}`)과 함께 사용되어 코드를 훨씬 깔끔하게 만들어 줍니다.
+
+### 3) 현재 JSP/JSTL은 지양되는 언어
+
+과거 웹 개발의 핵심 기술이었지만, 최근 신규 프로젝트에서는 사용을 강하게 지양하고 있습니다.
+
+
+<NotionIndent>
+
+#### **(1) 왜 지양되는가?**
+
+- **유지보수의 어려움:** HTML(화면)과 Java(비즈니스 로직)가 하나의 파일에 강하게 결합되어 있어, 디자인을 수정할 때 코드가 엉키거나 백엔드 개발자와 프론트엔드 개발자의 협업이 매우 불편합니다.
+- **프론트엔드 생태계의 발전:** React, Vue.js 같은 SPA(Single Page Application) 프레임워크가 등장하면서, 화면 렌더링은 브라우저(클라이언트)가 담당하고 서버는 데이터(JSON)만 던져주는 방식(CSR)이 대세가 되었습니다.
+- **Spring Boot의 지원 축소:** 현재 Java 백엔드 표준인 Spring Boot는 내장 톰캣을 사용하는데, JSP는 JAR 패키징 환경에서 제약이 많아 Spring 공식 문서에서도 JSP 대신 Thymeleaf 등의 사용을 권장하고 있습니다.
+
+</NotionIndent>
+
+## 2. 여전히 대체 JSP, JSTL은 사용되는 이유는?
+
+그럼에도 불구하고 실무(특히 SI, 금융권, 공공기관)에서는 여전히 JSP와 JSTL을 많이 마주하게 됩니다.
+
+#### 1) 지난 과거의 제품, 잔재 (Legacy)
+
+우리나라의 정부 공공기관 표준인 '전자정부프레임워크'의 초기 모델이나, 10~15년 전에 구축된 수많은 대기업 사내 시스템, 금융권 코어 시스템들이 모두 JSP 기반으로 만들어졌습니다. 웹의 전성기를 이끌었던 기술인 만큼 남아있는 시스템의 규모가 엄청납니다.
+
+#### 2) 대체하기에는 너무 많은 리소스 비용으로 유지
+
+"잘 돌아가고 돈을 벌어다 주는 시스템은 함부로 건드리는 것이 아니다"라는 개발 업계의 격언이 있습니다.
+수백만 줄의 코드로 이루어진 기존 JSP 시스템을 최신 React나 Vue로 전면 개편(차세대 프로젝트)하는 것은 천문학적인 비용과 시간, 그리고 엄청난 버그 발생 리스크를 동반합니다. 따라서 새로운 기능 추가나 유지보수 정도만 진행하며 기존 시스템을 그대로 안고 가는 경우가 많습니다.
+
+## 3. JSP 문법
+
+JSP는 HTML 안에 아래와 같은 특수 태그를 넣어 Java 코드를 실행합니다. (현재는 지양되는 작성법입니다.)
+
+
+```java
+<!-- 1. 지시어 (Directive): 페이지 설정이나 라이브러리 추가 -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<!-- 2. 선언부 (Declaration): 전역 변수나 메서드 선언 -->
+<%!
+    String name = "홍길동";
+    public int add(int a, int b){ return a + b; }
+%>
+
+<!-- 3. 스크립틀릿 (Scriptlet): Java 로직 작성 (가장 많이 쓰였으나 코드를 더럽히는 주범) -->
+<%
+    int result = add(10, 20);
+    if(result > 20) {
+%>
+        <!-- 4. 표현식 (Expression): 화면에 값 출력 -->
+        <p>결과값은 <%= result %> 입니다.</p>
+<%
+    }
+%>
+```
+
+## 4. JSTL 문법
+
+JSTL은 스크립틀릿(`<% %>`)을 없애고 HTML 태그처럼 로직을 구성합니다. 상단에 태그 라이브러리를 선언해야 사용할 수 있습니다.
+
+
+```java
+<!-- 라이브러리 선언 -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!-- 1. 변수 선언 (<c:set>) -->
+<c:set var="userName" value="이순신" />
+
+<!-- 2. 값 출력 (<c:out> 또는 EL) -->
+<p>사용자 이름: <c:out value="${userName}" /> (또는 ${userName})</p>
+
+<!-- 3. 조건문 (<c:if>, <c:choose>) -->
+<c:if test="${userName == '이순신'}">
+    <p>장군님 환영합니다.</p>
+</c:if>
+
+<c:choose>
+    <c:when test="${score >= 90}">A학점</c:when>
+    <c:otherwise>B학점 이하</c:otherwise>
+</c:choose>
+
+<!-- 4. 반복문 (<c:forEach>) -->
+<ul>
+    <c:forEach var="item" items="${itemList}" varStatus="status">
+        <li>${status.count}번째 아이템: ${item.name}</li>
+    </c:forEach>
+</ul>
+```
+
+## 5. 위 JSP, JSTL를 대체할 언어
+
+현재 웹 개발 트렌드에서 JSP를 대체하는 기술은 크게 **서버 렌더링(SSR) 유지**와 **클라이언트 렌더링(CSR)으로의 분리**, 두 가지 방향으로 나뉩니다.
+
+- **서버 사이드 템플릿 엔진 (JSP의 직접적인 대체제)**
+- **Thymeleaf (타임리프):** Spring Boot에서 공식적으로 가장 밀어주는 템플릿 엔진입니다. 파일 확장자가 `.html`이며, 웹 브라우저에서 서버 없이 열어도 화면 형태를 확인할 수 있는 '내추럴 템플릿'이라는 강력한 장점이 있습니다.
+- **Freemarker, Mustache:** 가볍고 빠른 로직 처리가 필요할 때 사용되는 템플릿 엔진들입니다.
+
+- **프론트엔드 프레임워크 / 라이브러리 (현대 웹 개발의 표준)**
+- **React, Vue.js, Angular:** 화면(View)은 이 언어들이 전담하여 만들고, 서버(Java Spring)는 단순히 데이터(JSON)만 API 형태로 제공하는 **'백엔드-프론트엔드 분리'** 아키텍처가 현재 웹 개발의 가장 확실한 표준입니다.
+- **Next.js, Nuxt.js:** React와 Vue를 기반으로 하면서도 검색엔진 최적화(SEO)와 빠른 초기 로딩을 위해 서버 사이드 렌더링(SSR)을 지원하는 최신 프레임워크들입니다.
 

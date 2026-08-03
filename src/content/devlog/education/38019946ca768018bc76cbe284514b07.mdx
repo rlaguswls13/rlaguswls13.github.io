@@ -1,55 +1,72 @@
 ---
-sourceId: "38019946-ca76-8018-bc76-cbe284514b07"
-title: "대고객 메시징 서비스 마케팅 이력관리"
+tag: ["SQL 실용문제"]
+description: "17일부터 22일까지 진행된 RDBMS 교육 내용을 복기하며, 과거 실무에서 대용량 로그성 테이블을 조회하고 최적화했던 경험을 한층 더 깊은 관점으로 확장해 보았습니다. 대용량 데이터를 다룰 때는 단순히 쿼리를 작성하는 것에 그치지 않고, 실행 계획을 면밀히 분석하여 인덱스와 파티션 조건을 통해 조회 범위를 단단하게 축소해 나가는 것이 기본이자 핵심임을 다시금 확인했습니다. 나아가 시스템의 최종적인 성능 개선은 DB 서버 단의 튜닝을 넘어, 연관된 백엔드 서버와의 비즈니스 기능 분할 및 협력을 종합적으로 고려할 때 비로소 완성됩니다. 데이터의 성격에 따라 락 경합을 줄이기 위해 격리 수준을 조정하는 Dirty Read를 과감히 선택하거나, 백엔드 메모리 부하를 방지하기 위해 커서 기법 및 스트리밍으로 데이터를 분할 처리하는 설계가 그 좋은 예시입니다. 여기에 백엔드의 읽기 전용 트랜잭션 정의나 분산 DB 환경에서의 전용 커넥션 풀 라우팅 같은 통신 옵션까지 유기적으로 맞물린다면 전체 인프라의 리소스 효율을 극대화할 수 있습니다. 이처럼 쿼리 옵티마이저의 메커니즘을 이해하고 애플리케이션 아키텍처 영역까지 연계하여 연동 구조를 설계할 수 있는 시야를 다지게 되었으며, 이는 향후 고성능 서비스를 안정적으로 구축하는 데 큰 자산이 될 것입니다."
+subcategory: "2026"
+created_date: "2026-06-17"
+회차: "[교육 23일차]"
+category: "education"
 slug: "backend-transactions-and-database-locks"
-date: "2026-07-23"
+title: "대고객 메시징 서비스 마케팅 이력관리"
+page_id: "38019946-ca76-8018-bc76-cbe284514b07"
+source_id: "38019946ca768018bc76cbe284514b07"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/38019946ca768018bc76cbe284514b07"
+id: "38019946ca768018bc76cbe284514b07"
+sourceId: "38019946-ca76-8018-bc76-cbe284514b07"
+date: "2026-06-17"
 tags: ["SQL 실용문제"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/38019946ca768018bc76cbe284514b07"
 ---
 
-**[문제]**
+## 문제 : 대고객 메시징 서비스 마케팅 이력관리
+
 최근 3개월(2026-03-01 ~ 2026-05-31) 동안 **총 3회 이상의 캠페인 이메일을 받았으나, 단 한 번도 이메일을 열어보지 않은(status가 'OPENED'인 이력이 없는) 휴면 고객**군을 추출하려 합니다.
 
 이 조건을 만족하는 고객별로 **가장 최근에 발송 실패(BOUNCED 또는 FAILED)가 발생한 캠페인 ID와 해당 실패 일시**를 함께 조회하는 고난도 튜닝/집계 쿼리 작성 및 테이블 수정 필요 시 진행.
 
+### 테이블 정보
 
-<NotionToggle title="테이블 정보" level="3">
+#### 테이블 1: `customers` (고객 기본 정보)
 
 
 <NotionTable>
   <tbody>
-    <tr><td>`customer_id`  </td><td>INT, PK</td><td>고객 고유 번호</td></tr>
-    <tr><td>`email`  </td><td>VARCHAR</td><td>이메일 주소</td></tr>
-    <tr><td>`status`  </td><td>VARCHAR</td><td>고객 상태 (`'ACTIVE'`, `'DORMANT'`, `'WITHDRAWN'`)</td></tr>
+    <tr><td>`customer_id` </td><td>INT, PK</td><td>고객 고유 번호</td></tr>
+    <tr><td>`email` </td><td>VARCHAR</td><td>이메일 주소</td></tr>
+    <tr><td>`status` </td><td>VARCHAR</td><td>고객 상태 (`'ACTIVE'`, `'DORMANT'`, `'WITHDRAWN'`)</td></tr>
   </tbody>
 </NotionTable>
 
+#### 테이블 2: `email_campaigns` (캠페인 마스터)
+
 
 <NotionTable>
   <tbody>
-    <tr><td>`campaign_id`  </td><td>INT, PK</td><td>캠페인 고유 번호</td></tr>
-    <tr><td>`campaign_name`  </td><td>VARCHAR</td><td>캠페인명</td></tr>
-    <tr><td>`sent_at`  </td><td>DATETIME</td><td>캠페인 발송 시작 일시</td></tr>
+    <tr><td>`campaign_id` </td><td>INT, PK</td><td>캠페인 고유 번호</td></tr>
+    <tr><td>`campaign_name` </td><td>VARCHAR</td><td>캠페인명</td></tr>
+    <tr><td>`sent_at` </td><td>DATETIME</td><td>캠페인 발송 시작 일시</td></tr>
   </tbody>
 </NotionTable>
 
+#### 테이블 3: `email_logs` (대용량 발송 로그 테이블 - 매달 수천만 건 누적)
+
 
 <NotionTable>
   <tbody>
-    <tr><td>`log_id`  </td><td>BIGINT, PK</td><td>로그 고유 번호</td></tr>
-    <tr><td>`campaign_id`  </td><td>INT, FK</td><td>캠페인 고유 번호</td></tr>
-    <tr><td>`customer_id`  </td><td>INT</td><td>고객 고유 번호</td></tr>
-    <tr><td>`status`  </td><td>VARCHAR</td><td>발송 상태 (`'SENT'`, `'DELIVERED'`, `'OPENED'`, `'BOUNCED'`, `'FAILED'`)</td></tr>
+    <tr><td>`log_id` </td><td>BIGINT, PK</td><td>로그 고유 번호</td></tr>
+    <tr><td>`campaign_id` </td><td>INT, FK</td><td>캠페인 고유 번호</td></tr>
+    <tr><td>`customer_id` </td><td>INT</td><td>고객 고유 번호</td></tr>
+    <tr><td>`status` </td><td>VARCHAR</td><td>발송 상태 (`'SENT'`, `'DELIVERED'`, `'OPENED'`, `'BOUNCED'`, `'FAILED'`)</td></tr>
     <tr><td>`updated_at`</td><td>DATETIME</td><td>상태 변경 일시</td></tr>
   </tbody>
 </NotionTable>
 
 
-</NotionToggle>
+### 1. SQL 쿼리 작성 :  1차 방안
 
-
-<NotionToggle title="SQL 쿼리 작성 :  1차 방안" level="3">
-
-### 1. 탐색 데이터 범위 축소
+#### 1) 탐색 데이터 범위 축소
 
 대용량 환경에서는 무작정 `JOIN` 후 `GROUP BY`를 하면 테이블 락(Lock)이 발생할 수 있습니다.
 대상자를 먼저 좁혀 놓고 로그를 타격하는 방식으로 전개해야 합니다.
@@ -109,22 +126,20 @@ LEFT JOIN failed_logs_ranked f ON rc.customer_id = f.customer_id AND f.rn = 1
 ORDER BY f.last_failed_at DESC NULLS LAST, rc.customer_id ASC;
 ```
 
-### 포인트
+#### 2) 포인트
 
-- `**IN (SELECT campaign_id FROM ...)**`**를 통한 인덱스 프루닝**
+- **`IN (SELECT campaign_id FROM ...)`****를 통한 인덱스 프루닝**
 `target_campaigns`를 통해 필요한 구간의 데이터만 집어서 읽게 되므로 수천만 건의 데이터를 풀 스캔(Full Scan)하는 방지 예상
-- `**COUNT(CASE WHEN ...)**`**을 활용한 피벗 집계**
+- **`COUNT(CASE WHEN ...)`****을 활용한 피벗 집계**
 오픈한 로그가 **단 한 건도 없는** 사람을 찾기 위해 발송 로그와 오픈 로그를 각각 따로 `JOIN`하는 것이 아니라, 하나의 로그 테이블을 한 번만 읽으면서 발송 횟수와 오픈 횟수를 동시에 집계하여 I/O 비용을 감소
-- `**ROW_NUMBER()**` **기반 최신 실패 이력만 추출**
-실패한 이력들 중 '가장 최근 1건'을 가져오기 위해 `GROUP BY customer_id` 후 `MAX(updated_at)`를 쓰고 또 한 번 로그 테이블을 조인하는 서브쿼리 지옥 대신, 윈도우 함수를 통해 단 한 번에 `campaign_id`와 `updated_at`  
-- `**LEFT JOIN ... AND f.rn = 1**` **구조**
+- **`ROW_NUMBER()`** **기반 최신 실패 이력만 추출**
+실패한 이력들 중 '가장 최근 1건'을 가져오기 위해 `GROUP BY customer_id` 후 `MAX(updated_at)`를 쓰고 또 한 번 로그 테이블을 조인하는 서브쿼리 지옥 대신, 윈도우 함수를 통해 단 한 번에 `campaign_id`와 `updated_at` 
+- **`LEFT JOIN ... AND f.rn = 1`** **구조**
 위험 고객 중에는 이메일이 단순히 '전송 완료(DELIVERED)'만 되고 실패는 안 한 상태에서 안 열어본 고객도 존재합니다. 이들이 결과에서 누락되지 않도록 `LEFT JOIN` 처리를 하되, 윈도우 순위가 1등인 데이터만 연결되도록 조건을 결합
 
+### 2. 파티셔닝/암묵적 FK :   1차 개선
 
-</NotionToggle>
-
-
-<NotionToggle title="파티셔닝/암묵적 FK :   1차 개선" level="3">
+#### 1) 파티셔닝 및 인덱스 구조 재설계 (DDL)
 
 물리적 FK 조인으로 인한 인덱스 오버헤드를 제거하고, `WORKDAY` 기준으로 테이블을 파티셔닝합니다.
 
@@ -150,7 +165,11 @@ CREATE TABLE email_logs (
 CREATE INDEX idx_logs_query ON email_logs (workday, status, customer_id);
 ```
 
+#### **2) Java 백엔드 제어 (암묵적 FK)**
+
 데이터 무결성 검증은 DB 하드웨어에 맡기지 않고, Java 애플리케이션의 비즈니스 로직(Service 레이어) 또는 무결성 체크 배치(Spring Batch 등) 단계에서 검증 후 진입할 수 있게 유도하여 설계합니다. 이로 인해 인덱스 쓰기 비용과 데드락 위험이 현저히 줄어듭니다.
+
+#### 3) 범위 축소 및 분할을 반영한 최적화 쿼리
 
 기존의 복잡한 전체 조인을 걷어내고, 파티션 프루닝(Partition Pruning)이 정확히 작동하도록 `workday` 조건을 최상단으로 끌어올렸습니다. 또한, 백엔드에서 특정 대상 범위를 미리 정의해 넘겨주거나 대량 집계를 배치 분할 처리할 수 있도록 구조를 단순화했습니다.
 
@@ -206,17 +225,17 @@ FROM risk_customers rc
 LEFT JOIN recent_failed_log f ON rc.customer_id = f.customer_id AND f.rn = 1;
 ```
 
+### 3. 커버링 인덱스 :  2차 개선
 
-</NotionToggle>
-
-
-<NotionToggle title="커버링 인덱스 :  2차 개선" level="3">
+#### 1) 마스터 테이블 커버링 인덱스 추가
 
 
 ```sql
 CREATE INDEX idx_emaillogs_covering 
 ON email_logs (workday, status, customer_id, updated_at, campaign_id);
 ```
+
+#### 2) 최종 SQL
 
 아래 쿼리는 `email_logs` 테이블의 실제 레이아웃을 단 한 번도 읽지 않고, 위에서 생성한 `idx_logs_covering` 인덱스 내에서 모든 필터링과 집계,  윈도우 함수 연산을 처리합니다.
 
@@ -272,7 +291,4 @@ SELECT
 FROM risk_customers rc
 LEFT JOIN recent_failed_log f ON rc.customer_id = f.customer_id AND f.rn = 1;
 ```
-
-
-</NotionToggle>
 

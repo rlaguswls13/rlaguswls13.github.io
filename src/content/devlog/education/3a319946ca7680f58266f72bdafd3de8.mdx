@@ -1,8 +1,92 @@
 ---
-sourceId: "3a319946-ca76-80f5-8266-f72bdafd3de8"
-title: "웹 애플리케이션에서 SpringFramework란?"
+tag: ["웹 애플리케이션","프레임워크","SpringFramework"]
+description: "Spring Framework와 Spring Boot는 Java로 웹이나 애플리케이션을 효율적으로 개발할 수 있도록 다양한 기능을 제공하는 편리한 라이브러리이자 프레임워크입니다. 다만 저수준의 기능이 내부에 이미 구현되어 있으므로, 단순히 사용법만 익히기보다 주요 기능의 동작 원리를 이해하고 적절히 적용해야 합니다. 특히 기능을 확장하거나 커스터마이징하려면 관련 소스 코드와 내부 구조를 분석하는 과정도 필요합니다.\n중요한 것은 Spring을 무조건 신뢰하거나 반대로 불신하는 것이 아니라, 요구사항에 맞게 활용하는 태도입니다. 검증된 기능을 불필요하게 처음부터 구현하기보다는 Spring 생태계의 여러 프로젝트와 라이브러리를 함께 살펴보고, 필요한 기능을 선별하여 사용하는 것이 효율적입니다."
+subcategory: "2026"
+created_date: "2026-07-08"
+회차: "[교육 38일차]"
+category: "education"
 slug: "spring-framework-for-web-applications"
-date: "2026-07-23"
-tags: ["웹 애플리케이션", "프레임워크", "SpringFramework"]
+title: "웹 애플리케이션에서 SpringFramework란?"
+page_id: "3a319946-ca76-80f5-8266-f72bdafd3de8"
+source_id: "3a319946ca7680f58266f72bdafd3de8"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/SpringFramework-3a319946ca7680f58266f72bdafd3de8"
+id: "3a319946ca7680f58266f72bdafd3de8"
+sourceId: "3a319946-ca76-80f5-8266-f72bdafd3de8"
+date: "2026-07-08"
+tags: ["웹 애플리케이션","프레임워크","SpringFramework"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/SpringFramework-3a319946ca7680f58266f72bdafd3de8"
 ---
+
+## **1. Spring Framework란?**
+
+Spring Framework는 자바 엔터프라이즈 애플리케이션 개발을 편하게 해주는 거대한 오픈소스 애플리케이션 프레임워크입니다. 개발자가 복잡한 '객체 생성과 생명주기 관리(IoC/DI)'나 '트랜잭션 처리' 같은 인프라적인 고민을 덜고, 핵심 비즈니스 로직을 짜는 데 집중할 수 있도록 돕는 뼈대 역할을 합니다.
+
+### **1) Spring Boot vs Spring**
+
+이 둘의 관계는 '부품과 조립품'으로 이해하면 쉽습니다.
+
+
+<NotionIndent>
+
+• **Spring Framework (부품 창고):** 웹 개발에 필요한 모든 기능(보안, DB 연결, 뷰 렌더링 등)을 제공하지만, 개발자가 일일이 버전을 맞추고 복잡한 설정 파일(XML 또는 Java Config)을 작성한 뒤 톰캣(Tomcat) 같은 외부 웹 서버에 올려야 했습니다.
+• **Spring Boot (완성된 자동차):** Spring Framework를 기반으로 하되, "복잡한 설정은 우리가 미리 다 해둘 테니 너는 바로 코딩만 시작해!"라는 철학으로 만들어졌습니다. 설정이 자동화되어 있고 웹 서버가 내장되어 있어 실행 버튼 하나만 누르면 바로 웹 서버가 켜집니다. 
+
+
+</NotionIndent>
+
+### **2) Spring Boot가 개발된 이유?**
+
+(1) **초기 설정의 복잡성 해결 (설정 지옥 탈출):** 기존 Spring은 프로젝트 세팅에만 며칠이 걸리기도 했습니다. Spring Boot는 '관례(Convention)'를 따르는 자동 설정(Auto-configuration)을 도입해 이 과정을 획기적으로 줄였습니다.
+
+(2) **독립 실행형(Standalone) 애플리케이션:** 외부 WAS(웹 서버)를 별도로 설치하고 배포하는 과정 없이, 내장형 톰캣(Tomcat) 등을 활용해 스스로 실행 가능한 JAR 파일 하나만 뚝딱 만들어 냅니다.
+
+(3) **마이크로서비스 아키텍처(MSA) 대응:** 서비스를 작게 여러 개 쪼개서 운영하는 클라우드 환경에서는 앱을 빠르고 가볍게 띄워야 합니다. 빠르고 독립적인 실행이 가능한 Spring Boot는 MSA에 완벽하게 부합했습니다.
+
+## **2. Spring Boot 버전별 지원** 
+
+2026년 현재 시점을 기준으로, Spring Boot는 마이너 버전 출시 후 **통상 12개월 동안 오픈소스(OSS) 무료 지원**을 제공하며, 메이저 버전의 마지막 마이너 릴리스에 대해서만 유료 연장 지원을 제공합니다.  
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>**버전 (Branch)**</td><td>**현재 상태 (2026년 기준)**</td><td>**무료 패치(OSS) 종료일**</td><td>**권장 사항**</td></tr>
+    <tr><td>**4.1.x**</td><td>**최신 안정화 버전 (Current Stable)**</td><td>2027년 7월 (예정)</td><td>최신 월간 패치 유지</td></tr>
+    <tr><td>**4.0.x**</td><td>유지보수 지원 중</td><td>2026년 12월 31일</td><td>지원 종료 전 4.1로 업그레이드</td></tr>
+    <tr><td>**3.5.x**</td><td>**무료 지원 종료 (EOL)**</td><td>2026년 6월 30일</td><td>4.x로 신속히 전환</td></tr>
+    <tr><td>**3.4.x 이하**</td><td>지원 완전히 종료됨 (EOL)</td><td>이미 종료됨</td><td>4.x로 즉시 마이그레이션</td></tr>
+  </tbody>
+</NotionTable>
+
+## **3. Spring Boot 이외에 지원되는 유용한 Spring projects**  
+
+Spring 생태계([https://spring.io/projects)에는](https://spring.io/projects)에는) 웹 개발의 특정 영역을 담당하는 훌륭한 자식 프로젝트들이 많습니다.
+
+• **Spring Data:** JDBC, JPA, MongoDB, Redis 등 다양한 데이터베이스 접근 기술을 일관된 인터페이스로 묶어줍니다. 개발자가 SQL을 직접 짜지 않아도 메서드 이름만 규칙에 맞게 적으면 알아서 쿼리를 만들어주는 마법 같은 기능을 제공합니다 (Spring Data JPA).
+
+• **Spring Security:** 애플리케이션의 든든한 경비원입니다. 비밀번호 암호화, 로그인 인증, 권한 관리, 세션 공격 방어, OAuth2 (소셜 로그인) 등을 강력하게 지원합니다.
+
+• **Spring Cloud:** 넷플릭스나 배달의민족처럼 서버가 수십~수백 대인 분산 시스템(MSA)을 구축할 때 필요합니다. 서버끼리 서로를 찾게 해 주거나(Service Discovery), 트래픽을 분산시키고, 한 서버가 죽었을 때 다른 서버로 우회시키는 등 클라우드 네이티브 환경을 위한 도구 모음입니다.
+
+• **Spring Batch:** 매일 자정에 수백만 건의 결제 내역을 정산해야 한다면? 이렇게 대용량 데이터를 일괄적으로 끊어서 처리하고, 중간에 실패하면 그 지점부터 다시 시작하게 해주는 배치 전용 프레임워크입니다.
+
+• **Spring AI:** 최근 가장 각광받는 프로젝트로, OpenAI, Hugging Face 등 다양한 AI 모델과 프롬프트 엔지니어링을 Spring 백엔드에 쉽게 연동할 수 있게 해줍니다.
+
+## **4. 이런 Spring projects는 어떻게 활용(배우나요)?**
+
+### 1)  **활용 방법 (실무)**
+
+Spring Boot의 의존성 관리 도구(`pom.xml` 또는 `build.gradle`)에 **'Starter' 라이브러리 한 줄만 추가**하면 끝납니다.
+
+    ◦ *예:* DB 연동이 필요하면 `spring-boot-starter-data-jpa`, 보안이 필요하면 `spring-boot-starter-security`를 추가하면 Spring Boot가 알아서 모든 설정을 조립해 줍니다.  
+
+### 2) **추천 학습 과정**
+
+(1) **Spring Initializr (start.spring.io)**
+웹 브라우저에서 사용할 프로젝트(Security, Web, Data JPA)를 체크박스로 선택하여 기본 뼈대를 생성합니다. 실무에서도 이 방식으로 프로젝트를 시작합니다. 
+
+(2) **공식 가이드 따라 하기 (spring.io/guides)**
+각 기술별로 15분 분량의 "Building a RESTful Web Service", "Securing a Web Application" 같은 튜토리얼을 그대로 타이핑하며 감을 잡습니다.
 

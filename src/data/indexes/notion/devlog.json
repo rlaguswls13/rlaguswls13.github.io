@@ -1,0 +1,557 @@
+{
+  "3b019946ca7680ff9877e74515176168": {
+    "category": "tech_study",
+    "created_date": "2026-07-06",
+    "tag": [
+      "Spring",
+      "SpringBoot"
+    ],
+    "slug": "spring-batch-graceful-stop",
+    "subcategory": "springboot",
+    "description": "JobName 기반 안전한 중단(Graceful Stop) 메커니즘을 심층 분석합니다.",
+    "title": "스프링배치에서 중단하고 싶을 때",
+    "page_id": "3b019946-ca76-80ff-9877-e74515176168",
+    "source_id": "3b019946ca7680ff9877e74515176168",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/3b019946ca7680ff9877e74515176168"
+  },
+  "3b019946ca768023920bc0535a88d2ae": {
+    "category": "tech_study",
+    "created_date": "2026-07-06",
+    "tag": [
+      "Spring",
+      "SpringBoot"
+    ],
+    "slug": "spring-batch-performance-tuning",
+    "subcategory": "springboot",
+    "description": "실무 배치 개발을 위한 쿼리 튜닝 및 성능 최적화 기법에 대해 알아봅니다.",
+    "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+    "page_id": "3b019946-ca76-8023-920b-c0535a88d2ae",
+    "source_id": "3b019946ca768023920bc0535a88d2ae",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/6-3b019946ca768023920bc0535a88d2ae"
+  },
+  "3b019946ca768060a97ee328eea5a576": {
+    "category": "tech_study",
+    "created_date": "2026-07-06",
+    "tag": [
+      "Spring",
+      "SpringBoot"
+    ],
+    "slug": "spring-batch-scaling",
+    "subcategory": "springboot",
+    "description": "Thread와 Partition을 통한 성능 최적화 심층 분석 및 구현에 대해 알아봅니다.",
+    "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
+    "page_id": "3b019946-ca76-8060-a97e-e328eea5a576",
+    "source_id": "3b019946ca768060a97ee328eea5a576",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/5-Scaling-3b019946ca768060a97ee328eea5a576"
+  },
+  "3b019946ca7680f084e0f0a43ef7f1cd": {
+    "category": "tech_study",
+    "created_date": "2026-07-06",
+    "tag": [
+      "Spring",
+      "SpringBoot"
+    ],
+    "slug": "spring-batch-exception-status",
+    "subcategory": "springboot",
+    "description": "배치 처리에서의 예외 처리와 안정성 확보 방안 및 메타데이터 제어에 대해 알아봅니다.",
+    "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+    "page_id": "3b019946-ca76-80f0-84e0-f0a43ef7f1cd",
+    "source_id": "3b019946ca7680f084e0f0a43ef7f1cd",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/4-Robustness-Status-3b019946ca7680f084e0f0a43ef7f1cd"
+  },
+  "3b019946ca768094a4c9f440ffdf6bfd": {
+    "category": "tech_study",
+    "created_date": "2026-07-06",
+    "tag": [
+      "Spring",
+      "SpringBoot"
+    ],
+    "slug": "spring-batch-tasklet-chunk",
+    "subcategory": "springboot",
+    "description": "Step 구현 방식인 Tasklet과 Chunk 지향 처리에 대해 알아봅니다.",
+    "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
+    "page_id": "3b019946-ca76-8094-a4c9-f440ffdf6bfd",
+    "source_id": "3b019946ca768094a4c9f440ffdf6bfd",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/3-Step-Tasklet-Chunk-3b019946ca768094a4c9f440ffdf6bfd"
+  },
+  "3b019946ca7680c8836dcb0ed7e63c69": {
+    "category": "competition_event",
+    "created_date": "2026-06-22",
+    "tag": [
+      "AI Agent",
+      "GitHub Copilot",
+      "Azure",
+      "Hackathon",
+      "DevOps"
+    ],
+    "slug": "github-copilot-hackathon-retrospective",
+    "subcategory": "event",
+    "description": "오직 구두 프롬프팅으로만 배포까지 완성하는 AI 챌린지, 39개 팀 중 18위 기록 및 AI 워크플로우에 대한 고찰",
+    "title": "2026 천하제일 입코딩 대회(with GitHub Copilot) 참가 회고",
+    "page_id": "3b019946-ca76-80c8-836d-cb0ed7e63c69",
+    "source_id": "3b019946ca7680c8836dcb0ed7e63c69",
+    "last_edited_time": "2026-08-02T17:17:00.000Z",
+    "notion_url": "https://app.notion.com/p/2026-with-GitHub-Copilot-3b019946ca7680c8836dcb0ed7e63c69"
+  },
+  "3b019946ca7680809e0fcf7c0f56c7bb": {
+    "category": "tech_study",
+    "created_date": "2026-06-15",
+    "tag": [
+      "scope",
+      "job",
+      "Spring",
+      "SpringBoot"
+    ],
+    "slug": "spring-batch-job-step-scope",
+    "subcategory": "springboot",
+    "description": "배치 실행 순서와 Scope 환경 프로세스에 대해 정리한 내용입니다.",
+    "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
+    "page_id": "3b019946-ca76-8080-9e0f-cf7c0f56c7bb",
+    "source_id": "3b019946ca7680809e0fcf7c0f56c7bb",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/2-Scope-3b019946ca7680809e0fcf7c0f56c7bb"
+  },
+  "3b019946ca76801cb6dac264f9d0c0e1": {
+    "category": "tech_study",
+    "created_date": "2026-06-14",
+    "tag": [
+      "META-DATA",
+      "주기성",
+      "대용량",
+      "spring batch"
+    ],
+    "slug": "spring-batch-core-architecture",
+    "subcategory": "springboot",
+    "description": "Spring Batch 핵심 아키텍처와 도메인 모델에 대해 알아봅니다.",
+    "title": "파트 1. Spring Batch 핵심 아키텍처와 사용",
+    "page_id": "3b019946-ca76-801c-b6da-c264f9d0c0e1",
+    "source_id": "3b019946ca76801cb6dac264f9d0c0e1",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/1-Spring-Batch-3b019946ca76801cb6dac264f9d0c0e1"
+  },
+  "3b019946ca768008beced8b682cac597": {
+    "category": "problem_solving",
+    "created_date": "2026-06-01",
+    "tag": [
+      "Java8",
+      "Spring",
+      "AOP",
+      "Exception",
+      "Logging",
+      "B2B"
+    ],
+    "slug": "aop-exception-handling-common-response",
+    "subcategory": "java",
+    "description": "수백 개에 달하는 레거시 커스텀 예외로 인해 파편화된 예외 처리 체계를 분석하고, AOP 및 GlobalExceptionHandler 도입, log4j 파사드 및 Tomcat ExceptionPageResolver 설정을 통해 직관적인 예외 처리와 B2B 대응 효율성을 극대화한 개선 사례입니다.",
+    "title": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선",
+    "page_id": "3b019946-ca76-8008-bece-d8b682cac597",
+    "source_id": "3b019946ca768008beced8b682cac597",
+    "last_edited_time": "2026-08-02T17:35:00.000Z",
+    "notion_url": "https://app.notion.com/p/Exception-AOP-3b019946ca768008beced8b682cac597"
+  },
+  "3b019946ca7680e4a56dcbcd708153c3": {
+    "category": "tech_study",
+    "created_date": "2026-05-31",
+    "tag": [
+      "Security",
+      "DevOps",
+      "Container"
+    ],
+    "slug": "kubernetes-defense-in-depth-security",
+    "subcategory": "container",
+    "description": "컨테이너 탈옥 및 권한 상승을 막기 위해 쿠버네티스가 제공하는 런타임 격리, 정책 제어, 커널 보안 모듈 연동 등 다중 레이어 방어 체계를 분석합니다.",
+    "title": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth)",
+    "page_id": "3b019946-ca76-80e4-a56d-cbcd708153c3",
+    "source_id": "3b019946ca7680e4a56dcbcd708153c3",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/K8s-Defense-in-Depth-3b019946ca7680e4a56dcbcd708153c3"
+  },
+  "3b019946ca7680c2a416c4eed946b95d": {
+    "category": "tech_study",
+    "created_date": "2026-05-31",
+    "tag": [
+      "Refactoring",
+      "Book",
+      "Technical Debt"
+    ],
+    "slug": "refactoring-book-review",
+    "subcategory": "book",
+    "description": "마틴 파울러의 명저 《Refactoring》의 핵심 요약과 코드 스멜 감지 유형, 실무적인 장단점 리뷰, 그리고 지속 가능한 기술 부채 관리법을 정리",
+    "title": "도서 리뷰: 실무 관점에서 바라보는 《Refactoring》 핵심 요약 및 기술 부채 관리",
+    "page_id": "3b019946-ca76-80c2-a416-c4eed946b95d",
+    "source_id": "3b019946ca7680c2a416c4eed946b95d",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/Refactoring-3b019946ca7680c2a416c4eed946b95d"
+  },
+  "3b019946ca76801da149f494c3231de4": {
+    "category": "tech_study",
+    "created_date": "2026-05-31",
+    "tag": [
+      "Clean Code",
+      "Book",
+      "OOP"
+    ],
+    "slug": "clean-code-book-review",
+    "subcategory": "book",
+    "description": "로버트 C. 마틴의 명저 《Clean Code》의 핵심 규칙 요약과 현대 자바 개발자 입장에서 바라본 장단점, 그리고 실무 적용 가이드를 정리",
+    "title": "도서 리뷰: 실무 관점에서 재해석하는 《Clean Code》 핵심 요약 및 리뷰",
+    "page_id": "3b019946-ca76-801d-a149-f494c3231de4",
+    "source_id": "3b019946ca76801da149f494c3231de4",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/Clean-Code-3b019946ca76801da149f494c3231de4"
+  },
+  "3b019946ca76806eb6e9e090b639ab4b": {
+    "category": "tech_study",
+    "created_date": "2026-05-31",
+    "tag": [
+      "CodeConvention",
+      "Lombok"
+    ],
+    "slug": "java-code-convention-maintainability",
+    "subcategory": "java",
+    "description": "무분별한 메서드 재정의 지양, 어노테이션 활용, 로깅 및 의존성 관리를 통한 견고한 Java 애플리케이션 구축 규칙을 정리합니다.",
+    "title": "Java 코드 퀄리티를 높이는 개인 컨벤션과 유지보수 전략",
+    "page_id": "3b019946-ca76-806e-b6e9-e090b639ab4b",
+    "source_id": "3b019946ca76806eb6e9e090b639ab4b",
+    "last_edited_time": "2026-08-02T18:19:00.000Z",
+    "notion_url": "https://app.notion.com/p/Java-3b019946ca76806eb6e9e090b639ab4b"
+  },
+  "3b019946ca76808e9f6ec9aec83dbaaf": {
+    "category": "problem_solving",
+    "created_date": "2026-05-26",
+    "tag": [
+      "SpringBoot",
+      "LoadBalance",
+      "Redis",
+      "JWT",
+      "Clustering",
+      "Session",
+      "Tomcat",
+      "WAS"
+    ],
+    "slug": "was-session-consistency",
+    "subcategory": "was",
+    "description": "WAS 이중화 환경에서 로드밸런서에 의해 요청이 분산될 때 발생하는 세션 불일치 문제를 인프라·WAS·애플리케이션 3개 레벨의 해결 방안으로 분석합니다.",
+    "title": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안",
+    "page_id": "3b019946-ca76-808e-9f6e-c9aec83dbaaf",
+    "source_id": "3b019946ca76808e9f6ec9aec83dbaaf",
+    "last_edited_time": "2026-08-02T17:35:00.000Z",
+    "notion_url": "https://app.notion.com/p/WAS-3b019946ca76808e9f6ec9aec83dbaaf"
+  },
+  "3b019946ca768062aeb4e0e781ed366a": {
+    "category": "problem_solving",
+    "created_date": "2026-05-26",
+    "tag": [
+      "API",
+      "Asynchronous",
+      "Architecture",
+      "MSA"
+    ],
+    "slug": "async-api-processing-architecture",
+    "subcategory": "architecture",
+    "description": "기존 100% 동기식 처리에서 발생하는 병목을 해결하기 위해 비동기 기반의 아키텍처로 개편한 흐름 및 해결 전략입니다.",
+    "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
+    "page_id": "3b019946-ca76-8062-aeb4-e0e781ed366a",
+    "source_id": "3b019946ca768062aeb4e0e781ed366a",
+    "last_edited_time": "2026-08-02T17:35:00.000Z",
+    "notion_url": "https://app.notion.com/p/API-3b019946ca768062aeb4e0e781ed366a"
+  },
+  "3b019946ca7680f69492e6e87f7a4530": {
+    "category": "tech_study",
+    "created_date": "2026-05-25",
+    "tag": [
+      "Tomcat",
+      "WAS",
+      "Server",
+      "SSL",
+      "Security"
+    ],
+    "slug": "apache-tomcat-ssl-operations-guide",
+    "subcategory": "was",
+    "description": "Tomcat의 핵심 설정 파일들의 역할과 setenv.sh를 활용한 구동 옵션 분리 전략, 그리고 최신 HTTP/2 및 OpenSSL 기반의 HTTPS 설정 방법을 알아봅니다.",
+    "title": "Apache Tomcat 운영 표준: 설정 파일 최적화 및 최신 SSL 적용 가이드",
+    "page_id": "3b019946-ca76-80f6-9492-e6e87f7a4530",
+    "source_id": "3b019946ca7680f69492e6e87f7a4530",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87f7a4530"
+  },
+  "3b019946ca768079878fed99b13e958f": {
+    "category": "tech_study",
+    "created_date": "2026-05-25",
+    "tag": [
+      "Web Server",
+      "Nginx",
+      "Apache",
+      "IIS",
+      "Architecture"
+    ],
+    "slug": "nginx-apache-iis-comparison",
+    "subcategory": "was",
+    "description": "웹 서버의 대표 주자인 Nginx, Apache HTTPD, IIS의 아키텍처적 차이점과 장단점, 그리고 각 엔진별 최적의 도입 시나리오 확인",
+    "title": "웹 서버엔진 비교: Nginx vs Apache HTTPD vs IIS",
+    "page_id": "3b019946-ca76-8079-878f-ed99b13e958f",
+    "source_id": "3b019946ca768079878fed99b13e958f",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca768079878fed99b13e958f"
+  },
+  "3b019946ca76806b8b45f39febf76658": {
+    "category": "tech_study",
+    "created_date": "2026-05-25",
+    "tag": [
+      "SSD",
+      "HDD",
+      "NVMe",
+      "HardWare",
+      "Storage"
+    ],
+    "slug": "nvme-ssd-sata-ssd-hdd-comparison",
+    "subcategory": "storage",
+    "description": "물리적 컴퓨팅 자원에 직접 장착되는 저장 장치들의 구조와 데이터 전송 버스의 명확한 차이점을 정리",
+    "title": "물리적 저장 매체 비교: M.2 NVMe SSD vs SATA SSD vs HDD",
+    "page_id": "3b019946-ca76-806b-8b45-f39febf76658",
+    "source_id": "3b019946ca76806b8b45f39febf76658",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/M-2-NVMe-SSD-vs-SATA-SSD-vs-HDD-3b019946ca76806b8b45f39febf76658"
+  },
+  "3b019946ca7680849498da3bf66eaf67": {
+    "category": "tech_study",
+    "created_date": "2026-05-25",
+    "tag": [
+      "Storage",
+      "DAS",
+      "NAS",
+      "Sharding",
+      "Architecture"
+    ],
+    "slug": "das-nas-san-storage-architecture",
+    "subcategory": "storage",
+    "description": "서버와 스토리지의 연결 방식에 따른 대표적인 3대 아키텍처인 DAS, NAS, SAN의 개념, 작동 프로토콜, 장단점 및 명확한 차이점을 비교",
+    "title": "스토리지 아키텍처 비교: DAS vs NAS vs SAN",
+    "page_id": "3b019946-ca76-8084-9498-da3bf66eaf67",
+    "source_id": "3b019946ca7680849498da3bf66eaf67",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/DAS-vs-NAS-vs-SAN-3b019946ca7680849498da3bf66eaf67"
+  },
+  "3b019946ca768030ad15dcc419fe79a4": {
+    "category": "tech_study",
+    "created_date": "2026-05-25",
+    "tag": [
+      "Architecture",
+      "Spring Boot",
+      "Pub/Sub",
+      "Event-Driven",
+      "Logging"
+    ],
+    "slug": "spring-event-logging-pub-sub-architecture",
+    "subcategory": "architecture",
+    "description": "단일 모듈 환경에서 서비스 로깅의 결합도를 낮추고 비동기 처리 및 트랜잭션 안전성을 확보하는 아키텍처 전환 가이드",
+    "title": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리)",
+    "page_id": "3b019946-ca76-8030-ad15-dcc419fe79a4",
+    "source_id": "3b019946ca768030ad15dcc419fe79a4",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/Pub-Sub-3b019946ca768030ad15dcc419fe79a4"
+  },
+  "3b019946ca76809c936cd86896eb38db": {
+    "category": "tech_study",
+    "created_date": "2026-05-25",
+    "tag": [
+      "Migration",
+      "Encoding",
+      "Python",
+      "Linux",
+      "DevOps"
+    ],
+    "slug": "legacy-data-migration-encoding-recovery",
+    "subcategory": "migration",
+    "description": "오래된 SVN/NAS 환경의 10만여 건 대량 파일을 FTP/SFTP로 이관하며 발생한 인코딩 깨짐 문제를, Python 기반 자동 매핑 및 전환 솔루션으로 실질적 복원율 100%를 달성한 가이드입니다.",
+    "title": "레거시 환경(SVN/NAS) 대량 데이터 마이그레이션 및 인코딩 복원 가이드",
+    "page_id": "3b019946-ca76-809c-936c-d86896eb38db",
+    "source_id": "3b019946ca76809c936cd86896eb38db",
+    "last_edited_time": "2026-08-02T18:17:00.000Z",
+    "notion_url": "https://app.notion.com/p/SVN-NAS-3b019946ca76809c936cd86896eb38db"
+  },
+  "3b019946ca76806e849ff6e0fb57ac3d": {
+    "category": "tech_study",
+    "created_date": "2026-05-15",
+    "tag": [
+      "DevOps",
+      "Container",
+      "Podman",
+      "Kubernetes"
+    ],
+    "slug": "docker-to-podman-migration",
+    "subcategory": "container",
+    "description": "여전히 강력한 컨테이너 기술 생태계에서, Docker 대신 Podman이 대안으로 떠오르는 이유와 K8s 전환 측면에서의 장단점을 분석합니다.",
+    "title": "DevOps 패러다임 전환: Docker에서 Podman으로?",
+    "page_id": "3b019946-ca76-806e-849f-f6e0fb57ac3d",
+    "source_id": "3b019946ca76806e849ff6e0fb57ac3d",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6e0fb57ac3d"
+  },
+  "3b019946ca7680b584e1c59c19e022a9": {
+    "category": "problem_solving",
+    "created_date": "2026-05-15",
+    "tag": [
+      "Spring",
+      "Quartz",
+      "Hackathon",
+      "Clustering",
+      "Sharding"
+    ],
+    "slug": "spring-quartz-ha-optimization",
+    "subcategory": "spring",
+    "description": "이중화 클러스터링 환경에서 발생한 스케줄링 중복 등록과 작업 쏠림(Greedy Locking) 현상을 분석하고, 등록/실행 역할 분리 및 쿼리 파티셔닝 기반 균등 분배 아키텍처로 해결한 사례입니다.",
+    "title": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결",
+    "page_id": "3b019946-ca76-80b5-84e1-c59c19e022a9",
+    "source_id": "3b019946ca7680b584e1c59c19e022a9",
+    "last_edited_time": "2026-08-02T17:35:00.000Z",
+    "notion_url": "https://app.notion.com/p/Spring-Quartz-HA-3b019946ca7680b584e1c59c19e022a9"
+  },
+  "3b019946ca768059b91cc1de8dbbe8f7": {
+    "category": "problem_solving",
+    "created_date": "2026-05-15",
+    "tag": [
+      "ActiveMQ",
+      "KahaDB",
+      "Disk Full",
+      "Rate Limit",
+      "Backpressure"
+    ],
+    "slug": "activemq-kahadb-disk-rate-limit",
+    "subcategory": "messaging",
+    "description": "ActiveMQ KahaDB의 블록 관리 특성으로 인한 디스크 고갈 문제를 진단하고, Threshold 및 타임아웃을 통해 시스템 안정성을 확보한 사례입니다.",
+    "title": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략",
+    "page_id": "3b019946-ca76-8059-b91c-c1de8dbbe8f7",
+    "source_id": "3b019946ca768059b91cc1de8dbbe8f7",
+    "last_edited_time": "2026-08-02T17:35:00.000Z",
+    "notion_url": "https://app.notion.com/p/ActiveMQ-KahaDB-Rate-Limit-3b019946ca768059b91cc1de8dbbe8f7"
+  },
+  "3b019946ca76802d9983cc6f0ad5b494": {
+    "category": "problem_solving",
+    "created_date": "2026-05-15",
+    "tag": [
+      "Java8",
+      "G1GC",
+      "ZGC",
+      "JVM_Tuning",
+      "GraalVM"
+    ],
+    "slug": "java-large-object-g1gc-optimization",
+    "subcategory": "java",
+    "description": "대규모 메시징 서비스에서 10MB 단위 거대 객체(Humongous Object)로 인해 발생하는 빈번한 Full GC와 메모리 부족(OOM) 현상을 분석하고, 코드 레벨 최적화 및 G1GC 옵션 튜닝을 통해 성능을 개선한 사례입니다.",
+    "title": "Java 8 환경에서 10MB 거대 객체 처리와 G1GC 최적화 전략",
+    "page_id": "3b019946-ca76-802d-9983-cc6f0ad5b494",
+    "source_id": "3b019946ca76802d9983cc6f0ad5b494",
+    "last_edited_time": "2026-08-02T17:35:00.000Z",
+    "notion_url": "https://app.notion.com/p/Java-8-10MB-G1GC-3b019946ca76802d9983cc6f0ad5b494"
+  },
+  "3b019946ca76802cab88d54846776de9": {
+    "category": "tech_study",
+    "created_date": "2026-05-14",
+    "tag": [
+      "Dockerfile",
+      "Entrypoint",
+      "Image",
+      "Container"
+    ],
+    "slug": "docker-image-dockerfile-entrypoint",
+    "subcategory": "container",
+    "description": "기존 컨테이너를 Commit 하는 방식부터 Dockerfile을 작성하여 커스텀 이미지를 빌드하는 세밀한 과정과 entry.sh 스크립트 활용법을 비교 분석합니다.",
+    "title": "Docker Image 생성법: Commit과 Dockerfile (entry.sh 활용)",
+    "page_id": "3b019946-ca76-802c-ab88-d54846776de9",
+    "source_id": "3b019946ca76802cab88d54846776de9",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/Docker-Image-Commit-Dockerfile-entry-sh-3b019946ca76802cab88d54846776de9"
+  },
+  "3b019946ca7680c8ad78c8ee01f79dfd": {
+    "category": "tech_study",
+    "created_date": "2026-05-13",
+    "tag": [
+      "Container",
+      "Security",
+      "AppArmor",
+      "Event-Driven"
+    ],
+    "slug": "docker-apparmor-environment-security",
+    "subcategory": "container",
+    "description": "커널을 공유하는 컨테이너 환경의 보안 취약점을 극복하기 위해 AppArmor를 활용한 Root 공격 억제 및 안전한 환경변수 관리 방법을 다룹니다.",
+    "title": "Docker 보안: AppArmor 및 환경변수(envset) 암호화 최적화",
+    "page_id": "3b019946-ca76-80c8-ad78-c8ee01f79dfd",
+    "source_id": "3b019946ca7680c8ad78c8ee01f79dfd",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/Docker-AppArmor-envset-3b019946ca7680c8ad78c8ee01f79dfd"
+  },
+  "3b019946ca7680aab42be44f7d069738": {
+    "category": "tech_study",
+    "created_date": "2026-05-06",
+    "tag": [
+      "Container",
+      "Network",
+      "Port"
+    ],
+    "slug": "docker-network-inbound-outbound",
+    "subcategory": "container",
+    "description": "컨테이너 간 통신 및 외부 네트워크 통신을 제어하기 위한 Docker Network의 동작 원리와 세팅 방법을 학습합니다.",
+    "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
+    "page_id": "3b019946-ca76-80aa-b42b-e44f7d069738",
+    "source_id": "3b019946ca7680aab42be44f7d069738",
+    "last_edited_time": "2026-08-02T18:18:00.000Z",
+    "notion_url": "https://app.notion.com/p/Docker-Inbound-Outbound-3b019946ca7680aab42be44f7d069738"
+  },
+  "3b019946ca7680e290cdf2a3101148a4": {
+    "category": "tech_study",
+    "created_date": "2026-05-04",
+    "tag": [
+      "Container",
+      "Storage",
+      "Volume",
+      "NAS"
+    ],
+    "slug": "docker-storage-data-persistence",
+    "subcategory": "container",
+    "description": "컨테이너의 데이터 휘발성을 극복하기 위한 Volume, Bind Mount, NAS/SAN 연동 등 다양한 스토리지 세팅 방법을 다룹니다.",
+    "title": "Docker 저장소(Storage) 및 데이터 영속화 세팅 가이드",
+    "page_id": "3b019946-ca76-80e2-90cd-f2a3101148a4",
+    "source_id": "3b019946ca7680e290cdf2a3101148a4",
+    "last_edited_time": "2026-08-02T18:17:00.000Z",
+    "notion_url": "https://app.notion.com/p/Docker-Storage-3b019946ca7680e290cdf2a3101148a4"
+  },
+  "3b019946ca7680a2b04ec92e293b2af4": {
+    "category": "tech_study",
+    "created_date": "2026-05-02",
+    "tag": [
+      "Container",
+      "Command",
+      "DevOps"
+    ],
+    "slug": "essential-docker-commands",
+    "subcategory": "container",
+    "description": "실무에서 자주 쓰이는 Docker 명령어의 다양한 옵션과 상세한 활용법을 정리했습니다.",
+    "title": "자주 사용하는 필수 Docker Command 상세 가이드",
+    "page_id": "3b019946-ca76-80a2-b04e-c92e293b2af4",
+    "source_id": "3b019946ca7680a2b04ec92e293b2af4",
+    "last_edited_time": "2026-08-02T18:17:00.000Z",
+    "notion_url": "https://app.notion.com/p/Docker-Command-3b019946ca7680a2b04ec92e293b2af4"
+  },
+  "3b019946ca768079be45f5fdc2d4019f": {
+    "category": "tech_study",
+    "created_date": "2026-04-30",
+    "tag": [
+      "Container",
+      "DevOps"
+    ],
+    "slug": "docker-container-runtime-basics",
+    "subcategory": "container",
+    "description": "가상화 기술의 핵심인 컨테이너의 기본 개념과 구동 프로세스, 그리고 아키텍처에 대해 알아봅니다.",
+    "title": "Docker 기본 및 Container 구동 프로세스 이해",
+    "page_id": "3b019946-ca76-8079-be45-f5fdc2d4019f",
+    "source_id": "3b019946ca768079be45f5fdc2d4019f",
+    "last_edited_time": "2026-08-02T18:17:00.000Z",
+    "notion_url": "https://app.notion.com/p/Docker-Container-3b019946ca768079be45f5fdc2d4019f"
+  }
+}

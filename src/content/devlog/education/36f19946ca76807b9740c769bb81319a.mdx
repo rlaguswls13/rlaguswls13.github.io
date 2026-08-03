@@ -1,61 +1,51 @@
 ---
-sourceId: "36f19946-ca76-807b-9740-c769bb81319a"
-title: "다형성을 활용한 소스 구현  내용 정리"
+tag: ["다형성"]
+description: "다형성을 단순히 ‘형태를 다양하게 변화 될 수 있다.’라는 정의보다는 객체 간 결합도를 낮추고 유연한 확장을 가능하게 하는 객체지향 설계의 핵심 철학의 성질로 보면 좋을 것 같습니다.  그리고 이런 다형성을 활용 하기 위해서 제네릭, 와일드카드 와 같은 개념이 나왔는데 이는 형변화에 제한을 푸는게 아니라 직접 제한지점을 설정하여 사용하라는 개념으로 이해하면 더 좋을 것 같습니다."
+subcategory: "2026"
+created_date: "2026-05-29"
+회차: "[교육 11일차]"
+category: "education"
 slug: "java-polymorphism-implementation"
-date: "2026-07-23"
+title: "다형성을 활용한 소스 구현  내용 정리"
+page_id: "36f19946-ca76-807b-9740-c769bb81319a"
+source_id: "36f19946ca76807b9740c769bb81319a"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/36f19946ca76807b9740c769bb81319a"
+id: "36f19946ca76807b9740c769bb81319a"
+sourceId: "36f19946-ca76-807b-9740-c769bb81319a"
+date: "2026-05-29"
 tags: ["다형성"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/36f19946ca76807b9740c769bb81319a"
 ---
 
+## 1. 다형성(Polymorphism)의 정의와 가치
 
-<NotionToggle title="1. 다형성(Polymorphism)의 정의와 가치" level="2">
-
-
-<NotionToggle title="다형성의 본질" level="3">
+### 다형성의 본질
 
 다형성을 단순히 '다양한 형태를 가질 수 있는 성질'이라는 문법적 수준의 정의로 제한해서 생각을 하면, 실제 코드 작성시 어려움이 있을 것입니다.
 아키텍처 관점에서 다형성은 **코드의 유연성(Flexibility)을 확보하고 객체 간의 결합도(Coupling)를 낮추기 위해 존재하는 핵심 성질**로 정의하는 것을 추천드립니다.
 
-
-</NotionToggle>
-
-
-<NotionIndent>
+#### 참고: 다형성을 활용하여 결합도 완화와 OCP (개방-폐쇄 원칙)
 
 특정 구현체에 직접 의존하지 않고 추상화된 상위 인터페이스나 추상 클래스에 의존하게 만들면, 기존 비즈니스 로직(클라이언트 코드)을 수정하지 않고도 새로운 기능이나 정책을 쉽게 확장할 수 있는 구조(OCP)를 달성할 수 있습니다.
 
-
-</NotionIndent>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="2. 형변환(Casting)의 양면성과 방어적 프로그래밍" level="2">
+## 2. 형변환(Casting)의 양면성과 방어적 프로그래밍
 
 다형성을 실현하기 위해 업캐스팅과 다운캐스팅을 시기적절하게 활용해야 하지만, 다루기 전에 반드시 각각의 한계와 위험성을 인지해야 합니다.
 
-
-<NotionToggle title="업캐스팅(Upcasting)과 뷰(View)의 축소" level="3">
+### 업캐스팅(Upcasting)과 뷰(View)의 축소
 
 - **현상:** 자식 타입을 부모 타입으로 변환하는 작업입니다. 
 이때 실제 힙(Heap) 메모리에 할당된 객체의 데이터가 손실되는 것이 아니라, 해당 객체를 바라보는 **타입의 뷰(View)가 부모 수준으로 좁아지는 것**입니다.
 - **주의점:** 뷰가 좁아지기 때문에 자식 클래스가 가지고 있는 고유 필드나 메서드에 접근할 수 없게 되므로, 이로 인한 접근 제약을 고려하여 설계해야 합니다.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="다운캐스팅(Downcasting)과 런타임 위험성" level="3">
+### 다운캐스팅(Downcasting)과 런타임 위험성
 
 - **현상:** 좁아졌던 부모 타입의 뷰를 다시 본래의 자식 타입 수준으로 넓히는 작업입니다.
 - **주의점:** 컴파일러는 가리키고 있는 실제 메모리의 인스턴스 타입을 완벽히 추론하지 못합니다. 실제 생성된 인스턴스 타입과 다르게 강제 형변환을 시도할 경우 컴파일은 통과하지만 런타임 시점에 `ClassCastException`이 발생하여 애플리케이션이 크래시될 수 있습니다.
 - **해결책:** 반드시 런타임 시점의 실제 타입을 검증하는 방어적 로직(`instanceof`)이 수반되어야 합니다.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="예시)" level="3">
+### 예시)
 
 
 ```java
@@ -87,39 +77,21 @@ public class UserService {
 }
 ```
 
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="3. 컴파일 타임 안전성을 위한 제네릭과 와일드카드" level="2">
+## 3. 컴파일 타임 안전성을 위한 제네릭과 와일드카드
 
 수동 형변환이 가지는 런타임 에러의 위험성을 **컴파일 타임의 안전성**으로 끌어올리기 위해 제네릭과 와일드카드의 개념이 추가되었습니다. 이들은 작동 원리를 명확히 이해하고 세심히 다뤄야 합니다.
 
-
-<NotionToggle title="제네릭(Generics)의 이점과 한계" level="3">
+### 제네릭(Generics)의 이점과 한계
 
 - **이점:** 개발자가 직접 형변환을 지시하지 않아도 컴파일러가 타입을 추론하고 캐스팅을 안전하게 처리하므로, 잘못된 다운캐스팅으로 인한 오류를 컴파일 시점에 차단합니다.
 - **한계 (타입 소거):** 하위 버전과의 호환성을 위해 **타입 소거(Type Erasure)** 방식을 취하므로 컴파일 완료 후 제네릭 타입 정보가 사라집니다. 이로 인해 오버로딩 충돌이나 런타임 캐스팅 시 예상치 못한 동작이 유발될 수 있습니다.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="와일드카드와 PECS 원칙" level="3">
+### 와일드카드와 PECS 원칙
 
 와일드카드를 사용할 때는 데이터의 흐름(읽기 전용인지, 쓰기 전용인지)에 따라 상한선과 하한선을 정확히 제어해야 설계가 꼬이지 않습니다.
 
-- **Producer-Extends (**`**? extends T**`**):** 데이터를 주로 **읽어오는 공급자 역할**일 때 사용합니다. 상한 경계를 지정하여 안정적으로 T 타입으로 읽을 수 있지만, 하위 타입이 무엇인지 불분명하므로 새로운 데이터를 추가할 수는 없습니다.
-- **Consumer-Super (**`**? super T**`**):** 데이터를 주로 **저장하는 소비자 역할**일 때 사용합니다. 하한 경계를 지정하여 T 또는 그 하위 타입을 안전하게 추가할 수 있지만, 꺼낼 때는 최상위 Object로만 읽을 수 있어 타입 추론이 제한됩니다.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="예시" level="3">
+- **Producer-Extends (****`? extends T`****):** 데이터를 주로 **읽어오는 공급자 역할**일 때 사용합니다. 상한 경계를 지정하여 안정적으로 T 타입으로 읽을 수 있지만, 하위 타입이 무엇인지 불분명하므로 새로운 데이터를 추가할 수는 없습니다.
+- **Consumer-Super (****`? super T`****):** 데이터를 주로 **저장하는 소비자 역할**일 때 사용합니다. 하한 경계를 지정하여 T 또는 그 하위 타입을 안전하게 추가할 수 있지만, 꺼낼 때는 최상위 Object로만 읽을 수 있어 타입 추론이 제한됩니다.
+### 예시
 
 
 ```java
@@ -158,21 +130,16 @@ public class GenericAndWildcardExample {
 }
 ```
 
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-
-<NotionToggle title="4. Spring 프레임워크 환경에서의 다형성 완성: 전략 패턴 (Strategy Pattern)" level="2">
+## 4. Spring 프레임워크 환경에서의 다형성 완성: 전략 패턴 (Strategy Pattern)
 
 순수 자바 환경에서의 다형성은 Spring의 DI(의존성 주입) 컨테이너와 결합할 때 진정한 위력을 발휘합니다. 
 동일한 인터페이스를 구현한 여러 개의 빈(Bean)이 존재할 때 발생하는 충돌을 해결하고, 
 런타임에 클라이언트의 요구에 맞춰 동적으로 구현체를 선택하는 4가지 실무 라우팅 기법입니다.
 
+공통 인터페이스
 
-<NotionToggle title="공통 인터페이스">
+
+<NotionIndent>
 
 
 ```java
@@ -182,10 +149,9 @@ public interface PaymentService {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
 
-
-<NotionToggle title="방식 1: List + supports() 순회 방식" level="3">
+### 방식 1: List + supports() 순회 방식
 
 인터페이스 내부에 자신이 어떤 조건을 처리할 수 있는지(`supports`) 명시하고, DI 컨테이너로부터 모든 구현체를 List로 주입받아 런타임에 일치하는 구현체를 탐색하는 구조입니다.
 
@@ -231,11 +197,7 @@ public class OrderProcessorWithList {
 }
 ```
 
-
-</NotionToggle>
-
-
-<NotionToggle title="방식 2: Map 자동 주입 방식 (Bean Name 매핑)" level="3">
+### 방식 2: Map 자동 주입 방식 (Bean Name 매핑)
 
 스프링 빈의 명칭(Bean Name)을 Key로, 인스턴스를 Value로 하는 `Map<String, Type>` 구조로 자동 주입을 받아 활용하는 방식입니다. 탐색 비용 없이 즉시 구현체를 매핑합니다.
 
@@ -270,11 +232,7 @@ public class OrderProcessorWithMap {
 }
 ```
 
-
-</NotionToggle>
-
-
-<NotionToggle title="방식 3: Enum + Factory 패턴 방식" level="3">
+### 방식 3: Enum + Factory 패턴 방식
 
 동적 파라미터가 가지는 문자열 기반의 취약성(오타, 런타임 에러)을 제거하기 위해 상수로 매핑 관계를 규정하고, 이를 전담 팩토리 객체를 통해 안전하게 가져오는 구조입니다.
 
@@ -319,11 +277,7 @@ public class OrderProcessorWithFactory {
 }
 ```
 
-
-</NotionToggle>
-
-
-<NotionToggle title="방식 4: 커스텀 어노테이션 방식 (메타데이터 분리)" level="3">
+### 방식 4: 커스텀 어노테이션 방식 (메타데이터 분리)
 
 비즈니스 결제 로직 내부나 파일에 라우팅 정보를 두지 않고, 클래스 상단 메타데이터에 어노테이션 정의를 선언하여 런타임에 리플렉션으로 주입 지도를 동적 구성하는 완벽한 디커플링 구조입니다.
 
@@ -372,9 +326,6 @@ public class OrderProcessorWithAnnotation implements InitializingBean {
 ```
 
 
-</NotionToggle>
-
-
 <NotionTable>
   <tbody>
     <tr><td>**라우팅 방식**</td><td>**핵심 메커니즘**</td><td>**장점**</td><td>**단점**</td></tr>
@@ -384,7 +335,4 @@ public class OrderProcessorWithAnnotation implements InitializingBean {
     <tr><td>**Custom 어노테이션**</td><td>리플렉션 메타데이터 활용</td><td>비즈니스 코드와 구조가 완벽히 분리되며, 클래스 추가만으로 완전한 확장이 가능하여 OCP 원칙을 극대화함</td><td>초기 설정을 위한 인프라성 코드 생성이 필요하고 스프링 컨테이너의 라이프사이클 구조 이해도가 필요함</td></tr>
   </tbody>
 </NotionTable>
-
-
-</NotionToggle>
 

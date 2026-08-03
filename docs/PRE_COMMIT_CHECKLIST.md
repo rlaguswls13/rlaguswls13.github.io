@@ -5,7 +5,7 @@
 - 관련 없는 사용자 변경을 덮어쓰지 않았는지 확인합니다.
 - 새 데이터가 화면 책임에 맞는 위치에 있는지 확인합니다.
   - 메인·목록: `src/data/pages/main/`
-  - 상세: `src/data/pages/detail/`
+  - 상세: `../src/content/detail/`
   - 조회용 생성 데이터: `src/data/indexes/`
   - 공개 설정/라우팅 맵: `src/data/config/`
 - `src/types/`에는 실제 사용하는 타입만 남기고 중복 타입을 만들지 않습니다.
@@ -15,7 +15,7 @@
 - MDX 파일명은 `src/content/devlog/{category}/{id}.mdx` 형식을 유지합니다.
 - 썸네일도 가능하면 같은 안정적인 ID 파일명을 사용합니다.
 - frontmatter의 `slug`만 공개 URL에 사용합니다.
-- `src/data/config/devlog-slugs.json`을 수동으로 파일명 변경 지시처럼 사용하지 않습니다.
+- `src/data/config/slugs.json`을 수동으로 파일명 변경 지시처럼 사용하지 않습니다.
 - slug 변경 후 `npm run generate-slugs`를 실행합니다.
 - Giscus discussion term은 기존 댓글 호환을 위해 ID 기반인지 확인합니다.
 

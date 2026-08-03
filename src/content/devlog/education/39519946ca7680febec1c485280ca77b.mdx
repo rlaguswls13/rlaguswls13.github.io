@@ -1,8 +1,434 @@
 ---
-sourceId: "39519946-ca76-80fe-bec1-c485280ca77b"
-title: "MVC 패턴이란?"
+tag: ["MVC"]
+description: "MVC 패턴은 UI와 비즈니스 로직의 관심사를 분리하여 각 영역을 독립적으로 개발하고 관리할 수 있도록 합니다. 하나의 Model을 다양한 View에서 활용할 수 있어 재사용성과 확장성이 높으며, 특정 영역을 수정할 때 다른 영역에 미치는 영향을 줄여 유지보수에도 유리합니다.\n 이러한 관심사 분리 원칙은 MVC에만 국한되지 않으며, 개발 목적과 기능에 따라 시스템을 분리하는 다양한 방식으로 확장되고 있습니다. BDD와 TDD는 행위와 테스트를 중심으로 개발 과정을 구조화하고, MSA는 비즈니스 기능을 기준으로 서비스를 분리한다는 점에서 이러한 흐름과 연결해 이해할 수 있습니다."
+subcategory: "2026"
+created_date: "2026-07-06"
+회차: "[교육 36일차]"
+category: "education"
 slug: "mvc-pattern-fundamentals"
-date: "2026-07-23"
+title: "MVC 패턴이란?"
+page_id: "39519946-ca76-80fe-bec1-c485280ca77b"
+source_id: "39519946ca7680febec1c485280ca77b"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/MVC-39519946ca7680febec1c485280ca77b"
+id: "39519946ca7680febec1c485280ca77b"
+sourceId: "39519946-ca76-80fe-bec1-c485280ca77b"
+date: "2026-07-06"
 tags: ["MVC"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/MVC-39519946ca7680febec1c485280ca77b"
 ---
+
+## MVC 란?
+
+### 1. MVC 구성/History
+
+**MVC**는 **Model, View, Controller**의 약자로 구성된 소프트웨어 디자인 패턴입니다.
+
+초기 MVC 아키텍처는 1970년대 말 제록스 파크(Xerox PARC)의 트뤼그베 린스카우그(Trygve Reenskaug)가 처음 고안했으며, 초기에는 Thing, Model, View, Editor(이후 Controller로 발전)라는 개념에서 출발했습니다. 이 개념은 사용자가 접하는 화면(View)과 서버의 비즈니스 로직(Model)을 명확히 분리하고, 그 사이를 컨트롤러(Controller)가 중계하는 구조로 진화해 왔습니다.
+
+#### 1) MVC 시각화한 이미지
+
+
+<NotionImage src="/images/notion/3ab19946ca768078b61ecac180727832.png" caption="image" />
+
+과거 MVC 패턴을 도입하기 전에는 단일 파일 내에 데이터 처리, 통신 로직, HTML 화면 출력을 모두 밀어 넣는 방식이 일반적이었습니다. 그러나 컴퓨팅 자원의 성장과 시스템의 고도화에 따라, 세분화된 기능을 효율적으로 관리하기 위해 MVC 패턴이 모듈화의 정석으로 자리 잡게 되었습니다.
+
+이러한 '역할 분담과 모듈화'의 핵심 철학은 이후  r나 MSA(Microservice Architecture)와 같이 확장된 아키텍처 패러다임으로 자연스럽게 이어졌다고 볼 수 있습니다.
+
+### 2. MVC 패턴을 사용하는 이유
+
+- **관심사의 분리 (Separation of Concerns)**
+UI 디자인(HTML/CSS) 영역과 비즈니스 로직(Java/Kotlin 등) 영역이 독립됩니다. 디자이너와 개발자가 서로의 코드를 침범하지 않고 병렬로 작업할 수 있습니다.
+
+
+- **높은 재사용성 (Reusability)**
+하나의 Model(데이터)을 기반으로 웹 화면, 모바일 앱, REST API(JSON) 등 다양한 형태의 View로 쉽게 확장·재활용할 수 있습니다. 관심사가 분리됨에 따라 UI 영역 내부에서도 특정 화면 요소를 하나의 컴포넌트처럼 독립시켜 재사용하기도 합니다.
+
+
+- **유지보수의 용이성 (Maintainability)**
+화면 레이아웃을 바꿀 때는 View만, 데이터베이스나 비즈니스 규칙을 수정할 때는 Model만 건드리면 되므로, 코드 수정 시 발생할 수 있는 사이드 이펙트(Side Effect)가 최소화됩니다.
+
+
+핵심은 MVC 역시 하나의 '패턴'이라는 점입니다. 패턴이란 검증된 표준 규격을 바탕으로 유사한 기능을 판박이처럼 정형화하여 생산하는 구조적 틀을 의미합니다. 이러한 정형화의 이점을 이해하면 MVC를 채택하는 이유를 보다 직관적으로 납득할 수 있습니다.
+
+기술이 한층 더 고도화된 **2026년 현재**에도 MVC 패턴의 근본적인 분리 철학은 여전히 유효하며, 현대 웹 및 애플리케이션 개발 프레임워크의 굳건한 표준으로 작동하고 있습니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>**구성 요소**</td><td>**역할**</td><td>**특징**</td><td>**주의사항**</td></tr>
+    <tr><td>**Model**<br /><br />(모델)</td><td>애플리케이션의 **데이터와 비즈니스 로직** 담당</td><td>• 내부 상태 변경 시 View나 Controller에 알림<br /><br />• DB 연동 및 데이터 읽기/쓰기/수정 규칙 포함</td><td>UI 관련 코드(View, Controller 정보)를 절대 포함하지 않고 순수 데이터/로직만 다룰 것</td></tr>
+    <tr><td>**View**<br /><br />(뷰)</td><td>사용자에게 보이는 **화면(UI)** 담당</td><td>• Model 데이터를 토대로 화면 렌더링<br /><br />• 사용자 입력(클릭, 텍스트 등)을 받아 Controller에 전달</td><td>자체 데이터 저장이나 복잡한 비즈니스 로직을 수행하지 않고, 오직 화면 출력만 담당할 것</td></tr>
+    <tr><td>**Controller**<br /><br />(컨트롤러)</td><td>Model과 View를 연결하는 **중재자 및 흐름 제어기**</td><td>• View의 요청(Request)을 받아 Model에 로직 수행 지시<br /><br />• 처리 결과를 바탕으로 응답할 View 결정</td><td>비즈니스 로직을 직접 처리하거나 화면 출력을 관여하지 않고, 오직 흐름 제어에 집중할 것</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionToggle title="과거 복잡한 단일 파일 소스" level="4">
+
+Spring Boot 3.x 내장 톰캣에서 JSP를 바로 해석하려면 **`src/main/webapp/`** **경로**에 JSP를 위치시키고 **`tomcat-embed-jasper`** 의존성을 추가해 주면 별도의 Controller 작성 없이도 URL로 direct 접근이 가능합니다. (Model 1방식)
+
+#### 1) 프로젝트 디렉토리 구조
+
+Model 1 방식은 별도의 Java 클래스(Controller, Service, DTO)가 필요 없으므로 구조가 매우 단순합니다.
+
+
+```text
+src/main/
+├── java/com/example/demo/
+│   └── DemoApplication.java    # Spring Boot 메인 실행 클래스
+└── webapp/
+    └── settlement.jsp          # 작성하신 Model 1 JSP 소스 파일
+```
+
+#### 2) 환경 세팅 파일
+
+### `build.gradle`
+
+Java 17 버전과 Spring Boot 3.x 환경 설정입니다. JSP 지원을 위해 `war` 플러그인 및 `tomcat-embed-jasper` 패키지가 필수입니다.
+
+
+```groovy
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'war' // Spring Boot에서 webapp 디렉토리 및 JSP 인식을 위해 필요
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // JSP 파일 컴파일을 위한 내장 톰캣 Jasper 엔진
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+```
+
+### `DemoApplication.java`
+
+Spring Boot 메인 실행 클래스입니다.
+
+
+```java
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication{
+    public static void main(String[] args){
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+```
+
+#### 3) Model 1 JSP 소스 코드
+
+`src/main/webapp/settlement.jsp` 파일에 아래 코드를 그대로 위치시킵니다.
+
+
+```html
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.net.URL, java.net.HttpURLConnection, java.io.BufferedReader, java.io.InputStreamReader" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JSP 단일 파일 아키텍처 예시 (Model 1)</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; padding: 20px; }
+        .card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 500px; }
+        .price-box { background: #f4f4f4; padding: 15px; border-radius: 4px; margin-top: 15px; }
+        .error { color: red; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>JSP 단일 파일 정산 시스템</h2>
+        <p>JSP 요청 처리 시 서버(Tomcat 등)에서 외부 통신, 정산 로직, HTML 출력을 한 번에 수행합니다.</p>
+
+        <%
+            // =========================================================================
+            // [1. 통신 로직 (Network/API Communication)]
+            // - JSP 스크립틀릿(<% %>) 안에서 Java 자원(HttpURLConnection)을 통해 외부 API 호출
+            // =========================================================================
+            String apiUrl = "https://jsonplaceholder.typicode.com/todos";
+            String jsonResponse = "";
+            boolean isSuccess = false;
+
+            try {
+                URL url = new URL(apiUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setConnectTimeout(3000);
+                conn.setReadTimeout(3000);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == 200) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                    String inputLine;
+                    StringBuilder content = new StringBuilder();
+                    while ((inputLine = in.readLine()) != null) {
+                        content.append(inputLine);
+                    }
+                    in.close();
+                    jsonResponse = content.toString();
+                    isSuccess = true;
+                } else {
+                    out.println("<p class='error'>서버 통신 실패 (HTTP status: " + responseCode + ")</p>");
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                out.println("<p class='error'>통신 중 예외 발생: " + e.getMessage() + "</p>");
+            }
+
+            // =========================================================================
+            // [2. 복잡한 비즈니스 로직 (Business Logic)]
+            // - 외부 통신으로 받아온 데이터를 수집, 데이터 필터링, 할인율 계산, 부가세 정산
+            // =========================================================================
+            int totalCount = 0;
+            int completedCount = 0;
+            double completionRate = 0.0;
+            int basePricePerItem = 12000;
+            double discountRate = 0.0;
+            long finalAmount = 0;
+
+            if (isSuccess && jsonResponse.length() > 0) {
+                // 특정 사용자(userId: 1) 데이터 수집 및 상태 체크
+                String[] items = jsonResponse.split("\\{");
+                for (String item : items) {
+                    if (item.contains("\"userId\": 1") || item.contains("\"userId\":1")) {
+                        totalCount++;
+                        if (item.contains("\"completed\": true") || item.contains("\"completed\":true")) {
+                            completedCount++;
+                        }
+                    }
+                }
+
+                if (totalCount > 0) {
+                    completionRate = ((double) completedCount / totalCount) * 100;
+                }
+
+                // 복잡한 조건별 할인율 산정 로직
+                if (completionRate >= 50.0) {
+                    discountRate = 0.15; // 15% 할인
+                } else if (completionRate >= 20.0) {
+                    discountRate = 0.05; // 5% 할인
+                }
+
+                double rawTotal = completedCount * basePricePerItem;
+                double discountedPrice = rawTotal * (1.0 - discountRate);
+                double vat = discountedPrice * 0.1; // 부가세 10%
+                finalAmount = Math.round(discountedPrice + vat);
+            }
+        %>
+
+        <!-- ======================================================================= -->
+        <!-- [3. 화면 구현 (UI / Presentation Layer)]                              -->
+        <!-- - HTML 태그 내부에 Java 변수를 직접 표현식(<%= %>)으로 삽입            -->
+        <!-- ======================================================================= -->
+        <% if (isSuccess) { %>
+            <div class="price-box">
+                <h3>정산 결과 리포트</h3>
+                <table>
+                    <tr>
+                        <th>항목</th>
+                        <th>내용</th>
+                    </tr>
+                    <tr>
+                        <td>총 주문 건수 (User 1)</td>
+                        <td><%= totalCount %>건</td>
+                    </tr>
+                    <tr>
+                        <td>처리 완료 건수</td>
+                        <td><%= completedCount %>건</td>
+                    </tr>
+                    <tr>
+                        <td>달성률 / 할인율</td>
+                        <td><%= String.format("%.1f", completionRate) %>% / <%= (int)(discountRate * 100) %>%</td>
+                    </tr>
+                    <tr>
+                        <th>최종 결제 금액 (VAT 포함)</th>
+                        <th><%= String.format("%,d", finalAmount) %>원</th>
+                    </tr>
+                </table>
+            </div>
+        <% } else { %>
+            <p class="error">데이터를 불러올 수 없어 정산을 완료하지 못했습니다.</p>
+        <% } %>
+
+    </div>
+
+</body>
+</html>
+```
+
+
+</NotionToggle>
+
+
+<NotionToggle title="현대 MVC 패턴 파일 소스" level="4">
+
+소스환경 : java17 - springboot3.x - jsp 사용기준
+
+#### 1) 프로젝트 설정 및 구조
+
+JSP는 Spring Boot 기본 템플릿 엔진이 아니므로 별도 의존성 및 View Resolver 설정이 필요합니다.
+
+#### 디렉토리 구조
+
+
+```text
+src/main/
+├── java/com/example/demo/
+│   ├── controller/UserController.java  # Controller
+│   └── model/UserDto.java               # Model
+└── webapp/WEB-INF/views/
+    └── user/detail.jsp                 # View
+```
+
+### `build.gradle` (의존성 추가)
+
+
+```text
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring Boot 3.x JSP 필수 의존성 (Tomcat Jasper & Jakarta JSTL)
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api'
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
+}
+```
+
+### `application.yml` (View Resolver 설정)
+
+
+```text
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+```
+
+#### 2) Model (데이터 객체)
+
+Java 17의 `record`를 활용하면 불변 데이터 객체(DTO)를 간결하게 정의할 수 있습니다.
+
+
+```java
+package com.example.demo.model;
+
+/**
+ * Model: 비즈니스 데이터 및 DTO 역할
+ * Java 17 record 사용 시 getter, toString, equals/hashCode 자동 생성
+ */
+public record UserDto(
+    Long id,
+    String name,
+    String email,
+    String role
+){}
+```
+
+#### 3) Controller (요청 제어 및 데이터 전달)
+
+`@Controller` 어노테이션으로 클라이언트 요청을 받아 비즈니스 로직을 처리한 뒤, Spring의 `Model` 객체에 데이터를 담아 View로 넘깁니다.
+
+
+```java
+package com.example.demo.controller;
+
+import com.example.demo.model.UserDto;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/users")
+public class UserController{
+
+    @GetMapping("/{id}")
+    public String getUserDetail(@PathVariable Long id, Model model){
+        // 1. Model(데이터) 준비 - 실제 개발 시 Service 계층에서 조회
+        UserDto user = new UserDto(id, "홍길동", "hong@example.com", "ADMIN");
+
+        // 2. Controller -> View 데이터 전달
+        model.addAttribute("user", user);
+
+        // 3. View 이름 반환 (/WEB-INF/views/user/detail.jsp 매핑)
+        return "user/detail";
+    }
+}
+```
+
+#### 4) View (JSP 화면)
+
+Spring Boot 3.x(Jakarta EE)부터는 JSTL 태그 라이브러리 URI가 `jakarta.tags.core`로 지정됩니다.
+
+`src/main/webapp/WEB-INF/views/user/detail.jsp`
+
+
+```html
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- Jakarta EE JSTL 선언 --%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>사용자 상세 정보</title>
+</head>
+<body>
+    <h1>사용자 프로필</h1>
+    <hr>
+
+    <div>
+        <%-- Java 17 record의 필드도 기존 EL 표준 ${user.name} 방식으로 바로 접근 가능합니다 --%>
+        <p><strong>아이디:</strong> ${user.id}</p>
+        <p><strong>이름:</strong> <c:out value="${user.name}" /></p>
+        <p><strong>이메일:</strong> <c:out value="${user.email}" /></p>
+        <p><strong>권한:</strong> ${user.role}</p>
+    </div>
+</body>
+</html>
+```
+
+
+</NotionToggle>
+
+### 3. 용어
+
+- DDD(Domain-Driven Development)
+소프트웨어의 복잡성이 커질 때 **'기술(Code/DB)'보다 '도메인(비즈니스 핵심 영역)'을 중심에 두고 설계하는 기법, 기술별 계층을 나눠서 응집도 향상을 도모하는 개발입니다.**
+- MSA(Micro Service Architecture)
+하나의 거대한 애플리케이션(모놀로식, Monolithic)을 독립적으로 배포 및 실행 가능한 **작은 서비스 단위로 쪼개어 구축하는 아키텍처 양식**입니다.
 

@@ -6,7 +6,7 @@ const siteConfig = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), "src", "data", "config", "site.json"), "utf8"),
 );
 const slugConfig = JSON.parse(
-  fs.readFileSync(path.join(process.cwd(), "src", "data", "config", "devlog-slugs.json"), "utf8"),
+  fs.readFileSync(path.join(process.cwd(), "src", "data", "config", "slugs.json"), "utf8"),
 );
 const GISCUS_REPOSITORY = process.env.GISCUS_REPOSITORY || siteConfig.giscus.repository;
 const OUTPUT_PATH = path.join(process.cwd(), "src", "data", "indexes", "engagement.json");

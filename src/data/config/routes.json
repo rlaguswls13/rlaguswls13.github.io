@@ -1,0 +1,412 @@
+{
+  "tech_study": {
+    "byPageId": {
+      "3b019946ca7680a2b04ec92e293b2af4": "/devlog/tech_study/essential-docker-commands",
+      "3b019946ca7680aab42be44f7d069738": "/devlog/tech_study/docker-network-inbound-outbound",
+      "3b019946ca7680c2a416c4eed946b95d": "/devlog/tech_study/refactoring-book-review",
+      "3b019946ca7680c8ad78c8ee01f79dfd": "/devlog/tech_study/docker-apparmor-environment-security",
+      "3b019946ca7680e4a56dcbcd708153c3": "/devlog/tech_study/kubernetes-defense-in-depth-security",
+      "3b019946ca7680e290cdf2a3101148a4": "/devlog/tech_study/docker-storage-data-persistence",
+      "3b019946ca7680f084e0f0a43ef7f1cd": "/devlog/tech_study/spring-batch-exception-status",
+      "3b019946ca7680f69492e6e87f7a4530": "/devlog/tech_study/apache-tomcat-ssl-operations-guide",
+      "3b019946ca7680ff9877e74515176168": "/devlog/tech_study/spring-batch-graceful-stop",
+      "3b019946ca76801cb6dac264f9d0c0e1": "/devlog/tech_study/spring-batch-core-architecture",
+      "3b019946ca76801da149f494c3231de4": "/devlog/tech_study/clean-code-book-review",
+      "3b019946ca76802cab88d54846776de9": "/devlog/tech_study/docker-image-dockerfile-entrypoint",
+      "3b019946ca76806b8b45f39febf76658": "/devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison",
+      "3b019946ca76806e849ff6e0fb57ac3d": "/devlog/tech_study/docker-to-podman-migration",
+      "3b019946ca76806eb6e9e090b639ab4b": "/devlog/tech_study/java-code-convention-maintainability",
+      "3b019946ca76809c936cd86896eb38db": "/devlog/tech_study/legacy-data-migration-encoding-recovery",
+      "3b019946ca768030ad15dcc419fe79a4": "/devlog/tech_study/spring-event-logging-pub-sub-architecture",
+      "3b019946ca768060a97ee328eea5a576": "/devlog/tech_study/spring-batch-scaling",
+      "3b019946ca768079be45f5fdc2d4019f": "/devlog/tech_study/docker-container-runtime-basics",
+      "3b019946ca768094a4c9f440ffdf6bfd": "/devlog/tech_study/spring-batch-tasklet-chunk",
+      "3b019946ca7680809e0fcf7c0f56c7bb": "/devlog/tech_study/spring-batch-job-step-scope",
+      "3b019946ca768023920bc0535a88d2ae": "/devlog/tech_study/spring-batch-performance-tuning",
+      "3b019946ca768079878fed99b13e958f": "/devlog/tech_study/nginx-apache-iis-comparison",
+      "3b019946ca7680849498da3bf66eaf67": "/devlog/tech_study/das-nas-san-storage-architecture"
+    },
+    "bySlug": {
+      "essential-docker-commands": {
+        "id": "3b019946ca7680a2b04ec92e293b2af4",
+        "url": "/devlog/tech_study/essential-docker-commands"
+      },
+      "docker-network-inbound-outbound": {
+        "id": "3b019946ca7680aab42be44f7d069738",
+        "url": "/devlog/tech_study/docker-network-inbound-outbound"
+      },
+      "refactoring-book-review": {
+        "id": "3b019946ca7680c2a416c4eed946b95d",
+        "url": "/devlog/tech_study/refactoring-book-review"
+      },
+      "docker-apparmor-environment-security": {
+        "id": "3b019946ca7680c8ad78c8ee01f79dfd",
+        "url": "/devlog/tech_study/docker-apparmor-environment-security"
+      },
+      "kubernetes-defense-in-depth-security": {
+        "id": "3b019946ca7680e4a56dcbcd708153c3",
+        "url": "/devlog/tech_study/kubernetes-defense-in-depth-security"
+      },
+      "docker-storage-data-persistence": {
+        "id": "3b019946ca7680e290cdf2a3101148a4",
+        "url": "/devlog/tech_study/docker-storage-data-persistence"
+      },
+      "spring-batch-exception-status": {
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "url": "/devlog/tech_study/spring-batch-exception-status"
+      },
+      "apache-tomcat-ssl-operations-guide": {
+        "id": "3b019946ca7680f69492e6e87f7a4530",
+        "url": "/devlog/tech_study/apache-tomcat-ssl-operations-guide"
+      },
+      "spring-batch-graceful-stop": {
+        "id": "3b019946ca7680ff9877e74515176168",
+        "url": "/devlog/tech_study/spring-batch-graceful-stop"
+      },
+      "spring-batch-core-architecture": {
+        "id": "3b019946ca76801cb6dac264f9d0c0e1",
+        "url": "/devlog/tech_study/spring-batch-core-architecture"
+      },
+      "clean-code-book-review": {
+        "id": "3b019946ca76801da149f494c3231de4",
+        "url": "/devlog/tech_study/clean-code-book-review"
+      },
+      "docker-image-dockerfile-entrypoint": {
+        "id": "3b019946ca76802cab88d54846776de9",
+        "url": "/devlog/tech_study/docker-image-dockerfile-entrypoint"
+      },
+      "nvme-ssd-sata-ssd-hdd-comparison": {
+        "id": "3b019946ca76806b8b45f39febf76658",
+        "url": "/devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison"
+      },
+      "docker-to-podman-migration": {
+        "id": "3b019946ca76806e849ff6e0fb57ac3d",
+        "url": "/devlog/tech_study/docker-to-podman-migration"
+      },
+      "java-code-convention-maintainability": {
+        "id": "3b019946ca76806eb6e9e090b639ab4b",
+        "url": "/devlog/tech_study/java-code-convention-maintainability"
+      },
+      "legacy-data-migration-encoding-recovery": {
+        "id": "3b019946ca76809c936cd86896eb38db",
+        "url": "/devlog/tech_study/legacy-data-migration-encoding-recovery"
+      },
+      "spring-event-logging-pub-sub-architecture": {
+        "id": "3b019946ca768030ad15dcc419fe79a4",
+        "url": "/devlog/tech_study/spring-event-logging-pub-sub-architecture"
+      },
+      "spring-batch-scaling": {
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "url": "/devlog/tech_study/spring-batch-scaling"
+      },
+      "docker-container-runtime-basics": {
+        "id": "3b019946ca768079be45f5fdc2d4019f",
+        "url": "/devlog/tech_study/docker-container-runtime-basics"
+      },
+      "spring-batch-tasklet-chunk": {
+        "id": "3b019946ca768094a4c9f440ffdf6bfd",
+        "url": "/devlog/tech_study/spring-batch-tasklet-chunk"
+      },
+      "spring-batch-job-step-scope": {
+        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
+        "url": "/devlog/tech_study/spring-batch-job-step-scope"
+      },
+      "spring-batch-performance-tuning": {
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "url": "/devlog/tech_study/spring-batch-performance-tuning"
+      },
+      "nginx-apache-iis-comparison": {
+        "id": "3b019946ca768079878fed99b13e958f",
+        "url": "/devlog/tech_study/nginx-apache-iis-comparison"
+      },
+      "das-nas-san-storage-architecture": {
+        "id": "3b019946ca7680849498da3bf66eaf67",
+        "url": "/devlog/tech_study/das-nas-san-storage-architecture"
+      }
+    }
+  },
+  "problem_solving": {
+    "byPageId": {
+      "3b019946ca7680b584e1c59c19e022a9": "/devlog/problem_solving/spring-quartz-ha-optimization",
+      "3b019946ca76802d9983cc6f0ad5b494": "/devlog/problem_solving/java-large-object-g1gc-optimization",
+      "3b019946ca76808e9f6ec9aec83dbaaf": "/devlog/problem_solving/was-session-consistency",
+      "3b019946ca768008beced8b682cac597": "/devlog/problem_solving/aop-exception-handling-common-response",
+      "3b019946ca768059b91cc1de8dbbe8f7": "/devlog/problem_solving/activemq-kahadb-disk-rate-limit",
+      "3b019946ca768062aeb4e0e781ed366a": "/devlog/problem_solving/async-api-processing-architecture"
+    },
+    "bySlug": {
+      "spring-quartz-ha-optimization": {
+        "id": "3b019946ca7680b584e1c59c19e022a9",
+        "url": "/devlog/problem_solving/spring-quartz-ha-optimization"
+      },
+      "java-large-object-g1gc-optimization": {
+        "id": "3b019946ca76802d9983cc6f0ad5b494",
+        "url": "/devlog/problem_solving/java-large-object-g1gc-optimization"
+      },
+      "was-session-consistency": {
+        "id": "3b019946ca76808e9f6ec9aec83dbaaf",
+        "url": "/devlog/problem_solving/was-session-consistency"
+      },
+      "aop-exception-handling-common-response": {
+        "id": "3b019946ca768008beced8b682cac597",
+        "url": "/devlog/problem_solving/aop-exception-handling-common-response"
+      },
+      "activemq-kahadb-disk-rate-limit": {
+        "id": "3b019946ca768059b91cc1de8dbbe8f7",
+        "url": "/devlog/problem_solving/activemq-kahadb-disk-rate-limit"
+      },
+      "async-api-processing-architecture": {
+        "id": "3b019946ca768062aeb4e0e781ed366a",
+        "url": "/devlog/problem_solving/async-api-processing-architecture"
+      }
+    }
+  },
+  "competition_event": {
+    "byPageId": {
+      "3b019946ca7680c8836dcb0ed7e63c69": "/devlog/competition_event/github-copilot-hackathon-retrospective"
+    },
+    "bySlug": {
+      "github-copilot-hackathon-retrospective": {
+        "id": "3b019946ca7680c8836dcb0ed7e63c69",
+        "url": "/devlog/competition_event/github-copilot-hackathon-retrospective"
+      }
+    }
+  },
+  "blog": {
+    "byPageId": {
+      "3a319946ca768078b891d2ebf14c4741": "/devlog/blog/2026-first-half-interview-retrospective",
+      "3a619946ca7680288a44ef2065a0c130": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
+      "3ab19946ca768020a285dc6c49b14793": "/devlog/blog/rebuilding-from-specs-without-git"
+    },
+    "bySlug": {
+      "2026-first-half-interview-retrospective": {
+        "id": "3a319946ca768078b891d2ebf14c4741",
+        "url": "/devlog/blog/2026-first-half-interview-retrospective"
+      },
+      "building-a-knowledge-mind-map-with-obsidian": {
+        "id": "3a619946ca7680288a44ef2065a0c130",
+        "url": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian"
+      },
+      "rebuilding-from-specs-without-git": {
+        "id": "3ab19946ca768020a285dc6c49b14793",
+        "url": "/devlog/blog/rebuilding-from-specs-without-git"
+      }
+    }
+  },
+  "education": {
+    "byPageId": {
+      "3a319946ca7680a6b7b3f98589e30442": "/devlog/education/spring-filter-and-interceptor",
+      "3a319946ca7680f58266f72bdafd3de8": "/devlog/education/spring-framework-for-web-applications",
+      "3a319946ca76800bb0c3ea701fc098b2": "/devlog/education/jsp-and-jstl",
+      "3a319946ca76802aa2cff193b6a2456e": "/devlog/education/spring-mvc-request-response",
+      "3a319946ca76806db9ecf8824115ebea": "/devlog/education/requirements-definition-document",
+      "3a319946ca76807b8e7ac1d05c32e441": "/devlog/education/semi-project",
+      "35e19946ca76807b9fe4f64d17b2e1b6": "/devlog/education/java-development-environment-and-basic-syntax",
+      "35f19946ca7680aaab2de0ba2b1acd0b": "/devlog/education/java-constants-type-casting-and-memory",
+      "36d19946ca7680559155e3820742c2be": "/devlog/education/java-composite-feature-implementation",
+      "36e19946ca768099b9e1ed827b7817fd": "/devlog/education/java-inheritance-feature-implementation",
+      "36f19946ca76807b9740c769bb81319a": "/devlog/education/java-polymorphism-implementation",
+      "38e19946ca7680e1a523fdf74099c07f": "/devlog/education/javascript-signup-page-implementation",
+      "38e19946ca768000b2fadd797469364b": "/devlog/education/dom-bom-event-delegation-bubbling",
+      "36019946ca7680ac8b6cd025e664b34b": "/devlog/education/java-control-flow-and-extensible-code",
+      "36119946ca7680f1baccfeea7b17d64b": "/devlog/education/java-conditional-loop-practice",
+      "36419946ca7680f6a116fe0b8c2c9648": "/devlog/education/java-constructor-practice",
+      "36419946ca76801f84b2e07084d1a544": "/devlog/education/java-one-dimensional-array-practice",
+      "36419946ca768084bdebc4e8de245ef7": "/devlog/education/java-two-dimensional-array-practice",
+      "36819946ca7680ad822eeb9d40d24cdb": "/devlog/education/java-source-feature-implementation",
+      "37219946ca7680b18b5dec7e65c0f197": "/devlog/education/java-exception-handling",
+      "37219946ca76809a847ecd89ced12913": "/devlog/education/network-fundamentals",
+      "37219946ca76809eb4d7eac0cc7677af": "/devlog/education/java-collection-framework",
+      "37219946ca768000a8abe3311816c88d": "/devlog/education/restful-api-and-generics",
+      "37919946ca7680c4b292fdd5a6ce5794": "/devlog/education/database-functions-and-procedures",
+      "37919946ca7680ca8debe99c5967f5c9": "/devlog/education/process-and-thread",
+      "37919946ca7680d68411e998f7cd476c": "/devlog/education/sql-window-functions-partitioning-indexes",
+      "37919946ca7680db8d27fc34d79d9c45": "/devlog/education/sql-join-normalization-index-management",
+      "37919946ca7680568248ea033ea13f4f": "/devlog/education/database-and-sql",
+      "38019946ca7680e7a3a2c619019d037c": "/devlog/education/customer-messaging-marketing-history",
+      "38019946ca768018bc76cbe284514b07": "/devlog/education/backend-transactions-and-database-locks",
+      "38019946ca768025ac09f6c9bf85e0b6": "/devlog/education/pagination-limit-offset-and-partitioning",
+      "38019946ca7680548aaff686f677ee28": "/devlog/education/jsp-and-modern-template-engine",
+      "38019946ca768066812adf60bf9ac09a": "/devlog/education/html-and-css-fundamentals",
+      "38719946ca7680ff854ff8a00e1f49b1": "/devlog/education/javascript-array-higher-order-functions-async",
+      "38719946ca76804c968ee8521154cff7": "/devlog/education/recover-deleted-git-history",
+      "38719946ca76807cbcf2f458ba72068c": "/devlog/education/javascript-prototype-and-class",
+      "38719946ca768076a4ced4f41fd6f26c": "/devlog/education/javascript-closure-hoisting-scope",
+      "38719946ca7680639d1ecf7b31dabb61": "/devlog/education/backend-developer-frontend-perspective",
+      "39119946ca76804ea9fafb60b5f42a2a": "/devlog/education/jquery-bootstrap-and-ajax",
+      "39119946ca76806dbd0fc549ddde2532": "/devlog/education/jdbc-fundamentals",
+      "39119946ca768076af6bf1cf7f4e52c4": "/devlog/education/was-and-web-server-fundamentals",
+      "39519946ca7680febec1c485280ca77b": "/devlog/education/mvc-pattern-fundamentals"
+    },
+    "bySlug": {
+      "spring-filter-and-interceptor": {
+        "id": "3a319946ca7680a6b7b3f98589e30442",
+        "url": "/devlog/education/spring-filter-and-interceptor"
+      },
+      "spring-framework-for-web-applications": {
+        "id": "3a319946ca7680f58266f72bdafd3de8",
+        "url": "/devlog/education/spring-framework-for-web-applications"
+      },
+      "jsp-and-jstl": {
+        "id": "3a319946ca76800bb0c3ea701fc098b2",
+        "url": "/devlog/education/jsp-and-jstl"
+      },
+      "spring-mvc-request-response": {
+        "id": "3a319946ca76802aa2cff193b6a2456e",
+        "url": "/devlog/education/spring-mvc-request-response"
+      },
+      "requirements-definition-document": {
+        "id": "3a319946ca76806db9ecf8824115ebea",
+        "url": "/devlog/education/requirements-definition-document"
+      },
+      "semi-project": {
+        "id": "3a319946ca76807b8e7ac1d05c32e441",
+        "url": "/devlog/education/semi-project"
+      },
+      "java-development-environment-and-basic-syntax": {
+        "id": "35e19946ca76807b9fe4f64d17b2e1b6",
+        "url": "/devlog/education/java-development-environment-and-basic-syntax"
+      },
+      "java-constants-type-casting-and-memory": {
+        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
+        "url": "/devlog/education/java-constants-type-casting-and-memory"
+      },
+      "java-composite-feature-implementation": {
+        "id": "36d19946ca7680559155e3820742c2be",
+        "url": "/devlog/education/java-composite-feature-implementation"
+      },
+      "java-inheritance-feature-implementation": {
+        "id": "36e19946ca768099b9e1ed827b7817fd",
+        "url": "/devlog/education/java-inheritance-feature-implementation"
+      },
+      "java-polymorphism-implementation": {
+        "id": "36f19946ca76807b9740c769bb81319a",
+        "url": "/devlog/education/java-polymorphism-implementation"
+      },
+      "javascript-signup-page-implementation": {
+        "id": "38e19946ca7680e1a523fdf74099c07f",
+        "url": "/devlog/education/javascript-signup-page-implementation"
+      },
+      "dom-bom-event-delegation-bubbling": {
+        "id": "38e19946ca768000b2fadd797469364b",
+        "url": "/devlog/education/dom-bom-event-delegation-bubbling"
+      },
+      "java-control-flow-and-extensible-code": {
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "url": "/devlog/education/java-control-flow-and-extensible-code"
+      },
+      "java-conditional-loop-practice": {
+        "id": "36119946ca7680f1baccfeea7b17d64b",
+        "url": "/devlog/education/java-conditional-loop-practice"
+      },
+      "java-constructor-practice": {
+        "id": "36419946ca7680f6a116fe0b8c2c9648",
+        "url": "/devlog/education/java-constructor-practice"
+      },
+      "java-one-dimensional-array-practice": {
+        "id": "36419946ca76801f84b2e07084d1a544",
+        "url": "/devlog/education/java-one-dimensional-array-practice"
+      },
+      "java-two-dimensional-array-practice": {
+        "id": "36419946ca768084bdebc4e8de245ef7",
+        "url": "/devlog/education/java-two-dimensional-array-practice"
+      },
+      "java-source-feature-implementation": {
+        "id": "36819946ca7680ad822eeb9d40d24cdb",
+        "url": "/devlog/education/java-source-feature-implementation"
+      },
+      "java-exception-handling": {
+        "id": "37219946ca7680b18b5dec7e65c0f197",
+        "url": "/devlog/education/java-exception-handling"
+      },
+      "network-fundamentals": {
+        "id": "37219946ca76809a847ecd89ced12913",
+        "url": "/devlog/education/network-fundamentals"
+      },
+      "java-collection-framework": {
+        "id": "37219946ca76809eb4d7eac0cc7677af",
+        "url": "/devlog/education/java-collection-framework"
+      },
+      "restful-api-and-generics": {
+        "id": "37219946ca768000a8abe3311816c88d",
+        "url": "/devlog/education/restful-api-and-generics"
+      },
+      "database-functions-and-procedures": {
+        "id": "37919946ca7680c4b292fdd5a6ce5794",
+        "url": "/devlog/education/database-functions-and-procedures"
+      },
+      "process-and-thread": {
+        "id": "37919946ca7680ca8debe99c5967f5c9",
+        "url": "/devlog/education/process-and-thread"
+      },
+      "sql-window-functions-partitioning-indexes": {
+        "id": "37919946ca7680d68411e998f7cd476c",
+        "url": "/devlog/education/sql-window-functions-partitioning-indexes"
+      },
+      "sql-join-normalization-index-management": {
+        "id": "37919946ca7680db8d27fc34d79d9c45",
+        "url": "/devlog/education/sql-join-normalization-index-management"
+      },
+      "database-and-sql": {
+        "id": "37919946ca7680568248ea033ea13f4f",
+        "url": "/devlog/education/database-and-sql"
+      },
+      "customer-messaging-marketing-history": {
+        "id": "38019946ca7680e7a3a2c619019d037c",
+        "url": "/devlog/education/customer-messaging-marketing-history"
+      },
+      "backend-transactions-and-database-locks": {
+        "id": "38019946ca768018bc76cbe284514b07",
+        "url": "/devlog/education/backend-transactions-and-database-locks"
+      },
+      "pagination-limit-offset-and-partitioning": {
+        "id": "38019946ca768025ac09f6c9bf85e0b6",
+        "url": "/devlog/education/pagination-limit-offset-and-partitioning"
+      },
+      "jsp-and-modern-template-engine": {
+        "id": "38019946ca7680548aaff686f677ee28",
+        "url": "/devlog/education/jsp-and-modern-template-engine"
+      },
+      "html-and-css-fundamentals": {
+        "id": "38019946ca768066812adf60bf9ac09a",
+        "url": "/devlog/education/html-and-css-fundamentals"
+      },
+      "javascript-array-higher-order-functions-async": {
+        "id": "38719946ca7680ff854ff8a00e1f49b1",
+        "url": "/devlog/education/javascript-array-higher-order-functions-async"
+      },
+      "recover-deleted-git-history": {
+        "id": "38719946ca76804c968ee8521154cff7",
+        "url": "/devlog/education/recover-deleted-git-history"
+      },
+      "javascript-prototype-and-class": {
+        "id": "38719946ca76807cbcf2f458ba72068c",
+        "url": "/devlog/education/javascript-prototype-and-class"
+      },
+      "javascript-closure-hoisting-scope": {
+        "id": "38719946ca768076a4ced4f41fd6f26c",
+        "url": "/devlog/education/javascript-closure-hoisting-scope"
+      },
+      "backend-developer-frontend-perspective": {
+        "id": "38719946ca7680639d1ecf7b31dabb61",
+        "url": "/devlog/education/backend-developer-frontend-perspective"
+      },
+      "jquery-bootstrap-and-ajax": {
+        "id": "39119946ca76804ea9fafb60b5f42a2a",
+        "url": "/devlog/education/jquery-bootstrap-and-ajax"
+      },
+      "jdbc-fundamentals": {
+        "id": "39119946ca76806dbd0fc549ddde2532",
+        "url": "/devlog/education/jdbc-fundamentals"
+      },
+      "was-and-web-server-fundamentals": {
+        "id": "39119946ca768076af6bf1cf7f4e52c4",
+        "url": "/devlog/education/was-and-web-server-fundamentals"
+      },
+      "mvc-pattern-fundamentals": {
+        "id": "39519946ca7680febec1c485280ca77b",
+        "url": "/devlog/education/mvc-pattern-fundamentals"
+      }
+    }
+  }
+}

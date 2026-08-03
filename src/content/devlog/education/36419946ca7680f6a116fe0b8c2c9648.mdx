@@ -1,43 +1,56 @@
 ---
-sourceId: "36419946-ca76-80f6-a116-fe0b8c2c9648"
-title: "java 생성자를 활용한 문제풀이"
+tag: ["메서드","생성자","lombok","builder패턴"]
+description: "자바의 기본인 getter, setter, 생성자의 본질을 다시금 되짚어보는 뜻깊은 시간이었습니다. 첫 개발을 할때는 코드를 일일이 직접 손으로 작성하곤 했지만, 이제는 Lombok 라이브러리와 Builder 패턴을 활용해 반복적인 코드를 획기적으로 줄이고 생산성과 소스 관리의 효율성을 동시에 높일수 있다는 부분 한번 더 느꼈습니다. 그리고 java로 코드 작성할 때는 매번 메모리 관리 및 성능에 대해서 고민을 하면서 작성을 했는데 , 테스트 시 내부 클래스로 빠르게 검증한 뒤 독립된 클래스로 분리하는 과정을 통해, 코드의 재사용성을 높이는 것은 물론 무분별한 static 선언을 방지하여 메모리 효율까지 함께 고민해 볼 수 있었던 거 같습니다."
+subcategory: "2026"
+created_date: "2026-05-20"
+회차: "[교육 7일차]"
+category: "education"
 slug: "java-constructor-practice"
-date: "2026-07-23"
-tags: ["메서드", "생성자", "lombok", "builder패턴"]
+title: "java 생성자를 활용한 문제풀이"
+page_id: "36419946-ca76-80f6-a116-fe0b8c2c9648"
+source_id: "36419946ca7680f6a116fe0b8c2c9648"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/java-36419946ca7680f6a116fe0b8c2c9648"
+id: "36419946ca7680f6a116fe0b8c2c9648"
+sourceId: "36419946-ca76-80f6-a116-fe0b8c2c9648"
+date: "2026-05-20"
+tags: ["메서드","생성자","lombok","builder패턴"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/java-36419946ca7680f6a116fe0b8c2c9648"
 ---
 
-
-<NotionToggle title="실습 예제 1 — Product 클래스" level="2">
+## 1. Product 클래스
 
 **실습 목표**
 
 - `Product` 클래스와 `Run` 클래스를 작성하여, 기본 생성자로 생성한 객체의 정보를 출력하는 프로그램을 만든다.
+**구현 내용 설명**
 
 
-<NotionToggle title="구현 내용 설명">
+<NotionIndent>
 
 1. **Product 클래스**
-  - **필드(변수)**
-    - `pName` : `String` → 상품명
-    - `price` : `int` → 가격
-    - `brand` : `String` → 브랜드명
+- **필드(변수)**
+- `pName` : `String` → 상품명
+- `price` : `int` → 가격
+- `brand` : `String` → 브랜드명
 
-  - **생성자**
-    - 기본 생성자 1개
+- **생성자**
+- 기본 생성자 1개
 
-  - **메서드**
+- **메서드**
+- `information()` : `void` → 필드에 저장된 모든 정보를 출력 (형식 자유)
 
-    - `information()` : `void` → 필드에 저장된 모든 정보를 출력 (형식 자유)
 
 1. **Run 클래스**
-
-  - `main` 메서드에서 다음을 수행:
-
-    1. `Product` 객체를 기본 생성자로 생성
-    1. `information()` 메서드를 호출하여 출력
+- `main` 메서드에서 다음을 수행:
+1. `Product` 객체를 기본 생성자로 생성
+1. `information()` 메서드를 호출하여 출력
 
 
-</NotionToggle>
+
+</NotionIndent>
 
 
 <NotionToggle title="단순 테스트를 위해서 Inner Class로 테스트 코드 우선 작성">
@@ -85,8 +98,10 @@ public class practice20 {
 </NotionToggle>
 
 
-<NotionToggle title="service를 해주는 class, 객체 관리용 class 별도로 생성하여 main class에서 service class만 호출하여 원하는 내용 출력
-main(실제로 사용될 영역)에서 데이터를 input 받고 싶을 때는 method의 변수로 받아서 호출하게 변경하면 됩니다.">
+<NotionToggle title="코드">
+
+service를 해주는 class, 객체 관리용 class 별도로 생성하여 main class에서 service class만 호출하여 원하는 내용 출력
+main(실제로 사용될 영역)에서 데이터를 input 받고 싶을 때는 method의 변수로 받아서 호출하게 변경하면 됩니다
 
 
 ```java
@@ -145,49 +160,48 @@ public class practice20 {
 </NotionToggle>
 
 
-</NotionToggle>
-
 <NotionDivider />
 
+## 2. Student 클래스
 
-<NotionToggle title="실습 예제 2 — Student 클래스" level="2">
+**실습 목표**
 
 
-<NotionToggle title="실습 목표">
+<NotionIndent>
 
 - `Student` 클래스의 필드를 **초기화 블럭**을 이용해 초기값 설정 후, 기본 생성자로 객체 생성 및 정보 출력
 
+</NotionIndent>
 
-</NotionToggle>
+**구현 내용 설명**
 
 
-<NotionToggle title="구현 내용 설명">
+<NotionIndent>
 
 1. **Student 클래스**
+- **필드(변수)**
+- `grade` : `int` → 학년
+- `classroom` : `int` → 반
+- `name` : `String` → 이름
+- `height` : `double` → 키
+- `gender` : `char` → 성별
 
-  - **필드(변수)**
-    - `grade` : `int` → 학년
-    - `classroom` : `int` → 반
-    - `name` : `String` → 이름
-    - `height` : `double` → 키
-    - `gender` : `char` → 성별
+- **메서드**
+- getter/setter 메서드 (각 필드별)
+- `information()` : `String` → 모든 필드 정보를 문자열로 반환
 
-  - **메서드**
-    - getter/setter 메서드 (각 필드별)
-    - `information()` : `String` → 모든 필드 정보를 문자열로 반환
+- **특징**
+- **초기화 블럭**을 사용하여 각 필드에 기본값 설정
 
-  - **특징**
-    - **초기화 블럭**을 사용하여 각 필드에 기본값 설정
-
-  1. **Run 클래스**
-
-    - `main` 메서드에서 다음을 수행:
-
-      1. 기본 생성자로 `Student` 객체 생성
-      1. `information()` 메서드를 호출하여 출력
+1. **Run 클래스**
+- `main` 메서드에서 다음을 수행:
+1. 기본 생성자로 `Student` 객체 생성
+1. `information()` 메서드를 호출하여 출력
 
 
-</NotionToggle>
+
+
+</NotionIndent>
 
 
 <NotionToggle title="손 코딩을 작성하는 경우">
@@ -333,51 +347,50 @@ public class Main {
 </NotionToggle>
 
 
-</NotionToggle>
-
 <NotionDivider />
 
+## 3. Book 클래스
 
-<NotionToggle title="실습 예제 3 — Book 클래스" level="2">
+**실습 목표**
 
 
-<NotionToggle title="실습 목표">
+<NotionIndent>
 
 - 여러 생성자를 활용하여 `Book` 객체를 다양한 방식으로 생성하고 정보를 출력
 
+</NotionIndent>
 
-</NotionToggle>
+**구현 내용 설명**
 
 
-<NotionToggle title="구현 내용 설명">
+<NotionIndent>
 
 1. **Book 클래스**
-  - **필드(변수)**
-    - `title` : `String` → 제목
-    - `publisher` : `String` → 출판사
-    - `author` : `String` → 저자
-    - `price` : `int` → 가격
-    - `discountRate` : `double` → 할인율
+- **필드(변수)**
+- `title` : `String` → 제목
+- `publisher` : `String` → 출판사
+- `author` : `String` → 저자
+- `price` : `int` → 가격
+- `discountRate` : `double` → 할인율
 
-  - **생성자**
-    - 기본 생성자
-    - 매개변수 3개 생성자 (제목, 출판사, 저자)
-    - 매개변수 5개 생성자 (제목, 출판사, 저자, 가격, 할인율)
+- **생성자**
+- 기본 생성자
+- 매개변수 3개 생성자 (제목, 출판사, 저자)
+- 매개변수 5개 생성자 (제목, 출판사, 저자, 가격, 할인율)
 
-  - **메서드**
+- **메서드**
+- `inform()` : `void` → 모든 필드 정보 출력
 
-    - `inform()` : `void` → 모든 필드 정보 출력
 
 1. **Run 클래스**
-
-  - `main` 메서드에서 다음을 수행:
-
-    1. 기본 생성자로 객체 생성 후 `inform()` 호출
-    1. 3개 매개변수 생성자로 객체 생성 후 `inform()` 호출
-    1. 5개 매개변수 생성자로 객체 생성 후 `inform()` 호출
+- `main` 메서드에서 다음을 수행:
+1. 기본 생성자로 객체 생성 후 `inform()` 호출
+1. 3개 매개변수 생성자로 객체 생성 후 `inform()` 호출
+1. 5개 매개변수 생성자로 객체 생성 후 `inform()` 호출
 
 
-</NotionToggle>
+
+</NotionIndent>
 
 
 <NotionToggle title="코드">
@@ -443,8 +456,6 @@ public class Run {
 
 </NotionToggle>
 
-
-</NotionToggle>
 
 <NotionDivider />
 

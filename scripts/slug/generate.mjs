@@ -2,22 +2,29 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-// Keep the generated source-id-to-slug index in one build-time task.
+// Keep the generated source_id-to-slug index in one build-time task.
 const CONTENT_ROOT = path.join(process.cwd(), "src", "content", "devlog");
 const OUTPUT_PATH = path.join(
   process.cwd(),
   "src",
   "data",
   "config",
-  "devlog-slugs.json",
+  "slugs.json",
 );
-const CATEGORY_SOURCES = {
-  tech_study: "fixed",
-  problem_solving: "fixed",
-  competition_event: "fixed",
-  blog: "notion",
-  education: "notion",
-};
+const ROUTE_OUTPUT_PATH = path.join(
+  process.cwd(),
+  "src",
+  "data",
+  "config",
+  "routes.json",
+);
+const CATEGORIES = [
+  "tech_study",
+  "problem_solving",
+  "competition_event",
+  "blog",
+  "education",
+];
 const ENGLISH_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function walkMdxFiles(directory) {
@@ -31,19 +38,18 @@ function walkMdxFiles(directory) {
 
 const output = {};
 
-for (const [category, sourceType] of Object.entries(CATEGORY_SOURCES)) {
+for (const category of CATEGORIES) {
   const entries = walkMdxFiles(path.join(CONTENT_ROOT, category))
     .map((filePath) => {
       const { data } = matter(fs.readFileSync(filePath, "utf8"));
-      const rawId = sourceType === "notion" ? data.sourceId : data.id;
+      const rawId = data.source_id || data.page_id || data.sourceId || data.id;
       const id = String(rawId || "").trim();
-      const normalizedId = sourceType === "notion" ? id.replaceAll("-", "") : id;
+      const normalizedId = id.replaceAll("-", "");
       const slug = String(data.slug || "").trim();
       const filenameId = path.basename(filePath, ".mdx");
 
       if (!id) {
-        const propertyName = sourceType === "notion" ? "sourceId" : "id";
-        throw new Error(`Missing frontmatter ${propertyName}: ${path.relative(process.cwd(), filePath)}`);
+        throw new Error(`Missing frontmatter source_id/page_id/id: ${path.relative(process.cwd(), filePath)}`);
       }
       if (!ENGLISH_SLUG_PATTERN.test(slug)) {
         throw new Error(`Missing valid English frontmatter slug: ${path.relative(process.cwd(), filePath)}`);
@@ -69,7 +75,21 @@ for (const [category, sourceType] of Object.entries(CATEGORY_SOURCES)) {
 
 fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
 fs.writeFileSync(OUTPUT_PATH, `${JSON.stringify(output, null, 2)}\n`, "utf8");
+const routes = Object.fromEntries(Object.entries(output).map(([category, entries]) => [
+  category,
+  {
+    byPageId: Object.fromEntries(Object.entries(entries).map(([id, slug]) => [
+      id,
+      `/devlog/${category}/${slug}`,
+    ])),
+    bySlug: Object.fromEntries(Object.entries(entries).map(([id, slug]) => [
+      slug,
+      { id, url: `/devlog/${category}/${slug}` },
+    ])),
+  },
+]));
+fs.writeFileSync(ROUTE_OUTPUT_PATH, `${JSON.stringify(routes, null, 2)}\n`, "utf8");
 console.log(
   `Generated ${Object.values(output).reduce((total, entries) => total + Object.keys(entries).length, 0)} devlog slugs: `
-  + path.relative(process.cwd(), OUTPUT_PATH),
+  + `${path.relative(process.cwd(), OUTPUT_PATH)}, ${path.relative(process.cwd(), ROUTE_OUTPUT_PATH)}`,
 );

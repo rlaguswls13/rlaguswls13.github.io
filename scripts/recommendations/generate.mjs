@@ -10,7 +10,7 @@ const SLUG_CONFIG_PATH = path.join(
   "src",
   "data",
   "config",
-  "devlog-slugs.json",
+  "slugs.json",
 );
 const RECOMMENDATION_COUNT = 3;
 const slugConfig = JSON.parse(fs.readFileSync(SLUG_CONFIG_PATH, "utf8"));

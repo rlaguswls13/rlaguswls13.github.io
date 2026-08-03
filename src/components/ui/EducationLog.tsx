@@ -1,16 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import educationData from "@/data/pages/main/notion/education.json";
 import { CalendarIcon, BlogIcon, CommentIcon, CloseIcon } from "@/components/ui/Icons";
 import { TagList } from "@/components/ui/TagBadge";
 import { Pagination } from "@/components/ui/Pagination";
-import { normalizeEducationEntry, sortByDateDesc } from "@/lib/utils";
+import { sortByDateDesc } from "@/lib/utils";
 import Link from "next/link";
 import { JournalSectionHeader } from "@/components/ui/JournalSectionHeader";
 import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
 import { getDevlogHref } from "@/lib/devlog-slugs";
+import type { DevlogEntry } from "@/types";
 
 interface EducationEntry {
   id: string;
@@ -25,12 +25,14 @@ interface EducationEntry {
 }
 
 interface EducationLogProps {
+  entries: DevlogEntry[];
   itemsPerPage?: number;
   maxPageButtons?: number;
   searchQuery?: string;
 }
 
 export function EducationLog({
+  entries: sourceEntries,
   itemsPerPage = 9,
   maxPageButtons = 5,
   searchQuery = "",
@@ -38,13 +40,17 @@ export function EducationLog({
   const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const entries = useMemo(() => {
-    if (!Array.isArray(educationData)) return [];
-    const normalizedEntries = (educationData as unknown[])
-      .map((item) => normalizeEducationEntry(item))
-      .filter((item): item is EducationEntry => item !== null);
-    return sortByDateDesc(normalizedEntries);
-  }, []);
+  const entries = useMemo(() => sortByDateDesc(sourceEntries.map((entry) => ({
+    id: entry.id,
+    title: entry.title,
+    round: entry.round || "교육일지",
+    date: entry.date,
+    keywords: entry.tags,
+    impression: entry.impression || entry.description,
+    blogTitle: entry.blogTitle || entry.title,
+    notionUrl: entry.notionUrl || "",
+    slug: entry.slug || "",
+  }))), [sourceEntries]);
 
   const filteredEntries = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -111,7 +117,7 @@ export function EducationLog({
 
             {entry.slug && (
               <Link
-                href={`${getDevlogHref("education", entry.id)}?tab=journal&journal=education`}
+                href={`${getDevlogHref("education", entry.id)}?journal=education`}
                 className="education-blog-link"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -176,7 +182,7 @@ export function EducationLog({
 
             {selectedEntry.slug && (
               <Link
-                href={`${getDevlogHref("education", selectedEntry.id)}?tab=journal&journal=education`}
+                href={`${getDevlogHref("education", selectedEntry.id)}?journal=education`}
                 className="education-blog-link"
               >
                 <BlogIcon /> 상세내용 ↗

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import recommendationData from "@/data/indexes/devlog-recommendations.json";
-import projectsData from "@/data/pages/main/projects.json";
+import projectsData from "@/data/indexes/projects.json";
 import { siteConfig } from "@/lib/site";
 
 const SITE_URL = siteConfig.siteUrl;
@@ -8,7 +8,7 @@ const SITE_URL = siteConfig.siteUrl;
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/projects", "/devlog", "/career", "/contact"];
+  const staticRoutes = ["", "/about", "/projects", "/devlog", "/journal", "/career", "/contact"];
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: new URL(route || "/", SITE_URL).href,
     changeFrequency: route === "" ? "weekly" : "monthly",
@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const projectEntries: MetadataRoute.Sitemap = projectsData.projects.map((project) => ({
-    url: new URL(`/projects/${project.id}`, SITE_URL).href,
+    url: new URL(`/projects/${project.slug || project.id}`, SITE_URL).href,
     changeFrequency: "monthly",
     priority: 0.8,
   }));

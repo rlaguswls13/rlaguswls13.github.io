@@ -1,16 +1,28 @@
 ---
-sourceId: "38e19946-ca76-80e1-a523-fdf74099c07f"
-title: "js를 활용한 화면 구현하기 (회원가입 화면)"
+tag: ["실습","forntend","Strorage"]
+description: "브라우저 스토리지를 활용해 사용자가 선택한 테마를 로컬에 저장하고, 각 입력 상자(input box)마다 회원가입에 필요한 유효성 검증과 정규표현식(Regex) 패턴 검사 기능을 구현했습니다. 또한 우편번호 조회는 무료 API를 활용해 실제 데이터 연동까지 완료했으며, 인증번호 발송 기능의 경우 비용 및 보안 이슈를 고려해 현재는 콘솔에 임시로 출력되도록 처리했으나, 추후 백엔드 서버 환경이 구축되면 실제 전송 기능으로 확장할 수 있도록 설계했습니다."
+subcategory: "2026"
+created_date: "2026-06-30"
+회차: "[교육 32일차]"
+category: "education"
 slug: "javascript-signup-page-implementation"
-date: "2026-07-23"
-tags: ["실습", "forntend", "Strorage"]
+title: "js를 활용한 화면 구현하기 (회원가입 화면)"
+page_id: "38e19946-ca76-80e1-a523-fdf74099c07f"
+source_id: "38e19946ca7680e1a523fdf74099c07f"
+last_edited_time: "2026-08-03T03:41:00.000Z"
+notion_url: "https://app.notion.com/p/js-38e19946ca7680e1a523fdf74099c07f"
+id: "38e19946ca7680e1a523fdf74099c07f"
+sourceId: "38e19946-ca76-80e1-a523-fdf74099c07f"
+date: "2026-06-30"
+tags: ["실습","forntend","Strorage"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/js-38e19946ca7680e1a523fdf74099c07f"
 ---
 
+## 1. 브라우저 스토리지 (Storage)
 
-<NotionToggle title="1. 브라우저 스토리지 (Storage)" level="2">
-
-
-<NotionToggle title="1) localStorage vs sessionStorage 한눈에 보기" level="3">
+### 1) localStorage vs sessionStorage 한눈에 보기
 
 
 <NotionTable>
@@ -22,36 +34,22 @@ tags: ["실습", "forntend", "Strorage"]
   </tbody>
 </NotionTable>
 
-
-</NotionToggle>
-
-
-<NotionToggle title="2) local 대신 session을 활용하는 추세 (보안 이슈 및 트렌드)" level="3">
+### 2) local 대신 session을 활용하는 추세 (보안 이슈 및 트렌드)
 
 최근 모던 웹 개발에서는 민감하거나 중요한 데이터를 `localStorage`에 무조건 저장하는 방식을 기피합니다.
 
-- **보안 이슈 (XSS 취약성):**  `localStorage`는 웹사이트의 모든 자바스크립트 코드가 아무런 제약 없이 접근할 수 있습니다. 즉, 사이트가 XSS(크로스 사이트 스크립트) 공격에 노출되어 악성 스크립트가 실행되면 `localStorage.getItem()` 단 한 줄로 사용자의 로그인 토큰(JWT 등)을 통째로 탈취당할 수 있습니다.
+- **보안 이슈 (XSS 취약성):** `localStorage`는 웹사이트의 모든 자바스크립트 코드가 아무런 제약 없이 접근할 수 있습니다. 즉, 사이트가 XSS(크로스 사이트 스크립트) 공격에 노출되어 악성 스크립트가 실행되면 `localStorage.getItem()` 단 한 줄로 사용자의 로그인 토큰(JWT 등)을 통째로 탈취당할 수 있습니다.
 - **sessionStorage 선호 트렌드:** 반면 `sessionStorage`는 해당 탭 내부에서만 격리되어 실행되므로 타 도메인이나 타 탭에서의 오염 확률이 상대적으로 낮고, 사용자가 창을 닫으면 흔적 없이 사라지기 때문에 금융권 웹앱이나 인증 세션 관리에서 '만료 관리가 명확하다'는 장점 때문에 적극적으로 채택되고 있습니다.
-- **진짜 트렌드 한 걸음 더:** 토큰 보안을 극벽화하기 위해 아예 스토리지를 쓰지 않고, 브라우저가 종료되면 날아가는 **자바스크립트 인메모리(In-Memory)** 변수에 토큰을 들고 있거나, `**httpOnly**` **및** `**secure**` **옵션이 켜진 쿠키**에 저장하는 것이 현재 프론트엔드 보안의 가장 핵심 트렌드입니다.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="3) 각 스토리지의 명확한 장점 및 활용 시나리오" level="3">
+- **진짜 트렌드 한 걸음 더:** 토큰 보안을 극벽화하기 위해 아예 스토리지를 쓰지 않고, 브라우저가 종료되면 날아가는 **자바스크립트 인메모리(In-Memory)** 변수에 토큰을 들고 있거나, **`httpOnly`** **및** **`secure`** **옵션이 켜진 쿠키**에 저장하는 것이 현재 프론트엔드 보안의 가장 핵심 트렌드입니다.
+### 3) 각 스토리지의 명확한 장점 및 활용 시나리오
 
 - **localStorage의 장점:** 비휘발성. 브라우저를 껐다 켜도 유지되므로 유저의 개인화 설정에 최적화되어 있습니다.
-  - *활용 예시:* 다크모드/라이트모드 설정, "오늘 하루 이 창 보지 않기" 체크 여부, 비회원 장바구니 데이터 보존.
+- *활용 예시:* 다크모드/라이트모드 설정, "오늘 하루 이 창 보지 않기" 체크 여부, 비회원 장바구니 데이터 보존.
 
 - **sessionStorage의 장점:** 생명주기의 명확성과 독립성. 동일한 사이트를 두 개의 탭으로 열었을 때 서로 데이터가 엉키지 않습니다.
+- *활용 예시:* 페이지 이탈 시 날아가면 안 되는 임시 입력 폼 데이터(글쓰기 임시 저장), 일회성 본인인증 진행 단계 상태값, 보안이 강화된 단기 세션 정보.
 
-  - *활용 예시:* 페이지 이탈 시 날아가면 안 되는 임시 입력 폼 데이터(글쓰기 임시 저장), 일회성 본인인증 진행 단계 상태값, 보안이 강화된 단기 세션 정보.
-
-
-</NotionToggle>
-
-
-<NotionToggle title="예시" level="3">
+### 4) 예시
 
 
 ```javascript
@@ -64,14 +62,4 @@ console.log(currentTheme); // 'dark'
 sessionStorage.setItem('tempInput', '작성 중인 블로그 글 내용...');
 // 브라우저 탭을 닫으면 'tempInput'은 메모리에서 자동 소멸합니다.
 ```
-
-
-</NotionToggle>
-
-
-</NotionToggle>
-
-[https://rlaguswls13.github.io/sing_up_practice/](https://rlaguswls13.github.io/sing_up_practice/)
-
-[https://github.com/rlaguswls13/sing_up_practice/](https://github.com/rlaguswls13/sing_up_practice/)
 
