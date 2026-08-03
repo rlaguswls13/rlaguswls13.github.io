@@ -83,8 +83,8 @@ function frontmatterFor(pageName, row) {
     description: row.description || "작성된 내용이 없습니다.",
     category: storageCategory,
     ...(pageName === "journal" ? { journal_category: sourceCategory } : {}),
-    subcategory: row.subcategory || "general",
-    package: row.subcategory || storageCategory,
+    subcategory: row.subcategory || "전체",
+    package: row.subcategory || "전체",
     notionUrl: row.notion_url || "",
   };
 }

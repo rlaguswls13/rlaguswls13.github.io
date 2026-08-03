@@ -11,14 +11,19 @@ import { JournalSectionHeader } from "@/components/ui/JournalSectionHeader";
 import { EducationLog } from "@/components/ui/EducationLog";
 import { Pagination } from "@/components/ui/Pagination";
 import { TagList } from "@/components/ui/TagBadge";
+import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
 import { getDevlogHref } from "@/lib/devlog-slugs";
 import { sortByDateDesc } from "@/lib/utils";
+import { getDevlogThumbnail } from "@/lib/thumbnails";
 import type { DevlogEntry } from "@/types";
 
 type JournalCategory = "personal" | "education";
+type JournalTab = JournalCategory | "all";
+type JournalDisplayEntry = DevlogEntry & { journalCategory: JournalCategory };
 
 const tabs = [
+  { key: "all", label: "전체" },
   { key: "personal", label: "개인일지" },
   { key: "education", label: "교육일지" },
 ];
@@ -27,11 +32,12 @@ const entries = journalData as Record<JournalCategory, DevlogEntry[]>;
 function JournalContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const requestedCategory = searchParams.get("category") || searchParams.get("journal") || "personal";
+  const requestedCategory = searchParams.get("category") || searchParams.get("journal") || "all";
   const initialCategory = tabs.some((tab) => tab.key === requestedCategory)
-    ? requestedCategory as JournalCategory
-    : "personal";
-  const [activeCategory, setActiveCategory] = useState<JournalCategory>(initialCategory);
+    ? requestedCategory as JournalTab
+    : "all";
+  const [activeCategory, setActiveCategory] = useState<JournalTab>(initialCategory);
+  const [activeSubcategory, setActiveSubcategory] = useState(searchParams.get("sub") || "전체");
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchParams.get("q")));
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
@@ -40,22 +46,42 @@ function JournalContent() {
   useEffect(() => {
     const query = new URLSearchParams({
       category: activeCategory,
+      sub: activeSubcategory,
       page: String(currentPage),
     });
     if (searchQuery) query.set("q", searchQuery);
     const next = `/journal?${query.toString()}`;
     if (`/journal?${searchParams.toString()}` !== next) router.replace(next, { scroll: false });
-  }, [activeCategory, currentPage, router, searchParams, searchQuery]);
+  }, [activeCategory, activeSubcategory, currentPage, router, searchParams, searchQuery]);
+
+  const categoryEntries = useMemo<JournalDisplayEntry[]>(() => {
+    const categories: JournalCategory[] = activeCategory === "all"
+      ? ["personal", "education"]
+      : [activeCategory];
+    return sortByDateDesc(categories.flatMap((category) =>
+      entries[category].map((entry) => ({ ...entry, journalCategory: category })),
+    ));
+  }, [activeCategory]);
+
+  const subcategories = useMemo(
+    () => ["전체", ...new Set(categoryEntries
+      .map((entry) => entry.subcategory || "전체")
+      .filter((value) => value !== "전체"))],
+    [categoryEntries],
+  );
 
   const personalEntries = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    return sortByDateDesc(entries.personal).filter((entry) =>
-      !query
-      || entry.title.toLowerCase().includes(query)
-      || entry.description.toLowerCase().includes(query)
-      || entry.tags.some((tag) => tag.toLowerCase().includes(query)),
-    );
-  }, [searchQuery]);
+    return categoryEntries.filter((entry) => {
+      const subcategoryMatches = activeSubcategory === "전체"
+        || (entry.subcategory || "전체") === activeSubcategory;
+      const searchMatches = !query
+        || entry.title.toLowerCase().includes(query)
+        || entry.description.toLowerCase().includes(query)
+        || entry.tags.some((tag) => tag.toLowerCase().includes(query));
+      return subcategoryMatches && searchMatches;
+    });
+  }, [activeSubcategory, categoryEntries, searchQuery]);
 
   const totalPages = Math.ceil(personalEntries.length / itemsPerPage);
   const paginatedEntries = personalEntries.slice(
@@ -64,7 +90,8 @@ function JournalContent() {
   );
 
   const changeCategory = (key: string) => {
-    setActiveCategory(key as JournalCategory);
+    setActiveCategory(key as JournalTab);
+    setActiveSubcategory("전체");
     setSearchQuery("");
     setIsSearchOpen(false);
     setCurrentPage(1);
@@ -85,14 +112,17 @@ function JournalContent() {
         <div className="devlog-layout" style={{ marginTop: "30px" }}>
           <aside className="devlog-sidebar">
             <nav aria-label="Journal 카테고리">
-              {tabs.map((tab) => (
+              {subcategories.map((subcategory) => (
                 <button
-                  key={tab.key}
+                  key={subcategory}
                   type="button"
-                  className={`pkg-pill ${activeCategory === tab.key ? "active" : ""}`}
-                  onClick={() => changeCategory(tab.key)}
+                  className={`pkg-pill ${activeSubcategory === subcategory ? "active" : ""}`}
+                  onClick={() => {
+                    setActiveSubcategory(subcategory);
+                    setCurrentPage(1);
+                  }}
                 >
-                  {tab.label}
+                  {subcategory === "전체" ? "전체 보기" : subcategory}
                 </button>
               ))}
             </nav>
@@ -119,30 +149,36 @@ function JournalContent() {
 
           <main className="devlog-main">
             {activeCategory === "education" ? (
-              <EducationLog entries={entries.education} searchQuery={searchQuery} />
+              <EducationLog entries={personalEntries} searchQuery={searchQuery} itemsPerPage={6} />
             ) : (
               <>
                 <JournalSectionHeader
-                  categoryKey="personal"
-                  title="개인일지"
+                  title={activeCategory === "all" ? "전체 일지" : "개인일지"}
                   count={personalEntries.length}
                 />
 
                 {paginatedEntries.length === 0 ? (
-                  <div className="devlog-empty-state">조건에 맞는 개인일지가 없습니다.</div>
+                  <div className="devlog-empty-state">조건에 맞는 일지가 없습니다.</div>
                 ) : (
                   <>
                     <div className="devlog-grid">
                       {paginatedEntries.map((entry) => (
                         <Link
                           key={entry.id}
-                          href={`${getDevlogHref("blog", entry.id)}?journal=personal&page=${currentPage}`}
+                          href={`${getDevlogHref(entry.journalCategory === "education" ? "education" : "blog", entry.id)}?journal=${entry.journalCategory}&page=${currentPage}`}
                           className="devlog-card-link"
                           style={{ textDecoration: "none", color: "inherit" }}
                         >
                           <div className="devlog-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                            <CardThumbnail
+                              src={getDevlogThumbnail(entry.journalCategory === "education" ? "education" : "blog", entry.id)}
+                              alt=""
+                              className="devlog-card-thumbnail"
+                            />
                             <div className="devlog-card-topline">
-                              <span className="devlog-card-category">개인일지</span>
+                              <span className="devlog-card-category">
+                                {entry.journalCategory === "education" ? "교육일지" : "개인일지"}
+                              </span>
                               <span className="devlog-meta"><CalendarIcon /> {entry.date}</span>
                             </div>
                             <div className="item-title" style={{ marginTop: 0, marginBottom: "12px" }}>{entry.title}</div>

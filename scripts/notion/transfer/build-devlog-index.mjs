@@ -24,6 +24,11 @@ function sourceId(value) {
   return String(value || "").replaceAll("-", "").trim();
 }
 
+function displaySubcategory(value) {
+  const normalized = String(value || "").trim();
+  return !normalized || normalized === "general" ? "전체" : normalized;
+}
+
 function readFrontmatter(filePath) {
   const source = fs.readFileSync(filePath, "utf8");
   try {
@@ -59,8 +64,8 @@ function parseEntry(filePath) {
     date,
     tags,
     description: String(data.description || data.impression || "작성된 내용이 없습니다.").trim(),
-    subcategory: String(data.subcategory || data.package || "general"),
-    package: String(data.subcategory || data.package || "general"),
+    subcategory: displaySubcategory(data.subcategory || data.package),
+    package: displaySubcategory(data.subcategory || data.package),
     ...(data.round ? { round: String(data.round) } : {}),
     ...(data.blogTitle ? { blogTitle: String(data.blogTitle) } : {}),
     ...(data.impression ? { impression: String(data.impression) } : {}),

@@ -39,7 +39,7 @@ function DevlogContent() {
   const requestedTab = searchParams.get("tab") || "all";
   const initialTab = tabs.some((tab) => tab.key === requestedTab) ? requestedTab as TabKey : "all";
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
-  const [activePkg, setActivePkg] = useState(searchParams.get("pkg") || "All");
+  const [activePkg, setActivePkg] = useState(searchParams.get("sub") || "전체");
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchParams.get("q")));
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
@@ -55,7 +55,7 @@ function DevlogContent() {
     }
     const query = new URLSearchParams({
       tab: activeTab,
-      pkg: activePkg,
+      sub: activePkg,
       page: String(currentPage),
     });
     if (searchQuery) query.set("q", searchQuery);
@@ -71,14 +71,15 @@ function DevlogContent() {
   }, [activeTab]);
 
   const packages = useMemo(
-    () => ["All", ...new Set(allEntries.map((entry) => entry.package).filter(Boolean) as string[])],
+    () => ["전체", ...new Set(allEntries.map((entry) => entry.subcategory || entry.package || "전체").filter((value) => value !== "전체"))],
     [allEntries],
   );
 
   const filteredEntries = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     return allEntries.filter((entry) => {
-      const packageMatches = activePkg === "All" || entry.package === activePkg;
+      const packageMatches = activePkg === "전체"
+        || (entry.subcategory || entry.package || "전체") === activePkg;
       const searchMatches = !query
         || entry.title.toLowerCase().includes(query)
         || entry.description.toLowerCase().includes(query)
@@ -95,7 +96,7 @@ function DevlogContent() {
 
   const changeTab = (key: string) => {
     setActiveTab(key as TabKey);
-    setActivePkg("All");
+    setActivePkg("전체");
     setSearchQuery("");
     setIsSearchOpen(false);
     setCurrentPage(1);
@@ -126,7 +127,7 @@ function DevlogContent() {
                     setCurrentPage(1);
                   }}
                 >
-                  {pkg === "All" ? "전체 보기" : pkg.toUpperCase()}
+                    {pkg === "전체" ? "전체 보기" : pkg.toUpperCase()}
                 </button>
               ))}
             </nav>
@@ -155,7 +156,7 @@ function DevlogContent() {
             <DevlogSectionHeader
               title={activeTab === "all" ? "전체 글" : labels[activeTab]}
               count={filteredEntries.length}
-              context={activePkg === "All" ? undefined : activePkg.toUpperCase()}
+              context={activePkg === "전체" ? undefined : activePkg.toUpperCase()}
             />
 
             {paginatedEntries.length === 0 ? (
@@ -166,7 +167,7 @@ function DevlogContent() {
                   {paginatedEntries.map((entry, index) => (
                     <Link
                       key={entry.id}
-                      href={`${getDevlogHref(entry.category, entry.id)}?pkg=${activePkg}&page=${currentPage}`}
+                      href={`${getDevlogHref(entry.category, entry.id)}?sub=${activePkg}&page=${currentPage}`}
                       className="devlog-card-link"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >

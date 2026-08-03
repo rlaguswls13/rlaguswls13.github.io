@@ -9,7 +9,7 @@
 - `sync-pages.mjs`: `last_edited_time` 비교 후 변경된 페이지만 본문 조회 및 MDX 갱신
 - `index.mjs`: connect 공개 API 진입점
 
-출력은 `src/data/indexes/notion/{journal,devlog,project}.json`입니다. 각 파일은 하이픈을 제거한 Notion page-id를 키로 사용하므로 목록 순회뿐 아니라 특정 페이지를 즉시 조회할 수 있습니다. 과거 배열 형태의 캐시도 읽을 수 있지만 다음 동기화부터 맵 형태로 저장합니다.
+Notion API 응답은 메모리에서 정규화한 뒤 바로 `src/content/**/*.mdx`로 동기화합니다. 동일 데이터를 별도의 원본 JSON으로 저장하지 않으며, 화면용 `src/data/indexes/{journal,devlog,projects}.json`은 MDX frontmatter에서 한 번만 생성합니다.
 
 ## transfer
 
@@ -25,7 +25,7 @@
 
 ```bash
 npm run fetch-notion
-npm run transfer-notion-json -- src/data/indexes/notion/devlog.json temp/notion-mdx devlog
+npm run transfer-notion-json -- <input.json> <output-directory> [page-name]
 npm run generate-content-indexes
 ```
 

@@ -38,34 +38,49 @@ function ProjectsContent() {
   const [isSearchOpen, setIsSearchOpen] = useState(!!initialSearch);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [activeTab, setActiveTab] = useState<ProjectTab>(initialTab);
+  const [activeSubcategory, setActiveSubcategory] = useState(searchParams.get("sub") || "전체");
   const itemsPerPage = 6; // 6 cards per page
 
   useEffect(() => {
     const currentQ = searchParams.get("q") || "";
     const currentPg = searchParams.get("page");
     const currentTab = searchParams.get("tab") || "all";
+    const currentSubcategory = searchParams.get("sub") || "전체";
 
-    if (currentQ !== searchQuery || currentPg !== String(currentPage) || currentTab !== activeTab) {
+    if (currentQ !== searchQuery || currentPg !== String(currentPage) || currentTab !== activeTab || currentSubcategory !== activeSubcategory) {
       const params = new URLSearchParams();
       if (searchQuery) params.set("q", searchQuery);
       if (currentPage > 1) params.set("page", String(currentPage));
       if (activeTab !== "all") params.set("tab", activeTab);
+      if (activeSubcategory !== "전체") params.set("sub", activeSubcategory);
 
       const qParam = params.toString() ? `?${params.toString()}` : "";
       router.replace(`/projects${qParam}`, { scroll: false });
     }
-  }, [searchQuery, currentPage, activeTab, router, searchParams]);
+  }, [searchQuery, currentPage, activeTab, activeSubcategory, router, searchParams]);
 
   const allProjects = sortByDateDesc(projectsData.projects as Project[]);
 
+  const categoryProjects = useMemo(() => activeTab === "all"
+    ? allProjects
+    : allProjects.filter((project) =>
+      (project.category || project.type || "enterprise") === activeTab
+    ), [activeTab, allProjects]);
+
+  const subcategories = useMemo(
+    () => ["전체", ...new Set(categoryProjects
+      .map((project) => project.subcategory || "전체")
+      .filter((value) => value !== "전체"))],
+    [categoryProjects],
+  );
+
   // Filter projects
   const filteredProjects = useMemo(() => {
-    let result = allProjects;
+    let result = categoryProjects;
 
-    // 1. Filter by Active Tab
-    if (activeTab !== "all") {
+    if (activeSubcategory !== "전체") {
       result = result.filter((project) =>
-        (project.type || project.category || "enterprise") === activeTab,
+        (project.subcategory || "전체") === activeSubcategory,
       );
     }
 
@@ -79,7 +94,7 @@ function ProjectsContent() {
       );
     }
     return result;
-  }, [allProjects, searchQuery, activeTab]);
+  }, [activeSubcategory, categoryProjects, searchQuery]);
 
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   const paginatedProjects = filteredProjects.slice(
@@ -94,6 +109,7 @@ function ProjectsContent() {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab as ProjectTab);
+    setActiveSubcategory("전체");
     setSearchQuery("");
     setIsSearchOpen(false);
     setCurrentPage(1);
@@ -115,8 +131,24 @@ function ProjectsContent() {
       <div className="devlog-container">
         <TabGroup tabs={projectTabs} activeTab={activeTab} onTabChange={handleTabChange} />
 
-        <div className="projects-filter-toolbar">
-          <div className="sidebar-search projects-search">
+        <div className="devlog-layout" style={{ marginTop: "30px" }}>
+          <aside className="devlog-sidebar">
+            <nav aria-label="프로젝트 하위 카테고리">
+              {subcategories.map((subcategory) => (
+                <button
+                  key={subcategory}
+                  type="button"
+                  className={`pkg-pill ${activeSubcategory === subcategory ? "active" : ""}`}
+                  onClick={() => {
+                    setActiveSubcategory(subcategory);
+                    setCurrentPage(1);
+                  }}
+                >
+                  {subcategory === "전체" ? "전체 보기" : subcategory}
+                </button>
+              ))}
+            </nav>
+            <div className="sidebar-search projects-search">
               {!isSearchOpen ? (
                 <button
                   type="button"
@@ -142,15 +174,15 @@ function ProjectsContent() {
                   />
                 </div>
               )}
-          </div>
-        </div>
+            </div>
+          </aside>
 
-        <main className="devlog-main">
+          <main className="devlog-main">
             <div className="projects-grid">
               {paginatedProjects.map((p, index) => (
                 <Link
                   key={p.id}
-                  href={`/projects/${p.slug || p.id}?page=${currentPage}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""}${activeTab !== "all" ? `&tab=${activeTab}` : ""}`}
+                  href={`/projects/${p.slug || p.id}?page=${currentPage}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""}${activeTab !== "all" ? `&tab=${activeTab}` : ""}${activeSubcategory !== "전체" ? `&sub=${encodeURIComponent(activeSubcategory)}` : ""}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div className="project-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -182,7 +214,8 @@ function ProjectsContent() {
                 ))}
               </div>
             )}
-        </main>
+          </main>
+        </div>
       </div>
     </>
   );

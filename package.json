@@ -2,6 +2,9 @@
   "name": "ralguswls13.github.io",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9 <26"
+  },
   "scripts": {
     "dev": "npm run fetch-notion && node scripts/recommendations/generate.mjs && next dev",
     "dev:no-fetch": "npm run generate-content-indexes && node scripts/slug/generate.mjs && node scripts/recommendations/generate.mjs && next dev",

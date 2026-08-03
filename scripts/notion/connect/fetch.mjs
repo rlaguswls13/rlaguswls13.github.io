@@ -5,7 +5,6 @@ import { NotionClient } from "./notion-client.mjs";
 import { syncPageContent } from "./sync-pages.mjs";
 
 const ROOT = process.cwd();
-const OUTPUT_ROOT = path.join(ROOT, "src", "data", "indexes", "notion");
 const PAGE_CONFIG = {
   journal: [
     "NOTION_PAGE_ID_JOURNAL",
@@ -182,60 +181,12 @@ export function pageToIndexRow(pageName, page, definitions = SPECIAL_CASES) {
   };
 }
 
-function validateRows(pageName, rows) {
-  const sourceIds = new Set();
-  for (const [index, row] of rows.entries()) {
-    if (!row || Array.isArray(row) || typeof row !== "object" || "options" in row) {
-      throw new Error(`${pageName} row ${index + 1} has an invalid JSON shape.`);
-    }
-    if (!row.source_id) throw new Error(`${pageName} row ${index + 1} has no source_id.`);
-    if (sourceIds.has(row.source_id)) throw new Error(`${pageName} has duplicate source_id: ${row.source_id}`);
-    sourceIds.add(row.source_id);
-  }
-}
-
-function readIndex(pageName) {
-  const filePath = path.join(OUTPUT_ROOT, `${pageName}.json`);
-  if (!fs.existsSync(filePath)) return [];
-  try {
-    const value = JSON.parse(fs.readFileSync(filePath, "utf8"));
-    if (Array.isArray(value)) return value;
-    return value && typeof value === "object" ? Object.values(value) : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeIndex(pageName, rows) {
-  validateRows(pageName, rows);
-  fs.mkdirSync(OUTPUT_ROOT, { recursive: true });
-  const filePath = path.join(OUTPUT_ROOT, `${pageName}.json`);
-  const previous = readIndex(pageName);
-  const previousById = new Map(previous.map((row) => [row.source_id || row.page_id, row]));
-  const changed = rows.filter((row) => {
-    const oldRow = previousById.get(row.source_id || row.page_id);
-    return !oldRow || oldRow.last_edited_time !== row.last_edited_time;
-  }).length;
-  const pageMap = Object.fromEntries(rows.map((row) => [row.source_id, row]));
-  const output = JSON.stringify(pageMap, null, 2) + String.fromCharCode(10);
-  if (fs.existsSync(filePath) && fs.readFileSync(filePath, "utf8") === output) {
-    console.log(`[notion] ${pageName} JSON: ${rows.length} rows, no updates -> skip`);
-    return false;
-  }
-  fs.writeFileSync(filePath, output, "utf8");
-  console.log(
-    `[notion] ${pageName} JSON: ${rows.length} rows, ${changed} updated -> ${path.relative(ROOT, filePath)}`,
-  );
-  return true;
-}
-
 loadEnv();
 
 export async function main() {
   if (!process.env.NOTION_TOKEN) throw new Error("NOTION_TOKEN is required.");
   const client = new NotionClient(process.env.NOTION_TOKEN);
 
-  const indexesOnly = process.argv.includes("--indexes-only");
   const force = process.argv.includes("--force");
   for (const pageName of Object.keys(PAGE_CONFIG)) {
     const sources = configuredSources(pageName);
@@ -249,8 +200,7 @@ export async function main() {
     const rows = [...uniquePages.values()]
       .map((page) => pageToIndexRow(pageName, page))
       .sort((left, right) => String(right.created_date || "").localeCompare(String(left.created_date || "")));
-    writeIndex(pageName, rows);
-    if (!indexesOnly) await syncPageContent(client, pageName, rows, { force });
+    await syncPageContent(client, pageName, rows, { force });
   }
 }
 

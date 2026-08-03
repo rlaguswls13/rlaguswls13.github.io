@@ -84,7 +84,7 @@ export function EducationLog({
 
   return (
     <>
-      <JournalSectionHeader categoryKey="education" title="교육일지" count={filteredEntries.length} />
+      <JournalSectionHeader title="교육일지" count={filteredEntries.length} />
 
       <div className="devlog-grid">
         {currentEntries.map((entry, index) => (
@@ -94,8 +94,8 @@ export function EducationLog({
             onClick={() => setSelectedEntry(entry)}
           >
             <CardThumbnail src={getDevlogThumbnail("education", entry.id)} alt="" className="devlog-card-thumbnail" priority={index === 0} />
-            <div className="education-card-header">
-              <span className="education-round">{entry.round}</span>
+            <div className="devlog-card-topline">
+              <span className="devlog-card-category">{entry.round}</span>
               <span className="devlog-meta">
                 <CalendarIcon /> {formatDate(entry.date)}
               </span>

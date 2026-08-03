@@ -6,6 +6,11 @@ import matter from "gray-matter";
 const CONTENT_ROOT = path.join(process.cwd(), "src", "content", "projects");
 const OUTPUT_PATH = path.join(process.cwd(), "src", "data", "indexes", "projects.json");
 
+function displaySubcategory(value) {
+  const normalized = String(value || "").trim();
+  return !normalized || normalized === "general" ? "전체" : normalized;
+}
+
 function files(directory) {
   if (!fs.existsSync(directory)) return [];
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -35,7 +40,7 @@ export function buildProjectIndex() {
       tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
       description: String(data.description || ""),
       category: String(data.category || pathCategory || "enterprise"),
-      subcategory: String(data.subcategory || pathSubcategory || "general"),
+      subcategory: displaySubcategory(data.subcategory || pathSubcategory),
       type: String(data.type || data.category || pathCategory || "enterprise"),
     };
   }).sort((left, right) => right.date.localeCompare(left.date) || left.id.localeCompare(right.id));

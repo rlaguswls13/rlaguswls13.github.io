@@ -115,9 +115,9 @@ blog/
 
 ## 콘텐츠 흐름
 
-1. `scripts/notion/connect/fetch.mjs`가 Notion API의 데이터베이스 열을 조회해 `src/data/indexes/notion/*.json`에 저장합니다.
-2. `scripts/notion/connect/`에는 API 인증·조회·JSON 통신 코드만 둡니다.
-3. `scripts/notion/transfer/`는 JSON↔MDX 변환, UTF 인코딩과 줄바꿈 정규화, MDX 컴포넌트 이름 매핑을 담당합니다.
+1. `scripts/notion/connect/fetch.mjs`가 Notion API의 데이터베이스 열을 조회해 메모리에서 정규화하고 MDX로 바로 동기화합니다.
+2. `scripts/notion/connect/`에는 API 인증·조회 및 MDX 동기화 흐름만 둡니다.
+3. `scripts/notion/transfer/`는 MDX 변환, UTF 인코딩과 줄바꿈 정규화, MDX 컴포넌트 이름 매핑과 화면용 인덱스 생성을 담당합니다.
 4. `npm run transfer-notion-json -- <input.json> <output-dir> [page-name]`으로 JSON을 MDX로 변환할 수 있습니다.
 5. `scripts/slug/generate.mjs`가 frontmatter의 slug를 읽어 `src/data/config/slugs.json`에 `source_id → slug` 맵을 생성합니다.
 6. 추천 콘텐츠와 댓글 수는 `src/data/indexes/`에 생성하고, `next build`는 결과물을 `out/`에 static export합니다.

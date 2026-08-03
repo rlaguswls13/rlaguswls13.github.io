@@ -7,6 +7,11 @@ const CONTENT_ROOT = path.join(process.cwd(), "src", "content", "devlog");
 const OUTPUT_PATH = path.join(process.cwd(), "src", "data", "indexes", "journal.json");
 const STORAGE = { personal: "blog", education: "education" };
 
+function displaySubcategory(value) {
+  const normalized = String(value || "").trim();
+  return !normalized || normalized === "general" ? "전체" : normalized;
+}
+
 function files(directory) {
   if (!fs.existsSync(directory)) return [];
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -35,7 +40,7 @@ export function buildJournalIndex() {
         description: String(data.description || data.impression || "작성된 내용이 없습니다."),
         category: storageCategory,
         journalCategory,
-        subcategory: String(data.subcategory || "general"),
+        subcategory: displaySubcategory(data.subcategory),
         package: storageCategory,
         round: String(data.round || (journalCategory === "education" ? "교육일지" : "개인일지")),
         blogTitle: String(data.blogTitle || data.title || id),
