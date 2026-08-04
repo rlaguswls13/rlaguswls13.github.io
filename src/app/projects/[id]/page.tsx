@@ -1,10 +1,14 @@
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import projectsMeta from "@/data/indexes/projects.json";
-import type { Project, ProjectDetail } from "@/types";
+import type { Project } from "@/types";
+import {
+  createDetailContentRoots,
+  parseLegacyProjectDetail,
+  resolveProjectDetailSource,
+} from "@/content/detail/boundaries";
 import ProjectDetailClient from "./ProjectDetailClient";
 import { ProjectBackLink } from "@/components/layout/ProjectBackLink";
 import { TagList } from "@/components/ui/TagBadge";
@@ -28,13 +32,17 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const { id } = await params;
   const meta = projects.find((project) => project.slug === id || project.id === id);
   if (!meta?.sourceFile) notFound();
-  const filePath = path.join(process.cwd(), "src", "content", "projects", meta.sourceFile);
-  if (!fs.existsSync(filePath)) notFound();
-  const { data, content } = matter(fs.readFileSync(filePath, "utf8"));
+  const source = resolveProjectDetailSource(
+    meta.sourceFile,
+    createDetailContentRoots(process.cwd()),
+  );
+  if (!source.ok) notFound();
+  const { data, content } = matter(fs.readFileSync(source.value, "utf8"));
 
   if (data.legacyDetail) {
-    const detail = JSON.parse(String(data.legacyDetail)) as ProjectDetail;
-    return <ProjectDetailClient meta={meta} detail={detail} />;
+    const detail = parseLegacyProjectDetail(data.legacyDetail);
+    if (!detail.ok) notFound();
+    return <ProjectDetailClient meta={meta} detail={detail.value} />;
   }
 
   return (

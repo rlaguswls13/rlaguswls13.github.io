@@ -1,6 +1,6 @@
 import fs from "fs";
-import path from "path";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { isValidElement, type ComponentPropsWithoutRef } from "react";
 import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -24,6 +24,10 @@ import { GiscusComments } from "@/components/ui/GiscusComments";
 import recommendationData from "@/data/indexes/devlog-recommendations.json";
 import { RelatedDevlogs, type RelatedDevlogItem } from "@/components/ui/RelatedDevlogs";
 import { getDevlogIdBySlug } from "@/lib/devlog-slugs";
+import {
+  createDetailContentRoots,
+  resolveDevlogDetailSource,
+} from "@/content/detail/boundaries";
 
 type DevlogPageIndexItem = {
   category: string;
@@ -118,19 +122,13 @@ export default async function DevlogDetailPage({
   const { category, slug } = await params;
   const id = getDevlogIdBySlug(category, slug);
   const pageEntry = pageIndex.find((item) => item.category === category && item.id === id);
-  if (!pageEntry) return <div>Devlog not found</div>;
-
-  const filePath = path.join(
-    /* turbopackIgnore: true */ process.cwd(),
+  if (!pageEntry) notFound();
+  const source = resolveDevlogDetailSource(
     pageEntry.sourceFile,
+    createDetailContentRoots(process.cwd()),
   );
-
-  let fileContent;
-  try {
-    fileContent = fs.readFileSync(filePath, "utf8");
-  } catch {
-    return <div>Devlog not found</div>;
-  }
+  if (!source.ok) notFound();
+  const fileContent = fs.readFileSync(source.value, "utf8");
 
   const { data, content } = matter(fileContent);
   const recommendationItems = recommendationData.items as Record<string, RelatedDevlogItem[]>;
