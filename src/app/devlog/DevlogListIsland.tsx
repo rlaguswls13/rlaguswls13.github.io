@@ -1,0 +1,211 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { TabGroup } from "@/components/ui/TabGroup";
+import { DevlogSectionHeader } from "@/components/ui/DevlogSectionHeader";
+import { Pagination } from "@/components/ui/Pagination";
+import { TagList } from "@/components/ui/TagBadge";
+import { CardThumbnail } from "@/components/ui/CardThumbnail";
+import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
+import { getDevlogHref } from "@/lib/devlog-slugs";
+import { getDevlogThumbnail } from "@/lib/thumbnails";
+import { devlogListQuery, journalListQuery } from "@/lib/list-query";
+import type { DevlogCategory, DevlogEntry } from "@/types";
+
+type CoreCategory = Exclude<DevlogCategory, "blog">;
+type TabKey = CoreCategory | "all";
+type DisplayEntry = DevlogEntry & { category: CoreCategory };
+
+const categories: CoreCategory[] = ["tech_study", "problem_solving", "competition_event"];
+const labels: Record<CoreCategory, string> = {
+  tech_study: "기술 학습",
+  problem_solving: "문제 해결",
+  competition_event: "대회·행사",
+};
+const tabs = [
+  { key: "all", label: "전체 글" },
+  ...categories.map((key) => ({ key, label: labels[key] })),
+];
+type DevlogListIslandProps = Readonly<{
+  entries: readonly DisplayEntry[];
+  initialEntries: readonly DisplayEntry[];
+}>;
+
+export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandProps) {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<TabKey>("all");
+  const [activePkg, setActivePkg] = useState<string>("전체");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasUrlState, setHasUrlState] = useState(false);
+  const itemsPerPage = 6;
+
+  const allEntries = useMemo<DisplayEntry[]>(() => {
+    if (activeTab === "all") return [...entries];
+    return entries.filter((entry) => entry.category === activeTab);
+  }, [activeTab, entries]);
+
+  const packages = useMemo(
+    () => ["전체", ...new Set(allEntries.map((entry) => entry.subcategory || entry.package || "전체").filter((value) => value !== "전체"))],
+    [allEntries],
+  );
+
+  const filteredEntries = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return allEntries.filter((entry) => {
+      const packageMatches = activePkg === "전체"
+        || (entry.subcategory || entry.package || "전체") === activePkg;
+      const searchMatches = !query
+        || entry.title.toLowerCase().includes(query)
+        || entry.description.toLowerCase().includes(query)
+        || entry.tags.some((tag) => tag.toLowerCase().includes(query));
+      return packageMatches && searchMatches;
+    });
+  }, [activePkg, allEntries, searchQuery]);
+
+  const totalPages = Math.ceil(filteredEntries.length / itemsPerPage);
+  const clampedPage = devlogListQuery.clampPage(currentPage, filteredEntries.length, itemsPerPage);
+  const paginatedEntries = hasUrlState
+    ? filteredEntries.slice((clampedPage - 1) * itemsPerPage, clampedPage * itemsPerPage)
+    : initialEntries;
+
+  useEffect(() => {
+    const applyLocation = () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const requestedTab = searchParams.get("tab") || "all";
+      if (["journal", "blog", "education_log"].includes(requestedTab)) {
+        const category = requestedTab === "education_log"
+          ? "education"
+          : searchParams.get("journal") === "education" ? "education" : "personal";
+        router.replace(journalListQuery.href({ tab: category }), { scroll: false });
+        return;
+      }
+      const queryState = devlogListQuery.parse(searchParams);
+      setActiveTab(queryState.tab);
+      setActivePkg(queryState.sub);
+      setSearchQuery(queryState.q);
+      setIsSearchOpen(Boolean(queryState.q));
+      setCurrentPage(queryState.page);
+      setHasUrlState(true);
+    };
+    applyLocation();
+    window.addEventListener("popstate", applyLocation);
+    return () => window.removeEventListener("popstate", applyLocation);
+  }, [router]);
+
+  useEffect(() => {
+    if (!hasUrlState) return;
+    const state = devlogListQuery.parse(new URLSearchParams({
+      tab: activeTab,
+      sub: activePkg,
+      q: searchQuery,
+      page: String(clampedPage),
+    }));
+    if (window.location.search.slice(1) !== devlogListQuery.serialize(state)) {
+      router.replace(devlogListQuery.href(state), { scroll: false });
+    }
+  }, [activePkg, activeTab, clampedPage, hasUrlState, router, searchQuery]);
+
+  const changeTab = (key: string) => {
+    setActiveTab(key as TabKey);
+    setActivePkg("전체");
+    setSearchQuery("");
+    setIsSearchOpen(false);
+    setCurrentPage(1);
+  };
+
+  return (
+    <div className="devlog-container">
+        <TabGroup tabs={tabs} activeTab={activeTab} onTabChange={changeTab} />
+
+        <div className="devlog-layout" style={{ marginTop: "30px" }}>
+          <aside className="devlog-sidebar">
+            <nav aria-label="패키지 필터">
+              {packages.map((pkg) => (
+                <button
+                  key={pkg}
+                  type="button"
+                  className={`pkg-pill ${activePkg === pkg ? "active" : ""}`}
+                  onClick={() => {
+                    setActivePkg(pkg);
+                    setCurrentPage(1);
+                  }}
+                >
+                    {pkg === "전체" ? "전체 보기" : pkg.toUpperCase()}
+                </button>
+              ))}
+            </nav>
+
+            <div className="sidebar-search">
+              {!isSearchOpen ? (
+                <button type="button" className="pkg-pill" onClick={() => setIsSearchOpen(true)}>
+                  <SearchIcon style={{ position: "relative", left: 0, transform: "none" }} /> 검색
+                </button>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="검색어 입력..."
+                  value={searchQuery}
+                  onChange={(event) => {
+                    setSearchQuery(event.target.value);
+                    setCurrentPage(1);
+                  }}
+                  autoFocus
+                />
+              )}
+            </div>
+          </aside>
+
+          <main className="devlog-main">
+            <DevlogSectionHeader
+              title={activeTab === "all" ? "전체 글" : labels[activeTab]}
+              count={filteredEntries.length}
+              context={activePkg === "전체" ? undefined : activePkg.toUpperCase()}
+            />
+
+            {paginatedEntries.length === 0 ? (
+              <div className="devlog-empty-state">조건에 맞는 Devlog가 없습니다.</div>
+            ) : (
+              <>
+                <div className="devlog-grid">
+                  {paginatedEntries.map((entry, index) => (
+                    <Link
+                      key={entry.id}
+                      href={`${getDevlogHref(entry.category, entry.id)}?sub=${activePkg}&page=${clampedPage}`}
+                      className="devlog-card-link"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <div className="devlog-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                        <CardThumbnail
+                          src={getDevlogThumbnail(entry.category, entry.id)}
+                          alt=""
+                          className="devlog-card-thumbnail"
+                          priority={index === 0}
+                        />
+                        <div className="devlog-card-topline">
+                          <span className="devlog-card-category">{labels[entry.category]}</span>
+                          <span className="devlog-meta"><CalendarIcon /> {entry.date}</span>
+                        </div>
+                        <div className="item-title" style={{ marginTop: 0, marginBottom: "12px", wordBreak: "keep-all" }}>{entry.title}</div>
+                        <TagList tags={entry.tags} />
+                        <p className="devlog-description" style={{ flexGrow: 1 }}>{entry.description}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <Pagination
+                  currentPage={clampedPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  maxPageButtons={5}
+                />
+              </>
+            )}
+          </main>
+        </div>
+    </div>
+  );
+}
