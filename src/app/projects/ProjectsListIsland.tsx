@@ -225,4 +225,3 @@ export function ProjectsListIsland({ projects, initialProjects }: ProjectsListIs
     </>
   );
 }
-
