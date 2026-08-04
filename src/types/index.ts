@@ -21,29 +21,29 @@ export interface Project {
   subcategory?: string;
 }
 
-interface ProjectSection {
-  title: string;
-  body?: string;
-  list?: string[];
+export interface ProjectSection {
+  readonly title: string;
+  readonly body: string | undefined;
+  readonly list: readonly string[] | undefined;
 }
 
-interface ProjectTab {
-  title: string;
-  sections: ProjectSection[];
-  reference?: string;
-  flow_diagram?: string;
+export interface ProjectTab {
+  readonly title: string;
+  readonly sections: readonly ProjectSection[];
+  readonly reference: string | undefined;
+  readonly flow_diagram: string | undefined;
 }
 
 export interface ProjectDetail {
-  id: string;
-  project_id?: string;
-  overview?: string;
-  tech_stack?: string[];
-  sections?: ProjectSection[];
-  tabs?: ProjectTab[];
-  diagram?: string;
-  reference?: string;
-  flow_diagram?: string;
+  readonly id: string;
+  readonly project_id: string | undefined;
+  readonly overview: string | undefined;
+  readonly tech_stack: readonly string[];
+  readonly sections: readonly ProjectSection[];
+  readonly tabs: readonly ProjectTab[];
+  readonly diagram: string | undefined;
+  readonly reference: string | undefined;
+  readonly flow_diagram: string | undefined;
 }
 
 export interface DevlogEntry {
