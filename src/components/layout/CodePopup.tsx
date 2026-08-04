@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { codePopupContent, CodePopupItem } from "@/content/detail/codePopupContent";
 import { CodeIcon } from "@/components/ui/Icons";
+import { Dialog } from "@/components/ui/Dialog";
 
 interface CodePopupProps {
   name: string;
@@ -12,18 +13,6 @@ export function CodePopup({ name }: CodePopupProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const data: CodePopupItem | undefined = codePopupContent[name];
-
-  // Disable scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
 
   if (!data) {
     return <span className="font-mono font-bold text-[var(--accent-primary)]">{name}</span>;
@@ -68,21 +57,21 @@ export function CodePopup({ name }: CodePopupProps) {
 
       {/* Modal Popup overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          {/* Backdrop (Semi-transparent bg-black/60 + backdrop-blur-sm for elegant blur focus overlay) */}
-          <div
-            onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
-          />
-
-          {/* Modal Content container (Wider max-w-5xl, custom neon shadow highlight) */}
-          <div className="relative w-full max-w-5xl max-h-[85vh] flex flex-col bg-[var(--bg-secondary)] border border-[var(--border-color)] shadow-[0_0_50px_var(--accent-glow-md)] rounded-2xl overflow-hidden transform scale-100 transition-all duration-300 animate-[zoomIn_0.2s_ease-out]">
+        <Dialog
+          isOpen
+          labelledBy={`code-dialog-title-${name.replaceAll(".", "-")}`}
+          onClose={() => setIsOpen(false)}
+          overlayClassName="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
+          dialogClassName="relative w-full max-w-5xl max-h-[85vh] flex flex-col bg-[var(--bg-secondary)] border border-[var(--border-color)] shadow-[0_0_50px_var(--accent-glow-md)] rounded-2xl overflow-hidden transform scale-100 transition-all duration-300 animate-[zoomIn_0.2s_ease-out]"
+        >
+            <h2 id={`code-dialog-title-${name.replaceAll(".", "-")}`} className="sr-only">{data.title}</h2>
             
             {/* Absolute positioned close button */}
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-4 right-4 z-10 p-2.5 rounded-xl bg-[var(--bg-tertiary)] hover:bg-[var(--accent-primary)] hover:text-black text-[var(--text-secondary)] border border-[var(--border-color)] hover:scale-105 hover:rotate-90 transition-all duration-300 cursor-pointer shadow-lg"
               aria-label="닫기"
+              data-dialog-close
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
@@ -164,12 +153,12 @@ export function CodePopup({ name }: CodePopupProps) {
               <button
                 onClick={() => setIsOpen(false)}
                 className="px-5 py-2 rounded-xl text-xs font-semibold bg-[var(--bg-tertiary)] hover:bg-[var(--accent-primary)] hover:text-black border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-all duration-300 shadow-md cursor-pointer"
+                data-dialog-close
               >
                 닫기
               </button>
             </div>
-          </div>
-        </div>
+        </Dialog>
       )}
     </>
   );

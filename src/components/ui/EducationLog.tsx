@@ -11,6 +11,7 @@ import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
 import { getDevlogHref } from "@/lib/devlog-slugs";
 import type { DevlogEntry } from "@/types";
+import { Dialog } from "@/components/ui/Dialog";
 
 interface EducationEntry {
   id: string;
@@ -150,19 +151,19 @@ export function EducationLog({
 
       {/* Modal */}
       {selectedEntry && (
-        <div
-          className="education-modal-overlay"
-          onClick={() => setSelectedEntry(null)}
+        <Dialog
+          isOpen
+          labelledBy={`education-dialog-title-${selectedEntry.id}`}
+          onClose={() => setSelectedEntry(null)}
+          overlayClassName="education-modal-overlay"
+          dialogClassName="education-modal"
         >
-          <div
-            className="education-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
             <button
               type="button"
               className="education-modal-close"
               onClick={() => setSelectedEntry(null)}
               aria-label="닫기"
+              data-dialog-close
             >
               <CloseIcon />
             </button>
@@ -175,9 +176,9 @@ export function EducationLog({
             </div>
 
             {selectedEntry.blogTitle && (
-              <div className="section-title" style={{ margin: "12px 0 16px" }}>
+              <h2 id={`education-dialog-title-${selectedEntry.id}`} className="section-title" style={{ margin: "12px 0 16px" }}>
                 {selectedEntry.blogTitle}
-              </div>
+              </h2>
             )}
 
             <TagList tags={selectedEntry.keywords} />
@@ -197,8 +198,7 @@ export function EducationLog({
                 <BlogIcon /> 상세내용 ↗
               </Link>
             )}
-          </div>
-        </div>
+        </Dialog>
       )}
     </>
   );

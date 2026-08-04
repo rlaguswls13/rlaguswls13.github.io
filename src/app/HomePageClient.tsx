@@ -13,6 +13,7 @@ import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
 import { getDevlogHref } from "@/lib/devlog-slugs";
 import { devlogListQuery, journalListQuery } from "@/lib/list-query";
+import { Dialog } from "@/components/ui/Dialog";
 
 type HomeContentCategory = DevlogCategory | "education";
 type HomeFilter = Exclude<DevlogCategory, "blog"> | "journal";
@@ -241,9 +242,14 @@ export default function HomePageClient() {
       </div>
 
       {isTagModalOpen && (
-        <div className="education-modal-overlay" onClick={() => setIsTagModalOpen(false)}>
-          <section className="education-modal tech-tag-modal" role="dialog" aria-modal="true" aria-labelledby="tag-modal-title" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="education-modal-close" onClick={() => setIsTagModalOpen(false)} aria-label="태그 팝업 닫기">
+        <Dialog
+          isOpen
+          labelledBy="tag-modal-title"
+          onClose={() => setIsTagModalOpen(false)}
+          overlayClassName="education-modal-overlay"
+          dialogClassName="education-modal tech-tag-modal"
+        >
+            <button type="button" className="education-modal-close" onClick={() => setIsTagModalOpen(false)} aria-label="태그 팝업 닫기" data-dialog-close>
               <CloseIcon />
             </button>
             <span className="page-heading-eyebrow">ALL TAGS</span>
@@ -256,8 +262,7 @@ export default function HomePageClient() {
                 </Link>
               ))}
             </div>
-          </section>
-        </div>
+        </Dialog>
       )}
     </main>
   );
