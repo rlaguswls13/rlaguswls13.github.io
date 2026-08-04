@@ -1,6 +1,10 @@
+import type { Metadata } from "next";
 import resumeData from "@/data/pages/main/resume.json";
 import { TimelineItem } from "@/components/ui/Timeline";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { buildStaticRouteMetadata } from "@/lib/seo/routes";
+
+export const metadata: Metadata = buildStaticRouteMetadata("career").metadata;
 
 export default function CareerPage() {
   const { resume } = resumeData;

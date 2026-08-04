@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import devlogData from "@/data/indexes/devlog.json";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { sortByDateDesc } from "@/lib/utils";
 import type { DevlogCategory, DevlogEntry } from "@/types";
 import { DevlogListIsland } from "./DevlogListIsland";
+import { buildStaticRouteMetadata } from "@/lib/seo/routes";
+
+export const metadata: Metadata = buildStaticRouteMetadata("devlog").metadata;
 
 type CoreCategory = Exclude<DevlogCategory, "blog">;
 type DisplayEntry = DevlogEntry & { category: CoreCategory };

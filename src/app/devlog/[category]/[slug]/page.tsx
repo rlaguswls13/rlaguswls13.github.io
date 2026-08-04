@@ -28,6 +28,9 @@ import {
   createDetailContentRoots,
   resolveDevlogDetailSource,
 } from "@/content/detail/boundaries";
+import { JsonLd } from "@/lib/seo/JsonLd";
+import { buildBlogPostingJsonLd } from "@/lib/seo/metadata";
+import { buildRouteMetadata, siteAuthor } from "@/lib/seo/routes";
 
 type DevlogPageIndexItem = {
   category: string;
@@ -36,11 +39,24 @@ type DevlogPageIndexItem = {
   sourceFile: string;
   title: string;
   date: string;
+  description: string;
+  author: string;
   href: string;
   discussionTerm: string;
 };
 
 const pageIndex = recommendationData.pages as DevlogPageIndexItem[];
+
+function metadataForEntry(entry: DevlogPageIndexItem) {
+  return buildRouteMetadata(
+    entry.href,
+    `${entry.title} | TECH LOG`,
+    entry.description,
+    "article",
+    entry.author || siteAuthor,
+    entry.date,
+  );
+}
 
 type PrettyCodeFigureProps = ComponentPropsWithoutRef<"figure"> & {
   "data-rehype-pretty-code-figure"?: string;
@@ -102,16 +118,7 @@ export async function generateMetadata({
   const entry = pageIndex.find((item) => item.category === category && item.id === id);
   if (!entry) return {};
 
-  return {
-    title: `${entry.title} | TECH LOG`,
-    description: `${entry.title}에 관한 Devlog 기록입니다.`,
-    alternates: { canonical: entry.href },
-    openGraph: {
-      title: entry.title,
-      url: entry.href,
-      type: "article",
-    },
-  };
+  return metadataForEntry(entry).metadata;
 }
 
 export default async function DevlogDetailPage({
@@ -133,9 +140,11 @@ export default async function DevlogDetailPage({
   const { data, content } = matter(fileContent);
   const recommendationItems = recommendationData.items as Record<string, RelatedDevlogItem[]>;
   const relatedDevlogs = recommendationItems[`${category}/${pageEntry.id}`] || [];
+  const jsonLd = buildBlogPostingJsonLd(metadataForEntry(pageEntry));
 
   return (
     <article className="detail-content-page devlog-detail-page">
+      <JsonLd id="blog-posting-json-ld" document={jsonLd} />
       <DevlogBackLink category={category} />
       <header className="detail-page-heading project-card" style={{ marginBottom: "40px" }}>
         <span className="page-heading-eyebrow">DEVLOG · {category.replaceAll("_", " ")}</span>

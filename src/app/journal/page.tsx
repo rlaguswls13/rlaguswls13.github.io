@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import journalData from "@/data/indexes/journal.json";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { sortByDateDesc } from "@/lib/utils";
 import type { DevlogEntry } from "@/types";
 import { JournalListIsland } from "./JournalListIsland";
+import { buildStaticRouteMetadata } from "@/lib/seo/routes";
+
+export const metadata: Metadata = buildStaticRouteMetadata("journal").metadata;
 
 type JournalCategory = "personal" | "education";
 type JournalDisplayEntry = DevlogEntry & { journalCategory: JournalCategory };

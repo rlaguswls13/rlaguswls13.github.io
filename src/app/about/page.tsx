@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import profileData from "@/data/pages/main/profile.json";
 import projectsData from "@/data/indexes/projects.json";
 import { SkillBar } from "@/components/ui/SkillBar";
@@ -9,6 +10,9 @@ import { AboutBioStory } from "@/components/ui/AboutBioStory";
 import { AboutHighlights } from "@/components/ui/AboutHighlights";
 import { AboutProjectShowcase } from "@/components/ui/AboutProjectShowcase";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { buildStaticRouteMetadata } from "@/lib/seo/routes";
+
+export const metadata: Metadata = buildStaticRouteMetadata("about").metadata;
 
 export default function AboutPage() {
   const { profile, others } = profileData;

@@ -1,5 +1,6 @@
 import fs from "fs";
 import matter from "gray-matter";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import projectsMeta from "@/data/indexes/projects.json";
@@ -20,12 +21,25 @@ import { NotionToggle } from "@/components/ui/notion/NotionToggle";
 import { NotionCallout } from "@/components/ui/notion/NotionCallout";
 import { NotionDivider } from "@/components/ui/notion/NotionDivider";
 import { NotionIndent } from "@/components/ui/notion/NotionIndent";
+import { buildRouteMetadata } from "@/lib/seo/routes";
 
 const projects = projectsMeta.projects as Project[];
 const components = { NotionImage, NotionTable, NotionToggle, NotionCallout, NotionDivider, NotionIndent };
 
 export async function generateStaticParams() {
   return projects.map((project) => ({ id: project.slug || project.id }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const project = projects.find((entry) => entry.slug === id || entry.id === id);
+  if (!project) return {};
+
+  return buildRouteMetadata(
+    `/projects/${project.slug || project.id}`,
+    `${project.title} | TECH LOG`,
+    project.description,
+  ).metadata;
 }
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
