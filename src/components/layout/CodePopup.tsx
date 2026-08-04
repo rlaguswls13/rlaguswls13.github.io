@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { codePopupContent, CodePopupItem } from "@/content/detail/codePopupContent";
+import { CodeIcon } from "@/components/ui/Icons";
 
 interface CodePopupProps {
   name: string;
@@ -38,17 +39,6 @@ export function CodePopup({ name }: CodePopupProps) {
     }
   };
 
-  const getSecurityBadgeColor = (level: string) => {
-    switch (level) {
-      case "High":
-        return "bg-rose-500/10 text-rose-400 border border-rose-500/30";
-      case "Medium":
-        return "bg-amber-500/10 text-amber-400 border border-amber-500/30";
-      default:
-        return "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
-    }
-  };
-
   const codeLines = data.code.split("\n");
 
   return (
@@ -59,7 +49,8 @@ export function CodePopup({ name }: CodePopupProps) {
         className="inline-flex items-center gap-1.5 whitespace-nowrap px-2.5 py-0.5 rounded-md font-mono text-sm font-bold bg-[var(--bg-tertiary)] text-[var(--accent-primary)] border border-[var(--border-color)] hover:border-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/10 hover:shadow-[0_0_12px_var(--accent-glow-sm)] transition-all duration-300 cursor-pointer select-none"
         title={`${name} 코드 가이드 보기`}
       >
-        <span>📄 {name}</span>
+        <CodeIcon />
+        <span>{name}</span>
         <svg
           className="w-3.5 h-3.5 opacity-60 hover:opacity-100 transition-opacity"
           fill="none"

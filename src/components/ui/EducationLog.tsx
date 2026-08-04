@@ -29,6 +29,8 @@ interface EducationLogProps {
   itemsPerPage?: number;
   maxPageButtons?: number;
   searchQuery?: string;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }
 
 export function EducationLog({
@@ -36,9 +38,10 @@ export function EducationLog({
   itemsPerPage = 9,
   maxPageButtons = 5,
   searchQuery = "",
+  currentPage,
+  onPageChange,
 }: EducationLogProps) {
   const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const entries = useMemo(() => sortByDateDesc(sourceEntries.map((entry) => ({
     id: entry.id,
@@ -88,43 +91,47 @@ export function EducationLog({
 
       <div className="devlog-grid">
         {currentEntries.map((entry, index) => (
-          <div
+          <article
             key={entry.id}
             className="devlog-card education-card"
-            onClick={() => setSelectedEntry(entry)}
           >
-            <CardThumbnail src={getDevlogThumbnail("education", entry.id)} alt="" className="devlog-card-thumbnail" priority={index === 0} />
-            <div className="devlog-card-topline">
-              <span className="devlog-card-category">{entry.round}</span>
-              <span className="devlog-meta">
-                <CalendarIcon /> {formatDate(entry.date)}
-              </span>
-            </div>
-
-            {entry.blogTitle && (
-              <div className="item-title">
-                {entry.blogTitle}
+            <button
+              type="button"
+              className="education-preview-trigger"
+              aria-label={`${entry.blogTitle} 미리보기`}
+              onClick={() => setSelectedEntry(entry)}
+            />
+            <div className="education-card-content">
+              <CardThumbnail src={getDevlogThumbnail("education", entry.id)} alt="" className="devlog-card-thumbnail" priority={index === 0} />
+              <div className="devlog-card-topline">
+                <span className="devlog-card-category">{entry.round}</span>
+                <span className="devlog-meta">
+                  <CalendarIcon /> {formatDate(entry.date)}
+                </span>
               </div>
-            )}
 
-            <TagList tags={entry.keywords} />
+              {entry.blogTitle && (
+                <div className="item-title">
+                  {entry.blogTitle}
+                </div>
+              )}
 
-            <p
-              className="devlog-description"
-            >
-              {truncateText(entry.impression, 100)}
-            </p>
+              <TagList tags={entry.keywords} />
+
+              <p className="devlog-description">
+                {truncateText(entry.impression, 100)}
+              </p>
+            </div>
 
             {entry.slug && (
               <Link
                 href={`${getDevlogHref("education", entry.id)}?journal=education`}
                 className="education-blog-link"
-                onClick={(e) => e.stopPropagation()}
               >
                 <BlogIcon /> 상세내용 ↗
               </Link>
             )}
-          </div>
+          </article>
         ))}
       </div>
 
@@ -136,7 +143,7 @@ export function EducationLog({
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        onPageChange={onPageChange}
         maxPageButtons={maxPageButtons}
       />
 
@@ -152,8 +159,10 @@ export function EducationLog({
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              type="button"
               className="education-modal-close"
               onClick={() => setSelectedEntry(null)}
+              aria-label="닫기"
             >
               <CloseIcon />
             </button>

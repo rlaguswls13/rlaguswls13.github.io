@@ -103,6 +103,8 @@
 
   /* Timing */
   --primitive-duration-300: 0.3s;
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 3px;
 
   /* Typography — font stacks
      한글: Noto Sans KR / 영문·코드: Inter + JetBrains Mono
@@ -246,6 +248,11 @@ html {
   /* Firefox scrollbar */
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) var(--bg-primary);
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--accent-primary);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* WebKit global scrollbar */
@@ -590,6 +597,7 @@ ul {
   margin-bottom: 2rem;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 0;
+  overflow-x: auto;
 }
 
 .category-tab {
@@ -598,8 +606,12 @@ ul {
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
+  border: 0;
   border-bottom: 3px solid transparent;
+  background: transparent;
+  font-family: inherit;
   transition: all var(--transition-speed);
+  white-space: nowrap;
 }
 
 .category-tab:hover {
@@ -2092,7 +2104,6 @@ a.category-tab .category-tab-ext {
   transition: all var(--transition-speed);
   font-size: 0.95rem;
   white-space: nowrap;
-  outline: none;
   text-align: center;
   width: auto;
 }
@@ -2149,6 +2160,10 @@ a.category-tab .category-tab-ext {
   width: 100%;
 }
 
+.sidebar-search form {
+  position: relative;
+}
+
 .sidebar-search input {
   width: 100%;
   padding: 10px 14px 10px 36px;
@@ -2157,7 +2172,6 @@ a.category-tab .category-tab-ext {
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 0.9rem;
-  outline: none;
   transition: all var(--transition-speed);
 }
 
@@ -2174,6 +2188,29 @@ a.category-tab .category-tab-ext {
   color: var(--text-secondary);
 }
 
+.sidebar-search .search-clear {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.sidebar-search .search-clear svg {
+  position: static;
+  transform: none;
+}
+
 /* ====================== */
 /* Education Log Card     */
 /* ====================== */
@@ -2185,6 +2222,25 @@ a.category-tab .category-tab-ext {
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.education-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.education-preview-trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
 }
 
 .education-card:hover {
@@ -2226,6 +2282,8 @@ a.category-tab .category-tab-ext {
   text-decoration: none;
   transition: all 0.25s ease;
   width: fit-content;
+  position: relative;
+  z-index: 2;
 }
 
 .education-blog-link:hover {
@@ -2513,7 +2571,7 @@ a.category-tab .category-tab-ext {
   transition: all 0.2s ease;
 }
 
-.pagination-btn:hover:not(:disabled) {
+.pagination-btn:hover:not(:disabled):not([aria-disabled="true"]) {
   background: var(--bg-tertiary);
   border-color: var(--accent-primary);
   color: var(--accent-primary);
@@ -2528,7 +2586,8 @@ a.category-tab .category-tab-ext {
   box-shadow: var(--accent-glow-sm);
 }
 
-.pagination-btn:disabled {
+.pagination-btn:disabled,
+.pagination-btn[aria-disabled="true"] {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -2953,6 +3012,8 @@ header > p {
 .devlog-sidebar nav {
   justify-content: flex-start;
   gap: 8px;
+  flex-wrap: wrap;
+  overflow-x: visible;
 }
 
 .pkg-pill {
@@ -3071,9 +3132,9 @@ header > p {
     width: 100%;
     margin-right: 0;
     justify-content: flex-start;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 20px;
-    overflow-x: auto;
+    overflow-x: visible;
     padding-bottom: 5px;
   }
 

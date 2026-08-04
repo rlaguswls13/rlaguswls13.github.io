@@ -28,12 +28,15 @@ export function Pagination({
   }
 
   return (
-    <div className="pagination-container">
+    <nav className="pagination-container" aria-label="페이지 탐색">
       <button
-        onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
-        disabled={currentPage === 1}
+        type="button"
+        onClick={() => {
+          if (currentPage > 1) onPageChange(currentPage - 1);
+        }}
+        aria-disabled={currentPage === 1}
         className="pagination-btn arrow"
-        aria-label="Previous Page"
+        aria-label="Previous page"
       >
         &lt;
       </button>
@@ -41,21 +44,27 @@ export function Pagination({
       {pageNumbers.map((num) => (
         <button
           key={num}
+          type="button"
           onClick={() => onPageChange(num)}
           className={`pagination-btn ${currentPage === num ? "active" : ""}`}
+          aria-label={currentPage === num ? `Page ${num}, current page` : `Page ${num}`}
+          aria-current={currentPage === num ? "page" : undefined}
         >
           {num}
         </button>
       ))}
 
       <button
-        onClick={() => onPageChange(Math.min(currentPage + 1, displayPages))}
-        disabled={currentPage === displayPages}
+        type="button"
+        onClick={() => {
+          if (currentPage < displayPages) onPageChange(currentPage + 1);
+        }}
+        aria-disabled={currentPage === displayPages}
         className="pagination-btn arrow"
-        aria-label="Next Page"
+        aria-label="Next page"
       >
         &gt;
       </button>
-    </div>
+    </nav>
   );
 }

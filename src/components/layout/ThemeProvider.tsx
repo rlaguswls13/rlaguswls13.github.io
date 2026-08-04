@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { MoonIcon, SunIcon } from "@/components/ui/Icons";
 
 /**
  * Available themes. Add custom themes here in the future (e.g. "pink", "rainbow").
@@ -48,7 +49,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         aria-label={theme === "light" ? "다크 테마로 전환" : "라이트 테마로 전환"}
         title={theme === "light" ? "다크 테마" : "라이트 테마"}
       >
-        {theme === "light" ? "☾" : "☀"}
+        {theme === "light" ? <MoonIcon /> : <SunIcon />}
       </button>
     </>
   );

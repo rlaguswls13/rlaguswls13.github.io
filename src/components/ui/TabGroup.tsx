@@ -8,7 +8,7 @@ interface TabGroupProps {
 
 export function TabGroup({ tabs, activeTab, onTabChange }: TabGroupProps) {
   return (
-    <div className="category-tabs">
+    <div className="category-tabs" role="group" aria-label="카테고리 필터">
       {tabs.map((tab) => {
         if (tab.href) {
           return (
@@ -26,13 +26,15 @@ export function TabGroup({ tabs, activeTab, onTabChange }: TabGroupProps) {
         }
 
         return (
-          <div
+          <button
             key={tab.key}
+            type="button"
             className={`category-tab ${activeTab === tab.key ? "active" : ""}`}
             onClick={() => onTabChange(tab.key)}
+            aria-pressed={activeTab === tab.key}
           >
             {tab.label}
-          </div>
+          </button>
         );
       })}
     </div>

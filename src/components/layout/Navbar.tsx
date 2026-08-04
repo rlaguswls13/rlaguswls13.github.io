@@ -9,7 +9,7 @@ const navItems = [
   { href: "/projects", label: "Projects" },
   { href: "/devlog", label: "Devlogs" },
   { href: "/journal", label: "Journal" },
-  { href: "/career", label: "Carrer" },
+  { href: "/career", label: "Career" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -32,6 +32,7 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               className={isActive ? "active" : ""}
+              aria-current={isActive ? "page" : undefined}
             >
               {item.label}
             </Link>

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { TagList } from "@/components/ui/TagBadge";
 import { formatPeriods, calculateTotalPeriod } from "@/lib/utils";
 import Link from "next/link";
-import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
+import { CalendarIcon, CloseIcon, SearchIcon } from "@/components/ui/Icons";
 import type { Project } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
@@ -13,6 +13,7 @@ import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getProjectThumbnail } from "@/lib/thumbnails";
 import { TabGroup } from "@/components/ui/TabGroup";
 import { projectListQuery } from "@/lib/list-query";
+import { Pagination } from "@/components/ui/Pagination";
 
 type ProjectTab = "all" | "enterprise" | "personal";
 
@@ -30,11 +31,13 @@ type ProjectsListIslandProps = Readonly<{
 export function ProjectsListIsland({ projects, initialProjects }: ProjectsListIslandProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [draftSearchQuery, setDraftSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState<ProjectTab>("all");
   const [activeSubcategory, setActiveSubcategory] = useState<string>("전체");
   const [hasUrlState, setHasUrlState] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const itemsPerPage = 6; // 6 cards per page
 
   const allProjects = projects;
@@ -84,6 +87,7 @@ export function ProjectsListIsland({ projects, initialProjects }: ProjectsListIs
     const applyLocation = () => {
       const queryState = projectListQuery.parse(new URLSearchParams(window.location.search));
       setSearchQuery(queryState.q);
+      setDraftSearchQuery(queryState.q);
       setIsSearchOpen(Boolean(queryState.q));
       setCurrentPage(queryState.page);
       setActiveTab(queryState.tab);
@@ -109,14 +113,14 @@ export function ProjectsListIsland({ projects, initialProjects }: ProjectsListIs
   }, [searchQuery, clampedPage, activeTab, activeSubcategory, hasUrlState, router]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1);
+    setDraftSearchQuery(e.target.value);
   };
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab as ProjectTab);
     setActiveSubcategory("전체");
     setSearchQuery("");
+    setDraftSearchQuery("");
     setIsSearchOpen(false);
     setCurrentPage(1);
   };
@@ -144,6 +148,7 @@ export function ProjectsListIsland({ projects, initialProjects }: ProjectsListIs
                   key={subcategory}
                   type="button"
                   className={`pkg-pill ${activeSubcategory === subcategory ? "active" : ""}`}
+                  aria-pressed={activeSubcategory === subcategory}
                   onClick={() => {
                     setActiveSubcategory(subcategory);
                     setCurrentPage(1);
@@ -163,21 +168,37 @@ export function ProjectsListIsland({ projects, initialProjects }: ProjectsListIs
                   <SearchIcon style={{ position: 'relative', left: '0', transform: 'none' }} /> 검색
                 </button>
               ) : (
-                <div style={{ position: "relative" }}>
-                  <span
-                    onClick={() => setIsSearchOpen(false)}
-                    style={{ cursor: "pointer", position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", zIndex: 10, display: "flex" }}
-                  >
-                    <SearchIcon style={{ position: "relative", left: "0", transform: "none" }} />
-                  </span>
+                <form onSubmit={(event) => {
+                  event.preventDefault();
+                  setSearchQuery(draftSearchQuery.trim());
+                  setCurrentPage(1);
+                }}>
+                  <SearchIcon />
                   <input
-                    type="text"
+                    ref={searchInputRef}
+                    type="search"
+                    aria-label="검색"
                     placeholder="검색어 입력..."
-                    value={searchQuery}
+                    value={draftSearchQuery}
                     onChange={handleSearchChange}
                     autoFocus
                   />
-                </div>
+                  {draftSearchQuery && (
+                    <button
+                      type="button"
+                      className="search-clear"
+                      aria-label="검색 지우기"
+                      onClick={() => {
+                        searchInputRef.current?.focus();
+                        setDraftSearchQuery("");
+                        setSearchQuery("");
+                        setCurrentPage(1);
+                      }}
+                    >
+                      <CloseIcon />
+                    </button>
+                  )}
+                </form>
               )}
             </div>
           </aside>
@@ -206,19 +227,11 @@ export function ProjectsListIsland({ projects, initialProjects }: ProjectsListIs
             </div>
 
             {/* Pagination Controls */}
-            {totalPages >= 1 && (
-              <div className="pagination-container">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                  <button
-                    key={pageNum}
-                    onClick={() => setCurrentPage(pageNum)}
-                    className={`pagination-btn ${clampedPage === pageNum ? "active" : ""}`}
-                  >
-                    {pageNum}
-                  </button>
-                ))}
-              </div>
-            )}
+            <Pagination
+              currentPage={clampedPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </main>
         </div>
       </div>

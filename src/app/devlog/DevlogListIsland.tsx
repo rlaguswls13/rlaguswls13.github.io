@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TabGroup } from "@/components/ui/TabGroup";
@@ -8,7 +8,7 @@ import { DevlogSectionHeader } from "@/components/ui/DevlogSectionHeader";
 import { Pagination } from "@/components/ui/Pagination";
 import { TagList } from "@/components/ui/TagBadge";
 import { CardThumbnail } from "@/components/ui/CardThumbnail";
-import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
+import { CalendarIcon, CloseIcon, SearchIcon } from "@/components/ui/Icons";
 import { getDevlogHref } from "@/lib/devlog-slugs";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
 import { devlogListQuery, journalListQuery } from "@/lib/list-query";
@@ -38,9 +38,11 @@ export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandPr
   const [activeTab, setActiveTab] = useState<TabKey>("all");
   const [activePkg, setActivePkg] = useState<string>("전체");
   const [searchQuery, setSearchQuery] = useState("");
+  const [draftSearchQuery, setDraftSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasUrlState, setHasUrlState] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const itemsPerPage = 6;
 
   const allEntries = useMemo<DisplayEntry[]>(() => {
@@ -87,6 +89,7 @@ export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandPr
       setActiveTab(queryState.tab);
       setActivePkg(queryState.sub);
       setSearchQuery(queryState.q);
+      setDraftSearchQuery(queryState.q);
       setIsSearchOpen(Boolean(queryState.q));
       setCurrentPage(queryState.page);
       setHasUrlState(true);
@@ -113,6 +116,7 @@ export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandPr
     setActiveTab(key as TabKey);
     setActivePkg("전체");
     setSearchQuery("");
+    setDraftSearchQuery("");
     setIsSearchOpen(false);
     setCurrentPage(1);
   };
@@ -129,6 +133,7 @@ export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandPr
                   key={pkg}
                   type="button"
                   className={`pkg-pill ${activePkg === pkg ? "active" : ""}`}
+                  aria-pressed={activePkg === pkg}
                   onClick={() => {
                     setActivePkg(pkg);
                     setCurrentPage(1);
@@ -145,16 +150,39 @@ export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandPr
                   <SearchIcon style={{ position: "relative", left: 0, transform: "none" }} /> 검색
                 </button>
               ) : (
-                <input
-                  type="text"
-                  placeholder="검색어 입력..."
-                  value={searchQuery}
-                  onChange={(event) => {
-                    setSearchQuery(event.target.value);
-                    setCurrentPage(1);
-                  }}
-                  autoFocus
-                />
+                <form onSubmit={(event) => {
+                  event.preventDefault();
+                  setSearchQuery(draftSearchQuery.trim());
+                  setCurrentPage(1);
+                }}>
+                  <SearchIcon />
+                  <input
+                    ref={searchInputRef}
+                    type="search"
+                    aria-label="검색"
+                    placeholder="검색어 입력..."
+                    value={draftSearchQuery}
+                    onChange={(event) => {
+                      setDraftSearchQuery(event.target.value);
+                    }}
+                    autoFocus
+                  />
+                  {draftSearchQuery && (
+                    <button
+                      type="button"
+                      className="search-clear"
+                      aria-label="검색 지우기"
+                      onClick={() => {
+                        searchInputRef.current?.focus();
+                        setDraftSearchQuery("");
+                        setSearchQuery("");
+                        setCurrentPage(1);
+                      }}
+                    >
+                      <CloseIcon />
+                    </button>
+                  )}
+                </form>
               )}
             </div>
           </aside>
@@ -169,9 +197,8 @@ export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandPr
             {paginatedEntries.length === 0 ? (
               <div className="devlog-empty-state">조건에 맞는 Devlog가 없습니다.</div>
             ) : (
-              <>
-                <div className="devlog-grid">
-                  {paginatedEntries.map((entry, index) => (
+              <div className="devlog-grid">
+                {paginatedEntries.map((entry, index) => (
                     <Link
                       key={entry.id}
                       href={`${getDevlogHref(entry.category, entry.id)}?sub=${activePkg}&page=${clampedPage}`}
@@ -194,16 +221,15 @@ export function DevlogListIsland({ entries, initialEntries }: DevlogListIslandPr
                         <p className="devlog-description" style={{ flexGrow: 1 }}>{entry.description}</p>
                       </div>
                     </Link>
-                  ))}
-                </div>
-                <Pagination
-                  currentPage={clampedPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                  maxPageButtons={5}
-                />
-              </>
+                ))}
+              </div>
             )}
+            <Pagination
+              currentPage={clampedPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              maxPageButtons={5}
+            />
           </main>
         </div>
     </div>
