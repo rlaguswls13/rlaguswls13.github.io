@@ -4011,6 +4011,16 @@ body {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  :is(body, .theme-toggle, .project-card, .devlog-card, .profile-card, .bio-card, .recent-projects-card, .about-project-carousel-card, .skills-card, .others-card, .about-highlights-card, .education-card, .tech-post-card, .related-devlog-card, .about-highlights-carousel-track, .about-project-carousel-track, .devlog-flow-track, .carousel-edge-btn) {
+    transition: none;
+  }
+
+  :is(.education-modal-overlay, .education-modal, .thumbnail-loading-placeholder, .image-loading-overlay, .loading-placeholder::after) {
+    animation: none;
+  }
+}
+
 .project-card-thumbnail,
 .devlog-card-thumbnail {
   width: calc(100% + 44px);
@@ -4731,6 +4741,7 @@ body {
   .tech-hero {
     gap: 12px;
     padding-top: 38px;
+    overflow: clip;
   }
 
   .tech-hero h1 {
@@ -4983,5 +4994,15 @@ body {
 
   .about-page .about-page-header {
     padding: 22px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(body, .theme-toggle, .project-card, .devlog-card, .profile-card, .bio-card, .recent-projects-card, .about-project-carousel-card, .skills-card, .others-card, .about-highlights-card, .education-card, .tech-post-card, .related-devlog-card, .about-highlights-carousel-track, .about-project-carousel-track, .devlog-flow-track, .carousel-edge-btn) {
+    transition: none;
+  }
+
+  :where(.education-modal-overlay, .education-modal, .thumbnail-loading-placeholder, .image-loading-overlay, .loading-placeholder::after) {
+    animation: none;
   }
 }

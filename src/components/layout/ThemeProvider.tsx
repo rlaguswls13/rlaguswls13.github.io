@@ -15,15 +15,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    const resolved = stored && THEMES.includes(stored) ? stored : "light";
-    // Class-based theme switching: remove all theme classes, add the resolved one
-    THEMES.forEach((t) => document.documentElement.classList.remove(`theme-${t}`));
-    document.documentElement.classList.add(`theme-${resolved}`);
-    setTimeout(() => {
-      setTheme(resolved as Theme);
+    const frame = requestAnimationFrame(() => {
+      setTheme(document.documentElement.classList.contains("theme-dark") ? "dark" : "light");
       setMounted(true);
-    }, 0);
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const toggleTheme = () => {
