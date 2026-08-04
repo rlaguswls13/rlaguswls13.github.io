@@ -14,6 +14,7 @@ import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
 import { getDevlogHref } from "@/lib/devlog-slugs";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
+import { devlogListQuery, journalListQuery } from "@/lib/list-query";
 import { sortByDateDesc } from "@/lib/utils";
 import type { DevlogCategory, DevlogEntry } from "@/types";
 
@@ -36,32 +37,15 @@ const indexedEntries = devlogData as Record<CoreCategory, DevlogEntry[]>;
 function DevlogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const queryState = devlogListQuery.parse(searchParams);
   const requestedTab = searchParams.get("tab") || "all";
-  const initialTab = tabs.some((tab) => tab.key === requestedTab) ? requestedTab as TabKey : "all";
+  const initialTab = queryState.tab;
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
-  const [activePkg, setActivePkg] = useState(searchParams.get("sub") || "전체");
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
-  const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchParams.get("q")));
-  const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
+  const [activePkg, setActivePkg] = useState<string>(queryState.sub);
+  const [searchQuery, setSearchQuery] = useState(queryState.q);
+  const [isSearchOpen, setIsSearchOpen] = useState(Boolean(queryState.q));
+  const [currentPage, setCurrentPage] = useState(queryState.page);
   const itemsPerPage = 6;
-
-  useEffect(() => {
-    if (["journal", "blog", "education_log"].includes(requestedTab)) {
-      const category = requestedTab === "education_log"
-        ? "education"
-        : searchParams.get("journal") === "education" ? "education" : "personal";
-      router.replace(`/journal?category=${category}`, { scroll: false });
-      return;
-    }
-    const query = new URLSearchParams({
-      tab: activeTab,
-      sub: activePkg,
-      page: String(currentPage),
-    });
-    if (searchQuery) query.set("q", searchQuery);
-    const next = `/devlog?${query.toString()}`;
-    if (`/devlog?${searchParams.toString()}` !== next) router.replace(next, { scroll: false });
-  }, [activePkg, activeTab, currentPage, requestedTab, router, searchParams, searchQuery]);
 
   const allEntries = useMemo<DisplayEntry[]>(() => {
     const selected = activeTab === "all" ? categories : [activeTab];
@@ -89,10 +73,30 @@ function DevlogContent() {
   }, [activePkg, allEntries, searchQuery]);
 
   const totalPages = Math.ceil(filteredEntries.length / itemsPerPage);
+  const clampedPage = devlogListQuery.clampPage(currentPage, filteredEntries.length, itemsPerPage);
   const paginatedEntries = filteredEntries.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    (clampedPage - 1) * itemsPerPage,
+    clampedPage * itemsPerPage,
   );
+
+  useEffect(() => {
+    if (["journal", "blog", "education_log"].includes(requestedTab)) {
+      const category = requestedTab === "education_log"
+        ? "education"
+        : searchParams.get("journal") === "education" ? "education" : "personal";
+      router.replace(journalListQuery.href({ tab: category }), { scroll: false });
+      return;
+    }
+    const state = devlogListQuery.parse(new URLSearchParams({
+      tab: activeTab,
+      sub: activePkg,
+      q: searchQuery,
+      page: String(clampedPage),
+    }));
+    if (searchParams.toString() !== devlogListQuery.serialize(state)) {
+      router.replace(devlogListQuery.href(state), { scroll: false });
+    }
+  }, [activePkg, activeTab, clampedPage, requestedTab, router, searchParams, searchQuery]);
 
   const changeTab = (key: string) => {
     setActiveTab(key as TabKey);
@@ -167,7 +171,7 @@ function DevlogContent() {
                   {paginatedEntries.map((entry, index) => (
                     <Link
                       key={entry.id}
-                      href={`${getDevlogHref(entry.category, entry.id)}?sub=${activePkg}&page=${currentPage}`}
+                      href={`${getDevlogHref(entry.category, entry.id)}?sub=${activePkg}&page=${clampedPage}`}
                       className="devlog-card-link"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
@@ -182,7 +186,7 @@ function DevlogContent() {
                           <span className="devlog-card-category">{labels[entry.category]}</span>
                           <span className="devlog-meta"><CalendarIcon /> {entry.date}</span>
                         </div>
-                        <div className="item-title" style={{ marginTop: 0, marginBottom: "12px" }}>{entry.title}</div>
+                        <div className="item-title" style={{ marginTop: 0, marginBottom: "12px", wordBreak: "keep-all" }}>{entry.title}</div>
                         <TagList tags={entry.tags} />
                         <p className="devlog-description" style={{ flexGrow: 1 }}>{entry.description}</p>
                       </div>
@@ -190,7 +194,7 @@ function DevlogContent() {
                   ))}
                 </div>
                 <Pagination
-                  currentPage={currentPage}
+                  currentPage={clampedPage}
                   totalPages={totalPages}
                   onPageChange={setCurrentPage}
                   maxPageButtons={5}

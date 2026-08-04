@@ -12,6 +12,7 @@ import { parseDate, sortByDateDesc } from "@/lib/utils";
 import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
 import { getDevlogHref } from "@/lib/devlog-slugs";
+import { devlogListQuery, journalListQuery } from "@/lib/list-query";
 
 type HomeContentCategory = DevlogCategory | "education";
 type HomeFilter = Exclude<DevlogCategory, "blog"> | "journal";
@@ -76,8 +77,8 @@ const popularEntries = [...sortedHomeEntries].sort(compareByEngagement);
 
 function getCategoryListHref(category: HomeFilter) {
   return category === "journal"
-    ? "/journal?category=education&page=1"
-    : `/devlog?tab=${category}&pkg=All&page=1`;
+    ? journalListQuery.href({ tab: "education" })
+    : devlogListQuery.href({ tab: category });
 }
 
 export default function TechBlogHome() {
@@ -100,10 +101,10 @@ export default function TechBlogHome() {
   };
 
   const categoryListHref = activeCategory === "all"
-    ? "/devlog"
+    ? devlogListQuery.href({})
     : activeCategory === "journal"
-      ? "/journal?category=education&page=1"
-      : `/devlog?tab=${activeCategory}&pkg=All&page=1`;
+      ? journalListQuery.href({ tab: "education" })
+      : devlogListQuery.href({ tab: activeCategory });
 
   const getFilterCount = (filter: HomeFilter) => filter === "journal"
     ? educationEntries.length + blogEntries.length
@@ -207,7 +208,7 @@ export default function TechBlogHome() {
             <h2>인기 태그</h2>
             <div className="tech-tag-cloud">
               {sidebarTags.map(([tag, count]) => (
-                <Link key={tag} href={`/devlog?tab=all&pkg=All&q=${encodeURIComponent(tag)}&page=1`}>
+                <Link key={tag} href={devlogListQuery.href({ q: tag })}>
                   {tag}<small>{count}</small>
                 </Link>
               ))}
@@ -250,7 +251,7 @@ export default function TechBlogHome() {
             <p>태그를 선택하면 관련 기록을 바로 확인할 수 있습니다.</p>
             <div className="tech-tag-cloud tech-tag-modal-cloud">
               {sortedTags.map(([tag, count]) => (
-                <Link key={tag} href={`/devlog?tab=all&pkg=All&q=${encodeURIComponent(tag)}&page=1`} onClick={() => setIsTagModalOpen(false)}>
+                <Link key={tag} href={devlogListQuery.href({ q: tag })} onClick={() => setIsTagModalOpen(false)}>
                   {tag}<small>{count}</small>
                 </Link>
               ))}

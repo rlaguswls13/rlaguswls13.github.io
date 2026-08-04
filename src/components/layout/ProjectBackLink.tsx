@@ -3,18 +3,11 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { projectListQuery } from "@/lib/list-query";
 
 function ProjectBackLinkInner() {
   const searchParams = useSearchParams();
-  const page = searchParams.get("page") || "1";
-  const q = searchParams.get("q") || "";
-  const tab = searchParams.get("tab") || "enterprise";
-  const subcategory = searchParams.get("sub") || "All";
-  
-  const qParam = q ? `&q=${encodeURIComponent(q)}` : "";
-  const tabParam = tab !== "enterprise" ? `&tab=${tab}` : "";
-  const subcategoryParam = subcategory !== "All" ? `&sub=${encodeURIComponent(subcategory)}` : "";
-  const href = `/projects?page=${page}${qParam}${tabParam}${subcategoryParam}`;
+  const href = projectListQuery.href(projectListQuery.parse(searchParams));
   
   return (
     <Link href={href} className="back-link">

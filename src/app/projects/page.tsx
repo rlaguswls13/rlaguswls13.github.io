@@ -14,6 +14,7 @@ import { CardThumbnail } from "@/components/ui/CardThumbnail";
 import { getProjectThumbnail } from "@/lib/thumbnails";
 import { LoadingPlaceholder } from "@/components/ui/DeferredContent";
 import { TabGroup } from "@/components/ui/TabGroup";
+import { projectListQuery } from "@/lib/list-query";
 
 type ProjectTab = "all" | "enterprise" | "personal";
 
@@ -26,38 +27,18 @@ const projectTabs = [
 function ProjectsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const queryState = projectListQuery.parse(searchParams);
 
-  const initialSearch = searchParams.get("q") || "";
-  const initialPage = parseInt(searchParams.get("page") || "1", 10);
-  const requestedTab = searchParams.get("tab") || "all";
-  const initialTab = projectTabs.some((tab) => tab.key === requestedTab)
-    ? requestedTab as ProjectTab
-    : "all";
+  const initialSearch = queryState.q;
+  const initialPage = queryState.page;
+  const initialTab = queryState.tab;
 
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [isSearchOpen, setIsSearchOpen] = useState(!!initialSearch);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [activeTab, setActiveTab] = useState<ProjectTab>(initialTab);
-  const [activeSubcategory, setActiveSubcategory] = useState(searchParams.get("sub") || "전체");
+  const [activeSubcategory, setActiveSubcategory] = useState<string>(queryState.sub);
   const itemsPerPage = 6; // 6 cards per page
-
-  useEffect(() => {
-    const currentQ = searchParams.get("q") || "";
-    const currentPg = searchParams.get("page");
-    const currentTab = searchParams.get("tab") || "all";
-    const currentSubcategory = searchParams.get("sub") || "전체";
-
-    if (currentQ !== searchQuery || currentPg !== String(currentPage) || currentTab !== activeTab || currentSubcategory !== activeSubcategory) {
-      const params = new URLSearchParams();
-      if (searchQuery) params.set("q", searchQuery);
-      if (currentPage > 1) params.set("page", String(currentPage));
-      if (activeTab !== "all") params.set("tab", activeTab);
-      if (activeSubcategory !== "전체") params.set("sub", activeSubcategory);
-
-      const qParam = params.toString() ? `?${params.toString()}` : "";
-      router.replace(`/projects${qParam}`, { scroll: false });
-    }
-  }, [searchQuery, currentPage, activeTab, activeSubcategory, router, searchParams]);
 
   const allProjects = sortByDateDesc(projectsData.projects as Project[]);
 
@@ -97,10 +78,23 @@ function ProjectsContent() {
   }, [activeSubcategory, categoryProjects, searchQuery]);
 
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+  const clampedPage = projectListQuery.clampPage(currentPage, filteredProjects.length, itemsPerPage);
   const paginatedProjects = filteredProjects.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (clampedPage - 1) * itemsPerPage,
+    clampedPage * itemsPerPage
   );
+
+  useEffect(() => {
+    const state = projectListQuery.parse(new URLSearchParams({
+      tab: activeTab,
+      sub: activeSubcategory,
+      q: searchQuery,
+      page: String(clampedPage),
+    }));
+    if (searchParams.toString() !== projectListQuery.serialize(state)) {
+      router.replace(projectListQuery.href(state), { scroll: false });
+    }
+  }, [searchQuery, clampedPage, activeTab, activeSubcategory, router, searchParams]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -182,7 +176,7 @@ function ProjectsContent() {
               {paginatedProjects.map((p, index) => (
                 <Link
                   key={p.id}
-                  href={`/projects/${p.slug || p.id}?page=${currentPage}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""}${activeTab !== "all" ? `&tab=${activeTab}` : ""}${activeSubcategory !== "전체" ? `&sub=${encodeURIComponent(activeSubcategory)}` : ""}`}
+                  href={`/projects/${p.slug || p.id}?page=${clampedPage}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""}${activeTab !== "all" ? `&tab=${activeTab}` : ""}${activeSubcategory !== "전체" ? `&sub=${encodeURIComponent(activeSubcategory)}` : ""}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div className="project-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -207,7 +201,7 @@ function ProjectsContent() {
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`pagination-btn ${currentPage === pageNum ? "active" : ""}`}
+                    className={`pagination-btn ${clampedPage === pageNum ? "active" : ""}`}
                   >
                     {pageNum}
                   </button>

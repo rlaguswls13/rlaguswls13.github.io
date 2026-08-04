@@ -16,6 +16,7 @@ import { CalendarIcon, SearchIcon } from "@/components/ui/Icons";
 import { getDevlogHref } from "@/lib/devlog-slugs";
 import { sortByDateDesc } from "@/lib/utils";
 import { getDevlogThumbnail } from "@/lib/thumbnails";
+import { journalListQuery } from "@/lib/list-query";
 import type { DevlogEntry } from "@/types";
 
 type JournalCategory = "personal" | "education";
@@ -32,27 +33,14 @@ const entries = journalData as Record<JournalCategory, DevlogEntry[]>;
 function JournalContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const requestedCategory = searchParams.get("category") || searchParams.get("journal") || "all";
-  const initialCategory = tabs.some((tab) => tab.key === requestedCategory)
-    ? requestedCategory as JournalTab
-    : "all";
+  const queryState = journalListQuery.parse(searchParams);
+  const initialCategory = queryState.tab;
   const [activeCategory, setActiveCategory] = useState<JournalTab>(initialCategory);
-  const [activeSubcategory, setActiveSubcategory] = useState(searchParams.get("sub") || "전체");
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
-  const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchParams.get("q")));
-  const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
+  const [activeSubcategory, setActiveSubcategory] = useState<string>(queryState.sub);
+  const [searchQuery, setSearchQuery] = useState(queryState.q);
+  const [isSearchOpen, setIsSearchOpen] = useState(Boolean(queryState.q));
+  const [currentPage, setCurrentPage] = useState(queryState.page);
   const itemsPerPage = 6;
-
-  useEffect(() => {
-    const query = new URLSearchParams({
-      category: activeCategory,
-      sub: activeSubcategory,
-      page: String(currentPage),
-    });
-    if (searchQuery) query.set("q", searchQuery);
-    const next = `/journal?${query.toString()}`;
-    if (`/journal?${searchParams.toString()}` !== next) router.replace(next, { scroll: false });
-  }, [activeCategory, activeSubcategory, currentPage, router, searchParams, searchQuery]);
 
   const categoryEntries = useMemo<JournalDisplayEntry[]>(() => {
     const categories: JournalCategory[] = activeCategory === "all"
@@ -84,10 +72,23 @@ function JournalContent() {
   }, [activeSubcategory, categoryEntries, searchQuery]);
 
   const totalPages = Math.ceil(personalEntries.length / itemsPerPage);
+  const clampedPage = journalListQuery.clampPage(currentPage, personalEntries.length, itemsPerPage);
   const paginatedEntries = personalEntries.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    (clampedPage - 1) * itemsPerPage,
+    clampedPage * itemsPerPage,
   );
+
+  useEffect(() => {
+    const state = journalListQuery.parse(new URLSearchParams({
+      category: activeCategory,
+      sub: activeSubcategory,
+      q: searchQuery,
+      page: String(clampedPage),
+    }));
+    if (searchParams.toString() !== journalListQuery.serialize(state)) {
+      router.replace(journalListQuery.href(state), { scroll: false });
+    }
+  }, [activeCategory, activeSubcategory, clampedPage, router, searchParams, searchQuery]);
 
   const changeCategory = (key: string) => {
     setActiveCategory(key as JournalTab);
@@ -165,7 +166,7 @@ function JournalContent() {
                       {paginatedEntries.map((entry) => (
                         <Link
                           key={entry.id}
-                          href={`${getDevlogHref(entry.journalCategory === "education" ? "education" : "blog", entry.id)}?journal=${entry.journalCategory}&page=${currentPage}`}
+                          href={`${getDevlogHref(entry.journalCategory === "education" ? "education" : "blog", entry.id)}?journal=${entry.journalCategory}&page=${clampedPage}`}
                           className="devlog-card-link"
                           style={{ textDecoration: "none", color: "inherit" }}
                         >
@@ -181,7 +182,7 @@ function JournalContent() {
                               </span>
                               <span className="devlog-meta"><CalendarIcon /> {entry.date}</span>
                             </div>
-                            <div className="item-title" style={{ marginTop: 0, marginBottom: "12px" }}>{entry.title}</div>
+                            <div className="item-title" style={{ marginTop: 0, marginBottom: "12px", wordBreak: "keep-all" }}>{entry.title}</div>
                             <TagList tags={entry.tags} />
                             <p className="devlog-description" style={{ flexGrow: 1 }}>{entry.description}</p>
                           </div>
@@ -189,7 +190,7 @@ function JournalContent() {
                       ))}
                     </div>
                     <Pagination
-                      currentPage={currentPage}
+                      currentPage={clampedPage}
                       totalPages={totalPages}
                       onPageChange={setCurrentPage}
                       maxPageButtons={5}
