@@ -1,90 +1,73 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy verified Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["change_ts", "main"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: ["main"]
+  schedule:
+    - cron: "35 * * * *"
   workflow_dispatch:
+    inputs:
+      rollback_run_id:
+        description: Successful main deploy run to redeploy
+        required: false
+        type: string
 
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: pages-production
+  cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    environment:
+      name: pages-production
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      attestations: write
+    env:
+      ROLLBACK_RUN_ID: ${{ inputs.rollback_run_id }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "${{ github.workspace }}/package.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-            exit 0
-          else
-            echo "Unable to determine package manager" >&2
-            exit 1
-          fi
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .next/cache
-          # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          # If source files changed but packages didn't, rebuild from a prior cache.
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
-      - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-      - name: Restore Notion Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .cache/notion
-            public/notion-assets
-            src/content/generated
-          key: notion-v1-${{ runner.os }}-${{ github.run_id }}
-          restore-keys: |
-            notion-v1-${{ runner.os }}-
-      - name: Fetch Notion Data
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Fetch required Notion sources
+        if: ${{ inputs.rollback_run_id == '' }}
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_PAGE_ID: ${{ secrets.NOTION_PAGE_ID }}
-          NOTION_DATA_SOURCE_ID: ${{ secrets.NOTION_DATA_SOURCE_ID }}
-        run: ${{ steps.detect-package-manager.outputs.manager }} run fetch-notion
+          NOTION_DATA_SOURCE_ID_JOURNAL: ${{ secrets.NOTION_DATA_SOURCE_ID_JOURNAL }}
+          NOTION_DATA_SOURCE_ID_DEVLOG: ${{ secrets.NOTION_DATA_SOURCE_ID_DEVLOG }}
+          NOTION_DATA_SOURCE_ID_PROJECT: ${{ secrets.NOTION_DATA_SOURCE_ID_PROJECT }}
+          NOTION_REQUIRED_GROUPS: journal,devlog,project
+        run: npm run fetch-notion
+      - name: Refresh engagement data when available
+        if: ${{ inputs.rollback_run_id == '' }}
+        continue-on-error: true
+        env:
+          GISCUS_GITHUB_TOKEN: ${{ secrets.GISCUS_GITHUB_TOKEN }}
+        run: npm run fetch-engagement
+      - name: Validate promoted content
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run validate:content
+      - name: Lint
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run lint:ci
+      - name: Typecheck
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run typecheck
+      - name: Run unit tests
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run test:unit -- --run
       - name: Resolve GitHub Pages base path
+        if: ${{ inputs.rollback_run_id == '' }}
         id: resolve-pages-path
         env:
           REPOSITORY_NAME: ${{ github.event.repository.name }}
@@ -94,57 +77,104 @@ jobs:
           repository_name="${REPOSITORY_NAME,,}"
           root_repository="${REPOSITORY_OWNER,,}.github.io"
           force_root="${FORCE_ROOT,,}"
-
           if [ "$force_root" = "true" ] || [ "$repository_name" = "$root_repository" ]; then
             echo "base_path=ROOT" >> "$GITHUB_OUTPUT"
           else
             echo "base_path=/$REPOSITORY_NAME" >> "$GITHUB_OUTPUT"
           fi
-      - name: Build with Next.js
+      - name: Build static export
+        if: ${{ inputs.rollback_run_id == '' }}
         env:
           BASE_PATH: ${{ steps.resolve-pages-path.outputs.base_path }}
           ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
           GISCUS_GITHUB_TOKEN: ${{ secrets.GISCUS_GITHUB_TOKEN }}
-        run: ${{ steps.detect-package-manager.outputs.manager }} run build:no-fetch
-      - name: Upload artifact
+        run: npm run build:no-fetch
+      - name: Validate static export
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run validate:export
+      - name: Run browser checks
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run test:e2e
+      - name: Run Lighthouse checks
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run test:lighthouse
+      - name: Run React Doctor
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run audit:react
+      - name: Audit production dependencies
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: npm run audit:prod
+      - name: Create rollback bundle
+        if: ${{ inputs.rollback_run_id == '' }}
+        run: |
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -czf pages-bundle.tar.gz out
+          sha256sum pages-bundle.tar.gz > pages-bundle.sha256
+      - name: Attest rollback bundle
+        if: ${{ inputs.rollback_run_id == '' }}
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-checksums: pages-bundle.sha256
+      - name: Retain rollback bundle
+        if: ${{ inputs.rollback_run_id == '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-rollback-bundle
+          path: |
+            pages-bundle.tar.gz
+            pages-bundle.sha256
+          retention-days: 30
+          if-no-files-found: error
+      - name: Validate rollback run
+        if: ${{ inputs.rollback_run_id != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          case "$ROLLBACK_RUN_ID" in
+            *[!0-9]*|'') echo "rollback_run_id must be a numeric workflow run ID." >&2; exit 1 ;;
+          esac
+          run_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ROLLBACK_RUN_ID}")"
+          jq -e '
+            .conclusion == "success" and
+            .status == "completed" and
+            .head_branch == "main" and
+            .repository.full_name == env.GITHUB_REPOSITORY and
+            (.path | startswith(".github/workflows/deploy.yml@"))
+          ' <<<"$run_json" >/dev/null
+          head_sha="$(jq -r '.head_sha' <<<"$run_json")"
+          artifacts_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ROLLBACK_RUN_ID}/artifacts?per_page=100")"
+          jq -e '[.artifacts[] | select(.name == "pages-rollback-bundle" and .expired == false)] | length == 1' <<<"$artifacts_json" >/dev/null
+          expires_at="$(jq -r '.artifacts[] | select(.name == "pages-rollback-bundle" and .expired == false) | .expires_at' <<<"$artifacts_json")"
+          [ "$(date -u -d "$expires_at" +%s)" -gt "$(date -u +%s)" ]
+          mkdir rollback-download
+          gh run download "$ROLLBACK_RUN_ID" --repo "$GITHUB_REPOSITORY" --name pages-rollback-bundle --dir rollback-download
+          bundle="$(find rollback-download -type f -name pages-bundle.tar.gz -print -quit)"
+          checksum="$(find rollback-download -type f -name pages-bundle.sha256 -print -quit)"
+          [ -n "$bundle" ] && [ -n "$checksum" ]
+          (cd "$(dirname "$bundle")" && sha256sum -c "$(basename "$checksum")")
+          gh attestation verify "$bundle" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/deploy.yml" \
+            --source-ref refs/heads/main \
+            --source-digest "$head_sha" \
+            --format json > rollback-attestation.json
+          bundle_sha="$(sha256sum "$bundle" | cut -d ' ' -f 1)"
+          jq -e --arg sha "$bundle_sha" --arg run "$ROLLBACK_RUN_ID" '
+            [ .[] | .verificationResult.statement as $statement
+              | select([$statement.subject[] | select(.name == "pages-bundle.tar.gz" and .digest.sha256 == $sha)] | length == 1)
+              | select($statement.predicate.runDetails.metadata.invocationId | endswith("/actions/runs/" + $run))
+            ] | length == 1
+          ' rollback-attestation.json >/dev/null
+          tar -tzf "$bundle" | grep -E '^out/' >/dev/null
+          tar -xzf "$bundle"
+      - name: Validate rollback export
+        if: ${{ inputs.rollback_run_id != '' }}
+        run: npm run validate:export
+      - uses: actions/configure-pages@v5
+      - name: Upload verified Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-  sync:
-    environment:
-      name: github-pages
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Validate configuration
-        id: validate-sync
-        env:
-          TARGET_REPO: ${{ vars.TARGET_REPO }}
-          TARGET_REPO_PAT: ${{ secrets.COMMERCIAL_REPO_PAT }}
-        run: |
-          if [ -z "$TARGET_REPO" ] || [ -z "$TARGET_REPO_PAT" ]; then
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Target repository sync skipped because its configuration is incomplete."
-            exit 0
-          fi
-
-          echo "enabled=true" >> "$GITHUB_OUTPUT"
-      - name: Push to target repository
-        if: steps.validate-sync.outputs.enabled == 'true'
-        env:
-          TARGET_REPO: ${{ vars.TARGET_REPO }}
-          TARGET_REPO_PAT: ${{ secrets.COMMERCIAL_REPO_PAT }}
-        run: |
-          git remote add commercial \
-            "https://x-access-token:${TARGET_REPO_PAT}@github.com/${{ github.repository_owner }}/${TARGET_REPO}.git"
-
-          git push commercial HEAD:main --force
