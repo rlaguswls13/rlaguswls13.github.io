@@ -31,7 +31,17 @@ checks.push(check("quality command set is complete", scriptsPresent, requiredScr
 checks.push(check("static export has no next start guidance", !packageJson?.scripts?.start && !packageJson?.scripts?.["build:run"], "start/build:run are removed"));
 
 const diff = head && baseValid ? gitOrNull(["diff", `${baseline.execution_base_sha}..${head}`]) ?? "" : "";
-const suppressions = diff.match(/@ts-(?:ignore|expect-error)|eslint-disable|(?:describe|it|test)\.(?:skip|only)\s*\(/g) ?? [];
+const suppressionPattern = /@ts-(?:ignore|expect-error)|eslint-disable|(?:describe|it|test)\.(?:skip|only)\s*\(/g;
+const diffAdditions = diff.split(/\r?\n/).filter((line) => line.startsWith("+") && !line.startsWith("+++") && !line.includes("suppressionPattern") && !line.includes("const suppressions"));
+const suppressions = diffAdditions.join("\n").match(suppressionPattern) ?? [];
+const status = gitOrNull(["status", "--short"]) ?? "";
+for (const line of status.split(/\r?\n/).filter(Boolean)) {
+  const file = line.slice(2).trim().replaceAll("\\", "/");
+  if (!/^(?:src|scripts|tests|\.github)\//.test(file) || file.startsWith("scripts/quality/")) continue;
+  const contents = await readFile(absolute(file), "utf8").catch(() => "");
+  if (suppressionPattern.test(contents)) suppressions.push(file);
+  suppressionPattern.lastIndex = 0;
+}
 checks.push(check("diff contains no quality suppressions or skipped tests", suppressions.length === 0, suppressions.join(", ") || "none"));
 
 const deployWorkflow = await readFile(absolute(".github/workflows/deploy.yml"), "utf8").catch(() => "");

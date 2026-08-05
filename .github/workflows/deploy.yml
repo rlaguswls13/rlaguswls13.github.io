@@ -88,7 +88,6 @@ jobs:
           BASE_PATH: ${{ steps.resolve-pages-path.outputs.base_path }}
           ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
-          GISCUS_GITHUB_TOKEN: ${{ secrets.GISCUS_GITHUB_TOKEN }}
         run: npm run build:no-fetch
       - name: Validate static export
         if: ${{ inputs.rollback_run_id == '' }}

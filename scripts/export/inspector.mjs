@@ -75,7 +75,7 @@ function expectedCanonical(siteUrl, route) {
 function inspectMetadata(html, route, siteUrl) {
   const nodes = descendants(parse(html));
   const title = singleValue(nodes, route, "title", (node) => node.tagName === "title", normalizedText);
-  const description = singleValue(nodes, route, "description", (node) => node.tagName === "meta" && attribute(node, "name") === "description", (node) => attribute(node, "content"));
+  singleValue(nodes, route, "description", (node) => node.tagName === "meta" && attribute(node, "name") === "description", (node) => attribute(node, "content"));
   const canonical = singleValue(nodes, route, "canonical", (node) => node.tagName === "link" && attribute(node, "rel") === "canonical", (node) => attribute(node, "href"));
   singleValue(nodes, route, "og:title", (node) => node.tagName === "meta" && attribute(node, "property") === "og:title", (node) => attribute(node, "content"));
   singleValue(nodes, route, "og:description", (node) => node.tagName === "meta" && attribute(node, "property") === "og:description", (node) => attribute(node, "content"));

@@ -36,17 +36,19 @@ function safePathSegment(value, fallback) {
 }
 
 export function normalizeSourceId(value) {
-  return String(value || "").replaceAll("-", "").trim();
+  const sourceId = String(value || "").replaceAll("-", "").trim();
+  if (sourceId && !/^[a-z0-9]+$/iu.test(sourceId)) throw new Error(`Unsafe Notion source ID: ${value}`);
+  return sourceId;
 }
 
-export function contentPathFor(pageName, row) {
+export function contentPathFor(pageName, row, root = process.cwd()) {
   const config = PAGE_PATHS[pageName];
   if (!config) throw new Error(`Unknown Notion page type: ${pageName}`);
   const sourceId = normalizeSourceId(row.source_id || row.page_id);
   if (!sourceId) throw new Error(`Missing source_id/page_id for ${pageName} content.`);
   const category = safePathSegment(config.category(row), "uncategorized");
   const subcategoryValue = config.subcategory(row);
-  const parts = [process.cwd(), ...config.root, category];
+  const parts = [path.resolve(root), ...config.root, category];
   if (subcategoryValue) parts.push(safePathSegment(subcategoryValue, "general"));
   return path.join(...parts, `${sourceId}.mdx`);
 }
@@ -101,8 +103,10 @@ async function validateMdxDocument(document, label) {
 
 export async function syncPageContent(client, pageName, rows, options = {}) {
   const counts = { init: 0, update: 0, skip: 0, invalid: 0 };
+  const root = path.resolve(options.root || process.cwd());
+  const managedPaths = new Set();
   for (const row of rows) {
-    const filePath = contentPathFor(pageName, row);
+    const filePath = contentPathFor(pageName, row, root);
     const revision = String(row.last_edited_time || "");
     if (!options.force && fs.existsSync(filePath) && revision && currentRevision(filePath) === revision) {
       counts.skip += 1;
@@ -110,7 +114,11 @@ export async function syncPageContent(client, pageName, rows, options = {}) {
     }
 
     const operation = fs.existsSync(filePath) ? "update" : "init";
-    const body = await pageToMdxBody(client, row.page_id, { pageName });
+    const body = await pageToMdxBody(client, row.page_id, {
+      pageName,
+      root,
+      onAsset: (relativePath) => managedPaths.add(relativePath),
+    });
     const document = buildMdxDocument(frontmatterFor(pageName, row), body, { pageName });
     if (!await validateMdxDocument(document, row.title || row.source_id)) {
       const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
@@ -123,11 +131,12 @@ export async function syncPageContent(client, pageName, rows, options = {}) {
     }
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, document, "utf8");
+    managedPaths.add(path.relative(root, filePath).replaceAll("\\", "/"));
     counts[operation] += 1;
     console.log(`[notion] ${pageName} ${operation}: ${row.title || row.source_id}`);
   }
   console.log(
     `[notion] ${pageName} MDX: ${counts.init} init, ${counts.update} update, ${counts.skip} skip, ${counts.invalid} invalid preserved`,
   );
-  return counts;
+  return { ...counts, managedPaths: [...managedPaths].sort() };
 }

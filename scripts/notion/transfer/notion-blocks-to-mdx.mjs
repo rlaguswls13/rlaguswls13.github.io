@@ -3,6 +3,16 @@ import path from "path";
 import { componentMapFor, convertMdxComponents } from "./component-mappings.mjs";
 import { normalizeText } from "./compatibility.mjs";
 
+const NOTION_IMAGE_HOSTS = new Set([
+  "file.notion.so",
+  "prod-files-secure.s3.us-west-2.amazonaws.com",
+  "s3.us-west-2.amazonaws.com",
+  "secure.notion-static.com",
+]);
+const NOTION_IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"]);
+const NOTION_IMAGE_MAX_BYTES = 10 * 1024 * 1024;
+const NOTION_IMAGE_TIMEOUT_MS = 10_000;
+
 function escapeAttribute(value) {
   return String(value || "")
     .replaceAll("&", "&amp;")
@@ -16,15 +26,35 @@ export function richTextToMarkdown(items = []) {
     const value = item.plain_text || item.text?.content || "";
     const leading = value.match(/^\s*/)?.[0] || "";
     const trailing = value.match(/\s*$/)?.[0] || "";
-    let content = value.trim();
+    let content = escapeMdxText(value.trim());
     if (!content) return value;
     if (item.annotations?.code) content = "`" + content + "`";
     if (item.annotations?.bold) content = `**${content}**`;
     if (item.annotations?.italic) content = `*${content}*`;
     if (item.annotations?.strikethrough) content = `~~${content}~~`;
-    if (item.href) content = `[${content}](${item.href})`;
+    if (item.href) {
+      const href = safeMarkdownHref(item.href);
+      if (href) content = `[${content}](${href})`;
+    }
     return leading + content + trailing;
   }).join("");
+}
+
+function escapeMdxText(value) {
+  return String(value || "")
+    .replaceAll("<", "&lt;")
+    .replaceAll("{", "&#123;")
+    .replaceAll("}", "&#125;");
+}
+
+function safeMarkdownHref(value) {
+  try {
+    const url = new URL(value, "https://notion.local");
+    if (!["http:", "https:", "mailto:"].includes(url.protocol)) return "";
+    return String(value).replaceAll("(", "%28").replaceAll(")", "%29").replaceAll("<", "%3C").replaceAll(">", "%3E");
+  } catch {
+    return "";
+  }
 }
 
 function plainText(items = []) {
@@ -54,17 +84,52 @@ function tableOfContents(headings) {
   return `## 목차\n\n${links.join("\n")}\n\n`;
 }
 
-async function downloadImage(url, blockId) {
-  if (!url.startsWith("http")) return url;
+async function downloadImage(url, blockId, context) {
   const urlValue = new URL(url);
-  const extension = path.extname(urlValue.pathname) || ".png";
-  const fileName = `${String(blockId).replaceAll("-", "")}${extension}`;
-  const outputPath = path.join(process.cwd(), "public", "images", "notion", fileName);
-  const response = await fetch(url);
+  if (
+    urlValue.protocol !== "https:"
+    || urlValue.username
+    || urlValue.password
+    || urlValue.port
+    || !NOTION_IMAGE_HOSTS.has(urlValue.hostname.toLowerCase())
+  ) {
+    throw new Error(`Image URL must use an approved Notion image host: ${urlValue.origin}`);
+  }
+  const requestedExtension = path.extname(urlValue.pathname);
+  const extension = NOTION_IMAGE_EXTENSIONS.has(requestedExtension.toLowerCase()) ? requestedExtension.toLowerCase() : ".png";
+  const imageId = String(blockId).replaceAll("-", "");
+  if (!/^[a-z0-9]+$/iu.test(imageId)) throw new Error(`Unsafe Notion image block ID: ${blockId}`);
+  const relativePath = path.posix.join("public", "images", "notion", `${imageId}${extension}`);
+  const outputPath = path.join(context.root, ...relativePath.split("/"));
+  const response = await context.fetch(urlValue.href, {
+    redirect: "error",
+    signal: AbortSignal.timeout(NOTION_IMAGE_TIMEOUT_MS),
+  });
   if (!response.ok) throw new Error(`Image download failed (${response.status}): ${url}`);
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.toLowerCase().startsWith("image/")) throw new Error(`Image download returned non-image content: ${url}`);
+  const contentLength = Number(response.headers.get("content-length"));
+  if (Number.isFinite(contentLength) && contentLength > NOTION_IMAGE_MAX_BYTES) {
+    throw new Error(`Image download exceeds size limit: ${url}`);
+  }
+  if (!response.body) throw new Error(`Image download returned an empty body: ${url}`);
+  const reader = response.body.getReader();
+  const chunks = [];
+  let totalBytes = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    totalBytes += value.byteLength;
+    if (totalBytes > NOTION_IMAGE_MAX_BYTES) {
+      await reader.cancel();
+      throw new Error(`Image download exceeds size limit: ${url}`);
+    }
+    chunks.push(Buffer.from(value));
+  }
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, Buffer.from(await response.arrayBuffer()));
-  return `/images/notion/${fileName}`;
+  fs.writeFileSync(outputPath, Buffer.concat(chunks, totalBytes));
+  context.onAsset(relativePath);
+  return `/images/notion/${imageId}${extension}`;
 }
 
 async function blockMarkup(client, block, indentLevel, context) {
@@ -89,11 +154,13 @@ async function blockMarkup(client, block, indentLevel, context) {
   if (block.type === "to_do") return `${indent}- [${data.checked ? "x" : " "}] ${text}\n`;
   if (block.type === "quote") return `${indent}> ${text}\n\n`;
   if (block.type === "code") {
-    const language = data.language === "plain text" ? "text" : data.language || "text";
-    const fence = "```";
-    return `\n${indent}${fence}${language}\n${plainText(data.rich_text)}\n${indent}${fence}\n\n`;
+    const language = /^[a-z0-9_+-]+$/iu.test(data.language) && data.language !== "plain text" ? data.language : "text";
+    const code = plainText(data.rich_text);
+    const longestFence = Math.max(2, ...[...code.matchAll(/`+/gu)].map(([ticks]) => ticks.length));
+    const fence = "`".repeat(longestFence + 1);
+    return `\n${indent}${fence}${language}\n${code}\n${indent}${fence}\n\n`;
   }
-  if (block.type === "equation") return `\n$$\n${data.expression || ""}\n$$\n\n`;
+  if (block.type === "equation") return `\n$$\n${escapeMdxText(data.expression)}\n$$\n\n`;
   if (block.type === "divider") return `\n${indent}<notion-divider />\n\n`;
   if (block.type === "callout") {
     const icon = data.icon?.emoji || "💡";
@@ -113,19 +180,24 @@ async function blockMarkup(client, block, indentLevel, context) {
   }
   if (["image", "video", "pdf", "file"].includes(block.type)) {
     let url = data.file?.url || data.external?.url || "";
-    if (block.type === "image" && url) url = await downloadImage(url, block.id);
+    if (block.type === "image" && url) url = await downloadImage(url, block.id, context);
     const caption = plainText(data.caption) || block.type;
     return `\n<notion-image src="${escapeAttribute(url)}" caption="${escapeAttribute(caption)}" />\n\n`;
   }
   if (block.type === "bookmark" || block.type === "embed" || block.type === "link_preview") {
     return data.url ? `[🔗 ${data.url}](${data.url})\n\n` : "";
   }
-  if (block.type === "child_page") return `## ${data.title || "Untitled"}\n\n`;
+  if (block.type === "child_page") return `## ${escapeMdxText(data.title || "Untitled")}\n\n`;
   if (block.type === "table_of_contents") return "";
   return "";
 }
 
-export async function blocksToMarkup(client, blockId, indentLevel = 0, context = { headings: [] }) {
+export async function blocksToMarkup(client, blockId, indentLevel = 0, context = {
+  headings: [],
+  root: process.cwd(),
+  onAsset: () => {},
+  fetch: globalThis.fetch,
+}) {
   const blocks = await client.getBlockChildren(blockId);
   let output = "";
   for (const block of blocks) {
@@ -143,7 +215,12 @@ export async function blocksToMarkup(client, blockId, indentLevel = 0, context =
 }
 
 export async function pageToMdxBody(client, pageId, options = {}) {
-  const context = { headings: [] };
+  const context = {
+    headings: [],
+    root: path.resolve(options.root || process.cwd()),
+    onAsset: options.onAsset || (() => {}),
+    fetch: options.fetch || globalThis.fetch,
+  };
   const markup = await blocksToMarkup(client, pageId, 0, context);
   const content = `${tableOfContents(context.headings)}${markup}`;
   return convertMdxComponents(content, componentMapFor(options.pageName, options.componentMap));
