@@ -6,19 +6,28 @@
     "node": ">=20.9 <26"
   },
   "scripts": {
-    "dev": "npm run fetch-notion && node scripts/recommendations/generate.mjs && next dev",
+    "dev": "npm run fetch-notion && next dev",
     "dev:no-fetch": "npm run generate-content-indexes && node scripts/slug/generate.mjs && node scripts/recommendations/generate.mjs && next dev",
-    "fetch-notion": "node scripts/notion/connect/fetch.mjs && npm run generate-content-indexes && node scripts/slug/generate.mjs",
+    "fetch-notion": "node scripts/notion/connect/fetch.mjs",
     "transfer-notion-json": "node scripts/notion/transfer/json-to-mdx.mjs",
     "generate-content-indexes": "node scripts/notion/transfer/build-journal-index.mjs && node scripts/notion/transfer/build-devlog-index.mjs && node scripts/notion/transfer/build-project-index.mjs",
     "generate-slugs": "node scripts/slug/generate.mjs",
     "generate-recommendations": "node scripts/recommendations/generate.mjs",
     "fetch-engagement": "node scripts/engagement/fetch.mjs",
-    "build": "npm run fetch-notion && node scripts/recommendations/generate.mjs && node scripts/engagement/fetch.mjs && next build",
+    "build": "npm run fetch-notion && node scripts/engagement/fetch.mjs && next build",
     "build:no-fetch": "npm run generate-content-indexes && node scripts/slug/generate.mjs && node scripts/recommendations/generate.mjs && node scripts/engagement/fetch.mjs && next build",
     "start": "next start",
-    "build:run": "npm run fetch-notion && node scripts/recommendations/generate.mjs && next build && next start",
-    "lint": "eslint"
+    "build:run": "npm run fetch-notion && next build && next start",
+    "lint": "eslint",
+    "validate:content": "node scripts/content/validate-content.mjs",
+    "lint:ci": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest",
+    "build:local": "node --import ./tests/fixtures/reject-network.mjs scripts/notion/transfer/build-journal-index.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/notion/transfer/build-devlog-index.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/notion/transfer/build-project-index.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/slug/generate.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/recommendations/generate.mjs && node --import ./tests/fixtures/reject-network.mjs node_modules/next/dist/bin/next build",
+    "validate:export": "node scripts/export/validate-export.mjs",
+    "preview": "serve out --listen 3000 --no-clipboard",
+    "audit:react": "npx react-doctor@0.9.4 . --json --category Performance --category Accessibility --blocking warning --no-telemetry --json-out artifacts/react-doctor.json -y",
+    "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
     "@blog/ga4-analytics": "file:scripts/ga4",
@@ -34,13 +43,21 @@
     "shiki": "^4.1.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "4.1.10",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "lighthouse": "13.4.1",
+    "playwright": "1.62.1",
+    "playwright-lighthouse": "4.0.0",
+    "react-doctor": "0.9.4",
+    "serve": "14.2.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "4.1.10"
   }
 }

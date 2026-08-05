@@ -1,0 +1,2412 @@
+{
+  "verdict": "PASS",
+  "route_count": 92,
+  "blocker_count": 0,
+  "routes": [
+    {
+      "route": "/",
+      "file": "index.html",
+      "kind": "page",
+      "heading": "개발 지식과 경험을기록합니다",
+      "status": "PASS",
+      "metadata": {
+        "title": "김현진 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "김현진 TECH LOG",
+            "url": "https://rlaguswls13.github.io"
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "김현진",
+            "url": "https://rlaguswls13.github.io/about"
+          }
+        ]
+      }
+    },
+    {
+      "route": "/about",
+      "file": "about.html",
+      "kind": "page",
+      "heading": "경험으로 문제를 해결하는 개발자",
+      "status": "PASS",
+      "metadata": {
+        "title": "소개 | 김현진 TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/about",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/career",
+      "file": "career.html",
+      "kind": "page",
+      "heading": "경력과 성장의 기록",
+      "status": "PASS",
+      "metadata": {
+        "title": "경력 | 김현진 TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/career",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/contact",
+      "file": "contact.html",
+      "kind": "page",
+      "heading": "함께 이야기해요",
+      "status": "PASS",
+      "metadata": {
+        "title": "연락처 | 김현진 TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/contact",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/devlog",
+      "file": "devlog.html",
+      "kind": "list",
+      "heading": "기술 학습과 문제 해결 기록",
+      "status": "PASS",
+      "metadata": {
+        "title": "Devlog | 김현진 TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/journal",
+      "file": "journal.html",
+      "kind": "list",
+      "heading": "개인일지와 교육일지",
+      "status": "PASS",
+      "metadata": {
+        "title": "Journal | 김현진 TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/journal",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects",
+      "file": "projects.html",
+      "kind": "list",
+      "heading": "작업과 해결 과정",
+      "status": "PASS",
+      "metadata": {
+        "title": "Projects | 김현진 TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/d",
+      "file": "projects/d.html",
+      "kind": "detail",
+      "heading": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
+      "status": "PASS",
+      "metadata": {
+        "title": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/d",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/h",
+      "file": "projects/h.html",
+      "kind": "detail",
+      "heading": "이메일 대용량 처리 서버 커스텀 개발 및 최적화",
+      "status": "PASS",
+      "metadata": {
+        "title": "이메일 대용량 처리 서버 커스텀 개발 및 최적화 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/h",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/e",
+      "file": "projects/e.html",
+      "kind": "detail",
+      "heading": "사내 통합지원시스템 고도화",
+      "status": "PASS",
+      "metadata": {
+        "title": "사내 통합지원시스템 고도화 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/e",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/f",
+      "file": "projects/f.html",
+      "kind": "detail",
+      "heading": "대규모 엔터프라이즈 솔루션 기술 지원 및 유지보수",
+      "status": "PASS",
+      "metadata": {
+        "title": "대규모 엔터프라이즈 솔루션 기술 지원 및 유지보수 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/f",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/g",
+      "file": "projects/g.html",
+      "kind": "detail",
+      "heading": "Okta API 기반 커스텀 SSO/SLO 필터 개발",
+      "status": "PASS",
+      "metadata": {
+        "title": "Okta API 기반 커스텀 SSO/SLO 필터 개발 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/g",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/c",
+      "file": "projects/c.html",
+      "kind": "detail",
+      "heading": "솔루션 배포/개발 파이프라인(DevOps) 체계 구축",
+      "status": "PASS",
+      "metadata": {
+        "title": "솔루션 배포/개발 파이프라인(DevOps) 체계 구축 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/c",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/b",
+      "file": "projects/b.html",
+      "kind": "detail",
+      "heading": "개인 포트폴리오 홈페이지 생성",
+      "status": "PASS",
+      "metadata": {
+        "title": "개인 포트폴리오 홈페이지 생성 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/b",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/a",
+      "file": "projects/a.html",
+      "kind": "detail",
+      "heading": "파일 업로드",
+      "status": "PASS",
+      "metadata": {
+        "title": "파일 업로드 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/a",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/devlog/blog/2026-first-half-interview-retrospective",
+      "file": "devlog/blog/2026-first-half-interview-retrospective.html",
+      "kind": "detail",
+      "heading": "2026년 상반기 면접을 보면서..",
+      "status": "PASS",
+      "metadata": {
+        "title": "2026년 상반기 면접을 보면서.. | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/blog/2026-first-half-interview-retrospective",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "2026년 상반기 면접을 보면서.. | TECH LOG",
+            "description": "26년도 6~7월 취업을 위해서 면접을 본 후기와 면담 이후 개선점에 대한 생각을 작성해봤다.",
+            "url": "https://rlaguswls13.github.io/devlog/blog/2026-first-half-interview-retrospective",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/blog/2026-first-half-interview-retrospective"
+            },
+            "datePublished": "2026-07-20",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
+      "file": "devlog/blog/building-a-knowledge-mind-map-with-obsidian.html",
+      "kind": "detail",
+      "heading": "옵시디언으로 지식 마인드맵 만들어보기",
+      "status": "PASS",
+      "metadata": {
+        "title": "옵시디언으로 지식 마인드맵 만들어보기 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "옵시디언으로 지식 마인드맵 만들어보기 | TECH LOG",
+            "description": "상황이 바쁘다보면 AI 질의, 인터넷 서치를 빠르게하고 휘발성으로 찾은 정보를 사용하는게 주가 되어서 이걸 좀 더 체계적으로 활용해보고자 옵시디언을 사용해봤다.",
+            "url": "https://rlaguswls13.github.io/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/blog/building-a-knowledge-mind-map-with-obsidian"
+            },
+            "datePublished": "2026-07-23",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/blog/rebuilding-from-specs-without-git",
+      "file": "devlog/blog/rebuilding-from-specs-without-git.html",
+      "kind": "detail",
+      "heading": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
+      "status": "PASS",
+      "metadata": {
+        "title": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/blog/rebuilding-from-specs-without-git",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중 | TECH LOG",
+            "description": "메시지 규약에 따른 템플릿과 타깃팅 정보를 눈으로 쉽게 확인하기 위한 무료 툴을 제작하고 있었다. 하지만 작업물을 합치는 과정에서 Git이 심하게 꼬였고, 하필 이 타이밍에 PC 초기화까지 진행되면서 그동안 작성한 코드가 전멸했다.\n순간 아찔했지만, 다행히 메모장에 남겨둔 작업 명세가 있었다. 지금은 그 기록과 기억을 이정표 삼아 차근차근 복구해 나가는 중이다.",
+            "url": "https://rlaguswls13.github.io/devlog/blog/rebuilding-from-specs-without-git",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/blog/rebuilding-from-specs-without-git"
+            },
+            "datePublished": "2026-07-28",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/competition_event/github-copilot-hackathon-retrospective",
+      "file": "devlog/competition_event/github-copilot-hackathon-retrospective.html",
+      "kind": "detail",
+      "heading": "2026 천하제일 입코딩 대회(with GitHub Copilot) 참가 회고",
+      "status": "PASS",
+      "metadata": {
+        "title": "2026 천하제일 입코딩 대회(with GitHub Copilot) 참가 회고 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/competition_event/github-copilot-hackathon-retrospective",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "2026 천하제일 입코딩 대회(with GitHub Copilot) 참가 회고 | TECH LOG",
+            "description": "오직 구두 프롬프팅으로만 배포까지 완성하는 AI 챌린지, 39개 팀 중 18위 기록 및 AI 워크플로우에 대한 고찰",
+            "url": "https://rlaguswls13.github.io/devlog/competition_event/github-copilot-hackathon-retrospective",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/competition_event/github-copilot-hackathon-retrospective"
+            },
+            "datePublished": "2026-06-22",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-development-environment-and-basic-syntax",
+      "file": "devlog/education/java-development-environment-and-basic-syntax.html",
+      "kind": "detail",
+      "heading": "Java 환경 구축 및 기본 문법",
+      "status": "PASS",
+      "metadata": {
+        "title": "Java 환경 구축 및 기본 문법 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-development-environment-and-basic-syntax",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Java 환경 구축 및 기본 문법 | TECH LOG",
+            "description": "오늘 교육은 이전에 해본 경험이 있어서 쉬운 내용이 였습니다.\n앞으로의 목표는 지각하지 않고 성실하게 교육 참여하고 꾸준히 교육 내용 정리해서 작성하는 게  1번 입니다 . :)",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-development-environment-and-basic-syntax",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-development-environment-and-basic-syntax"
+            },
+            "datePublished": "2026-05-12",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-constants-type-casting-and-memory",
+      "file": "devlog/education/java-constants-type-casting-and-memory.html",
+      "kind": "detail",
+      "heading": "Java 기본 : 상수, 형변환 (메모리구조)",
+      "status": "PASS",
+      "metadata": {
+        "title": "Java 기본 : 상수, 형변환 (메모리구조) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-constants-type-casting-and-memory",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Java 기본 : 상수, 형변환 (메모리구조) | TECH LOG",
+            "description": "오늘 교육을 들으며 평소 익숙하게만 생각했던 상수와 형변환, 그리고 그 이면의 메모리 구조에 대해 다시금 깊이 생각해보게 되었습니다.\n\n사실 현업에서 바쁘게 코드를 작성하다 보면 메모리 구조까지 세심하게 신경 쓰지 못할 때가 많은데, 그로 인해 발생하는 예상치 못한 문제들이 참 많았다는 점이 새삼 와닿았습니다. 특히 형변환 과정에서 마주할 수 있는 NPE나 오버플로우 같은 문제들은 자칫 간과하기 쉽지만, 시스템에는 치명적일 수 있다는 점을 다시 한번 되새기는 유익한 시간이었습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-constants-type-casting-and-memory",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-constants-type-casting-and-memory"
+            },
+            "datePublished": "2026-05-13",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-control-flow-and-extensible-code",
+      "file": "devlog/education/java-control-flow-and-extensible-code.html",
+      "kind": "detail",
+      "heading": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+      "status": "PASS",
+      "metadata": {
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-control-flow-and-extensible-code",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지 | TECH LOG",
+            "description": "교육 과정에서 배운 기초적인 조건문과 반복문 중심의 원시적인 로직 구현도 중요하지만, 더 나아가 Java의 컬렉션 객체와 버전별로 향상된 최신 문법들을 가미하여 블로깅을 정리해 보았습니다.  단순히 정답을 도출만 한게 아니라, Switch Expression이나 다양한 내장 메서드를 활용해 코드의 간결성과 확장성, 그리고 재사용성까지 고민해 볼 수 있었습니다. \n 예시를 작성하는데 다소 시간이 걸렸지만, 객체지향적 접근 방식이 실무 수준의 코드를 작성하는 데 도움이 될 거라고 생각됩니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-control-flow-and-extensible-code",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-control-flow-and-extensible-code"
+            },
+            "datePublished": "2026-05-14",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-conditional-loop-practice",
+      "file": "devlog/education/java-conditional-loop-practice.html",
+      "kind": "detail",
+      "heading": "java 조건문, 반복문을 활용한 문제풀이",
+      "status": "PASS",
+      "metadata": {
+        "title": "java 조건문, 반복문을 활용한 문제풀이 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-conditional-loop-practice",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "java 조건문, 반복문을 활용한 문제풀이 | TECH LOG",
+            "description": "조건문, 반복문, 계산식으로 다진 논리는 향후 복잡한 문제 풀이나 제품 구현에 응용될 수 있으며, 개발이란 결국 입력(In)과 출력(Out)이 정해진 메서드 내부에 로직을 작성하여 표현하는 것으로 생각됩니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-conditional-loop-practice",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-conditional-loop-practice"
+            },
+            "datePublished": "2026-05-15",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-one-dimensional-array-practice",
+      "file": "devlog/education/java-one-dimensional-array-practice.html",
+      "kind": "detail",
+      "heading": "java 2차원 배열을 활용한 문제풀이",
+      "status": "PASS",
+      "metadata": {
+        "title": "java 2차원 배열을 활용한 문제풀이 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-one-dimensional-array-practice",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "java 2차원 배열을 활용한 문제풀이 | TECH LOG",
+            "description": "Java는 메모리 제어와 커널 접근이 직접적인 C언어 계열에 비해 2차원 배열의 산술 연산 효율은 다소 낮을 수 있습니다. 그런데, 실질적으로 게이밍이나 그래픽이 아닌 java를 많이 다루는 현업에서는 Collection이나 1차원 데이터 구조를 적극 활용하여 비즈니스 로직의 유연성을 높이는 데 집중합니다. 이는 하드웨어 최적화에 강점을 둔 C언어와 달리, Java는 객체 지향적인 설계와 데이터 관리의 편의성을 통해 복잡한 좌표 기반의 문제들을 더욱 안정적으로 해결하기 때문입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-one-dimensional-array-practice",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-one-dimensional-array-practice"
+            },
+            "datePublished": "2026-05-19",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-two-dimensional-array-practice",
+      "file": "devlog/education/java-two-dimensional-array-practice.html",
+      "kind": "detail",
+      "heading": "java 1차원 배열을 활용한 문제풀이",
+      "status": "PASS",
+      "metadata": {
+        "title": "java 1차원 배열을 활용한 문제풀이 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-two-dimensional-array-practice",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "java 1차원 배열을 활용한 문제풀이 | TECH LOG",
+            "description": "1차원 배열 제어 시 핵심은 참조형 변수 특성으로 인한 데이터 오염 및 유실을 막기 위해 정확한 swap(백업) 연산과 얕은/깊은 복사를 구분하는 것이며, 정렬된 데이터가 아닌 대량의 난수 데이터를 처리할 때는 성능 최적화를 위해 이중for문이나 지나친 반복문을 직접 구현 하는 것보다. 이미 pivot-quick 정렬로 정의되어있는 Arrays, Collection class의 method를 활용하는 것이  좋은 선택으로 생각합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-two-dimensional-array-practice",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-two-dimensional-array-practice"
+            },
+            "datePublished": "2026-05-18",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-constructor-practice",
+      "file": "devlog/education/java-constructor-practice.html",
+      "kind": "detail",
+      "heading": "java 생성자를 활용한 문제풀이",
+      "status": "PASS",
+      "metadata": {
+        "title": "java 생성자를 활용한 문제풀이 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-constructor-practice",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "java 생성자를 활용한 문제풀이 | TECH LOG",
+            "description": "자바의 기본인 getter, setter, 생성자의 본질을 다시금 되짚어보는 뜻깊은 시간이었습니다. 첫 개발을 할때는 코드를 일일이 직접 손으로 작성하곤 했지만, 이제는 Lombok 라이브러리와 Builder 패턴을 활용해 반복적인 코드를 획기적으로 줄이고 생산성과 소스 관리의 효율성을 동시에 높일수 있다는 부분 한번 더 느꼈습니다. 그리고 java로 코드 작성할 때는 매번 메모리 관리 및 성능에 대해서 고민을 하면서 작성을 했는데 , 테스트 시 내부 클래스로 빠르게 검증한 뒤 독립된 클래스로 분리하는 과정을 통해, 코드의 재사용성을 높이는 것은 물론 무분별한 static 선언을 방지하여 메모리 효율까지 함께 고민해 볼 수 있었던 거 같습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-constructor-practice",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-constructor-practice"
+            },
+            "datePublished": "2026-05-20",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-source-feature-implementation",
+      "file": "devlog/education/java-source-feature-implementation.html",
+      "kind": "detail",
+      "heading": "java 소스로 기능구현",
+      "status": "PASS",
+      "metadata": {
+        "title": "java 소스로 기능구현 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-source-feature-implementation",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "java 소스로 기능구현 | TECH LOG",
+            "description": "휴먼 에러의 주원인인 하드코딩과 복잡성을 제거하기 위해 Enum, Record, Constant를 적극 활용하여 문자열 변수를 안정적으로 코드화했습니다. 아울러 클래스를 세분화하고 상속 및 인터페이스 구조를 적용함으로써 각 로직의 결합도를 낮추고 기능을 단순화했으며, 단순 구현을 넘어 실제 사용자 경험(UX)까지 고려한 지속성 있는 프로그램 흐름으로 기능을 개선해봤습니다. 이를 바탕으로 추후 실무에서는 레거시 로직에 영향을 최소화하면서 안정적으로 리팩토링 가능한 방법을 더 고민해 볼 필요가 있을 것같습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-source-feature-implementation",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-source-feature-implementation"
+            },
+            "datePublished": "2026-05-26",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-composite-feature-implementation",
+      "file": "devlog/education/java-composite-feature-implementation.html",
+      "kind": "detail",
+      "heading": "java 복합 기능 구현",
+      "status": "PASS",
+      "metadata": {
+        "title": "java 복합 기능 구현 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-composite-feature-implementation",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "java 복합 기능 구현 | TECH LOG",
+            "description": "8~9일차 문제풀이에서 사용했던 코드를 하나의 console로 이용할 수 있도록 프로그램을 개선해봤습니다. 사용자 입력을 해석해 비즈니스 로직으로 분기하는 Controller와 도메인 데이터를 관리하는 Model의 역할을 명확히 분리해 본 것은 향후 React/Next.js 프론트엔드와 SQL 기반 데이터베이스를 결합한 풀스택 제품으로 확장성도 고려해볼 수 있었습니다. 다만, 현업에서는 MSA(마이크로서비스 아키텍처)를 추구하는 방향이기에  현재의 모놀리식 구조를 MSA로 전환할 수 있도록 도메인별 유연성을 고려한 패키지 구성까지 미리 나누어 설계해보는 전략을 더 고민해봐도 좋을 것같습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-composite-feature-implementation",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-composite-feature-implementation"
+            },
+            "datePublished": "2026-05-27",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-inheritance-feature-implementation",
+      "file": "devlog/education/java-inheritance-feature-implementation.html",
+      "kind": "detail",
+      "heading": "java 상속을 활용한 기능 구현",
+      "status": "PASS",
+      "metadata": {
+        "title": "java 상속을 활용한 기능 구현 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-inheritance-feature-implementation",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "java 상속을 활용한 기능 구현 | TECH LOG",
+            "description": "9일차 까지 진행한 문제풀이에서 적용한 코드 컨벤션을 유지하면서 더 유연성있는 코드 작성을 위해서 spring 미사용시 Bean 등록하여 사용할 수 있는 것처럼 AppConfig 라는 의존성 팩토리 클래스생성하여 매번 new 생성자를 생성하지 않고 실행시 최초 생성하여 주입받는 형태로 개선을 유도해봤습니다. 그리고 상속을 통해서 반복되는 필드 작성을 피하고, 동일한 method이지만 상속된 자식 객체에서 변형된 method를 작성하여, 원하는 공식을 알맞게 적용할 수 있었습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-inheritance-feature-implementation",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-inheritance-feature-implementation"
+            },
+            "datePublished": "2026-05-28",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-polymorphism-implementation",
+      "file": "devlog/education/java-polymorphism-implementation.html",
+      "kind": "detail",
+      "heading": "다형성을 활용한 소스 구현 내용 정리",
+      "status": "PASS",
+      "metadata": {
+        "title": "다형성을 활용한 소스 구현 내용 정리 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-polymorphism-implementation",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "다형성을 활용한 소스 구현  내용 정리 | TECH LOG",
+            "description": "다형성을 단순히 ‘형태를 다양하게 변화 될 수 있다.’라는 정의보다는 객체 간 결합도를 낮추고 유연한 확장을 가능하게 하는 객체지향 설계의 핵심 철학의 성질로 보면 좋을 것 같습니다.  그리고 이런 다형성을 활용 하기 위해서 제네릭, 와일드카드 와 같은 개념이 나왔는데 이는 형변화에 제한을 푸는게 아니라 직접 제한지점을 설정하여 사용하라는 개념으로 이해하면 더 좋을 것 같습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-polymorphism-implementation",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-polymorphism-implementation"
+            },
+            "datePublished": "2026-05-29",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/restful-api-and-generics",
+      "file": "devlog/education/restful-api-and-generics.html",
+      "kind": "detail",
+      "heading": "네트워크",
+      "status": "PASS",
+      "metadata": {
+        "title": "네트워크 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/restful-api-and-generics",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "네트워크 | TECH LOG",
+            "description": "백엔드 개발자의 네트워크 고민과 아키텍처 선택\n백엔드 개발자는 대규모 트래픽 폭주, 서비스 지연, 의도치 않은 접근 제한 등 다양한 네트워크 이슈를 늘 마주하며 해결책을 도모해야 합니다. 이러한 장애 현상들은 시스템 전체의 안정성을 위협하므로, 정확히 어느 계층 레벨에서 문제를 방어하고 해결할지 명확히 판단하는 안목이 필요합니다. 일례로 트래픽이 몰리는 상황에서 애플리케이션 단에 비동기 아키텍처를 도입해 202 Accepted 응답을 먼저 빠르게 반환하고 백그라운드 큐로 처리하는 전략을 취할 수 있습니다. 반대로 내부 비즈니스 로직을 근본적으로 최적화하여 전통적인 1스레드-1요청 기반의 동기식 구조를 유지하면서도 안정적인 서비스를 제공하도록 설계하기도 합니다. 실제 실무에서 클라이언트 뷰에 단계별 기능이 필요한 경우에는 동기식 환경 아래 기본 서비스 처리 성능을 고도화하는 데 집중했습니다. 반면 대용량 데이터를 가공하면서 실시간 진행률을 제공해야 하는 기능은 WebFlux 개념의 비동기 논블로킹 아키텍처를 도입하여 시스템 효율을 크게 개선했습니다.\n 자원 대비 효율성과 엔지니어의 지향점\n이처럼 상황에 맞는 아키텍처를 선택할 줄 아는 개발자는 하위 인프라의 기술적 완성도뿐만 아니라 비즈니스 관점에서의 효율적인 자원 분배 능력도 겸비해야 합니다. 각 제어 구간에서 소모되는 컴퓨팅 자원과 개발 공수 대비 최종 사용자가 체감하는 서비스 품질과 만족도를 종합적으로 비교 분석하는 능력이 실무에서 매우 중요하기 때문입니다. 결과적으로 모든 레이어에서 무조건적인 최고 성능만을 고집하기보다, 주어진 제약 속에서 최소 자원으로 최대의 만족을 끌어내는 균형 잡힌 솔루션 설계가 핵심 역량으로 작용합니다. 과거의 작업 경험을 OSI 7계층 모델과 연관 지어 돌아보는 과정은 자원 소모 대비 서비스 품질을 영리하게 조율하는 고성능 엔지니어로 성장하는 중요한 발판이 될 것입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/restful-api-and-generics",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/restful-api-and-generics"
+            },
+            "datePublished": "2026-06-05",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/network-fundamentals",
+      "file": "devlog/education/network-fundamentals.html",
+      "kind": "detail",
+      "heading": "예외처리(예외)에 대한 정리",
+      "status": "PASS",
+      "metadata": {
+        "title": "예외처리(예외)에 대한 정리 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/network-fundamentals",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "예외처리(예외)에 대한 정리 | TECH LOG",
+            "description": "예외처리 시에 무분별한 throws나 ignore 정책을 지양 해야한다는 점입니다.  빠른 코드 작성을 위해서 throws를 남발하게 되면, 에러로그나 위치를 광범위하게 표기하여 실제 에러 지점이나 원인 분석에 어려움이 많아지게 됩니다. 그리고 ignore로 공백 란으로 비우게면 실제 데이터 손실이나 시스템 장애가 발생해도 어느 시점에서 발생된 exception이 찾기가 매우 어려워집니다. 그래서 AOP로 exception을 관리하거나, 최소한 log.wran, error 같은 걸로 쉽게 찾을 수 있도록 세팅하여 관리하는게 좋다고 생각됩니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/network-fundamentals",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/network-fundamentals"
+            },
+            "datePublished": "2026-06-01",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-collection-framework",
+      "file": "devlog/education/java-collection-framework.html",
+      "kind": "detail",
+      "heading": "Collection 핵심정리",
+      "status": "PASS",
+      "metadata": {
+        "title": "Collection 핵심정리 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-collection-framework",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Collection 핵심정리 | TECH LOG",
+            "description": "Java 에서 빼놓을 수 없는 핵심인 Collection API는 데이터를 다양한 방식으로 가공하고 다루는 근간이 되어 많이 사용되는 API입니다. 다만 Java 환경에서 이를 실무에 적용할 때는 Collection 내부의 요소들이 결국 주소값을 복사하는 참조 변수(Reference)로 동작하여 의도치 않게 원본 데이터가 오염(Side Effect)될 수 있다는 점과, 대용량 데이터를 적재할 때 발생하는 메모리 오버헤드 및 가비지 컬렉션(GC) 부하를 특히 주의해야 하므로, 불변 객체 활용이나 적절한 초기 용량(Capacity) 설정 같은 메모리 최적화 전략을 함께 고려하는 것이 아키텍처 관점에서 매우 중요합니다. 그리고 대부분의 현대 프로그래밍 언어에서 공통으로 통용되는 보편적인 개념입니다. 따라서 Map, Set, List, Queue, Stack을 비롯해 Linked나 Hash 계열 같은 핵심 데이터 구조의 동작 체계를 깊이 있게 공부해 둔다면, 향후 어떤 언어를 접하더라도 쉽게 익힐 수 있을 것으로 생각됩니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-collection-framework",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-collection-framework"
+            },
+            "datePublished": "2026-06-04",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/java-exception-handling",
+      "file": "devlog/education/java-exception-handling.html",
+      "kind": "detail",
+      "heading": "API + REST → RESTful API ?",
+      "status": "PASS",
+      "metadata": {
+        "title": "API + REST → RESTful API ? | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/java-exception-handling",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "API + REST  → RESTful API ? | TECH LOG",
+            "description": "이미 실무 경력을 통해 익숙했던 API 개념이었지만 해당 교육일에 각 통신 체계의 경계를 더욱 분명하게 구분하고 특화된 아키텍처들을 정리하며 실무 활용을 위한 이해도를 한 단계 더 높일 수 있었습니다. 아울러 웹의 성장과 함께 HTTP를 기반으로 표준화된 RESTful API는 물론, 현대 아키텍처의 요구사항에 맞춰 진화한 WebSocket, gRPC, GraphQL 등의 핵심 차이점과 적재적소의 활용법을 종합적으로 비교·분석해 볼 수 있었던 뜻깊은 시간이었습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/java-exception-handling",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/java-exception-handling"
+            },
+            "datePublished": "2026-06-02",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/database-and-sql",
+      "file": "devlog/education/database-and-sql.html",
+      "kind": "detail",
+      "heading": "내부함수와 프로시저",
+      "status": "PASS",
+      "metadata": {
+        "title": "내부함수와 프로시저 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/database-and-sql",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "내부함수와 프로시저 | TECH LOG",
+            "description": "과거 컴퓨팅 자원이 부족하던 시절에는 DB 내부에서 프로시저와 함수, 트리거를 적극 활용해 연산 속도를 높이는 아키텍처가 유행했습니다. 하지만 백엔드 어플리케이션의 스케일 아웃이 자유롭고 Git 기반의 유지보수가 핵심인 현대 아키텍처에서는, 비즈니스 로직을 가급적 서버 애플리케이션 레이어로 끌어올리고 DB는 데이터의 순수한 저장 및 정합성 보장이라는 본연의 역할에 집중하도록 설계하는 것이 주류 패러다임입니다. 데이터베이스 내부 루틴은 네트워크 비용 극대화가 필요한 대량 데이터 일괄 처리(Batch) 등 명확한 목적이 있을 때 선택적으로 격리하여 활용하는 시야가 필요합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/database-and-sql",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/database-and-sql"
+            },
+            "datePublished": "2026-06-10",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/database-functions-and-procedures",
+      "file": "devlog/education/database-functions-and-procedures.html",
+      "kind": "detail",
+      "heading": "프로세스와 스레드",
+      "status": "PASS",
+      "metadata": {
+        "title": "프로세스와 스레드 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/database-functions-and-procedures",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "프로세스와 스레드 | TECH LOG",
+            "description": "개발 초기 단계에서 프로세스와 스레드가 혼란스러운 이유는 두 개념 모두 프로그램이 실행되는 작업 단위라는 광범위한 의미로 해석될 수 있기 때문입니다. 이를 명확히 분리하기 위해서는 자바 코딩 영역과 운영체제 영역으로 시야를 나누어 확인하는 것이 좋습니다. 우리가 자바 애플리케이션을 구현하는 코드 내에서의 작업은 주로 스레드를 통해 자원을 공유하며 동시성을 제어하는 멀티 스레드 환경 개발에 해당합니다. 반면 프로세스는 자바 가상 머신 자체처럼 운영체제 레벨에서 자원 공간이 철저히 분리되고 구분되는 대단위 작업 단위로 파악해야 합니다. 결국 개발자가 제어하는 코드 내부의 실행 흐름은 스레드로, 시스템이 관리하는 독립된 실행 틀은 프로세스라는 OS 레벨의 단위로 매핑할 때 동시성 아키텍처의 근본 원리를 정확히 이해할 수 있습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/database-functions-and-procedures",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/database-functions-and-procedures"
+            },
+            "datePublished": "2026-06-08",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/process-and-thread",
+      "file": "devlog/education/process-and-thread.html",
+      "kind": "detail",
+      "heading": "데이터베이스와 SQL",
+      "status": "PASS",
+      "metadata": {
+        "title": "데이터베이스와 SQL | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/process-and-thread",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "데이터베이스와 SQL | TECH LOG",
+            "description": "데이터베이스 개발 영역에서 RDBMS와 SQL은 복잡한 비즈니스 흐름을 안전한 트랜잭션 단위로 묶고 무결성(ACID)이라는 엄격한 규칙으로 제어할 수 있기 때문에, 오랜 기간 백엔드 개발이 중심을 두고 온 핵심 기술입니다. 이에 따라 검증된 엔터프라이즈 환경을 구축하기 위해서는 MySQL, Oracle, MSSQL 등이 가진 독자적인 엔진 아키텍처와 고유한 확장 문법(Dialect)의 차이를 이해하고, 비즈니스의 성격에 맞춰 명확히 구분하여 활용할 줄 알아야 합니다.\n\n더 나아가 현대의 개발자는 데이터의 관리 범위를 관계형(Relational) 아키텍처 너머로 확장하는 시야를 가져야 합니다. 컴퓨팅 자원이 비약적으로 향상됨에 따라, 가공 이전의 방대한 데이터를 전수 조사하고 활용하는 구조가 점차 주류로 자리 잡고 있기 때문입니다. 이러한 요구를 충족하기 위해 등장한 영역이 바로 NoSQL입니다. 대량의 비정형 데이터 속에서 원하는 정보를 초고속으로 추출하는 Document 방식의 Elasticsearch나, 세션 및 토큰 검증처럼 실시간 인증/인가 처리에 특화된 Key-Value 방식의 Redis가 그 패러다임의 변화를 증명하는 대표적인 예시입니다.\n\n결국 현대 백엔드 아키텍처를 온전히 이해하고 다루기 위해서는 시스템의 역할을 핵심 비즈니스 영역과 대용량 데이터 처리 영역으로 명확히 나누어 바라보아야 합니다. 단편적인 RDBMS 중심의 프로그래밍에 갇히지 않고, 데이터의 성격과 트래픽의 흐름에 따라 각 저장소를 적재적소에 배치하고 융합하는 능력을 키우는 것이야말로 더 나은 아키텍처를 설계하는 개발자로 성장하는 확실한 방향이라고 생각합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/process-and-thread",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/process-and-thread"
+            },
+            "datePublished": "2026-06-09",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/sql-window-functions-partitioning-indexes",
+      "file": "devlog/education/sql-window-functions-partitioning-indexes.html",
+      "kind": "detail",
+      "heading": "윈도우함수와 파티셔닝/인덱스",
+      "status": "PASS",
+      "metadata": {
+        "title": "윈도우함수와 파티셔닝/인덱스 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/sql-window-functions-partitioning-indexes",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "윈도우함수와 파티셔닝/인덱스 | TECH LOG",
+            "description": "윈도우 함수는 SELECT 구문 내에서 단 몇 줄의 선언만으로 원하는 통계 데이터를 쉽게 추출할 수 있는 유용한 도구이지만, 데이터베이스 엔진의 옵티마이저 및 실행 계획과 직결되어 있어 반드시 철저한 인덱스 설계가 수반되어야 합니다. 수십만 건 정도의 데이터 체급에서는 성능 차이가 미미할 수 있으나, 백만 건 이상의 대용량 데이터 환경이나 커넥션(Connection)이 폭주하는 상황에서는 인덱스 유무와 윈도우 함수의 정렬 방식에 따라 적게는 수배에서 수백 배의 성능 차이가 발생하며, 최악의 경우 장시간의 시스템 마비(Stop-The-World)로 이어질 수 있기 때문입니다. 따라서 효율적인 인덱스 구성을 위해서는 하부 엔진(대부분 B-Tree 계열)의 물리적 연산 방식을 명확히 인지하고, 조회 빈도에 따른 최적의 컬럼 순서 배치와 데이터 공간 낭비를 막기 위한 적절한 생성 개수를 정교하게 제어할 수 있어야 합니다.\n 더 나아가 인덱스를 통한 논리적 연산 최적화를 넘어, 저장 공간 자체를 물리적으로 분할하여 획기적인 속도 향상을 도모하는 파티셔닝(Partitioning) 기술을 함께 고려해야 합니다. 파티셔닝은 물리적 경계를 쪼개어 검색 범위를 특정 구간으로 대폭 제한(Range Select)함으로써 데이터 전수 조사로 인한 I/O 병목을 근본적으로 해결해 줍니다. 다만 파티셔닝은 단순한 인덱스 설정과 달리 물리적 파일 단위의 추가(Add)와 삭제(Drop)가 동반되므로, 체계적인 생명주기 관리가 누락될 경우 심각한 데이터 누락이나 메타데이터 락(Metadata Lock)으로 인한 시스템 장애를 유발할 수 있습니다. 결론적으로 윈도우 함수라는 편리한 기능에만 함몰되지 않고, 애플리케이션이 다루는 데이터의 규모가 커질수록 인덱스와 파티셔닝의 근본적인 메커니즘을 학습하여 옵티마이저를 유연하게 통제할 수 있는 거시적인 시야를 갖추어야 합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/sql-window-functions-partitioning-indexes",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/sql-window-functions-partitioning-indexes"
+            },
+            "datePublished": "2026-06-11",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/sql-join-normalization-index-management",
+      "file": "devlog/education/sql-join-normalization-index-management.html",
+      "kind": "detail",
+      "heading": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
+      "status": "PASS",
+      "metadata": {
+        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/sql-join-normalization-index-management",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화) | TECH LOG",
+            "description": "관계성 연산인 JOIN은 논리적으로 구분된 두 개 이상의 테이블을 하나의 시트로 병합하여 애플리케이션 레이어에 최적화된 데이터를 추출하는 핵심 도구이지만, 매칭되는 데이터의 규모만큼 row-by-row 연산이 수반되므로 반드시 철저한 인덱스 설계가 뒷받침되어야 합니다. 비록 관계연산과 이전에 언급한 윈도우 함수, 파티셔닝, 인덱스는 각기 개별적인 기술 영역으로 정의되지만, 시스템의 전체적인 시야에서 바라보면 궁극적으로 데이터 조회 효율성을 극대화하기 위해 유기적으로 맞물려 작동하는 하나의 고도화된 도구들 모음집으로 정의할 수 있습니다.\n 이 도구들을 적재적소에 효율적으로 활용하기 위해 가장 먼저 선행되어야 하는 아키텍처의 근본 틀이 바로 정규화와 비정규화의 개념입니다. 데이터 구조의 설계가 잘못되면 후행하는 쿼리 튜닝 요소들을 복잡하게 만들 뿐만 아니라, 데이터베이스 엔진 자체의 물리적 성능을 저하시키는 가장 결정적인 원인이 되기 때문입니다.\n 데이터 무결성을 확보하기 위한 정규화가 존재하기에 분리된 데이터를 역으로 엮어내는 JOIN 연산이 필요한 것이고, 그 JOIN의 매칭 속도를 가속하기 위해 인덱스가 존재하며, 다시 그 인덱스의 물리적 검색 범위를 좁혀주기 위해 파티셔닝이 결합하는 선순환적 인과관계를 명확히 매핑할 때 단편적인 조회 기능을 넘어 고성능 데이터 아키텍처의 본질을 정확히 이해할 수 있습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/sql-join-normalization-index-management",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/sql-join-normalization-index-management"
+            },
+            "datePublished": "2026-06-12",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/backend-transactions-and-database-locks",
+      "file": "devlog/education/backend-transactions-and-database-locks.html",
+      "kind": "detail",
+      "heading": "대고객 메시징 서비스 마케팅 이력관리",
+      "status": "PASS",
+      "metadata": {
+        "title": "대고객 메시징 서비스 마케팅 이력관리 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/backend-transactions-and-database-locks",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "대고객 메시징 서비스 마케팅 이력관리 | TECH LOG",
+            "description": "17일부터 22일까지 진행된 RDBMS 교육 내용을 복기하며, 과거 실무에서 대용량 로그성 테이블을 조회하고 최적화했던 경험을 한층 더 깊은 관점으로 확장해 보았습니다. 대용량 데이터를 다룰 때는 단순히 쿼리를 작성하는 것에 그치지 않고, 실행 계획을 면밀히 분석하여 인덱스와 파티션 조건을 통해 조회 범위를 단단하게 축소해 나가는 것이 기본이자 핵심임을 다시금 확인했습니다. 나아가 시스템의 최종적인 성능 개선은 DB 서버 단의 튜닝을 넘어, 연관된 백엔드 서버와의 비즈니스 기능 분할 및 협력을 종합적으로 고려할 때 비로소 완성됩니다. 데이터의 성격에 따라 락 경합을 줄이기 위해 격리 수준을 조정하는 Dirty Read를 과감히 선택하거나, 백엔드 메모리 부하를 방지하기 위해 커서 기법 및 스트리밍으로 데이터를 분할 처리하는 설계가 그 좋은 예시입니다. 여기에 백엔드의 읽기 전용 트랜잭션 정의나 분산 DB 환경에서의 전용 커넥션 풀 라우팅 같은 통신 옵션까지 유기적으로 맞물린다면 전체 인프라의 리소스 효율을 극대화할 수 있습니다. 이처럼 쿼리 옵티마이저의 메커니즘을 이해하고 애플리케이션 아키텍처 영역까지 연계하여 연동 구조를 설계할 수 있는 시야를 다지게 되었으며, 이는 향후 고성능 서비스를 안정적으로 구축하는 데 큰 자산이 될 것입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/backend-transactions-and-database-locks",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/backend-transactions-and-database-locks"
+            },
+            "datePublished": "2026-06-17",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/pagination-limit-offset-and-partitioning",
+      "file": "devlog/education/pagination-limit-offset-and-partitioning.html",
+      "kind": "detail",
+      "heading": "JSP와 Modern Template 화면",
+      "status": "PASS",
+      "metadata": {
+        "title": "JSP와 Modern Template 화면 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/pagination-limit-offset-and-partitioning",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "JSP와 Modern Template 화면 | TECH LOG",
+            "description": "국내 현업 및 SI 환경에는 과거에 구축된 JSP 기반의 대형 레거시 시스템이 여전히 광범위하게 운영되고 있어, 이를 단기간에 모던 템플릿으로 전면 교체하는 것은 현실적으로 제약이 따릅니다. 따라서 현업의 시스템 안정성을 유지하고 원활하게 유지보수하기 위해서는 JSP 내에서 데이터 제어와 포맷팅을 담당하는 JSTL(Core, Formatting 등)의 핵심 문법과 사용법을 숙지하는 것이 여전히 실무에서 중요합니다. 그러나 백엔드가 Spring Boot 버전이 점점 상향되거나 프론트엔드 아키텍처가 Angular, Node.js 같은 모던 프레임워크로 변화하는 시점이라면, 시스템의 지속 가능성을 위해 화면단도 모던 템플릿 체제로의 전환을 반드시 검토해야 합니다. 특히 과거 JSP 환경은 XSS(크로스 사이트 스크립팅)나 SQL 인젝션 같은 취약점에 노출되기 쉬웠던 반면, 현대적인 프론트엔드 프레임워크들은 데이터 내 내장된 스크립트를 자동으로 이스케이프(Escape) 처리하는 등 강력한 자체 보안 메커니즘을 내장하고 있어 보안상 매우 유리합니다. 또한, 화면과 서버가 촘촘하게 결합된 JSP 구조를 탈피하여 REST API 기반의 분리된 아키텍처를 채택하면 토큰 기반 인증(JWT)이나 CORS 제어와 같은 현대적인 웹 보안 표준 규격을 훨씬 더 정교하고 안전하게 적용할 수 있습니다. 결과적으로 레거시 유지보수를 위한 JSP 역량을 기본으로 가져가되, 아키텍처 전환기에는 호환성과 보안 안정성을 극대화할 수 있도록 모던 프론트엔드 기술을 전략적으로 선택하는 안목이 필요합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/pagination-limit-offset-and-partitioning",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/pagination-limit-offset-and-partitioning"
+            },
+            "datePublished": "2026-06-19",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/jsp-and-modern-template-engine",
+      "file": "devlog/education/jsp-and-modern-template-engine.html",
+      "kind": "detail",
+      "heading": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)",
+      "status": "PASS",
+      "metadata": {
+        "title": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/jsp-and-modern-template-engine",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL) | TECH LOG",
+            "description": "이번 교육에서는 DB의 트랜잭션에 대해 알아봤습니다. 그런데 트랜잭션은 단순히 데이터베이스의 기능을 넘어, 하나의 논리적인 작업 단위를 '전부 성공하거나 전부 실패하게' 제어하는 백엔드 아키텍처의 핵심 근간입니다. 이는 인풋과 아웃풋이 명확한 비즈니스 로직을 설계할 때 데이터베이스뿐만 아니라 애플리케이션 레이어 전반의 정합성을 담보하는 절대적인 기준이 됩니다. 특히 멀티 커넥션 기반의 분산 환경으로 갈수록 트랜잭션의 경계를 어떻게 획득하느냐에 따라 DB Lock의 점유 시간과 시스템 전체의 가용성이 완전히 판가름 나기도 합니다. 만약 무결성에만 치중해 범위를 과도하게 길게 잡으면 락이 강력하게 유지되어 비즈니스 동시 처리량이 급감하는 병목을 마주하게 되며, 반대로 성능을 위해 범위를 지나치게 느슨하게 풀면 데이터가 오염되어 원치 않는 결과를 초래할 수 있습니다. 결국 백엔드 개발자는 데이터의 안전성과 컴퓨팅 자원의 가용성이라는 상충관계 속에서 비즈니스 성격에 맞는 최적의 트랜잭션 단위를 볼 수 있어야 합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/jsp-and-modern-template-engine",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/jsp-and-modern-template-engine"
+            },
+            "datePublished": "2026-06-16",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/html-and-css-fundamentals",
+      "file": "devlog/education/html-and-css-fundamentals.html",
+      "kind": "detail",
+      "heading": "HTML과 CSS의 기능",
+      "status": "PASS",
+      "metadata": {
+        "title": "HTML과 CSS의 기능 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/html-and-css-fundamentals",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "HTML과 CSS의 기능 | TECH LOG",
+            "description": "정적 웹 화면을 구성하는 필수 요소인 HTML과 CSS는 그 자체로 동적인 기능을 구현하기는 어려우나, 화면에 정적인 데이터를 직관적으로 표현하는 데 없어서는 안 될 핵심 언어입니다. 그리고 동적 웹/앱 서비스는 이러한 마크업 언어 기반 위에 JavaScript와 Ajax 통신 기법이 더해지면서 유기적인 데이터 교환을 통해 비로소 완성됩니다. \n 다만, 개인적으로 프론트엔드 영역에서 복잡한 비즈니스 로직을 직접 구현하기보다는, 이미 고도화된 수많은 웹 프레임워크의 생태계를 적극적으로 활용하는 편이 훨씬 효율적이라고 생각합니다. 웹 화면의 본질은 백엔드로부터 넘어온 정제된 데이터를 안전하게 바인딩하고, 사용자에게 최상의 시각적 경험을 선사하는 View의 표현력을 한층 더 끌어올리는 데 집중하는 것입니다. 궁극적으로 개발할 때, 프론트엔드와 백엔드의 역할을 명확히 분리하여 결합도를 낮추고 각 레이어가 가장 잘할 수 있는 핵심 기능에 몰입할 수 있는 환경을 만드는게 중요할 것입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/html-and-css-fundamentals",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/html-and-css-fundamentals"
+            },
+            "datePublished": "2026-06-18",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/customer-messaging-marketing-history",
+      "file": "devlog/education/customer-messaging-marketing-history.html",
+      "kind": "detail",
+      "heading": "페이지네이션(limit, offset)과 파티션닝",
+      "status": "PASS",
+      "metadata": {
+        "title": "페이지네이션(limit, offset)과 파티션닝 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/customer-messaging-marketing-history",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "페이지네이션(limit, offset)과 파티션닝 | TECH LOG",
+            "description": "페이지네이션은 백엔드 개발자에게 필수적인 전략이지만, 근본적인 DB 자원을 아끼기보다는 어플리케이션과 네트워크 영역의 부하만 전략적으로 제한하는 방편이라는 점을 늘 염두에 두어야 합니다. 특히 서비스 규모가 커져 OFFSET 값이 커질수록 화면에는 동일하게 고작 몇 건만 전송되더라도, DB 내부에서는 수십만 건의 데이터를 매번 스캔하고 버리는 비효율과 컴퓨팅 부하가 고스란히 누적된다는 점은 시사하는 바가 큽니다.\n 결국 동시 접속자가 몰리는 대용량 환경으로 갈수록 단순한 조회 제한에 만족할 것이 아니라, 물리적 분리인 파티셔닝을 도입하거나 인덱스 기반의 조건문을 조합해 스캔 범위 자체를 줄이는 근본적인 튜닝이 필수적입니다. 데이터가 적은 초기에는 드러나지 않던 병목이 대규모 트래픽과 만나면 시스템 전체에 일파만파로 치명적인 영향을 주기 때문에, 항상 인프라와 아키텍처 관점까지 시야를 넓혀 쿼리를 설계해야합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/customer-messaging-marketing-history",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/customer-messaging-marketing-history"
+            },
+            "datePublished": "2026-06-15",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/recover-deleted-git-history",
+      "file": "devlog/education/recover-deleted-git-history.html",
+      "kind": "detail",
+      "heading": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
+      "status": "PASS",
+      "metadata": {
+        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/recover-deleted-git-history",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기 | TECH LOG",
+            "description": "고차 함수, 콜백, 프로미스 등의 비동기 대기 메커니즘은 얼핏 보면 자바스크립트 코드의 가독성을 높이고 데이터 처리를 유연하게 만드는 매우 유용한 도구처럼 보입니다. 하지만 이는 처리해야 할 데이터의 양이 급증하고 컴퓨팅 자원에 가중치가 생기는 순간, 클라이언트 브라우저 환경에서는 화면을 마비시키는 위험한 도구로 돌변합니다. 바닐라 자바스크립트는 싱글 스레드로 작동하기 때문에, 브라우저가 화면을 그리는 와중에 무거운 비동기 연산이나 대용량 데이터 가공이 겹치면 즉시 렌더링 프레임이 떨어지며 웹 페이지 전체가 버벅이게 됩니다. 특히 서비스를 이용하는 고객의 기기 성능이 저사양 모바일 기기부터 고성능 PC까지 극과 극으로 갈리기 때문에, 프론트엔드 단에서의 무리한 데이터 처리는 특정 유저에게 최악의 웹 경험을 선사할 수 있습니다. 따라서 단순한 UI 표기를 넘어 기기 파워에 전적으로 의존해야 하는 무거운 비동기 데이터 가공 작업은 브라우저에서 직접 처리하기보다 가급적 서버 측으로 위임하는 구조가 훨씬 안전하고 합리적입니다.\n 반면 클라이언트가 아닌 서버 영역에서 수행되는 Node.js와 Express.js 환경에서는 이러한 비동기 대기 메커니즘이 오히려 서버의 생존과 대규모 처리를 결정짓는 필수 아키텍처로 반전됩니다. 수많은 사용자의 접속 요청을 동시에 받아내야 하는 백엔드 환경에서 데이터베이스 조회나 외부 API 통신을 동기식으로 대기하게 만들면, 앞선 요청이 끝날 때까지 서버 전체가 완전히 얼어붙게 됩니다. Node.js는 프로미스나 async/await를 통한 비동기 Non-blocking I/O 방식을 채택하여, 네트워크나 디스크에서 데이터를 읽어오는 무거운 대기 시간 동안 메인 스레드가 놀지 않고 다른 유저의 요청을 끊임없이 받아내도록 설계되었습니다. 데이터의 양이 아무리 방대하더라도 그것이 순수 컴퓨터 CPU 연산이 아닌 외부 통신이나 데이터 수집을 요구하는 작업이라면, 비동기 처리를 유기적으로 연결할수록 서버의 자원 효율성은 극대화됩니다. 결과적으로 프론트엔드에서 자원 한계와 성능 편차 때문에 극도로 경계해야 했던 비동기 도구들이, 백엔드 환경에서는 수만 명의 요청을 동시다발적으로 해결하는 가장 강력하고 합리적인 솔루션이 됩니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/recover-deleted-git-history",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/recover-deleted-git-history"
+            },
+            "datePublished": "2026-06-25",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/backend-developer-frontend-perspective",
+      "file": "devlog/education/backend-developer-frontend-perspective.html",
+      "kind": "detail",
+      "heading": "프로토타입(Prototype)과 클래스(Class) - js 구동 메커니즘은 변경되지 않았다.",
+      "status": "PASS",
+      "metadata": {
+        "title": "프로토타입(Prototype)과 클래스(Class) - js 구동 메커니즘은 변경되지 않았다. | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/backend-developer-frontend-perspective",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "프로토타입(Prototype)과 클래스(Class) - js 구동 메커니즘은 변경되지 않았다. | TECH LOG",
+            "description": "자바스크립트의 프로토타입과 클래스, let과 var의 컴파일 과정을 살펴보며 깨달은 점을 현업에서 많이 전환하려는 프론트엔드 프레임워크 리액트(React)의 내부 동작 방식에 대입해서 생각했더니 복잡했던 리액드의 구동방식도 쉽게 이해 할 수 있었습니다. \n 예시로 리액트의 컴포넌트는 거창한 신기술이 아니라, 상태(State)와 속성(Props)이라는 데이터를 인자로 받아 화면 구조를 반환하는 순수한 바닐라 자바스크립트 함수로 생각(실제로도 바닐라 js로 구성되있음)해보면 복잡하게 얽혀 있을 것 같았던 데이터 바인딩의 실상 역시, JS의 클로저(Closure) 규칙을 활용한 단순한 메커니즘이었습니다. 사용자의 동작으로 상태 값이 변하면 엔진이 AI처럼 변경해주는게 아니라, 단순히 해당 컴포넌트 함수를 처음부터 다시 실행해 새로운 구조 객체를 찍어냅니다. 즉, 리액트의 화면 갱신은 데이터가 바뀔 때마다 함수를 재호출하여 바뀐 부분의 스냅샷을 브라우저 API로 호출하는 반복적인 과정입니다. 이러한 관점에서 보면 프레임워크는 내부적으로 복잡한 바닐라 코드를 대신 실행하며 개발자에게 일관된 룰을 강제하고 있는 셈인 것을 한 번 더  확인할 수 있습니다. 이러한 재호출 메커니즘을 이해하고 나면, 컴포넌트 내부에 선언된 함수나 이벤트 핸들러들이 어떻게 관리되는지도 파악할 수 있습니다. 컴포넌트 함수가 상태 변화로 인해 대대적으로 다시 실행될 때마다, 그 안에 작성된 함수들 역시 메모리 상에서 매번 새롭게 생성되는 과정을 거치게 됩니다. \n 만약 개발자가 이 지저분하고 반복적인 재생성 과정을 순수 바닐라 자바스크립트로 직접 통제하려 했다면 하이레벨 영역의 코드는 걷잡을 수 없이 복잡해졌을 것입니다. 결국 리액트를 비롯한 최신 프런트엔드 생태계는 엔진 자체의 혁명이라기보다는, 바닐라 JS라는 제한된 언어 위에서 대규모 앱을 쉽게 다루기 위해 고도화된 제약 조건 도구라고 생각합니다. 실제 배포된 빌드 원본 코드가 증명하듯, 우리는 여전히 바닐라 자바스크립트와 HTML의 근본적인 메커니즘 위에서 규칙성 있는 코드를 작성하고 있는 것입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/backend-developer-frontend-perspective",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/backend-developer-frontend-perspective"
+            },
+            "datePublished": "2026-06-26",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/javascript-closure-hoisting-scope",
+      "file": "devlog/education/javascript-closure-hoisting-scope.html",
+      "kind": "detail",
+      "heading": "인터프린트언어인 javascirpt에서 헷갈리는 클로저/호이스팅",
+      "status": "PASS",
+      "metadata": {
+        "title": "인터프린트언어인 javascirpt에서 헷갈리는 클로저/호이스팅 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/javascript-closure-hoisting-scope",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "인터프린트언어인 javascirpt에서 헷갈리는 클로저/호이스팅 | TECH LOG",
+            "description": "자바스크립트는 위에서 아래로 코드를 해석하는 특성을 가졌지만, 실행 전 코드를 전체적으로 훑는 '평가 단계'를 거치며 호이스팅과 클로저라는 고유의 특성을 나타냅니다. 이는 흔히 해석 오류를 해결하기 위해 사후에 급히 추가된 기능이 아니라, 엔진이 메모리를 분배하고 스코프를 형성하는 과정에서 필연적으로 발생한 핵심 메커니즘입니다. 구체적으로 호이스팅은 최초 실행 시 변수와 함수의 선언문을 최상단 메모리에 먼저 등록하는 현상이며, 클로저는 함수가 반환되는 시점의 렉시컬 환경을 기억하여 외부에서도 접근할 수 있게 돕는 개념입니다. 이 두 개념에는 '프로그램 전체에서 광범위하게 선언되는 스코프를 어떻게 안전하게 제어하고 활용할 것인가'라는 목적이 일관되게 관통하고 있습니다. 따라서 자바스크립트의 동작 원리를 온전히 이해하기 위해서는 이 스코프의 경계를 다루는 두 개념을 반드시 하나의 흐름으로 묶어 파악해야 합니다.\n위 두 개념으로 인한 유연성은 개발자에게 높은 자유도를 주었지만, 예기치 못한 참조 오류나 전역 변수 오염 같은 휴먼 에러를 빈번하게 유발하는 원인이 되었습니다. 이러한 문제를 해결하고자 현대 웹 생태계는 변수의 유효 범위를 블록 단위로 묶고 변수 타입을 제한하는 방식으로 빠르게 진화해 왔습니다. 대표적으로 var 대신 let과 const를 사용을 권장하며, 나아가 타입스크립트나 리액트, 뷰 같은 모던 도구들은 상태를 컴포넌트 내부로 완전히 격리하고 엄격한 규칙을 강제하여 스코프 오작동을 원천 차단하고 있습니다. 결과적으로 개발자가 직접 변수의 유효 범위를 제한하고 제어하는 추세입니다.\n이처럼 휴먼 에러를 보완해 주는 편리한 도구와 엄격한 규칙들이 상층부에 계속 추가되면서, 개인적으로는  호이스팅이나 클로저 같은 기초 개념을 이제는 잊어도 되지 않을까 고민하기도 했습니다. 그러나 우리가 자바스크립트 본연의 작동 원리를 잊어서는 안 되는 이유는 모던 기술들이 가진 구조적 한계 때문입니다. 타입스크립트나 최신 프레임워크 역시 호이스팅과 클로저라는 자바스크립트의 기본 메커니즘 자체를 아예 소멸시키거나 새로 창조한 것이 아니기 때문입니다. 이 도구들은 단지 개발자가 코드를 작성하는 하이레벨 단계에서 실수를 저지르지 못하도록 우회로를 만들거나 '가상의 제약 규칙'을 한 겹 더 씌워둔 것에 불과합니다. 아무리 상위 추상화 계층이 단단하고 화려하게 발전하더라도, 실제 브라우저 런타임 환경에서 코드가 맞물려 돌아가는 로우레벨의 물리적 본질은 변하지 않습니다.\n그렇기 때문에 추상화된 도구의 규칙 뒤에 숨겨진 내부 메커니즘을 정확히 파악하는 것은 개발자의 문제 해결 능력과 직결됩니다. 웹 애플리케이션을 개발하다가 예상치 못한 메모리 누수나 깊은 레벨의 아키텍처 버그 등 근본적인 한계에 부딪혔을 때, 디버깅의 돌파구를 찾아내는 힘은 언제나 이 로우레벨 지식에서 나옵니다. 상위 도구가 제공하는 가상의 벽이 무너지거나 프레임워크 자체의 내부 동작을 추적해야 할 때, 근본을 모르면 원인조차 파악하지 못하고 길을 잃기 쉽습니다. 단순히 에러 없는 코드를 작성하는 단계를 넘어 복잡하게 얽힌 레거시 코드를 안전하게 분석하고 최신 아키텍처로 마이그레이션하기 위해서는 반드시 이 지식이 밑바탕이 되어야 합니다. 결국 도구의 편리함에 매몰되지 않아야합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/javascript-closure-hoisting-scope",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/javascript-closure-hoisting-scope"
+            },
+            "datePublished": "2026-06-24",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/javascript-prototype-and-class",
+      "file": "devlog/education/javascript-prototype-and-class.html",
+      "kind": "detail",
+      "heading": "강제로 지운 git 히스토리 되돌려보기",
+      "status": "PASS",
+      "metadata": {
+        "title": "강제로 지운 git 히스토리 되돌려보기 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/javascript-prototype-and-class",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "강제로 지운 git 히스토리 되돌려보기 | TECH LOG",
+            "description": "2026년 현재까지도 소스 코드 버전 관리의 글로벌 표준이자 가장 대중적인 도구는 단연 Git입니다. 물론 고유한 보안 이슈나 기업 환경에 따라 다른 형상 관리 시스템(VCS)을 채택하기도 하지만, 수많은 엔지니어가 동시에 동일한 코드베이스를 다루는 대규모 협업 환경에서 Git의 효율성을 대체하기는 어렵습니다. Git은 단순히 변경 분만 기록하는 방식이 아니라 소스 자체를 '스냅샷(Snapshot)' 단위로 저장하기 때문에 코드 유실 위험이 극도로 낮으며, 이력이 일방향 그래프 형태로 누적되므로 버그 추적이나 예기치 못한 이슈 발생 시 원인을 찾아 해결하고 복구하는 데 압도적으로 유리합니다. 하지만 많은 개발자가 Git의 내부 메커니즘을 명확히 이해하지 못한 채 정해진 명령어만 반복하다 보니, 조금만 규칙에서 벗어나도 브랜치 플로우가 꼬이거나 빈번한 충돌(Conflict)을 해결하는 데 큰 어려움을 겪곤 합니다.\n결국 Git을 다루기 어렵다는 막연한 부담감에서 벗어나려면, 저장 메커니즘과 Git Flow의 핵심 개념을 한 단계 더 깊게 들여다보는 과정이 필요합니다. 단순히 단순 checkout, push, pull 같은 기초적인 명령어에만 의존하는 단계에서 나아가, Git이 데이터를 관리하는 원리를 깨닫게 되면 상황에 맞춰 cherry-pick으로 필요한 커밋만 정밀하게 솎아내거나, switch와 restore로 브랜치와 워킹 디렉토리를 안전하게 제어하고, 위기 상황에서 reflog를 통해 유실된 코드를 완벽히 복구하는 유연함을 발휘할 수 있습니다. 메커니즘에 대한 올바른 이해가 뒷받침될 때 비로소 Git은 복잡한 도구가 아니라, 대규모 프로젝트의 안정성을 책임지고 개발 생산성을 극대화해 주는 가장 강력하고 편안한 무기가 될 것입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/javascript-prototype-and-class",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/javascript-prototype-and-class"
+            },
+            "datePublished": "2026-06-23",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/javascript-array-higher-order-functions-async",
+      "file": "devlog/education/javascript-array-higher-order-functions-async.html",
+      "kind": "detail",
+      "heading": "백엔드 개발자가 프론트엔드를 바라볼 때",
+      "status": "PASS",
+      "metadata": {
+        "title": "백엔드 개발자가 프론트엔드를 바라볼 때 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/javascript-array-higher-order-functions-async",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "백엔드 개발자가 프론트엔드를 바라볼 때 | TECH LOG",
+            "description": "모놀리식에서 MSA(마이크로서비스 아키텍처)로의 전환과 함께 WAS 환경이 RESTful API 서버와 화면 렌더링 서버로 분리되면서, 프론트엔드 역시 백엔드 못지않게 고도화된 기능과 복잡한 UI/UX를 요구받고 있습니다. 비즈니스 로직과 화면단을 분리해 두면 메인 서버의 데이터 손실을 막고 view 서버의 빠른 재가동으로 가용성을 극대화할 수 있지만, 그만큼 클라이언트 영역에서 관리해야 할 범위는 폭발적으로 늘어났습니다. 이에 대응하기 위해 React, Vue 등 현대적인 프레임워크와 에코시스템이 빠르게 발전해 왔으나, 정작 이러한 도구들의 등장 배경과 근본적인 메커니즘을 제대로 이해하지 못한 채 사용하면 결국 원시적인 코드로 회귀하여 복잡한 스파게티 코드를 양산하게 됩니다.\n결국 기술의 발전 속도에 맞춰 개발 생산성과 효율성을 극대화하려면, 눈앞의 도구를 다루는 법을 넘어 프레임워크가 해결하고자 하는 아키텍처적 본질을 꿰뚫어야 합니다. 이번에 CSS 테마를 객체지향(OOP) 관점에서 변수화하여 설계해 본 것처럼, 프론트엔드와 백엔드를 막론하고 새로운 기술 컨텍스트를 지속적으로 탐색하고 깊이 있게 학습해야 합니다. 급변하는 시대의 흐름 속에서 아키텍처의 구동 원리를 명확히 이해하고 적용하는 끊임없는 고민이야말로, 복잡해지는 시스템 요구사항 속에서 지속 가능한 고품질의 서비스를 구축하는 핵심 방법입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/javascript-array-higher-order-functions-async",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/javascript-array-higher-order-functions-async"
+            },
+            "datePublished": "2026-06-22",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/dom-bom-event-delegation-bubbling",
+      "file": "devlog/education/dom-bom-event-delegation-bubbling.html",
+      "kind": "detail",
+      "heading": "DOM/BOM, 이벤트 위임, 버블링 특성과 제어",
+      "status": "PASS",
+      "metadata": {
+        "title": "DOM/BOM, 이벤트 위임, 버블링 특성과 제어 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/dom-bom-event-delegation-bubbling",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "DOM/BOM, 이벤트 위임, 버블링 특성과 제어 | TECH LOG",
+            "description": "자바스크립트의 최하단 구동 엔진 메커니즘을 파악하고 나면, 브라우저 환경을 구성하는 BOM(Browser Object Model)과 DOM(Document Object Model)은 자바스크립트로 제어 가능한 객체들의 집합일 뿐임을 알 수 있습니다. 브라우저 창 전체를 제어하는 규칙인 BOM의 계층 구조 내에서, 실제 HTML 문서의 뼈대를 이루는 DOM 객체들이 유기적으로 상호작용하게 됩니다. 이 DOM 트리 위에서 발생하는 이벤트는 자식에서 부모로 자연스럽게 흐르는 버블링(Bubbling) 특성을 가지며, 이 메커니즘을 활용해 최상위 요소에서 하위 액션들을 한 번에 통제하는 이벤트 위임(Event Delegation)이라는 영리한 제약 조건이 성립합니다. 결국 바닐라 자바스크립트 환경에서의 웹 개발이란, 브라우저가 제공하는 이 원시적인 객체 구조 속에서 이벤트(Event)의 흐름과 데이터(Data)의 상태를 적절히 조합하여 일관된 실행 규칙을 만들어가는 과정입니다.\n 이러한 이벤트와 데이터의 조합 규칙과 앞서 공부했던 리액트(React) 생태계에 대입해 보면, 프레임워크가 강제하는 데이터 바인딩과 수명 주기의 본질을 한층 더 깊이 있게 이해할 수 있습니다.  컴포넌트의 마운트(Mount)와 언마운트(Unmount)는 계산된 가상 DOM 스냅샷을 브라우저의 원시 DOM API(appendChild, removeChild)를 통해 물리적인 트리 구조에 삽입하고 제거하는 규칙의 추상화입니다. 결과적으로 프런트엔드의 생명주기 관리란 하이레벨에서 정립된 고도화된 약속의 집합체인 것입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/dom-bom-event-delegation-bubbling",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/dom-bom-event-delegation-bubbling"
+            },
+            "datePublished": "2026-06-29",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/javascript-signup-page-implementation",
+      "file": "devlog/education/javascript-signup-page-implementation.html",
+      "kind": "detail",
+      "heading": "js를 활용한 화면 구현하기 (회원가입 화면)",
+      "status": "PASS",
+      "metadata": {
+        "title": "js를 활용한 화면 구현하기 (회원가입 화면) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/javascript-signup-page-implementation",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "js를 활용한 화면 구현하기 (회원가입 화면) | TECH LOG",
+            "description": "브라우저 스토리지를 활용해 사용자가 선택한 테마를 로컬에 저장하고, 각 입력 상자(input box)마다 회원가입에 필요한 유효성 검증과 정규표현식(Regex) 패턴 검사 기능을 구현했습니다. 또한 우편번호 조회는 무료 API를 활용해 실제 데이터 연동까지 완료했으며, 인증번호 발송 기능의 경우 비용 및 보안 이슈를 고려해 현재는 콘솔에 임시로 출력되도록 처리했으나, 추후 백엔드 서버 환경이 구축되면 실제 전송 기능으로 확장할 수 있도록 설계했습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/javascript-signup-page-implementation",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/javascript-signup-page-implementation"
+            },
+            "datePublished": "2026-06-30",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/jquery-bootstrap-and-ajax",
+      "file": "devlog/education/jquery-bootstrap-and-ajax.html",
+      "kind": "detail",
+      "heading": "Jquery와 Bootstrap (추가개념 : 네트워크 통신 ajax와 대체제)",
+      "status": "PASS",
+      "metadata": {
+        "title": "Jquery와 Bootstrap (추가개념 : 네트워크 통신 ajax와 대체제) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/jquery-bootstrap-and-ajax",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Jquery와 Bootstrap (추가개념 : 네트워크 통신 ajax와 대체제) | TECH LOG",
+            "description": "jQuery와 Bootstrap은 나름의 가치가 있고 레거시 제품의 유지보수를 위해 사용법을 알아두는 것이 좋지만, React나 Next.js 같은 현대적 프레임워크 환경으로 진입하면 이야기가 달라집니다. 물리적 DOM을 직접 타격하는 jQuery는 프레임워크의 렌더링 메커니즘과 충돌하기 쉽고, Bootstrap은 대규모 커스텀 CSS를 입힐 때 기존 규칙을 덮어쓰느라 하이레벨 코드가 오히려 지저분해지기 때문입니다.\n 따라서, 프로젝트의 구조적 확장성을 확보하고 유연하게 디자인을 제어하려면, 이에 최적화된 현대적 대체제들을 앞으로 깊이 있게 익혀나가는 점이 매우 중요합니다. 자유로운 스타일링이 가능한 Tailwind CSS나 데이터 바인딩 규칙과 완벽히 융합되는 MUI 같은 모던 도구들을 다룰 줄 알아야 장기적인 유지보수 영역에서 생산성을 극대화할 수 있습니다. 궁극적으로는 바닐라 js와 그 메커니즘을 아는것도 중요하지만 하이레벨영역에서 규칙화된 도구들도 잘 다룰줄 알아야한다는 점입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/jquery-bootstrap-and-ajax",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/jquery-bootstrap-and-ajax"
+            },
+            "datePublished": "2026-07-01",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/jdbc-fundamentals",
+      "file": "devlog/education/jdbc-fundamentals.html",
+      "kind": "detail",
+      "heading": "JDBC란?",
+      "status": "PASS",
+      "metadata": {
+        "title": "JDBC란? | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/jdbc-fundamentals",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "JDBC란? | TECH LOG",
+            "description": "JDBC를 쓸 때는 매번 연결을 맺고 끊을 때 발생하는 네트워크 오버헤드와 자원 누수(Leak) 문제를 가장 유의해야 합니다. 이를 방지하기 위해 HikariCP 같은 커넥션 풀 관리 툴을 적절히 활용하면, 미리 생성된 연결을 재사용하면서 성능을 극대화하고 복잡한 데이터베이스 설정을 하이레벨에서 깔끔하게 통제할 수 있습니다. 결과적으로 로우레벨의 무거운 소켓 제어 로직을 검증된 관리 툴의 룰 베이스 위로 올리는 것이 대규모 서비스의 안정성과 유지보수 면에서 훨씬 유리하다고 할 수 있습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/jdbc-fundamentals",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/jdbc-fundamentals"
+            },
+            "datePublished": "2026-07-02",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/was-and-web-server-fundamentals",
+      "file": "devlog/education/was-and-web-server-fundamentals.html",
+      "kind": "detail",
+      "heading": "WAS, WEB은 무엇인가?",
+      "status": "PASS",
+      "metadata": {
+        "title": "WAS, WEB은 무엇인가? | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/was-and-web-server-fundamentals",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "WAS, WEB은 무엇인가? | TECH LOG",
+            "description": "WEB과 WAS는 정의상 명확히 구분되지만, 브라우저에 필요한 정보를 제공한다는 관점에서는 비전공자에게 비슷한 개념으로 느껴질 수 있습니다. 실제 업무에서도 두 용어를 하나로 묶어 설명할 수 있지만, 역할과 인프라 구성을 명확히 이해하려면 둘의 차이를 구분할 필요가 있습니다.\n따라서 입문 단계에서는 WEB은 정적 데이터를 전달하고, WAS는 요청에 따라 동적 데이터를 생성해 전달하는 구성 요소로 이해하면 좋을 것 같습니다. 엄밀한 정의에는 더 많은 내용이 포함되지만, 이러한 구분은 전체 구조를 파악하기 위한 가벼운 출발점이 될 것으로 생각됩니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/was-and-web-server-fundamentals",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/was-and-web-server-fundamentals"
+            },
+            "datePublished": "2026-07-03",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/mvc-pattern-fundamentals",
+      "file": "devlog/education/mvc-pattern-fundamentals.html",
+      "kind": "detail",
+      "heading": "MVC 패턴이란?",
+      "status": "PASS",
+      "metadata": {
+        "title": "MVC 패턴이란? | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/mvc-pattern-fundamentals",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "MVC 패턴이란? | TECH LOG",
+            "description": "MVC 패턴은 UI와 비즈니스 로직의 관심사를 분리하여 각 영역을 독립적으로 개발하고 관리할 수 있도록 합니다. 하나의 Model을 다양한 View에서 활용할 수 있어 재사용성과 확장성이 높으며, 특정 영역을 수정할 때 다른 영역에 미치는 영향을 줄여 유지보수에도 유리합니다.\n 이러한 관심사 분리 원칙은 MVC에만 국한되지 않으며, 개발 목적과 기능에 따라 시스템을 분리하는 다양한 방식으로 확장되고 있습니다. BDD와 TDD는 행위와 테스트를 중심으로 개발 과정을 구조화하고, MSA는 비즈니스 기능을 기준으로 서비스를 분리한다는 점에서 이러한 흐름과 연결해 이해할 수 있습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/mvc-pattern-fundamentals",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/mvc-pattern-fundamentals"
+            },
+            "datePublished": "2026-07-06",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/jsp-and-jstl",
+      "file": "devlog/education/jsp-and-jstl.html",
+      "kind": "detail",
+      "heading": "JSP와 JSTL 사용법",
+      "status": "PASS",
+      "metadata": {
+        "title": "JSP와 JSTL 사용법 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/jsp-and-jstl",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "JSP와 JSTL 사용법 | TECH LOG",
+            "description": "JSP와 JSTL은 보안 이슈, Spring Boot의 지원 축소, 프론트엔드와 백엔드의 역할 분리 및 프론트엔드 생태계의 발전으로 인해 점차 사용이 줄어드는 추세입니다. 하지만 기존에 JSP와 JSTL로 개발된 레거시 시스템이 많고, 이를 전면적으로 변경하려면 상당한 비용과 리소스가 필요하므로 기본적인 사용법은 여전히 알아둘 필요가 있습니다.\n새로운 기능을 구현하거나 기존 코드를 개선할 때는 JSP와 JSTL에 대한 의존성을 최소화하고, 가능한 부분을 바닐라 JavaScript로 구현하는 것이 좋습니다. 이렇게 구성하면 향후 React나 Vue와 같은 최신 프론트엔드 프레임워크를 도입할 때 기존 코드를 전환하는 데 필요한 비용과 리소스를 줄일 수 있습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/jsp-and-jstl",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/jsp-and-jstl"
+            },
+            "datePublished": "2026-07-07",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/spring-mvc-request-response",
+      "file": "devlog/education/spring-mvc-request-response.html",
+      "kind": "detail",
+      "heading": "Spring MVC에서 응답(Response)와 요청(Request) 구조",
+      "status": "PASS",
+      "metadata": {
+        "title": "Spring MVC에서 응답(Response)와 요청(Request) 구조 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/spring-mvc-request-response",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Spring MVC에서 응답(Response)와 요청(Request) 구조 | TECH LOG",
+            "description": "Spring MVC에서 HTTP 요청이 컨트롤러에 전달되고 응답으로 변환되는 구조와 주요 처리 흐름을 정리합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/spring-mvc-request-response",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/spring-mvc-request-response"
+            },
+            "datePublished": "2026-07-08",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/requirements-definition-document",
+      "file": "devlog/education/requirements-definition-document.html",
+      "kind": "detail",
+      "heading": "요구사항 정의서란?",
+      "status": "PASS",
+      "metadata": {
+        "title": "요구사항 정의서란? | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/requirements-definition-document",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "요구사항 정의서란? | TECH LOG",
+            "description": "프로젝트의 목표와 범위, 기능과 제약사항을 명확히 정의하는 요구사항 정의서의 역할과 작성 방법을 정리합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/requirements-definition-document",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/requirements-definition-document"
+            },
+            "datePublished": "2026-07-10",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/semi-project",
+      "file": "devlog/education/semi-project.html",
+      "kind": "detail",
+      "heading": "세미프로젝트",
+      "status": "PASS",
+      "metadata": {
+        "title": "세미프로젝트 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/semi-project",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "세미프로젝트 | TECH LOG",
+            "description": "교육 과정의 세미 프로젝트를 준비하고 구현하며 정리한 요구사항, 설계, 협업 및 개발 과정을 소개합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/semi-project",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/semi-project"
+            },
+            "datePublished": "2026-07-13",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/spring-filter-and-interceptor",
+      "file": "devlog/education/spring-filter-and-interceptor.html",
+      "kind": "detail",
+      "heading": "Spring에서 Filter와 Interceptor의 쓰임",
+      "status": "PASS",
+      "metadata": {
+        "title": "Spring에서 Filter와 Interceptor의 쓰임 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/spring-filter-and-interceptor",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Spring에서 Filter와 Interceptor의 쓰임 | TECH LOG",
+            "description": "Spring 웹 요청 처리에서 Filter와 Interceptor가 개입하는 시점, 적용 범위와 주요 활용 사례를 비교해 정리합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/spring-filter-and-interceptor",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/spring-filter-and-interceptor"
+            },
+            "datePublished": "2026-07-09",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/education/spring-framework-for-web-applications",
+      "file": "devlog/education/spring-framework-for-web-applications.html",
+      "kind": "detail",
+      "heading": "웹 애플리케이션에서 SpringFramework란?",
+      "status": "PASS",
+      "metadata": {
+        "title": "웹 애플리케이션에서 SpringFramework란? | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/education/spring-framework-for-web-applications",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "웹 애플리케이션에서 SpringFramework란? | TECH LOG",
+            "description": "Spring Framework와 Spring Boot는 Java로 웹이나 애플리케이션을 효율적으로 개발할 수 있도록 다양한 기능을 제공하는 편리한 라이브러리이자 프레임워크입니다. 다만 저수준의 기능이 내부에 이미 구현되어 있으므로, 단순히 사용법만 익히기보다 주요 기능의 동작 원리를 이해하고 적절히 적용해야 합니다. 특히 기능을 확장하거나 커스터마이징하려면 관련 소스 코드와 내부 구조를 분석하는 과정도 필요합니다.\n중요한 것은 Spring을 무조건 신뢰하거나 반대로 불신하는 것이 아니라, 요구사항에 맞게 활용하는 태도입니다. 검증된 기능을 불필요하게 처음부터 구현하기보다는 Spring 생태계의 여러 프로젝트와 라이브러리를 함께 살펴보고, 필요한 기능을 선별하여 사용하는 것이 효율적입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/education/spring-framework-for-web-applications",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/education/spring-framework-for-web-applications"
+            },
+            "datePublished": "2026-07-08",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/problem_solving/aop-exception-handling-common-response",
+      "file": "devlog/problem_solving/aop-exception-handling-common-response.html",
+      "kind": "detail",
+      "heading": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선",
+      "status": "PASS",
+      "metadata": {
+        "title": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/problem_solving/aop-exception-handling-common-response",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선 | TECH LOG",
+            "description": "수백 개에 달하는 레거시 커스텀 예외로 인해 파편화된 예외 처리 체계를 분석하고, AOP 및 GlobalExceptionHandler 도입, log4j 파사드 및 Tomcat ExceptionPageResolver 설정을 통해 직관적인 예외 처리와 B2B 대응 효율성을 극대화한 개선 사례입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/problem_solving/aop-exception-handling-common-response",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/problem_solving/aop-exception-handling-common-response"
+            },
+            "datePublished": "2026-06-01",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/problem_solving/java-large-object-g1gc-optimization",
+      "file": "devlog/problem_solving/java-large-object-g1gc-optimization.html",
+      "kind": "detail",
+      "heading": "Java 8 환경에서 10MB 거대 객체 처리와 G1GC 최적화 전략",
+      "status": "PASS",
+      "metadata": {
+        "title": "Java 8 환경에서 10MB 거대 객체 처리와 G1GC 최적화 전략 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/problem_solving/java-large-object-g1gc-optimization",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Java 8 환경에서 10MB 거대 객체 처리와 G1GC 최적화 전략 | TECH LOG",
+            "description": "대규모 메시징 서비스에서 10MB 단위 거대 객체(Humongous Object)로 인해 발생하는 빈번한 Full GC와 메모리 부족(OOM) 현상을 분석하고, 코드 레벨 최적화 및 G1GC 옵션 튜닝을 통해 성능을 개선한 사례입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/problem_solving/java-large-object-g1gc-optimization",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/problem_solving/java-large-object-g1gc-optimization"
+            },
+            "datePublished": "2026-05-15",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/problem_solving/activemq-kahadb-disk-rate-limit",
+      "file": "devlog/problem_solving/activemq-kahadb-disk-rate-limit.html",
+      "kind": "detail",
+      "heading": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략",
+      "status": "PASS",
+      "metadata": {
+        "title": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/problem_solving/activemq-kahadb-disk-rate-limit",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략 | TECH LOG",
+            "description": "ActiveMQ KahaDB의 블록 관리 특성으로 인한 디스크 고갈 문제를 진단하고, Threshold 및 타임아웃을 통해 시스템 안정성을 확보한 사례입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/problem_solving/activemq-kahadb-disk-rate-limit",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/problem_solving/activemq-kahadb-disk-rate-limit"
+            },
+            "datePublished": "2026-05-15",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/problem_solving/async-api-processing-architecture",
+      "file": "devlog/problem_solving/async-api-processing-architecture.html",
+      "kind": "detail",
+      "heading": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
+      "status": "PASS",
+      "metadata": {
+        "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/problem_solving/async-api-processing-architecture",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "대용량 비동기 API 처리 아키텍처 및 해결 전략 | TECH LOG",
+            "description": "기존 100% 동기식 처리에서 발생하는 병목을 해결하기 위해 비동기 기반의 아키텍처로 개편한 흐름 및 해결 전략입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/problem_solving/async-api-processing-architecture",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/problem_solving/async-api-processing-architecture"
+            },
+            "datePublished": "2026-05-26",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/problem_solving/was-session-consistency",
+      "file": "devlog/problem_solving/was-session-consistency.html",
+      "kind": "detail",
+      "heading": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안",
+      "status": "PASS",
+      "metadata": {
+        "title": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/problem_solving/was-session-consistency",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안 | TECH LOG",
+            "description": "WAS 이중화 환경에서 로드밸런서에 의해 요청이 분산될 때 발생하는 세션 불일치 문제를 인프라·WAS·애플리케이션 3개 레벨의 해결 방안으로 분석합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/problem_solving/was-session-consistency",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/problem_solving/was-session-consistency"
+            },
+            "datePublished": "2026-05-26",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/problem_solving/spring-quartz-ha-optimization",
+      "file": "devlog/problem_solving/spring-quartz-ha-optimization.html",
+      "kind": "detail",
+      "heading": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결",
+      "status": "PASS",
+      "metadata": {
+        "title": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/problem_solving/spring-quartz-ha-optimization",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결 | TECH LOG",
+            "description": "이중화 클러스터링 환경에서 발생한 스케줄링 중복 등록과 작업 쏠림(Greedy Locking) 현상을 분석하고, 등록/실행 역할 분리 및 쿼리 파티셔닝 기반 균등 분배 아키텍처로 해결한 사례입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/problem_solving/spring-quartz-ha-optimization",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/problem_solving/spring-quartz-ha-optimization"
+            },
+            "datePublished": "2026-05-15",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-batch-core-architecture",
+      "file": "devlog/tech_study/spring-batch-core-architecture.html",
+      "kind": "detail",
+      "heading": "파트 1. Spring Batch 핵심 아키텍처와 사용",
+      "status": "PASS",
+      "metadata": {
+        "title": "파트 1. Spring Batch 핵심 아키텍처와 사용 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-core-architecture",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "파트 1. Spring Batch 핵심 아키텍처와 사용 | TECH LOG",
+            "description": "Spring Batch 핵심 아키텍처와 도메인 모델에 대해 알아봅니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-core-architecture",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-core-architecture"
+            },
+            "datePublished": "2026-06-14",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/clean-code-book-review",
+      "file": "devlog/tech_study/clean-code-book-review.html",
+      "kind": "detail",
+      "heading": "도서 리뷰: 실무 관점에서 재해석하는 《Clean Code》 핵심 요약 및 리뷰",
+      "status": "PASS",
+      "metadata": {
+        "title": "도서 리뷰: 실무 관점에서 재해석하는 《Clean Code》 핵심 요약 및 리뷰 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/clean-code-book-review",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "도서 리뷰: 실무 관점에서 재해석하는 《Clean Code》 핵심 요약 및 리뷰 | TECH LOG",
+            "description": "로버트 C. 마틴의 명저 《Clean Code》의 핵심 규칙 요약과 현대 자바 개발자 입장에서 바라본 장단점, 그리고 실무 적용 가이드를 정리",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/clean-code-book-review",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/clean-code-book-review"
+            },
+            "datePublished": "2026-05-31",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-batch-performance-tuning",
+      "file": "devlog/tech_study/spring-batch-performance-tuning.html",
+      "kind": "detail",
+      "heading": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+      "status": "PASS",
+      "metadata": {
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-performance-tuning",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "파트 6. 실무 배치 개발을 위한 성능 튜닝 | TECH LOG",
+            "description": "실무 배치 개발을 위한 쿼리 튜닝 및 성능 최적화 기법에 대해 알아봅니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-performance-tuning",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-performance-tuning"
+            },
+            "datePublished": "2026-07-06",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/docker-image-dockerfile-entrypoint",
+      "file": "devlog/tech_study/docker-image-dockerfile-entrypoint.html",
+      "kind": "detail",
+      "heading": "Docker Image 생성법: Commit과 Dockerfile (entry.sh 활용)",
+      "status": "PASS",
+      "metadata": {
+        "title": "Docker Image 생성법: Commit과 Dockerfile (entry.sh 활용) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/docker-image-dockerfile-entrypoint",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Docker Image 생성법: Commit과 Dockerfile (entry.sh 활용) | TECH LOG",
+            "description": "기존 컨테이너를 Commit 하는 방식부터 Dockerfile을 작성하여 커스텀 이미지를 빌드하는 세밀한 과정과 entry.sh 스크립트 활용법을 비교 분석합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/docker-image-dockerfile-entrypoint",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/docker-image-dockerfile-entrypoint"
+            },
+            "datePublished": "2026-05-14",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-event-logging-pub-sub-architecture",
+      "file": "devlog/tech_study/spring-event-logging-pub-sub-architecture.html",
+      "kind": "detail",
+      "heading": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리)",
+      "status": "PASS",
+      "metadata": {
+        "title": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-event-logging-pub-sub-architecture",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리) | TECH LOG",
+            "description": "단일 모듈 환경에서 서비스 로깅의 결합도를 낮추고 비동기 처리 및 트랜잭션 안전성을 확보하는 아키텍처 전환 가이드",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-event-logging-pub-sub-architecture",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-event-logging-pub-sub-architecture"
+            },
+            "datePublished": "2026-05-25",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-batch-scaling",
+      "file": "devlog/tech_study/spring-batch-scaling.html",
+      "kind": "detail",
+      "heading": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
+      "status": "PASS",
+      "metadata": {
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-scaling",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling) | TECH LOG",
+            "description": "Thread와 Partition을 통한 성능 최적화 심층 분석 및 구현에 대해 알아봅니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-scaling",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-scaling"
+            },
+            "datePublished": "2026-07-06",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison",
+      "file": "devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison.html",
+      "kind": "detail",
+      "heading": "물리적 저장 매체 비교: M.2 NVMe SSD vs SATA SSD vs HDD",
+      "status": "PASS",
+      "metadata": {
+        "title": "물리적 저장 매체 비교: M.2 NVMe SSD vs SATA SSD vs HDD | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "물리적 저장 매체 비교: M.2 NVMe SSD vs SATA SSD vs HDD | TECH LOG",
+            "description": "물리적 컴퓨팅 자원에 직접 장착되는 저장 장치들의 구조와 데이터 전송 버스의 명확한 차이점을 정리",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison"
+            },
+            "datePublished": "2026-05-25",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/docker-to-podman-migration",
+      "file": "devlog/tech_study/docker-to-podman-migration.html",
+      "kind": "detail",
+      "heading": "DevOps 패러다임 전환: Docker에서 Podman으로?",
+      "status": "PASS",
+      "metadata": {
+        "title": "DevOps 패러다임 전환: Docker에서 Podman으로? | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/docker-to-podman-migration",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "DevOps 패러다임 전환: Docker에서 Podman으로? | TECH LOG",
+            "description": "여전히 강력한 컨테이너 기술 생태계에서, Docker 대신 Podman이 대안으로 떠오르는 이유와 K8s 전환 측면에서의 장단점을 분석합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/docker-to-podman-migration",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/docker-to-podman-migration"
+            },
+            "datePublished": "2026-05-15",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/java-code-convention-maintainability",
+      "file": "devlog/tech_study/java-code-convention-maintainability.html",
+      "kind": "detail",
+      "heading": "Java 코드 퀄리티를 높이는 개인 컨벤션과 유지보수 전략",
+      "status": "PASS",
+      "metadata": {
+        "title": "Java 코드 퀄리티를 높이는 개인 컨벤션과 유지보수 전략 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/java-code-convention-maintainability",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Java 코드 퀄리티를 높이는 개인 컨벤션과 유지보수 전략 | TECH LOG",
+            "description": "무분별한 메서드 재정의 지양, 어노테이션 활용, 로깅 및 의존성 관리를 통한 견고한 Java 애플리케이션 구축 규칙을 정리합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/java-code-convention-maintainability",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/java-code-convention-maintainability"
+            },
+            "datePublished": "2026-05-31",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/nginx-apache-iis-comparison",
+      "file": "devlog/tech_study/nginx-apache-iis-comparison.html",
+      "kind": "detail",
+      "heading": "웹 서버엔진 비교: Nginx vs Apache HTTPD vs IIS",
+      "status": "PASS",
+      "metadata": {
+        "title": "웹 서버엔진 비교: Nginx vs Apache HTTPD vs IIS | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/nginx-apache-iis-comparison",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "웹 서버엔진 비교: Nginx vs Apache HTTPD vs IIS | TECH LOG",
+            "description": "웹 서버의 대표 주자인 Nginx, Apache HTTPD, IIS의 아키텍처적 차이점과 장단점, 그리고 각 엔진별 최적의 도입 시나리오 확인",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/nginx-apache-iis-comparison",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/nginx-apache-iis-comparison"
+            },
+            "datePublished": "2026-05-25",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/docker-container-runtime-basics",
+      "file": "devlog/tech_study/docker-container-runtime-basics.html",
+      "kind": "detail",
+      "heading": "Docker 기본 및 Container 구동 프로세스 이해",
+      "status": "PASS",
+      "metadata": {
+        "title": "Docker 기본 및 Container 구동 프로세스 이해 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/docker-container-runtime-basics",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Docker 기본 및 Container 구동 프로세스 이해 | TECH LOG",
+            "description": "가상화 기술의 핵심인 컨테이너의 기본 개념과 구동 프로세스, 그리고 아키텍처에 대해 알아봅니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/docker-container-runtime-basics",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/docker-container-runtime-basics"
+            },
+            "datePublished": "2026-04-30",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-batch-job-step-scope",
+      "file": "devlog/tech_study/spring-batch-job-step-scope.html",
+      "kind": "detail",
+      "heading": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
+      "status": "PASS",
+      "metadata": {
+        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-job-step-scope",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "파트 2. 배치 실행 순서와 Scope 환경 프로세스 | TECH LOG",
+            "description": "배치 실행 순서와 Scope 환경 프로세스에 대해 정리한 내용입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-job-step-scope",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-job-step-scope"
+            },
+            "datePublished": "2026-06-15",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/das-nas-san-storage-architecture",
+      "file": "devlog/tech_study/das-nas-san-storage-architecture.html",
+      "kind": "detail",
+      "heading": "스토리지 아키텍처 비교: DAS vs NAS vs SAN",
+      "status": "PASS",
+      "metadata": {
+        "title": "스토리지 아키텍처 비교: DAS vs NAS vs SAN | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/das-nas-san-storage-architecture",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "스토리지 아키텍처 비교: DAS vs NAS vs SAN | TECH LOG",
+            "description": "서버와 스토리지의 연결 방식에 따른 대표적인 3대 아키텍처인 DAS, NAS, SAN의 개념, 작동 프로토콜, 장단점 및 명확한 차이점을 비교",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/das-nas-san-storage-architecture",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/das-nas-san-storage-architecture"
+            },
+            "datePublished": "2026-05-25",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-batch-tasklet-chunk",
+      "file": "devlog/tech_study/spring-batch-tasklet-chunk.html",
+      "kind": "detail",
+      "heading": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
+      "status": "PASS",
+      "metadata": {
+        "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-tasklet-chunk",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리 | TECH LOG",
+            "description": "Step 구현 방식인 Tasklet과 Chunk 지향 처리에 대해 알아봅니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-tasklet-chunk",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-tasklet-chunk"
+            },
+            "datePublished": "2026-07-06",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/legacy-data-migration-encoding-recovery",
+      "file": "devlog/tech_study/legacy-data-migration-encoding-recovery.html",
+      "kind": "detail",
+      "heading": "레거시 환경(SVN/NAS) 대량 데이터 마이그레이션 및 인코딩 복원 가이드",
+      "status": "PASS",
+      "metadata": {
+        "title": "레거시 환경(SVN/NAS) 대량 데이터 마이그레이션 및 인코딩 복원 가이드 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/legacy-data-migration-encoding-recovery",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "레거시 환경(SVN/NAS) 대량 데이터 마이그레이션 및 인코딩 복원 가이드 | TECH LOG",
+            "description": "오래된 SVN/NAS 환경의 10만여 건 대량 파일을 FTP/SFTP로 이관하며 발생한 인코딩 깨짐 문제를, Python 기반 자동 매핑 및 전환 솔루션으로 실질적 복원율 100%를 달성한 가이드입니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/legacy-data-migration-encoding-recovery",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/legacy-data-migration-encoding-recovery"
+            },
+            "datePublished": "2026-05-25",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/essential-docker-commands",
+      "file": "devlog/tech_study/essential-docker-commands.html",
+      "kind": "detail",
+      "heading": "자주 사용하는 필수 Docker Command 상세 가이드",
+      "status": "PASS",
+      "metadata": {
+        "title": "자주 사용하는 필수 Docker Command 상세 가이드 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/essential-docker-commands",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "자주 사용하는 필수 Docker Command 상세 가이드 | TECH LOG",
+            "description": "실무에서 자주 쓰이는 Docker 명령어의 다양한 옵션과 상세한 활용법을 정리했습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/essential-docker-commands",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/essential-docker-commands"
+            },
+            "datePublished": "2026-05-02",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/docker-network-inbound-outbound",
+      "file": "devlog/tech_study/docker-network-inbound-outbound.html",
+      "kind": "detail",
+      "heading": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
+      "status": "PASS",
+      "metadata": {
+        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/docker-network-inbound-outbound",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결 | TECH LOG",
+            "description": "컨테이너 간 통신 및 외부 네트워크 통신을 제어하기 위한 Docker Network의 동작 원리와 세팅 방법을 학습합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/docker-network-inbound-outbound",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/docker-network-inbound-outbound"
+            },
+            "datePublished": "2026-05-06",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/refactoring-book-review",
+      "file": "devlog/tech_study/refactoring-book-review.html",
+      "kind": "detail",
+      "heading": "도서 리뷰: 실무 관점에서 바라보는 《Refactoring》 핵심 요약 및 기술 부채 관리",
+      "status": "PASS",
+      "metadata": {
+        "title": "도서 리뷰: 실무 관점에서 바라보는 《Refactoring》 핵심 요약 및 기술 부채 관리 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/refactoring-book-review",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "도서 리뷰: 실무 관점에서 바라보는 《Refactoring》 핵심 요약 및 기술 부채 관리 | TECH LOG",
+            "description": "마틴 파울러의 명저 《Refactoring》의 핵심 요약과 코드 스멜 감지 유형, 실무적인 장단점 리뷰, 그리고 지속 가능한 기술 부채 관리법을 정리",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/refactoring-book-review",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/refactoring-book-review"
+            },
+            "datePublished": "2026-05-31",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/docker-apparmor-environment-security",
+      "file": "devlog/tech_study/docker-apparmor-environment-security.html",
+      "kind": "detail",
+      "heading": "Docker 보안: AppArmor 및 환경변수(envset) 암호화 최적화",
+      "status": "PASS",
+      "metadata": {
+        "title": "Docker 보안: AppArmor 및 환경변수(envset) 암호화 최적화 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/docker-apparmor-environment-security",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Docker 보안: AppArmor 및 환경변수(envset) 암호화 최적화 | TECH LOG",
+            "description": "커널을 공유하는 컨테이너 환경의 보안 취약점을 극복하기 위해 AppArmor를 활용한 Root 공격 억제 및 안전한 환경변수 관리 방법을 다룹니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/docker-apparmor-environment-security",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/docker-apparmor-environment-security"
+            },
+            "datePublished": "2026-05-13",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/docker-storage-data-persistence",
+      "file": "devlog/tech_study/docker-storage-data-persistence.html",
+      "kind": "detail",
+      "heading": "Docker 저장소(Storage) 및 데이터 영속화 세팅 가이드",
+      "status": "PASS",
+      "metadata": {
+        "title": "Docker 저장소(Storage) 및 데이터 영속화 세팅 가이드 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/docker-storage-data-persistence",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Docker 저장소(Storage) 및 데이터 영속화 세팅 가이드 | TECH LOG",
+            "description": "컨테이너의 데이터 휘발성을 극복하기 위한 Volume, Bind Mount, NAS/SAN 연동 등 다양한 스토리지 세팅 방법을 다룹니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/docker-storage-data-persistence",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/docker-storage-data-persistence"
+            },
+            "datePublished": "2026-05-04",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/kubernetes-defense-in-depth-security",
+      "file": "devlog/tech_study/kubernetes-defense-in-depth-security.html",
+      "kind": "detail",
+      "heading": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth)",
+      "status": "PASS",
+      "metadata": {
+        "title": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/kubernetes-defense-in-depth-security",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth) | TECH LOG",
+            "description": "컨테이너 탈옥 및 권한 상승을 막기 위해 쿠버네티스가 제공하는 런타임 격리, 정책 제어, 커널 보안 모듈 연동 등 다중 레이어 방어 체계를 분석합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/kubernetes-defense-in-depth-security",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/kubernetes-defense-in-depth-security"
+            },
+            "datePublished": "2026-05-31",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-batch-exception-status",
+      "file": "devlog/tech_study/spring-batch-exception-status.html",
+      "kind": "detail",
+      "heading": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+      "status": "PASS",
+      "metadata": {
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status) | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-exception-status",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status) | TECH LOG",
+            "description": "배치 처리에서의 예외 처리와 안정성 확보 방안 및 메타데이터 제어에 대해 알아봅니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-exception-status",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-exception-status"
+            },
+            "datePublished": "2026-07-06",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/apache-tomcat-ssl-operations-guide",
+      "file": "devlog/tech_study/apache-tomcat-ssl-operations-guide.html",
+      "kind": "detail",
+      "heading": "Apache Tomcat 운영 표준: 설정 파일 최적화 및 최신 SSL 적용 가이드",
+      "status": "PASS",
+      "metadata": {
+        "title": "Apache Tomcat 운영 표준: 설정 파일 최적화 및 최신 SSL 적용 가이드 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/apache-tomcat-ssl-operations-guide",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Apache Tomcat 운영 표준: 설정 파일 최적화 및 최신 SSL 적용 가이드 | TECH LOG",
+            "description": "Tomcat의 핵심 설정 파일들의 역할과 setenv.sh를 활용한 구동 옵션 분리 전략, 그리고 최신 HTTP/2 및 OpenSSL 기반의 HTTPS 설정 방법을 알아봅니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/apache-tomcat-ssl-operations-guide",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/apache-tomcat-ssl-operations-guide"
+            },
+            "datePublished": "2026-05-25",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/spring-batch-graceful-stop",
+      "file": "devlog/tech_study/spring-batch-graceful-stop.html",
+      "kind": "detail",
+      "heading": "스프링배치에서 중단하고 싶을 때",
+      "status": "PASS",
+      "metadata": {
+        "title": "스프링배치에서 중단하고 싶을 때 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-graceful-stop",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "스프링배치에서 중단하고 싶을 때 | TECH LOG",
+            "description": "JobName 기반 안전한 중단(Graceful Stop) 메커니즘을 심층 분석합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-graceful-stop",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/spring-batch-graceful-stop"
+            },
+            "datePublished": "2026-07-06",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/404",
+      "file": "404.html",
+      "kind": "not-found",
+      "heading": "404",
+      "status": "PASS",
+      "metadata": null
+    }
+  ]
+}
