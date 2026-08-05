@@ -4,7 +4,7 @@
 
 | 영역 | 구성 |
 | --- | --- |
-| 런타임 | Node.js 20, npm |
+| 런타임 | Node.js 24.13.1, npm |
 | 웹 | Next.js 16 App Router, React 19 |
 | 언어 | TypeScript strict mode |
 | 출력 | Next.js static export (`out/`) |

@@ -43,9 +43,9 @@ npm run fetch-engagement
 ## 품질 검사
 
 ```bash
-npm run lint
-npx tsc --noEmit
-npm run build:no-fetch
+npm run verify
+npm run build:local
+npm run validate:export
 ```
 
 Notion과 외부 수집까지 확인하는 변경이면 `npm run build`도 실행합니다. 생성된 정적 페이지의 `/devlog/{category}/{slug}`가 ID 이름의 MDX로 정상 연결되는지 확인합니다.

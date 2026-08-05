@@ -29,7 +29,7 @@
 | 코드 하이라이트 | rehype-pretty-code, Shiki |
 | 품질 검사 | ESLint 9, eslint-config-next |
 | 배포 | Next.js static export, GitHub Actions, GitHub Pages |
-| 권장 런타임 | Node.js 20, npm (`package-lock.json` 기준) |
+| 권장 런타임 | Node.js 24.13.1, npm (`package-lock.json` 기준) |
 
 ## 시작하기
 
@@ -47,16 +47,16 @@ Notion 원격 콘텐츠까지 갱신하며 실행하려면 환경 변수를 설�
 | 변수 | 설명 |
 | --- | --- |
 | `NOTION_TOKEN` | Notion API 통합 토큰 |
-| `NOTION_DATA_SOURCE_ID_EDUCATION` | 교육일지 데이터 소스 ID |
-| `NOTION_DATA_SOURCE_ID_PERSONAL` | 개인일지 데이터 소스 ID |
-| `NOTION_PAGE_ID_EDUCATION` | 교육일지 페이지 ID를 사용할 때 지정 |
-| `NOTION_PAGE_ID_PERSONAL` | 개인일지 페이지 ID를 사용할 때 지정 |
+| `NOTION_DATA_SOURCE_ID_JOURNAL` | 통합 일지 데이터 소스 ID |
+| `NOTION_DATA_SOURCE_ID_DEVLOG` | Devlog 데이터 소스 ID |
+| `NOTION_DATA_SOURCE_ID_PROJECT` | Project 데이터 소스 ID |
+| `NOTION_REQUIRED_GROUPS` | CI에서 `journal,devlog,project`를 요구하는 검증 목록 |
 | `BASE_PATH=ROOT` | 운영 빌드를 도메인 루트에 배포 (기본값). 별도 프로젝트 배포 시 경로 직접 지정 |
 | `ADSENSE_ACCOUNT` | 운영 환경에서만 사용하는 AdSense 계정 메타 값 |
 | `GA4_PROPERTY_ID` | 브라우저 방문 기록에 사용할 GA4 측정 ID (`G-...`) |
 | `GISCUS_GITHUB_TOKEN` | 댓글 수 집계 시 GitHub API 한도 완화를 위한 선택 토큰 |
 
-카테고리 접미사를 붙인 환경 변수를 권장합니다. 동기화 스크립트는 `NOTION_PAGE_ID*`, `NOTION_DATA_SOURCE_ID*` 변수와 `category:id` 형식도 지원합니다. 공개 사이트/Giscus 기본값은 `src/data/config/site.json`에서 관리하며 `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GISCUS_*` 환경 변수로 덮어쓸 수 있습니다. 민감한 값이 포함된 로컬 환경 파일은 커밋하지 않습니다.
+통합된 세 원본 변수를 우선 사용합니다. 기존 `EDUCATION`·`PERSONAL` 변수는 마이그레이션 기간에만 호환되며 새 배포 설정에는 사용하지 않습니다. 공개 사이트/Giscus 기본값은 `src/data/config/site.json`에서 관리하며 `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GISCUS_*` 환경 변수로 덮어쓸 수 있습니다. 민감한 값이 포함된 로컬 환경 파일은 커밋하지 않습니다.
 
 ## npm 명령
 
@@ -70,8 +70,15 @@ Notion 원격 콘텐츠까지 갱신하며 실행하려면 환경 변수를 설�
 | `npm run fetch-engagement` | Giscus 댓글 수 인덱스 갱신 |
 | `npm run build` | Notion 동기화 후 정적 프로덕션 빌드 |
 | `npm run build:no-fetch` | Notion 동기화 없이 정적 빌드 |
-| `npm run start` | Next.js 프로덕션 서버 실행(정적 export 운영은 `out/` 사용) |
 | `npm run lint` | ESLint 검사 |
+| `npm run verify` | 콘텐츠 검증, lint/typecheck, 단위 테스트를 순서대로 실행 |
+| `npm run build:local` | 네트워크 없이 로컬 생성기와 정적 export 실행 |
+| `npm run validate:export` | `out/` 정적 export 경로·메타데이터 검증 |
+| `npm run test:e2e` | Playwright 브라우저 계약 검사 |
+| `npm run test:lighthouse` | Chrome 안정 버전의 3회 Lighthouse 행렬 실행 |
+| `npm run review:quality` | 기준 커밋부터 품질·보안 diff 보고서 생성 |
+| `npm run review:manual` | 기존 브라우저/axe/Lighthouse 증거를 수집해 수동 QA 보고서 생성 |
+| `npm run review:scope` | 계획·커밋 범위·소유 루트 해시를 검증 |
 
 ## 프로젝트 구조
 
@@ -139,11 +146,12 @@ Notion 동기화 없이 작업할 때는 `dev:no-fetch` 또는 `build:no-fetch`�
 ## 검증 및 배포
 
 ```bash
-npm run lint
-npm run build:no-fetch
+npm run verify
+npm run build:local
+npm run validate:export
 ```
 
-GitHub Actions는 Node.js 20에서 의존성을 설치하고 Notion 콘텐츠를 동기화한 다음 `out/`을 GitHub Pages artifact로 배포합니다. `*.github.io` 사용자 페이지 저장소는 자동으로 루트 경로를 사용하며, 그 외 저장소는 `USE_ROOT_BASE_PATH` 변수 또는 저장소명에 따라 `basePath`를 결정합니다.
+GitHub Actions는 `.nvmrc`에 고정한 Node.js 24.13.1에서 의존성을 설치하고 Notion 콘텐츠를 동기화한 다음 `out/`을 GitHub Pages artifact로 배포합니다. `*.github.io` 사용자 페이지 저장소는 자동으로 루트 경로를 사용하며, 그 외 저장소는 `USE_ROOT_BASE_PATH` 변수 또는 저장소명에 따라 `basePath`를 결정합니다.
 
 추가 운영 방법은 [`docs/GUIDE.md`](docs/GUIDE.md), 데이터 정렬 기준은
 [`docs/DATA_SORTING_RULES.md`](docs/DATA_SORTING_RULES.md), 기술 배경은

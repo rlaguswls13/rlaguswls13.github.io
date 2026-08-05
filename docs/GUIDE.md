@@ -15,7 +15,7 @@ NOTION_DATA_SOURCE_ID_PROJECT=...
 
 ## 로컬 실행
 
-권장 환경은 Node.js 20과 `package-lock.json` 기준 npm입니다.
+권장 환경은 `.nvmrc`에 고정한 Node.js 24.13.1과 `package-lock.json` 기준 npm입니다.
 
 ```bash
 npm ci
@@ -34,11 +34,12 @@ Notion 데이터 소스는 역할이 드러나는 카테고리 접미사를 권�
 
 ```dotenv
 NOTION_TOKEN=...
-NOTION_DATA_SOURCE_ID_EDUCATION=...
-NOTION_DATA_SOURCE_ID_PERSONAL=...
+NOTION_DATA_SOURCE_ID_JOURNAL=...
+NOTION_DATA_SOURCE_ID_DEVLOG=...
+NOTION_DATA_SOURCE_ID_PROJECT=...
 ```
 
-페이지 ID를 사용한다면 `NOTION_PAGE_ID_EDUCATION`, `NOTION_PAGE_ID_PERSONAL`도 지원합니다. 동기화 스크립트는 `NOTION_PAGE_ID*`, `NOTION_DATA_SOURCE_ID*` 이름과 `category:id` 값도 해석합니다.
+기존 `EDUCATION`·`PERSONAL` 이름은 마이그레이션 기간의 호환 입력으로만 지원합니다. 새 설정에서는 통합 `JOURNAL`, `DEVLOG`, `PROJECT` 이름을 사용합니다.
 
 그 밖의 선택 변수:
 
@@ -88,13 +89,13 @@ npm run fetch-engagement
 ## 검증
 
 ```bash
-npm run lint
-npx tsc --noEmit
-npm run build:no-fetch
+npm run verify
+npm run build:local
+npm run validate:export
 ```
 
 외부 동기화까지 검증해야 할 때는 `npm run build`를 사용합니다. 정적 결과물은 `out/`에 생성됩니다.
 
 ## 배포
 
-GitHub Actions는 Node.js 20에서 의존성을 설치하고 Notion을 동기화한 다음 로컬 데이터 기반 빌드를 수행해 `out/`을 GitHub Pages에 배포합니다. 사용자 페이지 저장소는 루트 경로를 사용하며, 다른 저장소는 `BASE_PATH` 설정을 확인해야 합니다.
+GitHub Actions는 Node.js 24.13.1에서 의존성을 설치하고 Notion을 동기화한 다음 로컬 데이터 기반 빌드를 수행해 `out/`을 GitHub Pages에 배포합니다. 사용자 페이지 저장소는 루트 경로를 사용하며, 다른 저장소는 `BASE_PATH` 설정을 확인해야 합니다.
