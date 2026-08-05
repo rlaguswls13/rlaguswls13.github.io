@@ -1009,6 +1009,11 @@ a.category-tab .category-tab-ext {
   border-left: 2px solid transparent;
 }
 
+.mdx-content code[data-theme="github-dark-dimmed"] span[style*="#768390" i],
+.mdx-content code[data-theme="github-dark"] span[style*="#6a737d" i] {
+  color: #919eaa !important;
+}
+
 /* Inline code (not in a code block) */
 .mdx-content :not(pre)>code {
   font-family: var(--font-mono);
@@ -3240,7 +3245,7 @@ header > p {
   --palette-ivory-dark: #151b27;
   --palette-charcoal-light: #202a3a;
   --palette-charcoal-dark: #e8edf5;
-  --palette-plum-light: #456eb5;
+  --palette-plum-light: #3e65a6;
   --palette-plum-dark: #88a8de;
   --palette-sage-light: #5e718d;
   --palette-sage-dark: #9aabc2;
