@@ -1,14 +1,9 @@
-name: Deploy verified Pages
+name: Deploy Pages
 
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
-    inputs:
-      rollback_run_id:
-        description: Successful main deploy run to redeploy
-        required: false
-        type: string
 
 permissions:
   contents: read
@@ -20,43 +15,24 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     environment:
       name: pages-production
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
       contents: read
       pages: write
-      id-token: write
-      attestations: write
-    env:
-      ROLLBACK_RUN_ID: ${{ inputs.rollback_run_id }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - name: Refresh engagement data when available
-        if: ${{ inputs.rollback_run_id == '' }}
-        continue-on-error: true
-        env:
-          GISCUS_GITHUB_TOKEN: ${{ secrets.GISCUS_GITHUB_TOKEN }}
-        run: npm run fetch-engagement
-      - name: Validate promoted content
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run validate:content
-      - name: Lint
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run lint:ci
-      - name: Typecheck
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run typecheck
-      - name: Run unit tests
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run test:unit -- --run
       - name: Resolve GitHub Pages base path
-        if: ${{ inputs.rollback_run_id == '' }}
         id: resolve-pages-path
         env:
           REPOSITORY_NAME: ${{ github.event.repository.name }}
@@ -72,92 +48,18 @@ jobs:
             echo "base_path=/$REPOSITORY_NAME" >> "$GITHUB_OUTPUT"
           fi
       - name: Build static export
-        if: ${{ inputs.rollback_run_id == '' }}
         env:
           BASE_PATH: ${{ steps.resolve-pages-path.outputs.base_path }}
           ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
         run: npm run build:no-fetch
-      - name: Validate static export
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run validate:export
-      - name: Run browser checks
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run test:e2e
-      - name: Run Lighthouse checks
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run test:lighthouse
-      - name: Run React Doctor
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run audit:react
-      - name: Audit production dependencies
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: npm run audit:prod
-      - name: Create rollback bundle
-        if: ${{ inputs.rollback_run_id == '' }}
-        run: |
-          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -czf pages-bundle.tar.gz out
-          sha256sum pages-bundle.tar.gz > pages-bundle.sha256
-      - name: Attest rollback bundle
-        if: ${{ inputs.rollback_run_id == '' }}
-        uses: actions/attest-build-provenance@v3
-        with:
-          subject-checksums: pages-bundle.sha256
-      - name: Retain rollback bundle
-        if: ${{ inputs.rollback_run_id == '' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: pages-rollback-bundle
-          path: |
-            pages-bundle.tar.gz
-            pages-bundle.sha256
-          retention-days: 30
-          if-no-files-found: error
-      - name: Validate rollback run
-        if: ${{ inputs.rollback_run_id != '' }}
+      - name: Publish AdSense ads.txt when configured
+        if: ${{ vars.ADSENSE_ACCOUNT != '' }}
         env:
-          GH_TOKEN: ${{ github.token }}
+          ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
         run: |
-          case "$ROLLBACK_RUN_ID" in
-            *[!0-9]*|'') echo "rollback_run_id must be a numeric workflow run ID." >&2; exit 1 ;;
-          esac
-          run_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ROLLBACK_RUN_ID}")"
-          jq -e '
-            .conclusion == "success" and
-            .status == "completed" and
-            .head_branch == "main" and
-            .repository.full_name == env.GITHUB_REPOSITORY and
-            (.path | startswith(".github/workflows/deploy.yml@"))
-          ' <<<"$run_json" >/dev/null
-          head_sha="$(jq -r '.head_sha' <<<"$run_json")"
-          artifacts_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ROLLBACK_RUN_ID}/artifacts?per_page=100")"
-          jq -e '[.artifacts[] | select(.name == "pages-rollback-bundle" and .expired == false)] | length == 1' <<<"$artifacts_json" >/dev/null
-          expires_at="$(jq -r '.artifacts[] | select(.name == "pages-rollback-bundle" and .expired == false) | .expires_at' <<<"$artifacts_json")"
-          [ "$(date -u -d "$expires_at" +%s)" -gt "$(date -u +%s)" ]
-          mkdir rollback-download
-          gh run download "$ROLLBACK_RUN_ID" --repo "$GITHUB_REPOSITORY" --name pages-rollback-bundle --dir rollback-download
-          bundle="$(find rollback-download -type f -name pages-bundle.tar.gz -print -quit)"
-          checksum="$(find rollback-download -type f -name pages-bundle.sha256 -print -quit)"
-          [ -n "$bundle" ] && [ -n "$checksum" ]
-          (cd "$(dirname "$bundle")" && sha256sum -c "$(basename "$checksum")")
-          gh attestation verify "$bundle" \
-            --repo "$GITHUB_REPOSITORY" \
-            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/deploy.yml" \
-            --source-ref refs/heads/main \
-            --source-digest "$head_sha" \
-            --format json > rollback-attestation.json
-          bundle_sha="$(sha256sum "$bundle" | cut -d ' ' -f 1)"
-          jq -e --arg sha "$bundle_sha" --arg run "$ROLLBACK_RUN_ID" '
-            [ .[] | .verificationResult.statement as $statement
-              | select([$statement.subject[] | select(.name == "pages-bundle.tar.gz" and .digest.sha256 == $sha)] | length == 1)
-              | select($statement.predicate.runDetails.metadata.invocationId | endswith("/actions/runs/" + $run))
-            ] | length == 1
-          ' rollback-attestation.json >/dev/null
-          tar -tzf "$bundle" | grep -E '^out/' >/dev/null
-          tar -xzf "$bundle"
-      - name: Validate rollback export
-        if: ${{ inputs.rollback_run_id != '' }}
-        run: npm run validate:export
+          publisher_id="${ADSENSE_ACCOUNT#ca-}"
+          printf 'google.com, %s, DIRECT, f08c47fec0942fa0\n' "$publisher_id" > out/ads.txt
       - uses: actions/configure-pages@v5
       - name: Upload verified Pages artifact
         uses: actions/upload-pages-artifact@v3

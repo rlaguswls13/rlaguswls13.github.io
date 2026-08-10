@@ -1,7 +1,7 @@
 {
-  "verdict": "PASS",
-  "route_count": 92,
-  "blocker_count": 0,
+  "verdict": "FAIL",
+  "route_count": 94,
+  "blocker_count": 2,
   "routes": [
     {
       "route": "/",
@@ -97,6 +97,30 @@
       "metadata": {
         "title": "Projects | 김현진 TECH LOG",
         "canonical": "https://rlaguswls13.github.io/projects",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/3b319946ca768057896fe03574856fa1",
+      "file": "projects/3b319946ca768057896fe03574856fa1.html",
+      "kind": "detail",
+      "heading": "레거시 코드로 인한 메모리 누수 해결",
+      "status": "PASS",
+      "metadata": {
+        "title": "레거시 코드로 인한 메모리 누수 해결 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/3b319946ca768057896fe03574856fa1",
+        "jsonLd": []
+      }
+    },
+    {
+      "route": "/projects/d",
+      "file": "projects/d.html",
+      "kind": "detail",
+      "heading": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
+      "status": "PASS",
+      "metadata": {
+        "title": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/projects/d",
         "jsonLd": []
       }
     },
@@ -2407,6 +2431,18 @@
       "heading": "404",
       "status": "PASS",
       "metadata": null
+    },
+    {
+      "route": "/projects/d",
+      "kind": "detail",
+      "status": "FAIL",
+      "error": "/projects/d: title duplicates another route"
+    },
+    {
+      "route": "/projects/d",
+      "kind": "detail",
+      "status": "FAIL",
+      "error": "/projects/d: canonical duplicates another route"
     }
   ]
 }

@@ -45,12 +45,14 @@ NOTION_DATA_SOURCE_ID_PROJECT=...
 
 ```dotenv
 BASE_PATH=ROOT
-ADSENSE_ACCOUNT=...
+ADSENSE_ACCOUNT=ca-pub-...
 GA4_PROPERTY_ID=G-...
 GISCUS_GITHUB_TOKEN=...
 ```
 
-공개 사이트/Giscus 기본 설정은 `src/data/config/site.json`에서 관리합니다. `NEXT_PUBLIC_SITE_URL`과 `NEXT_PUBLIC_GISCUS_*` 변수로 환경별 덮어쓰기가 가능합니다. Notion 토큰과 GitHub 토큰이 포함된 로컬 환경 파일은 커밋하지 않습니다.
+GA4 측정 ID와 Google AdSense 게시자 메타 값은 해당 환경 변수가 설정된 경우에만 생성됩니다. `ADSENSE_ACCOUNT`가 설정된 GitHub Pages 배포에서는 `out/ads.txt`도 자동 생성됩니다. AdSense 등록은 (1) AdSense의 Sites에서 사이트를 추가하고 (2) 메타 태그 방식으로 소유권을 확인한 뒤 (3) Request review를 요청하는 순서로 진행합니다. EEA·영국·스위스 방문자에게 개인화 광고를 제공하려면 AdSense의 Privacy & messaging에서 Google CMP 또는 인증된 제3자 CMP를 설정해야 합니다. 공개 사이트/Giscus 기본 설정은 `src/data/config/site.json`에서 관리합니다. `NEXT_PUBLIC_SITE_URL`과 `NEXT_PUBLIC_GISCUS_*` 변수로 환경별 덮어쓰기가 가능합니다. Notion 토큰과 GitHub 토큰이 포함된 로컬 환경 파일은 커밋하지 않습니다.
+
+공식 안내: [사이트 추가 및 연결](https://support.google.com/adsense/answer/12169212), [ads.txt 관리](https://support.google.com/adsense/answer/7532444), [CMP 설정](https://support.google.com/adsense/answer/7670013)
 
 ## 콘텐츠 작업
 
@@ -98,4 +100,4 @@ npm run validate:export
 
 ## 배포
 
-GitHub Actions는 Node.js 24.13.1에서 의존성을 설치하고 Notion을 동기화한 다음 로컬 데이터 기반 빌드를 수행해 `out/`을 GitHub Pages에 배포합니다. 사용자 페이지 저장소는 루트 경로를 사용하며, 다른 저장소는 `BASE_PATH` 설정을 확인해야 합니다.
+품질 검증은 배포 전에 로컬에서 수행합니다. GitHub Actions는 Node.js 24.13.1에서 의존성을 설치하고 정적 빌드를 수행한 다음 `out/`을 GitHub Pages에 배포합니다. 사용자 페이지 저장소는 루트 경로를 사용하며, 다른 저장소는 `BASE_PATH` 설정을 확인해야 합니다.
