@@ -23,6 +23,27 @@
       "sourceId": "3b119946-ca76-8040-9854-ef872da66fb8",
       "source_id": "3b119946ca7680409854ef872da66fb8",
       "page_id": "3b119946-ca76-8040-9854-ef872da66fb8",
+      "last_edited_time": "2026-08-03T03:49:00.000Z",
+      "sourceFile": "enterprise/general/.notion-backup-6c06d13a-8e64-4e90-89f0-b69e44010b26-3b119946ca7680409854ef872da66fb8.mdx",
+      "title": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
+      "date": "2026-08-03",
+      "periods": [],
+      "tags": [
+        "DevOps",
+        "CI/CD",
+        "Optimization"
+      ],
+      "description": "B2B 맞춤형 권한 체계를 반영한 전용 클라우드 관리 포털을 개발하고, Jenkins 기반의 CI/CD 파이프라인을 구축하여 배포 리드타임을 단축했습니다. 로컬 캐시와 역정규화 기법을 활용해 대규모 조직 데이터 조회 성능을 최적화했습니다.",
+      "category": "enterprise",
+      "subcategory": "전체",
+      "type": "enterprise"
+    },
+    {
+      "id": "3b119946ca7680409854ef872da66fb8",
+      "slug": "d",
+      "sourceId": "3b119946-ca76-8040-9854-ef872da66fb8",
+      "source_id": "3b119946ca7680409854ef872da66fb8",
+      "page_id": "3b119946-ca76-8040-9854-ef872da66fb8",
       "last_edited_time": "2026-08-05T02:58:00.000Z",
       "sourceFile": "enterprise/general/3b119946ca7680409854ef872da66fb8.mdx",
       "title": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",

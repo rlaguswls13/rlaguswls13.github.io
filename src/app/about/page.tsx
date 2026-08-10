@@ -4,7 +4,6 @@ import projectsData from "@/data/indexes/projects.json";
 import { SkillBar } from "@/components/ui/SkillBar";
 import Image from "next/image";
 import type { Project, Skill } from "@/types";
-import myImage from "../../../public/images/myImage.png";
 import { GithubIcon, PhoneIcon, MailIcon } from "@/components/ui/Icons";
 import { AboutBioStory } from "@/components/ui/AboutBioStory";
 import { AboutHighlights } from "@/components/ui/AboutHighlights";
@@ -29,7 +28,7 @@ export default function AboutPage() {
 
       <div className="about-top-grid">
         <div className="profile-card">
-          <Image src={myImage} alt="김현진 프로필" className="profile-img" width={200} height={200} priority />
+          <Image src="/images/myImage.png" alt="김현진 프로필" className="profile-img" width={200} height={200} priority />
           <div className="about-profile-name">{profile.name}</div>
           <p className="role" style={{ margin: "5px 0" }}>{profile.role}</p>
           <p className="univ">{profile.organization}</p>

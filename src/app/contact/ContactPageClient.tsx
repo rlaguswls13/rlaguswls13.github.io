@@ -2,7 +2,6 @@
 import contactData from "@/data/pages/main/contact.json";
 import Image from "next/image";
 import { GithubIcon, PhoneIcon, MailIcon } from "@/components/ui/Icons";
-import contactPicture from "../../../public/images/2022_picture.jpg";
 import { PageHeader } from "@/components/layout/PageHeader";
 
 export default function ContactPageClient() {
@@ -29,7 +28,7 @@ export default function ContactPageClient() {
           }}
         >
           <Image
-            src={contactPicture}
+            src="/images/2022_picture.jpg"
             alt="Contact visual"
             style={{ width: "100%", height: "auto", display: "block" }}
             priority

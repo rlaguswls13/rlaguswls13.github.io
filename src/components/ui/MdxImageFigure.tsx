@@ -2,10 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import lipcodeResult from "../../../public/images/2026_lipcoding_result.png";
-
 const imageRegistry = {
-  lipcodeResult,
+  lipcodeResult: "/images/2026_lipcoding_result.png",
 } as const;
 
 type ImageKey = keyof typeof imageRegistry;
