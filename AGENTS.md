@@ -28,13 +28,16 @@
 | Notion/API 동기화 런타임 | `omo:debugging` |
 | MDX/테마/컴포넌트/화면 | `omo:frontend` |
 | 브라우저·반응형·접근성 | `omo:visual-qa`, `blog-verification` |
+| AdSense 연결·검증 | `project/skills/google-adsense-operations` |
+| Search Console 등록·verification | `project/skills/google-search-console-operations` |
+| sitemap/RSS/검색 feed | `project/skills/google-search-feeds` |
 | 썸네일 bitmap 생성 | `imagegen` |
 | 구조 개선 | `omo:refactor` |
 | Git 이력·커밋 | `omo:git-master` |
 | 완료 전 검토 | `omo:review-work` |
 | AI slop 제거 요청 | `omo:remove-ai-slops` |
 
-작업별 project skill은 `project/skills/blog-content-pipeline`, `project/skills/thumbnail-contract`, `project/skills/release-gate`, `project/skills/session-memory-wiki`를 우선 확인합니다.
+작업별 project skill은 `project/skills/blog-content-pipeline`, `project/skills/google-adsense-operations`, `project/skills/google-search-console-operations`, `project/skills/google-search-feeds`, `project/skills/thumbnail-contract`, `project/skills/release-gate`, `project/skills/session-memory-wiki`를 우선 확인합니다.
 
 ## 변경 안전성
 

@@ -8,6 +8,7 @@
 - [Pipeline references](pipeline/): 정렬, Giscus, engagement, migration, package structure, thumbnail 세부 규칙
 - [Architecture](architecture/tech-stack.md): 런타임·앱·빌드 구조
 - [Operations](operations/guide.md): 로컬 실행·환경·배포 운영 지식
+- [Google operations](../skills/): AdSense, Search Console, sitemap/RSS 실행 skill
 - [Agent memory](agent-memory.md): 세션 종료 memory와 redaction 정책
 - [Session memory](session-memory.md): hook이 append하는 실행 기록
 - [Reports](reports/): 승인 상태, review 결과, 잔여 위험, [surface gate review](reports/docs-to-project-surface-gate-review.md)

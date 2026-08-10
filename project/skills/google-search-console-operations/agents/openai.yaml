@@ -1,0 +1,4 @@
+interface:
+  display_name: "Google Search Console Operations"
+  short_description: "Register and verify Search Console"
+  default_prompt: "Use $google-search-console-operations to register the correct property and validate its live ownership tag safely."

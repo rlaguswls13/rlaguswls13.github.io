@@ -1,0 +1,4 @@
+interface:
+  display_name: "Google Search Feeds"
+  short_description: "Validate sitemap and RSS feeds"
+  default_prompt: "Use $google-search-feeds to keep sitemap, robots.txt, and reusable RSS/Atom feeds consistent with canonical URLs."

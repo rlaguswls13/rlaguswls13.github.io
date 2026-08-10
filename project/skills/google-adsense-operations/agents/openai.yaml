@@ -1,0 +1,4 @@
+interface:
+  display_name: "Google AdSense Operations"
+  short_description: "Connect and verify AdSense settings"
+  default_prompt: "Use $google-adsense-operations to configure AdSense metadata and ads.txt, then verify deployment without exposing credentials."
