@@ -21,9 +21,9 @@
 
 ## Notion
 
-- Notion 소스 키는 `education`, `personal`인지 확인합니다.
-- 개인일지의 공개 카테고리와 콘텐츠 경로는 `blog`를 유지합니다.
-- 목록 데이터는 `src/data/pages/main/notion/education.json`, `personal.json`으로 분리합니다.
+- Notion source group은 `journal`, `devlog`, `project`이고 source ID는 canonical `NOTION_DATA_SOURCE_ID_*`인지 확인합니다.
+- journal 개인일지의 공개 카테고리와 콘텐츠 경로는 호환성을 위해 `blog`를 유지합니다.
+- 목록 index는 staging MDX frontmatter에서 생성되며 schema 위반 시 quarantine과 promotion 차단을 확인합니다.
 - 내용이 바뀌지 않았는데 `lastEditedTime`이나 생성 파일을 불필요하게 갱신하지 않는지 확인합니다.
 
 ## 생성 데이터
@@ -54,7 +54,7 @@ Notion과 외부 수집까지 확인하는 변경이면 `npm run build`도 실�
 
 - `.env*`와 토큰을 커밋하지 않습니다.
 - `NOTION_TOKEN`, `GISCUS_GITHUB_TOKEN`을 JSON이나 클라이언트 코드에 넣지 않습니다.
-- `src/data/config/site.json`에는 브라우저에 공개 가능한 값만 둡니다.
+- `.cache/build/public-config.json`에는 브라우저에 공개 가능한 값만 생성합니다.
 - 로그와 문서 예시에 실제 비밀 값이 포함되지 않았는지 확인합니다.
 
 ## Git 확인

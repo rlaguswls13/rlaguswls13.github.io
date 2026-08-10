@@ -1,0 +1,3 @@
+display_name: Session Memory Wiki
+short_description: Capture durable session memory in the project wiki
+default_prompt: Use the session-memory-wiki skill to record decisions, verification evidence, and unresolved risks.

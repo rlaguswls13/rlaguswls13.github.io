@@ -1,0 +1,31 @@
+{
+  "controller": "docs/README.md",
+  "sources": [
+    "AGENT_HARNESS.md",
+    "AGENT_HARNESS_REPORT.md",
+    "AGENT_HARNESS_REVIEW.md",
+    "DATA_SORTING_RULES.md",
+    "ENGAGEMENT_STATS.md",
+    "GISCUS_COMMENTS.md",
+    "GUIDE.md",
+    "NOTION_DEVLOG_MIGRATION.md",
+    "NOTION_PACKAGE_STRUCTURE.md",
+    "PRE_COMMIT_CHECKLIST.md",
+    "TECH_STACK.md",
+    "THUMBNAIL_RULES.md"
+  ],
+  "mappings": [
+    { "source": "AGENT_HARNESS.md", "targets": ["project/wiki/agent-harness-rules.md"] },
+    { "source": "AGENT_HARNESS_REPORT.md", "targets": ["project/wiki/reports/agent-harness-report.md"] },
+    { "source": "AGENT_HARNESS_REVIEW.md", "targets": ["project/wiki/reports/agent-harness-review.md"] },
+    { "source": "DATA_SORTING_RULES.md", "targets": ["project/wiki/pipeline/data-sorting.md"] },
+    { "source": "ENGAGEMENT_STATS.md", "targets": ["project/wiki/pipeline/engagement-stats.md"] },
+    { "source": "GISCUS_COMMENTS.md", "targets": ["project/wiki/pipeline/giscus-comments.md"] },
+    { "source": "GUIDE.md", "targets": ["project/wiki/operations/guide.md", "project/skills/blog-content-pipeline/SKILL.md"] },
+    { "source": "NOTION_DEVLOG_MIGRATION.md", "targets": ["project/wiki/pipeline/notion-devlog-migration.md", "project/skills/blog-content-pipeline/SKILL.md"] },
+    { "source": "NOTION_PACKAGE_STRUCTURE.md", "targets": ["project/wiki/pipeline/notion-package-structure.md"] },
+    { "source": "PRE_COMMIT_CHECKLIST.md", "targets": ["project/skills/release-gate/references/pre-commit-checklist.md", "project/skills/release-gate/SKILL.md"] },
+    { "source": "TECH_STACK.md", "targets": ["project/wiki/architecture/tech-stack.md"] },
+    { "source": "THUMBNAIL_RULES.md", "targets": ["project/wiki/pipeline/thumbnail-rules.md", "project/skills/thumbnail-contract/SKILL.md"] }
+  ]
+}

@@ -50,27 +50,13 @@ GA4_PROPERTY_ID=G-...
 GISCUS_GITHUB_TOKEN=...
 ```
 
-GA4 측정 ID와 Google AdSense 게시자 메타 값은 해당 환경 변수가 설정된 경우에만 생성됩니다. `ADSENSE_ACCOUNT`가 설정된 GitHub Pages 배포에서는 `out/ads.txt`도 자동 생성됩니다. AdSense 등록은 (1) AdSense의 Sites에서 사이트를 추가하고 (2) 메타 태그 방식으로 소유권을 확인한 뒤 (3) Request review를 요청하는 순서로 진행합니다. EEA·영국·스위스 방문자에게 개인화 광고를 제공하려면 AdSense의 Privacy & messaging에서 Google CMP 또는 인증된 제3자 CMP를 설정해야 합니다. 공개 사이트/Giscus 기본 설정은 `src/data/config/site.json`에서 관리합니다. `NEXT_PUBLIC_SITE_URL`과 `NEXT_PUBLIC_GISCUS_*` 변수로 환경별 덮어쓰기가 가능합니다. Notion 토큰과 GitHub 토큰이 포함된 로컬 환경 파일은 커밋하지 않습니다.
+GA4 측정 ID와 Google AdSense 게시자 메타 값은 해당 환경 변수가 설정된 경우에만 생성됩니다. `ADSENSE_ACCOUNT`가 설정된 GitHub Pages 배포에서는 `out/ads.txt`도 자동 생성됩니다. AdSense 등록은 (1) AdSense의 Sites에서 사이트를 추가하고 (2) 메타 태그 방식으로 소유권을 확인한 뒤 (3) Request review를 요청하는 순서로 진행합니다. EEA·영국·스위스 방문자에게 개인화 광고를 제공하려면 AdSense의 Privacy & messaging에서 Google CMP 또는 인증된 제3자 CMP를 설정해야 합니다. 공개 사이트/Giscus 기본 설정은 `GISCUS_INFO`에서 읽어 `.cache/build/public-config.json`으로 materialize합니다. Notion 토큰과 GitHub 토큰이 포함된 로컬 환경 파일은 커밋하지 않습니다.
 
 공식 안내: [사이트 추가 및 연결](https://support.google.com/adsense/answer/12169212), [ads.txt 관리](https://support.google.com/adsense/answer/7532444), [CMP 설정](https://support.google.com/adsense/answer/7670013)
 
 ### Google Search Console 인증
 
-Search Console 속성 유형에 따라 인증 방법이 다릅니다.
-
-1. Search Console에서 속성을 추가합니다.
-2. `Domain` 속성은 Google이 제공한 TXT 레코드를 DNS 관리 화면에 추가합니다. DNS 레코드 변경은 저장소에서 자동 처리할 수 없습니다.
-3. `URL-prefix` 속성에서 HTML 파일 인증을 선택하면 Google이 제공한 파일명과 내용을 그대로 Actions Variables에 등록합니다.
-
-```dotenv
-SEARCH_CONSOLE_VERIFICATION_FILE=google1234567890abcdef.html
-SEARCH_CONSOLE_VERIFICATION_CONTENT=google-site-verification: google1234567890abcdef
-SEARCH_CONSOLE_VERIFICATION=<Search Console content value>
-```
-
-4. `main` 배포 후 `https://사이트주소/google1234567890abcdef.html`가 로그인 없이 HTTP 200으로 열리는지 확인하고 Search Console에서 Verify를 누릅니다.
-
-파일명과 내용은 Search Console이 발급한 값과 정확히 일치해야 합니다. 두 변수가 모두 설정된 경우에만 배포 결과 루트에 파일이 생성됩니다. HTML 파일 인증은 URL-prefix 속성에 사용할 수 있고 Domain 속성에는 사용할 수 없습니다.
+Search Console은 공개 `SEARCH_CONSOLE_VERIFICATION` content 값을 build resource로 materialize하는 meta 태그 방식만 사용합니다. HTML 파일명·파일 내용 인증 변수는 지원하지 않습니다.
 
 Meta 태그 방식을 사용할 때는 `SEARCH_CONSOLE_VERIFICATION`에 Search Console이 발급한 content 값만 설정합니다. 그러면 모든 페이지의 `<head>`에 다음 태그가 생성됩니다.
 
@@ -94,7 +80,7 @@ google.com, pub-<16-digit-publisher-id>, DIRECT, f08c47fec0942fa0
 
 1. `src/content/devlog/{category}/{id}.mdx`를 추가하거나 수정합니다.
 2. frontmatter에 공개 주소용 `slug`를 지정합니다.
-3. 썸네일이 필요하면 `public/thumnail/{id}.{ext}`처럼 같은 ID를 사용합니다.
+3. 썸네일이 필요하면 [`thumbnail-contract`](../../skills/thumbnail-contract/SKILL.md)와 [`thumbnail-rules.md`](../pipeline/thumbnail-rules.md)의 안정 ID 경로와 WebP 계약을 사용합니다.
 4. `npm run generate-slugs`를 실행합니다.
 
 파일명은 slug가 아니라 안정적인 `source_id`입니다. `slugs.json`은 파일명 변경 목록이 아니라 공개 주소 라우팅 맵입니다.

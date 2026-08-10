@@ -87,14 +87,15 @@ Notion 원격 콘텐츠까지 갱신하며 실행하려면 환경 변수를 설�
 ```text
 blog/
 ├─ .github/workflows/deploy.yml     # GitHub Pages 빌드·배포 및 저장소 동기화
-├─ docs/                            # 상세 기술/운영 문서
+├─ docs/                            # project surface 대표 컨트롤러(README.md만 유지)
+├─ project/                         # skills, lifecycle hooks, canonical wiki
 ├─ public/
 │  ├─ images/notion/               # Notion에서 내려받은 이미지
 │  └─ thumnail/                    # 안정적인 ID 이름의 Devlog 썸네일
 ├─ scripts/
 │  ├─ ga4/                         # GA4 로컬 패키지
 │  ├─ slug/                        # Devlog ID → slug 맵 생성·검증
-│  ├─ notion/                      # education/personal 동기화·변환
+│  ├─ notion/                      # journal/devlog/project staging·변환·검증
 │  ├─ engagement/                  # Giscus 참여 통계 수집
 │  └─ recommendations/             # Devlog 추천 데이터 생성
 ├─ src/
@@ -124,8 +125,8 @@ blog/
 
 ## 콘텐츠 흐름
 
-1. `scripts/notion/connect/fetch.mjs`가 Notion API의 데이터베이스 열을 조회해 메모리에서 정규화하고 MDX로 바로 동기화합니다.
-2. `scripts/notion/connect/`에는 API 인증·조회 및 MDX 동기화 흐름만 둡니다.
+1. `scripts/notion/connect/fetch.mjs`가 journal/devlog/project 원본을 조회하고 schema 검증 후 staging transaction에서 MDX로 변환합니다.
+2. `scripts/notion/connect/`에는 API 인증·조회·schema/quarantine·원자적 promotion 흐름을 둡니다.
 3. `scripts/notion/transfer/`는 MDX 변환, UTF 인코딩과 줄바꿈 정규화, MDX 컴포넌트 이름 매핑과 화면용 인덱스 생성을 담당합니다.
 4. `npm run transfer-notion-json -- <input.json> <output-dir> [page-name]`으로 JSON을 MDX로 변환할 수 있습니다.
 5. `scripts/slug/generate.mjs`가 frontmatter의 slug를 읽어 `src/data/config/slugs.json`에 `source_id → slug` 맵을 생성합니다.
@@ -153,8 +154,8 @@ npm run build:local
 npm run validate:export
 ```
 
-품질 검증은 배포 전에 로컬에서 수행합니다. GitHub Actions는 `.nvmrc`에 고정한 Node.js 24.13.1에서 의존성을 설치하고 정적 빌드를 수행한 다음 `out/`을 GitHub Pages artifact로 배포합니다. Search Console 인증 변수가 설정되면 HTML 인증 파일도 사이트 루트에 배포합니다. `*.github.io` 사용자 페이지 저장소는 자동으로 루트 경로를 사용하며, 그 외 저장소는 `USE_ROOT_BASE_PATH` 변수 또는 저장소명에 따라 `basePath`를 결정합니다.
+품질 검증은 배포 전에 로컬에서 수행합니다. GitHub Actions는 `.nvmrc`에 고정한 Node.js 24.13.1에서 의존성을 설치하고 정적 빌드를 수행한 다음 `out/`을 GitHub Pages artifact로 배포합니다. Search Console은 `SEARCH_CONSOLE_VERIFICATION` meta 태그 방식만 사용하며 HTML 인증 파일을 배포하지 않습니다. `*.github.io` 사용자 페이지 저장소는 자동으로 루트 경로를 사용하며, 그 외 저장소는 `USE_ROOT_BASE_PATH` 변수 또는 저장소명에 따라 `basePath`를 결정합니다.
 
-추가 운영 방법은 [`docs/GUIDE.md`](docs/GUIDE.md), 데이터 정렬 기준은
-[`docs/DATA_SORTING_RULES.md`](docs/DATA_SORTING_RULES.md), 기술 배경은
-[`docs/TECH_STACK.md`](docs/TECH_STACK.md)를 참고하세요.
+에이전트 운영의 대표 진입점은 [`docs/README.md`](docs/README.md)입니다. 실행 절차는
+[`project/skills/`](project/skills/), lifecycle 자동화는 [`project/hooks/`](project/hooks/),
+상세 정책과 기술 배경은 [`project/wiki/`](project/wiki/)에서 관리합니다.

@@ -7,13 +7,10 @@
 ```text
 src/data/
 ├─ config/
-│  ├─ site.json                    # 공개 사이트/Giscus 기본 설정
+│  ├─ (generated)                  # 공개 build resource는 .cache/build에서 생성
 │  └─ slugs.json                   # category별 source_id → slug 맵
 ├─ pages/
 │  ├─ main/
-│  │  ├─ notion/
-│  │  │  ├─ education.json         # Notion 교육일지 목록
-│  │  │  └─ personal.json          # Notion 개인일지 목록
 │  │  └─ ...                       # 메인·목록 화면 원본 데이터
 │  └─ detail/
 │     └─ ...                       # 상세 화면 전용 데이터
@@ -32,14 +29,15 @@ src/data/
 
 고정 MDX 카테고리는 `tech_study`, `problem_solving`, `competition_event`이며 `src/data/indexes/devlog.json`에서 조회합니다.
 
-Notion 소스 키는 다음처럼 분리합니다.
+Notion source group은 다음처럼 분리합니다.
 
 | Notion 키 | 메인 데이터 | 공개 Devlog 카테고리 | 화면 이름 |
 | --- | --- | --- | --- |
-| `education` | `pages/main/notion/education.json` | `education` | 교육일지 |
-| `personal` | `pages/main/notion/personal.json` | `blog` | 개인일지 |
+| `journal` | generated journal index | `education`/`blog` | 교육·개인일지 |
+| `devlog` | generated devlog index | `tech_study`/`problem_solving`/`competition_event` | 기술 기록 |
+| `project` | generated project index | `enterprise`/`personal` | 프로젝트 |
 
-`personal`은 Notion 데이터 소스를 식별하는 키입니다. 기존 URL과 콘텐츠 경로의 호환성을 위해 공개 카테고리 및 MDX 디렉터리는 `blog`를 유지합니다.
+`blog`는 journal 개인일지의 공개 category와 MDX 디렉터리 호환성 이름입니다. source group 자체는 `journal`입니다.
 
 ## 정렬 기준
 
@@ -51,7 +49,7 @@ Notion 소스 키는 다음처럼 분리합니다.
 
 - Journal, Devlog, Project는 `scripts/notion/connect/fetch.mjs`에서 `created_date` 내림차순으로 저장합니다.
 - API 연결과 JSON 저장은 `connect/`, JSON·MDX 형식 변환은 `transfer/`로 분리합니다.
-- 페이지별 예외 열 이름과 기본값은 `connect/fetch.mjs`의 `SPECIAL_CASES`에서 선언합니다.
+- Notion property schema·타입·enum·quarantine은 `connect/schema-contract.mjs`에서 선언합니다.
 
 ### 인기 콘텐츠
 

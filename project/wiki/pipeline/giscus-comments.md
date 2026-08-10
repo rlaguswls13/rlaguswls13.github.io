@@ -12,7 +12,7 @@ Devlog 상세 페이지는 Giscus를 사용합니다. 공개 URL과 discussion t
 
 ## 설정
 
-공개 기본값은 `src/data/config/site.json`에 있습니다. 애플리케이션에서는 `src/lib/site.ts`가 이 파일을 읽고 다음 환경 변수의 값이 있으면 덮어씁니다.
+공개 기본값은 `GISCUS_INFO` JSON에서 읽어 `.cache/build/public-config.json`에 생성합니다. 애플리케이션은 generated resource를 사용합니다.
 
 ```dotenv
 NEXT_PUBLIC_SITE_URL=...

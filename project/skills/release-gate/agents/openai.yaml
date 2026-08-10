@@ -1,0 +1,4 @@
+interface:
+  display_name: Blog Release Gate
+  short_description: Run content and repository promotion checks
+  default_prompt: Inspect scope, execute the applicable local gates, and record failures without hiding pre-existing issues.

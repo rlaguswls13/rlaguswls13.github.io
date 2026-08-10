@@ -6,42 +6,34 @@ GitHub Pages 정적 배포에서는 Notion 토큰을 브라우저에 노출할 �
 Notion API를 호출해 목록 JSON과 MDX 캐시를 생성합니다. API 장애 시 저장소에 남은 마지막
 캐시로 정적 사이트를 계속 빌드할 수 있습니다.
 
-데이터 소스에는 아래 속성을 사용합니다. `ID`와 `Slug`는 공개 URL 및 댓글 연결을
-유지하므로 기존 값이 있다면 바꾸지 않습니다.
+데이터 소스에는 `scripts/notion/connect/schema-contract.mjs`에 선언된 속성을 사용합니다. 원본
+page ID와 frontmatter slug는 공개 URL 및 댓글 연결을 유지하므로 기존 값이 있다면 바꾸지 않습니다.
 
 | 속성 | Notion 타입 | 필수 |
 | --- | --- | --- |
-| Name | Title | 예 |
-| ID | Rich text | 예 |
-| Slug | Rich text | 예 |
-| Date 또는 날짜 | Date | 예 |
-| Tags 또는 태그 | Multi-select | 예 |
-| Description 또는 요약 | Rich text | 권장 |
-| Category | Select | 예 (`container`, `springboot`, `java` 등 하위 경로) |
-| Package | Select | 선택 (`Category`가 없을 때만 호환용으로 사용) |
-| Published 또는 공개 | Checkbox | 선택 |
+| title | Title | 예 |
+| category | Select/Status | 예 (group별 허용 enum) |
+| created_date | Date | 예 |
+| subcategory | Select/Status | 선택 |
+| tags | Multi-select | 선택 |
+| description | Rich text | 선택 |
+| slug | Rich text | 선택 |
 
-`Published/공개` 속성이 있으면 체크된 페이지만 동기화합니다. 속성이 없으면 모든 페이지를
-동기화합니다.
+정의되지 않은 column, 타입 불일치, 필수 누락, 허용되지 않은 enum은
+`artifacts/notion-quarantine/report.json`에 안전한 요약으로 기록하고 동기화를 중단합니다.
 
 ## 1. API 연결
 
 Notion integration에 각 데이터 소스를 공유하고 환경변수를 설정합니다.
 
 ```dotenv
-NOTION_TOKEN=secret_xxx
-NOTION_DATA_SOURCE_ID=tech_study:xxx,problem_solving:yyy,competition_event:zzz,education:aaa,personal:bbb
+NOTION_TOKEN=<set outside the repository>
+NOTION_DATA_SOURCE_ID_JOURNAL=<source id>
+NOTION_DATA_SOURCE_ID_DEVLOG=<source id>
+NOTION_DATA_SOURCE_ID_PROJECT=<source id>
 ```
 
-카테고리별 환경변수도 사용할 수 있습니다.
-
-```dotenv
-NOTION_DATA_SOURCE_ID_TECH_STUDY=xxx
-NOTION_DATA_SOURCE_ID_PROBLEM_SOLVING=yyy
-```
-
-기존 이름을 유지한 `NOTION_PAGE_ID_*` key도 동일하게 동작합니다. key suffix는 상위 콘텐츠
-경로가 되고, 각 페이지의 `Category` 값은 하위 경로가 됩니다.
+기존 `NOTION_PAGE_ID_*` database ID는 전환 기간 호환 입력이며 신규 설정에서는 사용하지 않습니다.
 
 ```text
 NOTION_PAGE_ID_TECH_STUDY + Category=container
@@ -53,10 +45,7 @@ NOTION_PAGE_ID_PROBLEM_SOLVING + Category=java
 → /devlog/problem_solving/{Slug}
 ```
 
-`NOTION_PAGE_ID_TECH_STRUDY`처럼 기존 오타 key를 사용해도 `tech_study`로 정규화합니다.
-
-현재 API는 data source ID를 사용합니다. 기존 `NOTION_PAGE_ID`와 database ID도 전환 기간
-동안 `2022-06-28` API로 계속 지원합니다.
+현재 API는 data source ID를 사용합니다. legacy database ID는 호환 경계에서만 지원합니다.
 
 ## 2. 동기화와 배포
 

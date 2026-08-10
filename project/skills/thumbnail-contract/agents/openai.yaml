@@ -1,0 +1,4 @@
+interface:
+  display_name: Thumbnail Contract
+  short_description: Validate stable-ID blog thumbnail assets
+  default_prompt: Apply the thumbnail contract, call imagegen only when needed, and record verification evidence.

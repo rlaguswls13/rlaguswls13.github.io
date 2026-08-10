@@ -1,0 +1,3 @@
+display_name: Blog Content Pipeline
+short_description: Run the Notion to MDX content pipeline safely
+default_prompt: Use the blog-content-pipeline skill for Notion, MDX, index, thumbnail, and static export work.

@@ -26,7 +26,7 @@ src/data/
 └─ config/           # 공개 설정과 ID → slug 맵
 ```
 
-사이트/Giscus 설정 로더는 `src/lib/site.ts`에 있으며 JSON 설정과 환경 변수 덮어쓰기를 결합합니다. 공통 타입은 `src/types/`에 모으고 `src/lib/`에는 런타임 로직만 둡니다.
+사이트/Giscus 설정은 `GISCUS_INFO`에서 `.cache/build/public-config.json`으로 생성되고 `src/lib/site.ts`가 이를 읽습니다. 공통 타입은 `src/types/`에 모으고 `src/lib/`에는 런타임 로직만 둡니다.
 
 ## 콘텐츠와 라우팅
 
@@ -71,9 +71,9 @@ GA4는 `@blog/ga4-analytics` 로컬 패키지로 애플리케이션에서 사용
 
 `npm run build`:
 
-1. Notion `education`/`personal` 동기화
-2. ID 이름의 MDX 검증과 ID → slug 맵 생성
-3. 추천 인덱스 생성
+1. Notion `journal`/`devlog`/`project` 조회와 schema 검증
+2. staging 영역의 MDX 변환, compile 검증과 ID → slug 맵 생성
+3. transaction promotion 후 추천 인덱스 생성
 4. Giscus 댓글 수 갱신
 5. Next.js static export
 
