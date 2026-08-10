@@ -3,8 +3,6 @@ name: Deploy verified Pages
 on:
   push:
     branches: ["main"]
-  schedule:
-    - cron: "35 * * * *"
   workflow_dispatch:
     inputs:
       rollback_run_id:
@@ -39,15 +37,6 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - name: Fetch required Notion sources
-        if: ${{ inputs.rollback_run_id == '' }}
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DATA_SOURCE_ID_JOURNAL: ${{ secrets.NOTION_DATA_SOURCE_ID_JOURNAL }}
-          NOTION_DATA_SOURCE_ID_DEVLOG: ${{ secrets.NOTION_DATA_SOURCE_ID_DEVLOG }}
-          NOTION_DATA_SOURCE_ID_PROJECT: ${{ secrets.NOTION_DATA_SOURCE_ID_PROJECT }}
-          NOTION_REQUIRED_GROUPS: journal,devlog,project
-        run: npm run fetch-notion
       - name: Refresh engagement data when available
         if: ${{ inputs.rollback_run_id == '' }}
         continue-on-error: true

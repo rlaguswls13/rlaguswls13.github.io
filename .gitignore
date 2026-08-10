@@ -55,6 +55,8 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example
+.env.local.yml
+.env.local.yaml
 
 # vercel
 .vercel
@@ -76,8 +78,13 @@ next-env.d.ts
 /.eslintcache
 /.stylelintcache
 /.venv/
+/.omo/
+/artifacts/
 **/__pycache__/
 *.py[cod]
+
+# generated Notion rollback snapshots
+**/.notion-backup-*
 
 # generated data
 /src/data/education.json

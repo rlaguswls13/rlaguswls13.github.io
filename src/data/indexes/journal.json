@@ -82,14 +82,14 @@
       "tags": [
         "세미프로젝트"
       ],
-      "description": "작성된 내용이 없습니다.",
+      "description": "교육 과정의 세미 프로젝트를 준비하고 구현하며 정리한 요구사항, 설계, 협업 및 개발 과정을 소개합니다.",
       "category": "education",
       "journalCategory": "education",
       "subcategory": "2026",
       "package": "education",
       "round": "교육일지",
       "blogTitle": "세미프로젝트",
-      "impression": "작성된 내용이 없습니다.",
+      "impression": "교육 과정의 세미 프로젝트를 준비하고 구현하며 정리한 요구사항, 설계, 협업 및 개발 과정을 소개합니다.",
       "notionUrl": "https://app.notion.com/p/3a319946ca76807b8e7ac1d05c32e441"
     },
     {
@@ -104,14 +104,14 @@
       "tags": [
         "PRD"
       ],
-      "description": "작성된 내용이 없습니다.",
+      "description": "프로젝트의 목표와 범위, 기능과 제약사항을 명확히 정의하는 요구사항 정의서의 역할과 작성 방법을 정리합니다.",
       "category": "education",
       "journalCategory": "education",
       "subcategory": "2026",
       "package": "education",
       "round": "교육일지",
       "blogTitle": "요구사항 정의서란?",
-      "impression": "작성된 내용이 없습니다.",
+      "impression": "프로젝트의 목표와 범위, 기능과 제약사항을 명확히 정의하는 요구사항 정의서의 역할과 작성 방법을 정리합니다.",
       "notionUrl": "https://app.notion.com/p/3a319946ca76806db9ecf8824115ebea"
     },
     {
@@ -127,14 +127,14 @@
         "Filter",
         "Interceptor"
       ],
-      "description": "작성된 내용이 없습니다.",
+      "description": "Spring 웹 요청 처리에서 Filter와 Interceptor가 개입하는 시점, 적용 범위와 주요 활용 사례를 비교해 정리합니다.",
       "category": "education",
       "journalCategory": "education",
       "subcategory": "2026",
       "package": "education",
       "round": "교육일지",
       "blogTitle": "Spring에서 Filter와 Interceptor의 쓰임",
-      "impression": "작성된 내용이 없습니다.",
+      "impression": "Spring 웹 요청 처리에서 Filter와 Interceptor가 개입하는 시점, 적용 범위와 주요 활용 사례를 비교해 정리합니다.",
       "notionUrl": "https://app.notion.com/p/Spring-Filter-Interceptor-3a319946ca7680a6b7b3f98589e30442"
     },
     {
@@ -151,14 +151,14 @@
         "Request",
         "Response"
       ],
-      "description": "작성된 내용이 없습니다.",
+      "description": "Spring MVC에서 HTTP 요청이 컨트롤러에 전달되고 응답으로 변환되는 구조와 주요 처리 흐름을 정리합니다.",
       "category": "education",
       "journalCategory": "education",
       "subcategory": "2026",
       "package": "education",
       "round": "교육일지",
       "blogTitle": "Spring MVC에서 응답(Response)와 요청(Request) 구조",
-      "impression": "작성된 내용이 없습니다.",
+      "impression": "Spring MVC에서 HTTP 요청이 컨트롤러에 전달되고 응답으로 변환되는 구조와 주요 처리 흐름을 정리합니다.",
       "notionUrl": "https://app.notion.com/p/Spring-MVC-Response-Request-3a319946ca76802aa2cff193b6a2456e"
     },
     {

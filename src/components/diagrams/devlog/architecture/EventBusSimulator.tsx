@@ -181,15 +181,6 @@ export function EventBusSimulator() {
 
   const addLog = (log: React.ReactNode) => setLogs((prev) => [...prev, log]);
 
-  const resetSimulation = () => {
-    setPacket1(INITIAL_PACKET);
-    setPacket2(INITIAL_PACKET);
-    setLoggerStatus({ text: "대기 중", type: "default" });
-    setDbStatus({ text: "대기 중", type: "default" });
-    setBusStatus({ text: arch === "Spring" ? "대기 중" : "비활성", type: "default" });
-    setLogs(["$ systemctl status event-simulator", "> 초기화 완료. 준비되었습니다."]);
-  };
-
   const handleArchChange = (newArch: Architecture) => {
     if (isRunning) return;
     setArch(newArch);

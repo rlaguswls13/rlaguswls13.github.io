@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 export function NotionImage({ src, caption }: { src: string; caption?: string }) {
@@ -18,9 +19,12 @@ export function NotionImage({ src, caption }: { src: string; caption?: string })
             <small>{status === "error" ? "이미지를 표시할 수 없습니다" : "이미지 불러오는 중"}</small>
           </div>
         )}
-        <img
+        <Image
           src={src}
           alt={caption || "Notion Image"}
+          width={1200}
+          height={800}
+          unoptimized
           className="w-auto h-auto max-h-[70vh] object-contain rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)]"
           loading="lazy"
           decoding="async"

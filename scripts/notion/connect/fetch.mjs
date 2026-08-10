@@ -3,24 +3,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { NotionClient } from "./notion-client.mjs";
 import { syncPageContent } from "./sync-pages.mjs";
+import { parseSourceConfiguration } from "./source-config.mjs";
+import { runFetchOrchestration } from "./fetch-orchestration.mjs";
 
 const ROOT = process.cwd();
-const PAGE_CONFIG = {
-  journal: [
-    "NOTION_PAGE_ID_JOURNAL",
-    "NOTION_DATA_SOURCE_ID_JOURNAL",
-  ],
-  devlog: [
-    "NOTION_PAGE_ID_DEVLOG",
-    "NOTION_DATA_SOURCE_ID_DEVLOG",
-    "NOTION_PAGE_ID_DEVELOG",
-  ],
-  project: [
-    "NOTION_PAGE_ID_PROJECT",
-    "NOTION_DATA_SOURCE_ID_PROJECT",
-    "NOTON_PAGE_ID_PORJECT",
-  ],
-};
 export const SPECIAL_CASES = {
   journal: {
     aliases: {},
@@ -53,21 +39,7 @@ function loadEnv() {
 }
 
 export function configuredSources(pageName) {
-  const sources = PAGE_CONFIG[pageName].flatMap((envKey) => {
-    const sourceType = envKey.includes("DATA_SOURCE") ? "data_source" : "database";
-    return String(process.env[envKey] || "")
-      .replace(/[\[\]{}'\"]/g, "")
-      .split(",")
-      .map((value) => {
-        const trimmed = value.trim();
-        const separator = trimmed.indexOf(":");
-        const id = separator >= 0 ? trimmed.slice(separator + 1).trim() : trimmed;
-        return id ? { id, sourceType } : null;
-      })
-      .filter(Boolean);
-  });
-
-  return [...new Map(sources.map((source) => [source.id, source])).values()];
+  return parseSourceConfiguration(process.env).groups[pageName] || [];
 }
 
 async function querySourcePages(client, source) {
@@ -183,29 +155,29 @@ export function pageToIndexRow(pageName, page, definitions = SPECIAL_CASES) {
 
 loadEnv();
 
-export async function main() {
-  if (!process.env.NOTION_TOKEN) throw new Error("NOTION_TOKEN is required.");
-  const client = new NotionClient(process.env.NOTION_TOKEN);
-
-  const force = process.argv.includes("--force");
-  for (const pageName of Object.keys(PAGE_CONFIG)) {
-    const sources = configuredSources(pageName);
-    if (sources.length === 0) {
-      console.log(`[notion] ${pageName}: no source configured -> skip`);
-      continue;
-    }
-
-    const pageGroups = await Promise.all(sources.map((source) => querySourcePages(client, source)));
-    const uniquePages = new Map(pageGroups.flat().map((page) => [page.id, page]));
-    const rows = [...uniquePages.values()]
-      .map((page) => pageToIndexRow(pageName, page))
-      .sort((left, right) => String(right.created_date || "").localeCompare(String(left.created_date || "")));
-    await syncPageContent(client, pageName, rows, { force });
-  }
+export async function main(options = {}) {
+  const env = options.env || process.env;
+  if (options.printConfiguration) return parseSourceConfiguration(env);
+  const createClient = options.createClient || ((token) => new NotionClient(token));
+  const force = options.force ?? process.argv.includes("--force");
+  const allowEmpty = options.allowEmpty ?? process.argv.includes("--allow-empty");
+  return runFetchOrchestration({
+    ...options,
+    root: options.root || ROOT,
+    env,
+    createClient,
+    syncPageContentFn: options.syncPageContentFn || syncPageContent,
+    querySourcePages,
+    pageToIndexRow,
+    force,
+    allowEmpty,
+  });
 }
 
 if (path.resolve(process.argv[1] || "") === fileURLToPath(import.meta.url)) {
-  main().catch((error) => {
+  main({ printConfiguration: process.argv.includes("--print-source-config") }).then((configuration) => {
+    if (process.argv.includes("--print-source-config")) console.log(JSON.stringify(configuration));
+  }).catch((error) => {
     console.error("[notion] index fetch failed:", error.message);
     process.exitCode = 1;
   });

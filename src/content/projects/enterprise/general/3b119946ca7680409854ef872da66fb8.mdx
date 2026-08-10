@@ -10,7 +10,7 @@ tags: ["DevOps","CI/CD","Optimization"]
 title: "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축"
 page_id: "3b119946-ca76-8040-9854-ef872da66fb8"
 source_id: "3b119946ca7680409854ef872da66fb8"
-last_edited_time: "2026-08-03T03:49:00.000Z"
+last_edited_time: "2026-08-05T02:58:00.000Z"
 notion_url: "https://app.notion.com/p/DevOps-3b119946ca7680409854ef872da66fb8"
 id: "3b119946ca7680409854ef872da66fb8"
 sourceId: "3b119946-ca76-8040-9854-ef872da66fb8"
@@ -19,9 +19,19 @@ package: "전체"
 notionUrl: "https://app.notion.com/p/DevOps-3b119946ca7680409854ef872da66fb8"
 ---
 
+## 목차
+
+  - [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem)
+  - [2. 기술적 구현 및 적용 (Technical Implementation)](#2-기술적-구현-및-적용-technical-implementation)
+  - [3. 개선점 및 유용성 (Result & Benefit)](#3-개선점-및-유용성-result-benefit)
+
+<a id="1-도입-배경-및-과제-background-problem"></a>
+
 ### 1. 도입 배경 및 과제 (Background & Problem)
 
 K8s(가상화 컨테이너 시스템)와 VMware(독립 가상화 시스템)의 자체 관리 도구는 비전문가인 소비자가 일관성 있게 사용하기 어렵다는 큰 한계가 있었습니다. 이를 극복하고자 복잡하고 엄격한 B2B(기업 간 거래) 맞춤형 권한 룰을 반영할 수 있는 전용 클라우드 관리 포털(Cloud Management Portal) 개발이 요구되었습니다.
+
+<a id="2-기술적-구현-및-적용-technical-implementation"></a>
 
 ### 2. 기술적 구현 및 적용 (Technical Implementation)
 
@@ -30,6 +40,8 @@ K8s(가상화 컨테이너 시스템)와 VMware(독립 가상화 시스템)의 �
 관계형 데이터베이스(RDBMS) 테이블 구조를 부모-자식 식별자(ParentID-ChildID) 재귀적 구조로 설계하고, 무거운 Join(조인)이 필요한 일부 권한 트리 데이터는 제이슨(JSON) 직렬화(Serialization) 문법으로 역정규화(Denormalization)하여 텍스트 형태로 저장했습니다.
 
 가장 핵심적으로 로컬 캐시(Local Cache) 기술을 사용하여 방대한 조직 접근 데이터를 서버의 메모리(Memory) 상에 미리 적재(Pre-load)하고 알고리즘 연산과 비교를 서버 단에서 직접 수행하도록 백엔드 로직(Backend Logic)을 구축했습니다.
+
+<a id="3-개선점-및-유용성-result-benefit"></a>
 
 ### 3. 개선점 및 유용성 (Result & Benefit)
 

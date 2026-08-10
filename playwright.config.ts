@@ -5,6 +5,12 @@ export default defineConfig({
   forbidOnly: true,
   outputDir: "artifacts/playwright/results",
   reporter: [["list"], ["html", { open: "never", outputFolder: "artifacts/playwright/report" }]],
+  webServer: {
+    command: "npm run preview",
+    url: "http://127.0.0.1:3000",
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
   use: {
     screenshot: "only-on-failure",
     trace: "retain-on-failure",

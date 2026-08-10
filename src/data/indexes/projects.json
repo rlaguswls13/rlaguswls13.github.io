@@ -1,12 +1,29 @@
 {
   "projects": [
     {
+      "id": "3b319946ca768057896fe03574856fa1",
+      "slug": "3b319946ca768057896fe03574856fa1",
+      "sourceId": "3b319946-ca76-8057-896f-e03574856fa1",
+      "source_id": "3b319946ca768057896fe03574856fa1",
+      "page_id": "3b319946-ca76-8057-896f-e03574856fa1",
+      "last_edited_time": "2026-08-05T03:02:00.000Z",
+      "sourceFile": "enterprise/general/3b319946ca768057896fe03574856fa1.mdx",
+      "title": "레거시 코드로 인한 메모리 누수 해결",
+      "date": "2026-08-05",
+      "periods": [],
+      "tags": [],
+      "description": "작성된 내용이 없습니다.",
+      "category": "enterprise",
+      "subcategory": "전체",
+      "type": "enterprise"
+    },
+    {
       "id": "3b119946ca7680409854ef872da66fb8",
       "slug": "d",
       "sourceId": "3b119946-ca76-8040-9854-ef872da66fb8",
       "source_id": "3b119946ca7680409854ef872da66fb8",
       "page_id": "3b119946-ca76-8040-9854-ef872da66fb8",
-      "last_edited_time": "2026-08-03T03:49:00.000Z",
+      "last_edited_time": "2026-08-05T02:58:00.000Z",
       "sourceFile": "enterprise/general/3b119946ca7680409854ef872da66fb8.mdx",
       "title": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
       "date": "2026-08-03",

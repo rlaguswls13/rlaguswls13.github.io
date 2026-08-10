@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Icons } from "@/components/diagrams/DiagramIcons";
 
 /* ===== Inline style helpers using CSS Variables ===== */
 const S = {
