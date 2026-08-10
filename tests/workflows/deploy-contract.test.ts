@@ -5,35 +5,44 @@ import { describe, expect, it } from "vitest";
 const workflow = (name: string): string => readFileSync(resolve(".github/workflows", name), "utf8");
 
 describe("GitHub Pages deployment contracts", () => {
-  it("keeps pull requests read-only and free of Pages deployment", () => {
-    const ci = workflow("ci.yml");
+  it("keeps only content sync and Pages deployment workflows", () => {
+    const workflowNames = readdirSync(".github/workflows")
+      .filter((name) => name.endsWith(".yml"))
+      .sort();
 
-    expect(ci).toContain("pull_request:");
-    expect(ci).toContain("contents: read");
-    expect(ci).not.toContain("uses: actions/deploy-pages@");
-    expect(ci).not.toContain("pages: write");
+    expect(workflowNames).toEqual(["deploy.yml", "fetch-notion.yml"]);
   });
 
-  it("builds and deploys Pages without running long validation jobs", () => {
+  it("builds committed static content without fetching Notion", () => {
     const deploy = workflow("deploy.yml");
-    const workflowNames = readdirSync(".github/workflows").filter((name) => name.endsWith(".yml")).sort();
+    const resolvePosition = deploy.indexOf("node scripts/deploy/resolve-pages-path.mjs");
     const buildPosition = deploy.indexOf("npm run build:no-fetch");
+    const publishPosition = deploy.indexOf("node scripts/deploy/publish-ads-txt.mjs");
     const uploadPosition = deploy.indexOf("uses: actions/upload-pages-artifact@v3");
     const deployPosition = deploy.indexOf("uses: actions/deploy-pages@v4");
 
-    expect(workflowNames).toEqual(expect.arrayContaining(["ci.yml", "deploy.yml"]));
     expect(deploy).toContain('branches: ["main"]');
     expect(deploy).toContain("workflow_dispatch:");
+    expect(deploy).toContain('workflows: ["Fetch Notion content"]');
+    expect(deploy).toContain("types: [completed]");
+    expect(deploy).toContain("github.event.workflow_run.conclusion == 'success'");
+    expect(deploy).toContain("ref: main");
     expect(deploy).toContain("group: pages-production");
     expect(deploy).toContain("cancel-in-progress: true");
     expect(deploy).toContain("node-version-file: .nvmrc");
-    expect(deploy).not.toMatch(/validate:content|lint:ci|typecheck|test:unit|validate:export|test:e2e|test:lighthouse|audit:react|audit:prod/);
+    expect(deploy).not.toMatch(/fetch-notion|NOTION_TOKEN|NOTION_DATA_SOURCE_ID/);
+    expect(deploy).not.toMatch(
+      /validate:content|lint:ci|typecheck|test:unit|validate:export|test:e2e|test:lighthouse|audit:react|audit:prod/,
+    );
+    expect(resolvePosition).toBeGreaterThan(-1);
     expect(buildPosition).toBeGreaterThan(-1);
-    expect(uploadPosition).toBeGreaterThan(buildPosition);
+    expect(buildPosition).toBeGreaterThan(resolvePosition);
+    expect(publishPosition).toBeGreaterThan(buildPosition);
+    expect(uploadPosition).toBeGreaterThan(publishPosition);
     expect(deployPosition).toBeGreaterThan(uploadPosition);
   });
 
-  it("passes analytics configuration only to the build", () => {
+  it("passes public build configuration through repository variables", () => {
     const deploy = workflow("deploy.yml");
     const buildStart = deploy.indexOf("- name: Build static export");
     const buildEnd = deploy.indexOf("- name: Publish AdSense ads.txt", buildStart);
@@ -41,15 +50,23 @@ describe("GitHub Pages deployment contracts", () => {
 
     expect(buildStep).toContain("ADSENSE_ACCOUNT: \${{ vars.ADSENSE_ACCOUNT }}");
     expect(buildStep).toContain("GA4_PROPERTY_ID: \${{ vars.GA4_PROPERTY_ID }}");
+    expect(buildStep).toContain("SEARCH_CONSOLE_VERIFICATION: \${{ vars.SEARCH_CONSOLE_VERIFICATION }}");
   });
-  it("publishes Search Console verification files only when configured", () => {
-    const deploy = workflow("deploy.yml");
-    const verificationStepStart = deploy.indexOf("Publish Search Console verification file");
-    const verificationStep = deploy.slice(verificationStepStart, deploy.indexOf("- uses: actions/configure-pages@v5", verificationStepStart));
 
-    expect(verificationStepStart).toBeGreaterThan(-1);
-    expect(verificationStep).toContain("vars.SEARCH_CONSOLE_VERIFICATION_FILE != ''");
-    expect(verificationStep).toContain("vars.SEARCH_CONSOLE_VERIFICATION_CONTENT != ''");
-    expect(verificationStep).toContain("out/$SEARCH_CONSOLE_VERIFICATION_FILE");
+  it("uses only metadata for Search Console verification", () => {
+    const deploy = workflow("deploy.yml");
+
+    expect(deploy).toContain("SEARCH_CONSOLE_VERIFICATION: \${{ vars.SEARCH_CONSOLE_VERIFICATION }}");
+    expect(deploy).not.toMatch(/SEARCH_CONSOLE_VERIFICATION_(?:FILE|CONTENT)/u);
+  });
+
+  it("fetches Notion once at midnight and noon Korea time", () => {
+    const fetchNotion = workflow("fetch-notion.yml");
+
+    expect(fetchNotion).toContain('cron: "0 3,15 * * *"');
+    expect(fetchNotion.match(/run: npm run fetch-notion/g)).toHaveLength(1);
+    expect(fetchNotion).toContain("NOTION_TOKEN: \${{ secrets.NOTION_TOKEN }}");
+    expect(fetchNotion).not.toContain("npm run validate:content");
+    expect(fetchNotion).toContain("node scripts/notion/commit-sync.mjs");
   });
 });

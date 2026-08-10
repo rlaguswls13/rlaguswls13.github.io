@@ -55,8 +55,6 @@ Notion 원격 콘텐츠까지 갱신하며 실행하려면 환경 변수를 설�
 | `GISCUS_GITHUB_TOKEN` | 댓글 수 집계 시 GitHub API 한도 완화를 위한 선택 토큰 |
 | `ADSENSE_ACCOUNT` | Google AdSense 게시자 ID (예: `ca-pub-...`); 설정 시 메타 태그와 `ads.txt` 생성 |
 | `GA4_PROPERTY_ID` | GA4 측정 ID (예: `G-...`) |
-| `SEARCH_CONSOLE_VERIFICATION_FILE` | Search Console이 발급한 `google*.html` 파일명 |
-| `SEARCH_CONSOLE_VERIFICATION_CONTENT` | 위 HTML 파일의 원문 내용 |
 | `SEARCH_CONSOLE_VERIFICATION` | Search Console meta 태그의 content 값 |
 
 통합된 세 원본 변수를 우선 사용합니다. 기존 `EDUCATION`·`PERSONAL` 변수는 마이그레이션 기간에만 호환되며 새 배포 설정에는 사용하지 않습니다. GA4와 Google AdSense 메타 값은 해당 환경 변수가 설정된 경우에만 생성됩니다. `ADSENSE_ACCOUNT`가 설정되면 배포 결과에 Google 권장 형식의 `ads.txt`도 생성됩니다. 공개 사이트/Giscus 기본값은 `src/data/config/site.json`에서 관리하며 `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GISCUS_*` 환경 변수로 덮어쓸 수 있습니다. 민감한 값이 포함된 로컬 환경 파일은 커밋하지 않습니다.

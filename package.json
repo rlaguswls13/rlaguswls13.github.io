@@ -15,7 +15,7 @@
     "generate-recommendations": "node scripts/recommendations/generate.mjs",
     "fetch-engagement": "node scripts/engagement/fetch.mjs",
     "build": "npm run fetch-notion && node scripts/engagement/fetch.mjs && next build",
-    "build:no-fetch": "npm run generate-content-indexes && node scripts/slug/generate.mjs && node scripts/recommendations/generate.mjs && node scripts/engagement/fetch.mjs && next build",
+    "build:no-fetch": "node scripts/build/no-fetch.mjs",
     "lint": "eslint",
     "validate:content": "node scripts/content/validate-content.mjs",
     "lint:ci": "eslint . --max-warnings=0",

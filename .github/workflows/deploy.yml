@@ -3,6 +3,9 @@ name: Deploy Pages
 on:
   push:
     branches: ["main"]
+  workflow_run:
+    workflows: ["Fetch Notion content"]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -14,6 +17,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment:
@@ -26,6 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 1
           persist-credentials: false
       - uses: actions/setup-node@v4
@@ -39,15 +44,7 @@ jobs:
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           REPOSITORY_OWNER: ${{ github.repository_owner }}
           FORCE_ROOT: ${{ vars.USE_ROOT_BASE_PATH }}
-        run: |
-          repository_name="${REPOSITORY_NAME,,}"
-          root_repository="${REPOSITORY_OWNER,,}.github.io"
-          force_root="${FORCE_ROOT,,}"
-          if [ "$force_root" = "true" ] || [ "$repository_name" = "$root_repository" ]; then
-            echo "base_path=ROOT" >> "$GITHUB_OUTPUT"
-          else
-            echo "base_path=/$REPOSITORY_NAME" >> "$GITHUB_OUTPUT"
-          fi
+        run: node scripts/deploy/resolve-pages-path.mjs
       - name: Build static export
         env:
           BASE_PATH: ${{ steps.resolve-pages-path.outputs.base_path }}
@@ -55,28 +52,10 @@ jobs:
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
           SEARCH_CONSOLE_VERIFICATION: ${{ vars.SEARCH_CONSOLE_VERIFICATION }}
         run: npm run build:no-fetch
-      - name: Publish AdSense ads.txt when configured
-        if: ${{ vars.ADSENSE_ACCOUNT != '' }}
+      - name: Publish AdSense ads.txt
         env:
           ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
-        run: |
-          publisher_id="${ADSENSE_ACCOUNT#ca-}"
-          printf 'google.com, %s, DIRECT, f08c47fec0942fa0\n' "$publisher_id" > out/ads.txt
-      - name: Publish Search Console verification file when configured
-        if: ${{ vars.SEARCH_CONSOLE_VERIFICATION_FILE != '' && vars.SEARCH_CONSOLE_VERIFICATION_CONTENT != '' }}
-        env:
-          SEARCH_CONSOLE_VERIFICATION_FILE: ${{ vars.SEARCH_CONSOLE_VERIFICATION_FILE }}
-          SEARCH_CONSOLE_VERIFICATION_CONTENT: ${{ vars.SEARCH_CONSOLE_VERIFICATION_CONTENT }}
-        run: |
-          case "$SEARCH_CONSOLE_VERIFICATION_FILE" in
-            google*.html) ;;
-            *) echo "SEARCH_CONSOLE_VERIFICATION_FILE must be the exact google*.html filename from Search Console." >&2; exit 1 ;;
-          esac
-          if [ "$SEARCH_CONSOLE_VERIFICATION_FILE" != "$(basename "$SEARCH_CONSOLE_VERIFICATION_FILE")" ]; then
-            echo "SEARCH_CONSOLE_VERIFICATION_FILE must not contain a directory path." >&2
-            exit 1
-          fi
-          printf '%s' "$SEARCH_CONSOLE_VERIFICATION_CONTENT" > "out/$SEARCH_CONSOLE_VERIFICATION_FILE"
+        run: node scripts/deploy/publish-ads-txt.mjs
       - uses: actions/configure-pages@v5
       - name: Upload verified Pages artifact
         uses: actions/upload-pages-artifact@v3
