@@ -1,6 +1,7 @@
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { parse } from "parse5";
+import { parsePublicBuildConfig } from "../config/giscus-info.mjs";
 
 const staticRoutes = [
   { route: "/", kind: "page" },
@@ -189,10 +190,10 @@ async function inspectRoute(outputRoot, contract, siteUrl) {
 
 export async function validateStaticExport({ root = process.cwd(), outputRoot = path.join(root, "out"), reportPath } = {}) {
   const [site, contracts] = await Promise.all([
-    readJson(path.join(root, "src", "data", "config", "site.json")),
+    readFile(path.join(root, ".cache", "build", "public-config.json"), "utf8")
+      .then((serialized) => parsePublicBuildConfig(serialized)),
     routeContracts(root),
   ]);
-  if (typeof site.siteUrl !== "string" || !site.siteUrl) throw new Error("site config has no siteUrl");
   const routes = await Promise.all(contracts.map(async (contract) => {
     try {
       return await inspectRoute(outputRoot, contract, site.siteUrl);

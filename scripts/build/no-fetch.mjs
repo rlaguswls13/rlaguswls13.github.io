@@ -4,6 +4,7 @@ import { loadLocalEnv } from "../config/load-local-env.mjs";
 loadLocalEnv();
 
 const commands = [
+  ["scripts/config/generate-build-resources.mjs"],
   ["scripts/notion/transfer/build-journal-index.mjs"],
   ["scripts/notion/transfer/build-devlog-index.mjs"],
   ["scripts/notion/transfer/build-project-index.mjs"],

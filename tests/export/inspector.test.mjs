@@ -5,6 +5,24 @@ import { afterEach, describe, expect, it } from "vitest";
 import { resolveExportFile, validateStaticExport } from "../../scripts/export/inspector.mjs";
 
 const temporaryRoots = [];
+const giscusInfo = JSON.stringify({
+  siteUrl: "https://example.test",
+  giscus: {
+    repository: "owner/discussions",
+    repositoryId: "repository-id",
+    category: "Announcements",
+    categoryId: "category-id",
+    language: "ko",
+  },
+});
+const publicConfig = JSON.stringify({
+  ...JSON.parse(giscusInfo),
+  google: {
+    adsenseAccount: null,
+    ga4MeasurementId: null,
+    searchConsoleVerification: null,
+  },
+});
 
 function html({ route, title, body, jsonLd = "" }) {
   const canonical = `https://example.test${route === "/" ? "" : route}`;
@@ -24,9 +42,9 @@ async function fixture() {
   temporaryRoots.push(root);
   const outputRoot = path.join(root, "out");
   const dataRoot = path.join(root, "src", "data");
-  await mkdir(path.join(dataRoot, "config"), { recursive: true });
+  await mkdir(path.join(root, ".cache", "build"), { recursive: true });
   await mkdir(path.join(dataRoot, "indexes"), { recursive: true });
-  await writeFile(path.join(dataRoot, "config", "site.json"), JSON.stringify({ siteUrl: "https://example.test" }));
+  await writeFile(path.join(root, ".cache", "build", "public-config.json"), publicConfig);
   await writeFile(path.join(dataRoot, "indexes", "projects.json"), JSON.stringify({ projects: [{ id: "project-id", slug: "project-slug", title: "Project title" }] }));
   await writeFile(path.join(dataRoot, "indexes", "devlog-recommendations.json"), JSON.stringify({ pages: [{ href: "/devlog/study/devlog-slug", title: "Devlog title" }] }));
 

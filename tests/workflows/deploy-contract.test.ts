@@ -17,7 +17,6 @@ describe("GitHub Pages deployment contracts", () => {
     const deploy = workflow("deploy.yml");
     const resolvePosition = deploy.indexOf("node scripts/deploy/resolve-pages-path.mjs");
     const buildPosition = deploy.indexOf("npm run build:no-fetch");
-    const publishPosition = deploy.indexOf("node scripts/deploy/publish-ads-txt.mjs");
     const uploadPosition = deploy.indexOf("uses: actions/upload-pages-artifact@v3");
     const deployPosition = deploy.indexOf("uses: actions/deploy-pages@v4");
 
@@ -27,6 +26,7 @@ describe("GitHub Pages deployment contracts", () => {
     expect(deploy).toContain("types: [completed]");
     expect(deploy).toContain("github.event.workflow_run.conclusion == 'success'");
     expect(deploy).toContain("ref: main");
+    expect(deploy).toContain("name: github-pages");
     expect(deploy).toContain("group: pages-production");
     expect(deploy).toContain("cancel-in-progress: true");
     expect(deploy).toContain("node-version-file: .nvmrc");
@@ -37,20 +37,21 @@ describe("GitHub Pages deployment contracts", () => {
     expect(resolvePosition).toBeGreaterThan(-1);
     expect(buildPosition).toBeGreaterThan(-1);
     expect(buildPosition).toBeGreaterThan(resolvePosition);
-    expect(publishPosition).toBeGreaterThan(buildPosition);
-    expect(uploadPosition).toBeGreaterThan(publishPosition);
+    expect(deploy).not.toContain("node scripts/deploy/publish-ads-txt.mjs");
+    expect(uploadPosition).toBeGreaterThan(buildPosition);
     expect(deployPosition).toBeGreaterThan(uploadPosition);
   });
 
   it("passes public build configuration through repository variables", () => {
     const deploy = workflow("deploy.yml");
     const buildStart = deploy.indexOf("- name: Build static export");
-    const buildEnd = deploy.indexOf("- name: Publish AdSense ads.txt", buildStart);
+    const buildEnd = deploy.indexOf("- uses: actions/configure-pages@v5", buildStart);
     const buildStep = deploy.slice(buildStart, buildEnd);
 
     expect(buildStep).toContain("ADSENSE_ACCOUNT: \${{ vars.ADSENSE_ACCOUNT }}");
     expect(buildStep).toContain("GA4_PROPERTY_ID: \${{ vars.GA4_PROPERTY_ID }}");
     expect(buildStep).toContain("SEARCH_CONSOLE_VERIFICATION: \${{ vars.SEARCH_CONSOLE_VERIFICATION }}");
+    expect(buildStep).toContain("GISCUS_INFO: \${{ vars.GISCUS_INFO }}");
   });
 
   it("uses only metadata for Search Console verification", () => {
@@ -65,7 +66,12 @@ describe("GitHub Pages deployment contracts", () => {
 
     expect(fetchNotion).toContain('cron: "0 3,15 * * *"');
     expect(fetchNotion.match(/run: npm run fetch-notion/g)).toHaveLength(1);
+    expect(fetchNotion).toContain("name: github-pages");
     expect(fetchNotion).toContain("NOTION_TOKEN: \${{ secrets.NOTION_TOKEN }}");
+    expect(fetchNotion).toContain("NOTION_PAGE_ID_JOURNAL: \${{ secrets.NOTION_PAGE_ID_JOURNAL }}");
+    expect(fetchNotion).toContain("NOTION_PAGE_ID_DEVLOG: \${{ secrets.NOTION_PAGE_ID_DEVLOG }}");
+    expect(fetchNotion).toContain("NOTION_PAGE_ID_PROJECT: \${{ secrets.NOTION_PAGE_ID_PROJECT }}");
+    expect(fetchNotion).not.toContain("NOTION_DATA_SOURCE_ID_");
     expect(fetchNotion).not.toContain("npm run validate:content");
     expect(fetchNotion).toContain("node scripts/notion/commit-sync.mjs");
   });

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { parse } from "parse5";
 
-const site = JSON.parse(readFileSync("src/data/config/site.json", "utf8"));
+const siteUrl = "https://rlaguswls13.github.io";
 const profile = JSON.parse(readFileSync("src/data/pages/main/profile.json", "utf8"));
 const exportBasePath = process.env.METADATA_BASE_PATH ?? "";
 const recommendations = JSON.parse(readFileSync("src/data/indexes/devlog-recommendations.json", "utf8"));
@@ -37,7 +37,7 @@ export const metadataRouteContracts = [
   },
 ].map((contract) => ({
   ...contract,
-  expectedCanonical: `${site.siteUrl}${exportBasePath}${contract.route === "/" ? "" : contract.route}`,
+  expectedCanonical: `${siteUrl}${exportBasePath}${contract.route === "/" ? "" : contract.route}`,
 }));
 
 function descendants(node) {

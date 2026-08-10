@@ -6,9 +6,7 @@ import "./globals.css";
 import { siteConfig } from "@/lib/site";
 import { buildStaticRouteMetadata } from "@/lib/seo/routes";
 
-const adsenseAccount = process.env.ADSENSE_ACCOUNT;
-const ga4MeasurementId = process.env.GA4_PROPERTY_ID;
-const searchConsoleVerification = process.env.SEARCH_CONSOLE_VERIFICATION;
+const { adsenseAccount, ga4MeasurementId, searchConsoleVerification } = siteConfig.google;
 const themeBootstrap = `(() => { let theme; try { theme = localStorage.getItem("theme"); } catch { theme = null; } if (theme === "dark") document.documentElement.classList.replace("theme-light", "theme-dark"); })();`;
 
 export const metadata: Metadata = {

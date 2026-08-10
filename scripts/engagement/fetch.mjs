@@ -1,14 +1,15 @@
 import fs from "fs";
 import path from "path";
+import { parsePublicBuildConfig } from "../config/giscus-info.mjs";
 
 // Giscus engagement is collected independently from the browser-side GA4 package.
-const siteConfig = JSON.parse(
-  fs.readFileSync(path.join(process.cwd(), "src", "data", "config", "site.json"), "utf8"),
+const siteConfig = parsePublicBuildConfig(
+  fs.readFileSync(path.join(process.cwd(), ".cache", "build", "public-config.json"), "utf8"),
 );
 const slugConfig = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), "src", "data", "config", "slugs.json"), "utf8"),
 );
-const GISCUS_REPOSITORY = process.env.GISCUS_REPOSITORY || siteConfig.giscus.repository;
+const GISCUS_REPOSITORY = siteConfig.giscus.repository;
 const OUTPUT_PATH = path.join(process.cwd(), "src", "data", "indexes", "engagement.json");
 
 function readJson(filePath, fallback) {

@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment:
-      name: pages-production
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
       contents: read
@@ -51,11 +51,8 @@ jobs:
           ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
           SEARCH_CONSOLE_VERIFICATION: ${{ vars.SEARCH_CONSOLE_VERIFICATION }}
+          GISCUS_INFO: ${{ vars.GISCUS_INFO }}
         run: npm run build:no-fetch
-      - name: Publish AdSense ads.txt
-        env:
-          ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
-        run: node scripts/deploy/publish-ads-txt.mjs
       - uses: actions/configure-pages@v5
       - name: Upload verified Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -31,6 +31,7 @@ import {
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { buildBlogPostingJsonLd } from "@/lib/seo/metadata";
 import { buildRouteMetadata, siteAuthor } from "@/lib/seo/routes";
+import { siteConfig } from "@/lib/site";
 
 type DevlogPageIndexItem = {
   category: string;
@@ -178,7 +179,7 @@ export default async function DevlogDetailPage({
           }}
         />
       </div>
-      <GiscusComments term={pageEntry.discussionTerm} />
+      <GiscusComments config={siteConfig.giscus} term={pageEntry.discussionTerm} />
     </article>
   );
 }
