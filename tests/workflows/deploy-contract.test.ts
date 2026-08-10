@@ -42,4 +42,14 @@ describe("GitHub Pages deployment contracts", () => {
     expect(buildStep).toContain("ADSENSE_ACCOUNT: \${{ vars.ADSENSE_ACCOUNT }}");
     expect(buildStep).toContain("GA4_PROPERTY_ID: \${{ vars.GA4_PROPERTY_ID }}");
   });
+  it("publishes Search Console verification files only when configured", () => {
+    const deploy = workflow("deploy.yml");
+    const verificationStepStart = deploy.indexOf("Publish Search Console verification file");
+    const verificationStep = deploy.slice(verificationStepStart, deploy.indexOf("- uses: actions/configure-pages@v5", verificationStepStart));
+
+    expect(verificationStepStart).toBeGreaterThan(-1);
+    expect(verificationStep).toContain("vars.SEARCH_CONSOLE_VERIFICATION_FILE != ''");
+    expect(verificationStep).toContain("vars.SEARCH_CONSOLE_VERIFICATION_CONTENT != ''");
+    expect(verificationStep).toContain("out/$SEARCH_CONSOLE_VERIFICATION_FILE");
+  });
 });

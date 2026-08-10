@@ -54,6 +54,40 @@ GA4 측정 ID와 Google AdSense 게시자 메타 값은 해당 환경 변수가 
 
 공식 안내: [사이트 추가 및 연결](https://support.google.com/adsense/answer/12169212), [ads.txt 관리](https://support.google.com/adsense/answer/7532444), [CMP 설정](https://support.google.com/adsense/answer/7670013)
 
+### Google Search Console 인증
+
+Search Console 속성 유형에 따라 인증 방법이 다릅니다.
+
+1. Search Console에서 속성을 추가합니다.
+2. `Domain` 속성은 Google이 제공한 TXT 레코드를 DNS 관리 화면에 추가합니다. DNS 레코드 변경은 저장소에서 자동 처리할 수 없습니다.
+3. `URL-prefix` 속성에서 HTML 파일 인증을 선택하면 Google이 제공한 파일명과 내용을 그대로 Actions Variables에 등록합니다.
+
+```dotenv
+SEARCH_CONSOLE_VERIFICATION_FILE=google1234567890abcdef.html
+SEARCH_CONSOLE_VERIFICATION_CONTENT=google-site-verification: google1234567890abcdef
+SEARCH_CONSOLE_VERIFICATION=<Search Console content value>
+```
+
+4. `main` 배포 후 `https://사이트주소/google1234567890abcdef.html`가 로그인 없이 HTTP 200으로 열리는지 확인하고 Search Console에서 Verify를 누릅니다.
+
+파일명과 내용은 Search Console이 발급한 값과 정확히 일치해야 합니다. 두 변수가 모두 설정된 경우에만 배포 결과 루트에 파일이 생성됩니다. HTML 파일 인증은 URL-prefix 속성에 사용할 수 있고 Domain 속성에는 사용할 수 없습니다.
+
+Meta 태그 방식을 사용할 때는 `SEARCH_CONSOLE_VERIFICATION`에 Search Console이 발급한 content 값만 설정합니다. 그러면 모든 페이지의 `<head>`에 다음 태그가 생성됩니다.
+
+```html
+<meta name="google-site-verification" content="<Search Console content value>" />
+```
+
+### AdSense ads.txt 인증
+
+`ADSENSE_ACCOUNT=ca-pub-...`를 Actions Variable에 설정하면 배포 시 루트 `ads.txt`가 다음 형식으로 생성됩니다.
+
+```text
+google.com, pub-<16-digit-publisher-id>, DIRECT, f08c47fec0942fa0
+```
+
+배포 후 `https://사이트주소/ads.txt`가 로그인 없이 HTTP 200으로 열리는지 확인합니다. AdSense Sites에서 사이트를 선택하고 ads.txt 상태가 갱신될 때까지 기다린 뒤 필요하면 Check for updates를 누릅니다. Google 크롤링과 상태 반영에는 며칠이 걸릴 수 있습니다.
+
 ## 콘텐츠 작업
 
 ### 수동 MDX

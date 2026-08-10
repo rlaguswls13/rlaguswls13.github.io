@@ -53,6 +53,7 @@ jobs:
           BASE_PATH: ${{ steps.resolve-pages-path.outputs.base_path }}
           ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
+          SEARCH_CONSOLE_VERIFICATION: ${{ vars.SEARCH_CONSOLE_VERIFICATION }}
         run: npm run build:no-fetch
       - name: Publish AdSense ads.txt when configured
         if: ${{ vars.ADSENSE_ACCOUNT != '' }}
@@ -61,6 +62,21 @@ jobs:
         run: |
           publisher_id="${ADSENSE_ACCOUNT#ca-}"
           printf 'google.com, %s, DIRECT, f08c47fec0942fa0\n' "$publisher_id" > out/ads.txt
+      - name: Publish Search Console verification file when configured
+        if: ${{ vars.SEARCH_CONSOLE_VERIFICATION_FILE != '' && vars.SEARCH_CONSOLE_VERIFICATION_CONTENT != '' }}
+        env:
+          SEARCH_CONSOLE_VERIFICATION_FILE: ${{ vars.SEARCH_CONSOLE_VERIFICATION_FILE }}
+          SEARCH_CONSOLE_VERIFICATION_CONTENT: ${{ vars.SEARCH_CONSOLE_VERIFICATION_CONTENT }}
+        run: |
+          case "$SEARCH_CONSOLE_VERIFICATION_FILE" in
+            google*.html) ;;
+            *) echo "SEARCH_CONSOLE_VERIFICATION_FILE must be the exact google*.html filename from Search Console." >&2; exit 1 ;;
+          esac
+          if [ "$SEARCH_CONSOLE_VERIFICATION_FILE" != "$(basename "$SEARCH_CONSOLE_VERIFICATION_FILE")" ]; then
+            echo "SEARCH_CONSOLE_VERIFICATION_FILE must not contain a directory path." >&2
+            exit 1
+          fi
+          printf '%s' "$SEARCH_CONSOLE_VERIFICATION_CONTENT" > "out/$SEARCH_CONSOLE_VERIFICATION_FILE"
       - uses: actions/configure-pages@v5
       - name: Upload verified Pages artifact
         uses: actions/upload-pages-artifact@v3

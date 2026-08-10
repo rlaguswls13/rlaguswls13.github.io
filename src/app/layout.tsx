@@ -8,12 +8,16 @@ import { buildStaticRouteMetadata } from "@/lib/seo/routes";
 
 const adsenseAccount = process.env.ADSENSE_ACCOUNT;
 const ga4MeasurementId = process.env.GA4_PROPERTY_ID;
+const searchConsoleVerification = process.env.SEARCH_CONSOLE_VERIFICATION;
 const themeBootstrap = `(() => { let theme; try { theme = localStorage.getItem("theme"); } catch { theme = null; } if (theme === "dark") document.documentElement.classList.replace("theme-light", "theme-dark"); })();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   ...buildStaticRouteMetadata("root").metadata,
-  ...(adsenseAccount ? { other: { "google-adsense-account": adsenseAccount } } : {}),
+  other: {
+    ...(adsenseAccount ? { "google-adsense-account": adsenseAccount } : {}),
+    ...(searchConsoleVerification ? { "google-site-verification": searchConsoleVerification } : {}),
+  },
 };
 
 export default function RootLayout({
