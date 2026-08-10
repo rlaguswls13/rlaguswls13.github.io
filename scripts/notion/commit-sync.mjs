@@ -1,8 +1,9 @@
+import fs from "node:fs";
 import { execFileSync, spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const CONTENT_PATHS = ["src/content", "src/data", "public/images"];
+const CONTENT_PATHS = ["src/content", "src/data", "public/images", "public/thumnail"];
 
 export function commitNotionSync(cwd = process.cwd()) {
   execFileSync("git", ["config", "user.name", "github-actions[bot]"], { cwd });
@@ -11,7 +12,12 @@ export function commitNotionSync(cwd = process.cwd()) {
     ["config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
     { cwd },
   );
-  execFileSync("git", ["add", "--all", "--", ...CONTENT_PATHS], { cwd });
+  const existingPaths = CONTENT_PATHS.filter((relativePath) => fs.existsSync(path.join(cwd, relativePath)));
+  if (existingPaths.length === 0) {
+    console.log("No scoped Notion content paths exist.");
+    return false;
+  }
+  execFileSync("git", ["add", "--all", "--", ...existingPaths], { cwd });
 
   const diff = spawnSync("git", ["diff", "--cached", "--quiet"], { cwd, stdio: "inherit" });
   if (diff.status === 0) {

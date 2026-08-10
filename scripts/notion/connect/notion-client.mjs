@@ -15,6 +15,9 @@ export class NotionClient {
 
   async request(endpoint, options = {}, retries = 3) {
     const url = endpoint.startsWith("http") ? endpoint : `${this.baseUrl}${endpoint}`;
+    if (new URL(url).origin !== new URL(this.baseUrl).origin) {
+      throw new Error("Notion API endpoint must use the configured API host.");
+    }
     
     // Throttle requests to respect Notion rate limits
     const now = Date.now();

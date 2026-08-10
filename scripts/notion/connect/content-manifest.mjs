@@ -23,7 +23,8 @@ export function normalizeManagedPath(relativePath) {
   if (/[\u0000<>:"|?*]/u.test(normalized)) throw new ManagedPathError(`Invalid managed path: ${relativePath}`);
   const contentPath = /^src\/content\/(devlog|projects)\/.+\.mdx$/u.test(normalized);
   const assetPath = /^public\/(images|thumnail)\/.+$/u.test(normalized);
-  if (!contentPath && !assetPath && !FIXED_GENERATED_PATH_SET.has(normalized)) {
+  const manifestPath = normalized === "src/data/config/notion-manifest.json";
+  if (!contentPath && !assetPath && !manifestPath && !FIXED_GENERATED_PATH_SET.has(normalized)) {
     throw new ManagedPathError(`Unapproved managed path: ${relativePath}`);
   }
   return normalized;

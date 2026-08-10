@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { compile } from "@mdx-js/mdx";
 import { buildMdxDocument } from "../transfer/json-to-mdx.mjs";
 import { pageToMdxBody } from "../transfer/notion-blocks-to-mdx.mjs";
+import { inspectThumbnail, requiredThumbnailPath } from "../../thumbnail/thumbnail-contract.mjs";
 
 const PAGE_PATHS = {
   journal: {
@@ -107,6 +108,17 @@ export async function syncPageContent(client, pageName, rows, options = {}) {
   const managedPaths = new Set();
   for (const row of rows) {
     const filePath = contentPathFor(pageName, row, root);
+    if (options.requireThumbnails) {
+      const sourceId = normalizeSourceId(row.source_id || row.page_id);
+      const category = pageName === "journal" && row.category === "personal" ? "blog" : String(row.category || "uncategorized");
+      const thumbnailPath = requiredThumbnailPath(pageName === "project" ? "projects" : "devlog", category, sourceId);
+      const thumbnail = fs.existsSync(path.join(root, ...thumbnailPath.split("/")))
+        ? fs.readFileSync(path.join(root, ...thumbnailPath.split("/")))
+        : null;
+      const inspection = inspectThumbnail(thumbnail, thumbnailPath);
+      if (!inspection.valid) throw new Error(`Thumbnail contract failed for ${sourceId}: ${inspection.issues.join(", ")}; action=${inspection.action}.`);
+    }
+
     const revision = String(row.last_edited_time || "");
     if (!options.force && fs.existsSync(filePath) && revision && currentRevision(filePath) === revision) {
       counts.skip += 1;

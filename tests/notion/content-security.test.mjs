@@ -4,6 +4,7 @@ import path from "node:path";
 import { compile } from "@mdx-js/mdx";
 import { describe, expect, it } from "vitest";
 import { pageToMdxBody, richTextToMarkdown } from "../../scripts/notion/transfer/notion-blocks-to-mdx.mjs";
+import { convertMdxComponents } from "../../scripts/notion/transfer/component-mappings.mjs";
 
 const approvedImageUrl = "https://prod-files-secure.s3.us-west-2.amazonaws.com/image.png";
 
@@ -21,6 +22,19 @@ function imageClient(url = approvedImageUrl) {
 }
 
 describe("Notion content security boundaries", () => {
+  it("Given Notion structural markers When converted Then only approved MDX components are emitted", async () => {
+    // Given: table, collapse, and diagram-like source markers.
+    const source = "<notion-table><notion-toggle title=\"Details\">body</notion-toggle></notion-table>";
+
+    // When: the production component mapping is applied.
+    const converted = convertMdxComponents(source);
+
+    // Then: the known mapping is used and arbitrary JSX names are not introduced.
+    expect(converted).toContain("<NotionTable>");
+    expect(converted).toContain("<NotionToggle");
+    await expect(compile(converted)).resolves.toBeDefined();
+  });
+
   it("Given rich text with Markdown and MDX payloads When converted Then Markdown remains and JSX expressions become text", async () => {
     // Given: Notion rich text containing ordinary Markdown plus MDX JSX and expression payloads.
     const richText = [{ plain_text: "[safe](https://example.com) <script>alert(1)</script> {process.env.SECRET}" }];
@@ -33,6 +47,17 @@ describe("Notion content security boundaries", () => {
     expect(markdown).not.toContain("<script>");
     expect(markdown).not.toContain("{process.env.SECRET}");
     await expect(compile(markdown)).resolves.toBeDefined();
+  });
+
+  it("Given an unsafe bookmark URL When converted Then it is omitted", async () => {
+    const client = {
+      async getBlockChildren() {
+        return [{ id: "bookmark", type: "bookmark", has_children: false, bookmark: { url: "javascript:alert(1)" } }];
+      },
+    };
+    const body = await pageToMdxBody(client, "page");
+    expect(body).not.toContain("javascript:");
+    await expect(compile(body)).resolves.toBeDefined();
   });
 
   it("Given an unapproved image host When a page is converted Then no network request occurs", async () => {

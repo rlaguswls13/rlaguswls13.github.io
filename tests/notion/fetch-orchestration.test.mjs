@@ -234,6 +234,33 @@ describe("Notion fetch orchestration", () => {
     expect(oldManifest(root)).toEqual(before);
   });
 
+  it("Given an unknown Notion column When fetch starts Then quarantine is written and no writer runs", async () => {
+    // Given
+    const root = fixtureRoot();
+    let writerCalls = 0;
+
+    // When
+    const action = main({
+      root,
+      env: configuredEnv(),
+      createClient: () => ({ queryCollection: async () => [{
+        id: ids.journal,
+        properties: {
+          title: { type: "title", title: [{ plain_text: "Fixture" }] },
+          category: { type: "select", select: { name: "personal" } },
+          created_date: { type: "date", date: { start: "2026-08-01" } },
+          unsafe_column: { type: "rich_text", rich_text: [] },
+        },
+      }] }),
+      syncPageContentFn() { writerCalls += 1; },
+    });
+
+    // Then
+    await expect(action).rejects.toThrow(/quarantine/i);
+    expect(writerCalls).toBe(0);
+    expect(fs.existsSync(path.join(root, "artifacts/notion-quarantine/report.json"))).toBe(true);
+  });
+
   it("Given a hung writer owns the lock When another fetch starts Then it cannot construct a client", async () => {
     // Given
     const root = fixtureRoot();

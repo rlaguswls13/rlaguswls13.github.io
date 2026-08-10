@@ -185,7 +185,8 @@ async function blockMarkup(client, block, indentLevel, context) {
     return `\n<notion-image src="${escapeAttribute(url)}" caption="${escapeAttribute(caption)}" />\n\n`;
   }
   if (block.type === "bookmark" || block.type === "embed" || block.type === "link_preview") {
-    return data.url ? `[🔗 ${data.url}](${data.url})\n\n` : "";
+    const href = data.url ? safeMarkdownHref(data.url) : "";
+    return href ? `[🔗 ${escapeMdxText(data.url)}](${href})\n\n` : "";
   }
   if (block.type === "child_page") return `## ${escapeMdxText(data.title || "Untitled")}\n\n`;
   if (block.type === "table_of_contents") return "";

@@ -5,6 +5,7 @@ import { NotionClient } from "./notion-client.mjs";
 import { syncPageContent } from "./sync-pages.mjs";
 import { parseSourceConfiguration } from "./source-config.mjs";
 import { runFetchOrchestration } from "./fetch-orchestration.mjs";
+import { canonicalColumnName } from "./schema-contract.mjs";
 
 const ROOT = process.cwd();
 export const SPECIAL_CASES = {
@@ -117,9 +118,9 @@ export function propertyValue(property) {
   return undefined;
 }
 
-export function rowFromProperties(properties = {}) {
+export function rowFromProperties(properties = {}, pageName = "") {
   return Object.fromEntries(Object.entries(properties).flatMap(([columnName, property]) => {
-    const key = columnName.trim();
+    const key = pageName ? canonicalColumnName(pageName, columnName) : columnName.trim();
     const value = propertyValue(property);
     return key && value !== undefined ? [[key, value]] : [];
   }));
@@ -143,7 +144,7 @@ export function applySpecialCases(pageName, sourceRow, definitions = SPECIAL_CAS
 }
 
 export function pageToIndexRow(pageName, page, definitions = SPECIAL_CASES) {
-  const row = applySpecialCases(pageName, rowFromProperties(page.properties), definitions);
+  const row = applySpecialCases(pageName, rowFromProperties(page.properties, pageName), definitions);
   return {
     ...row,
     page_id: page.id,
@@ -171,6 +172,8 @@ export async function main(options = {}) {
     pageToIndexRow,
     force,
     allowEmpty,
+    requireThumbnails: options.requireThumbnails ?? true,
+    previousRowsByGroup: options.previousRowsByGroup,
   });
 }
 

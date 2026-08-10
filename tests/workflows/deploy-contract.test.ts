@@ -68,10 +68,9 @@ describe("GitHub Pages deployment contracts", () => {
     expect(fetchNotion.match(/run: npm run fetch-notion/g)).toHaveLength(1);
     expect(fetchNotion).toContain("name: github-pages");
     expect(fetchNotion).toContain("NOTION_TOKEN: \${{ secrets.NOTION_TOKEN }}");
-    expect(fetchNotion).toContain("NOTION_PAGE_ID_JOURNAL: \${{ secrets.NOTION_PAGE_ID_JOURNAL }}");
-    expect(fetchNotion).toContain("NOTION_PAGE_ID_DEVLOG: \${{ secrets.NOTION_PAGE_ID_DEVLOG }}");
-    expect(fetchNotion).toContain("NOTION_PAGE_ID_PROJECT: \${{ secrets.NOTION_PAGE_ID_PROJECT }}");
-    expect(fetchNotion).not.toContain("NOTION_DATA_SOURCE_ID_");
+    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_JOURNAL: \${{ secrets.NOTION_DATA_SOURCE_ID_JOURNAL }}");
+    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_DEVLOG: \${{ secrets.NOTION_DATA_SOURCE_ID_DEVLOG }}");
+    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_PROJECT: \${{ secrets.NOTION_DATA_SOURCE_ID_PROJECT }}");
     expect(fetchNotion).not.toContain("npm run validate:content");
     expect(fetchNotion).toContain("node scripts/notion/commit-sync.mjs");
   });

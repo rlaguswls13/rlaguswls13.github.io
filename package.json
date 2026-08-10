@@ -32,6 +32,7 @@
     "review:quality": "node scripts/quality/review-quality.mjs",
     "review:manual": "node scripts/quality/review-manual.mjs",
     "review:scope": "node scripts/quality/review-scope.mjs",
+    "session:end": "node project/hooks/session-end.mjs",
     "audit:react": "npx react-doctor@0.9.4 . --json --category Performance --category Accessibility --blocking warning --no-telemetry --json-out artifacts/react-doctor.json -y",
     "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
