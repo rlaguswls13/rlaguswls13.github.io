@@ -204,3 +204,30 @@ Resolved Notion journal select-slug quarantine, missing thumbnails, staging asse
 - `tests/fixtures/list-html.mjs`
 - `public/thumnail/devlog/tech_study/3b819946ca7680439eecd5fe23528952.webp`
 - `public/thumnail/devlog/tech_study/3b919946ca7680d9a4f3c5389ea08e85.webp`
+
+## 2026-08-11T10:27:14.971Z | local
+
+### Summary
+Replaced two dark neon devlog thumbnails with bright graph-paper navy/cobalt thumbnails matching existing style.
+
+### Decisions
+- Use existing thumbnails as style references for generated replacements.
+- Keep stable Notion-ID filenames and 576x384 WebP RGB output.
+
+### Verification
+- thumbnail contract: PASS, 2/2
+- validate:content: PASS, 87 files
+- lint:ci: PASS
+- typecheck: PASS
+- unit: PASS, 25 files and 157 tests
+- build:local: PASS with temporary non-secret GISCUS_INFO
+- validate:export: PASS, 95 routes and 0 blockers
+- independent visual QA reviewer A: PASS
+
+### Risks
+- Generated images are intentionally newly illustrated but now follow the established thumbnail visual language.
+
+### Changed project surfaces
+- `public/thumnail/devlog/tech_study/3b819946ca7680439eecd5fe23528952.webp`
+- `public/thumnail/devlog/tech_study/3b919946ca7680d9a4f3c5389ea08e85.webp`
+- `.agent/session-handoff.md`
