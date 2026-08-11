@@ -105,3 +105,40 @@ AGENTS.md? Kappa LLM RAG ???? agent ?? ??? ?????. metadata, retrieval cues, cano
 - `.agent/session-handoff.md`
 - `project/skills/session-handoff-workflow/SKILL.md`
 - `project/skills/session-handoff-workflow/agents/openai.yaml`
+
+## 2026-08-11T09:13:26.311Z | global-session-handoff-registration
+
+### Summary
+Registered the global session-handoff-workflow skill and applied it to this session.
+
+### Decisions
+- Keep repository project skill as the canonical workflow and use the global skill as the compact router.
+
+### Verification
+- Global SKILL.md frontmatter: PASS
+- agents/openai.yaml metadata: PASS
+- targeted session hook tests: PASS 7/7
+
+### Risks
+- Python init_skill.py could not run because only the Microsoft Store Python stub is available; files were created using the required template shape.
+
+### Changed project surfaces
+- `.agent/session-handoff.md`
+- `C:/Users/rlagu/.codex/skills/session-handoff-workflow`
+
+## 2026-08-11T09:15:50.867Z | codex-2026-08-11-handoff
+
+### Summary
+Finished session handoff validation; baton remains ready with existing validation failures recorded.
+
+### Verification
+- npm run lint:ci: PASS
+- npm run typecheck: PASS
+- npm run validate:content: FAIL: pre-existing backup MDX frontmatter id mismatch
+- npm run test:unit -- --run: FAIL: 149 passed, 4 existing export contract failures
+
+### Risks
+- Existing content and export contract failures remain unresolved.
+
+### Changed project surfaces
+- `.agent/session-handoff.md`
