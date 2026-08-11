@@ -18,11 +18,20 @@ package: "spring"
 notionUrl: "https://app.notion.com/p/Spring-Quartz-HA-3b019946ca7680b584e1c59c19e022a9"
 ---
 
+## 목차
+
+- [1. 메커니즘 비교: Spring Scheduler vs Quartz Scheduler](#1-메커니즘-비교-spring-scheduler-vs-quartz-scheduler)
+- [2. Quartz 고가용성(HA) 및 클러스터링 구조의 한계](#2-quartz-고가용성ha-및-클러스터링-구조의-한계)
+- [3. 문제 해결: 역할 분리와 쿼리 파티셔닝 기반 분산 처리](#3-문제-해결-역할-분리와-쿼리-파티셔닝-기반-분산-처리)
+- [4. 인사이트: HA와 LB는 별개의 문제](#4-인사이트-ha와-lb는-별개의-문제)
+
 고가용성(HA) 및 유사 무중단 서비스를 요구하는 고객사 환경에 맞춰 복합 이중화 클러스터링 엔진을 설치했습니다.
 
 그 결과 스케줄링 중복 등록 현상과 특정 노드로의 작업 쏠림 현상이 동시에 발생했습니다.
 
 기존에 적용되어 있던 Time-based Scheduler와 Quartz의 메커니즘을 면밀히 분석하고, 역할(등록/실행) 분리와 쿼리 기반 균등 분배를 통해 문제를 해결한 과정을 공유합니다.
+
+<a id="1-메커니즘-비교-spring-scheduler-vs-quartz-scheduler"></a>
 
 ## 1. 메커니즘 비교: Spring Scheduler vs Quartz Scheduler
 
@@ -42,7 +51,9 @@ JDBC JobStore를 통해 공유 DB에 스케줄 정보를 관리하므로 서버 
 
 그러나 기본 클러스터링 방식 자체에도 한계가 존재했습니다.
 
-<QuartzMechanism />
+&lt;QuartzMechanism />
+
+<a id="2-quartz-고가용성ha-및-클러스터링-구조의-한계"></a>
 
 ## 2. Quartz 고가용성(HA) 및 클러스터링 구조의 한계
 
@@ -64,7 +75,9 @@ Lock을 획득한 노드에 장애가 발생하면 다른 노드가 자동으로
 
 나머지 노드들은 사실상 유휴 상태로 전락하여 클러스터링의 의미가 퇴색되었습니다.
 
-<QuartzHAClustering />
+&lt;QuartzHAClustering />
+
+<a id="3-문제-해결-역할-분리와-쿼리-파티셔닝-기반-분산-처리"></a>
 
 ## 3. 문제 해결: 역할 분리와 쿼리 파티셔닝 기반 분산 처리
 
@@ -87,7 +100,9 @@ Quartz의 기본 클러스터링 Lock 메커니즘 대신, 각 Worker 엔진이 
 
 4대의 서버가 균등하게 리소스를 소모하도록 유도하여 특정 서버의 과부하 없이 시스템 전체 효율을 극대화했습니다.
 
-<QuartzSharding />
+&lt;QuartzSharding />
+
+<a id="4-인사이트-ha와-lb는-별개의-문제"></a>
 
 ## 4. 인사이트: HA와 LB는 별개의 문제
 

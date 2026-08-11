@@ -28,8 +28,8 @@ export function acquireContentLock(root) {
     try {
       const owner = JSON.parse(fs.readFileSync(lockPath, "utf8"));
       stale = !Number.isInteger(owner.pid) || !isProcessAlive(owner.pid);
-    } catch (readError) {
-      if (!(readError instanceof Error)) throw readError;
+    } catch {
+      throw new ContentLockError(`Malformed Notion content lock: ${lockPath}`);
     }
     if (!stale) throw new ContentLockError(`Notion content lock is held: ${lockPath}`);
     fs.unlinkSync(lockPath);

@@ -17,96 +17,165 @@ tags: ["Tomcat","WAS","Server","SSL","Security"]
 package: "was"
 notionUrl: "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87f7a4530"
 ---
-import Indent from '@/components/ui/Indent'
 
-톰캣(Apache Tomcat)은 설정 파일을 어떻게 관리하느냐에 따라 시스템 업데이트 생산성과 인프라 안정성이 완전히 달라집니다.  
-`catalina.sh` 원본을 수정하지 않고 `setenv.sh`를 별도로 운영하는 것은 업계 표준(Best Practice)입니다.  
+## 목차
+
+- [1. 반드시 봐야 하는 중요 설정 파일](#1-반드시-봐야-하는-중요-설정-파일)
+- [2. setenv.sh 활성화 및 CATALINA_OPTS 사용 이유](#2-setenvsh-활성화-및-catalinaopts-사용-이유)
+  - [catalina.sh를 건드리지 않고 setenv.sh를 써야 하는가?](#catalinash를-건드리지-않고-setenvsh를-써야-하는가)
+  - [JAVA_OPTS 대신 CATALINA_OPTS를 써야 하는가?](#javaopts-대신-catalinaopts를-써야-하는가)
+  - [실제 setenv.sh 작성 템플릿 예시 (tomcat/bin/setenv.sh)](#실제-setenvsh-작성-템플릿-예시-tomcatbinsetenvsh)
+- [3. 톰캣 SSL(HTTPS) 설정 방법](#3-톰캣-sslhttps-설정-방법)
+  - [① SSL 인증서 파일 준비](#1-ssl-인증서-파일-준비)
+  - [② server.xml 수정 (conf/server.xml)](#2-serverxml-수정-confserverxml)
+  - [보안 튜닝 포인트](#보안-튜닝-포인트)
+
+톰캣(Apache Tomcat)은 설정 파일을 어떻게 관리하느냐에 따라 시스템 업데이트 생산성과 인프라 안정성이 완전히 달라집니다.
+
+`catalina.sh` 원본을 수정하지 않고 `setenv.sh`를 별도로 운영하는 것은 업계 표준(Best Practice)입니다.
+
 본 문서에서는 중요 설정 파일 일람, `setenv` 활용법 및 옵션 분리 이유, 그리고 최신 SSL 설정 방법까지 세분화하여 정리합니다.
 
----
+
+<NotionDivider />
+
+<a id="1-반드시-봐야-하는-중요-설정-파일"></a>
 
 ## 1. 반드시 봐야 하는 중요 설정 파일
 
-<Indent>
-
 톰캣의 `conf/` 디렉터리에는 `server.xml` 외에도 각자의 명확한 역할을 가진 핵심 설정 파일들이 있습니다.
 
-<div className="data-table-container">
-  <table className="data-table">
-    <thead>
-      <tr>
-        <th style={{ width: "18%", whiteSpace: "nowrap" }}>파일명</th>
-        <th style={{ width: "22%" }}>핵심 역할</th>
-        <th style={{ width: "60%" }}>중요 관리 포인트 (보안 및 운영)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style={{ whiteSpace: "nowrap" }}><CodePopup name="server.xml" /></td>
-        <td>톰캣 서버 주 설정 파일</td>
-        <td>
-          • 서버의 포트, 커넥터, 엔진, 호스트 등 핵심 인프라 구조 정의<br />
-          • 포트 관리: 서비스 포트(HTTP: 8080, HTTPS: 443) 및 톰캣 종료 포트(Shutdown: 8005) 변경/보안 설정<br />
-          • 성능 최적화: Connector 태그 내 최대 스레드(maxThreads), 대기 큐(acceptCount) 설정<br />
-          • 보안: Server 토큰 숨기기(버전 정보 노출 방지) 및 취약한 SSL/TLS 프로토콜 비활성화
-        </td>
-      </tr>
-      <tr>
-        <td style={{ whiteSpace: "nowrap" }}><CodePopup name="web.xml" /></td>
-        <td>전역 웹 애플리케이션 설정</td>
-        <td>
-          • 모든 웹 앱에 공통 적용되는 기본 서블릿, MIME 타입, 세션 정의<br />
-          • 디렉터리 리스팅 방지: listings 설정을 false로 유지하여 웹 서버 내부 파일 목록 노출 차단<br />
-          • 세션 관리: session-timeout을 전역 설정하여 일정 시간 이후 세션 자동 만료<br />
-          • 에러 페이지 처리: 404, 500 등 예외 발생 시 WAS 버전이 노출되지 않도록 공통 에러 페이지 지정<br />
-          • **Spring 연동:** 현대의 엔터프라이즈 환경에서는 web.xml의 전역 설정을 직접 수정하기보다, 프로젝트 내부 Spring 영역(WEB-INF/web.xml 또는 Java Config)에서 처리하도록 세팅합니다.
-        </td>
-      </tr>
-      <tr>
-        <td style={{ whiteSpace: "nowrap" }}><CodePopup name="context.xml" /></td>
-        <td>웹 애플리케이션 컨텍스트 설정</td>
-        <td>
-          • 모든 웹 에셋이 공유하는 컨텍스트 환경 및 외부 리소스 정의<br />
-          • 자원 관리: DB 커넥션 풀(DataSource)이나 JNDI 리소스를 전역/로컬로 정의<br />
-          • 자동 리로드: WatchedResource 설정을 통해 소스코드나 설정 변경 시 컨테이너가 자동 리로드하도록 감시 세팅 가능 (운영 환경에서는 성능 저하 우려로 주의 필요)<br />
-          • **Spring 연동:** 외부 리소스 및 커넥션 풀 설정 등은 프로젝트 이식성을 위해 톰캣 전역 context.xml 대신 Spring Boot의 application.yml 이나 Spring Profile 등을 통해 내부에서 처리하는 것을 권장합니다.
-        </td>
-      </tr>
-      <tr>
-        <td style={{ whiteSpace: "nowrap" }}><CodePopup name="logging.properties" /></td>
-        <td>톰캣 자체 로그 제어</td>
-        <td>
-          • 카탈리나, 로컬호스트 등 톰캣 엔진 내부 로그의 출력 방식 정의<br />
-          • 디스크 풀(Full) 장애 예방: 로그 레벨(INFO, DEBUG) 제어 및 파일당 최대 용량, 보관 주기 관리<br />
-          • 운영 환경 주의: 애플리케이션 내부에서 Logback, Log4j2 등을 별도로 사용하는 경우, 중복 로깅으로 인한 리소스 낭비를 막기 위해 톰캣 자체 로그 설정 최적화 필요
-        </td>
-      </tr>
-      <tr>
-        <td style={{ whiteSpace: "nowrap" }}><CodePopup name="tomcat-users.xml" /></td>
-        <td>관리자 콘솔 권한 제어</td>
-        <td>
-          • 톰캣 매니저 GUI 접근 계정 및 역할(Role) 정의<br />
-          • 운영 환경 필수 수칙: 실무 운영 서버에서는 무단 접근을 막기 위해 내부 기본 계정을 반드시 주석 처리하거나, 매니저 앱(manager, host-manager) 자체를 삭제하는 것이 원칙
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>
+&lt;th style=&#123;&#123; width: "18%", whiteSpace: "nowrap" &#125;&#125;>파일명&lt;/th>
+&lt;th style=&#123;&#123; width: "22%" &#125;&#125;>핵심 역할&lt;/th>
+&lt;th style=&#123;&#123; width: "60%" &#125;&#125;>중요 관리 포인트 (보안 및 운영)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style=&#123;&#123; whiteSpace: "nowrap" &#125;&#125;>
 
-> ** 실무 설계 패턴 (Spring 기반 처리 권장)**  
-> 전역 `web.xml`과 `context.xml`은 톰캣 컨테이너 전역 설정을 규정하지만, 현대의 **Spring 및 Spring Boot** 기반 프로젝트에서는 환경 독립성과 인프라 이식성을 극대화하기 위해 **톰캣의 전역 설정 파일들을 거의 수정하지 않고 유지**합니다.  
-> 즉, `web.xml`과 `context.xml`의 주요 설정들은 주로 **프로젝트 내부 Spring(또는 Spring Boot) 설정**에서 처리하도록 세팅합니다. 구체적으로는 프로젝트 내부의 `WEB-INF/web.xml`이나 스프링의 `Java Config(Configuration)` 클래스, 그리고 스프링 부트의 `application.yml` 설정을 통해 애플리케이션 내부 레벨에서 로컬 커넥션 풀(DataSource)과 자원 필터들을 선언하고 직접 제어하는 것이 표준 아키텍처 모델입니다.
+> [블로그 전용 코드 팝업: 원본 MDX 확인]
+&lt;/td>
+&lt;td>톰캣 서버 주 설정 파일&lt;/td>
+&lt;td>
+• 서버의 포트, 커넥터, 엔진, 호스트 등 핵심 인프라 구조 정의
 
-</Indent>
 
----
+```text
+      • 포트 관리: 서비스 포트(HTTP: 8080, HTTPS: 443) 및 톰캣 종료 포트(Shutdown: 8005) 변경/보안 설정
 
-## 2. setenv.sh 활성화 및 CATALINA_OPTS 사용 이유
+      • 성능 최적화: Connector 태그 내 최대 스레드(maxThreads), 대기 큐(acceptCount) 설정
 
-<Indent>
+      • 보안: Server 토큰 숨기기(버전 정보 노출 방지) 및 취약한 SSL/TLS 프로토콜 비활성화
+    </td>
+  </tr>
+  <tr>
+    <td style={{ whiteSpace: "nowrap" }}>
+```
+
+> [블로그 전용 코드 팝업: 원본 MDX 확인]
+&lt;/td>
+&lt;td>전역 웹 애플리케이션 설정&lt;/td>
+&lt;td>
+• 모든 웹 앱에 공통 적용되는 기본 서블릿, MIME 타입, 세션 정의
+
+
+```text
+      • 디렉터리 리스팅 방지: listings 설정을 false로 유지하여 웹 서버 내부 파일 목록 노출 차단
+
+      • 세션 관리: session-timeout을 전역 설정하여 일정 시간 이후 세션 자동 만료
+
+      • 에러 페이지 처리: 404, 500 등 예외 발생 시 WAS 버전이 노출되지 않도록 공통 에러 페이지 지정
+
+      • **Spring 연동:** 현대의 엔터프라이즈 환경에서는 web.xml의 전역 설정을 직접 수정하기보다, 프로젝트 내부 Spring 영역(WEB-INF/web.xml 또는 Java Config)에서 처리하도록 세팅합니다.
+    </td>
+  </tr>
+  <tr>
+    <td style={{ whiteSpace: "nowrap" }}>
+```
+
+> [블로그 전용 코드 팝업: 원본 MDX 확인]
+&lt;/td>
+&lt;td>웹 애플리케이션 컨텍스트 설정&lt;/td>
+&lt;td>
+• 모든 웹 에셋이 공유하는 컨텍스트 환경 및 외부 리소스 정의
+
+
+```text
+      • 자원 관리: DB 커넥션 풀(DataSource)이나 JNDI 리소스를 전역/로컬로 정의
+
+      • 자동 리로드: WatchedResource 설정을 통해 소스코드나 설정 변경 시 컨테이너가 자동 리로드하도록 감시 세팅 가능 (운영 환경에서는 성능 저하 우려로 주의 필요)
+
+      • **Spring 연동:** 외부 리소스 및 커넥션 풀 설정 등은 프로젝트 이식성을 위해 톰캣 전역 context.xml 대신 Spring Boot의 application.yml 이나 Spring Profile 등을 통해 내부에서 처리하는 것을 권장합니다.
+    </td>
+  </tr>
+  <tr>
+    <td style={{ whiteSpace: "nowrap" }}>
+```
+
+> [블로그 전용 코드 팝업: 원본 MDX 확인]
+&lt;/td>
+&lt;td>톰캣 자체 로그 제어&lt;/td>
+&lt;td>
+• 카탈리나, 로컬호스트 등 톰캣 엔진 내부 로그의 출력 방식 정의
+
+
+```text
+      • 디스크 풀(Full) 장애 예방: 로그 레벨(INFO, DEBUG) 제어 및 파일당 최대 용량, 보관 주기 관리
+
+      • 운영 환경 주의: 애플리케이션 내부에서 Logback, Log4j2 등을 별도로 사용하는 경우, 중복 로깅으로 인한 리소스 낭비를 막기 위해 톰캣 자체 로그 설정 최적화 필요
+    </td>
+  </tr>
+  <tr>
+    <td style={{ whiteSpace: "nowrap" }}>
+```
+
+> [블로그 전용 코드 팝업: 원본 MDX 확인]
+&lt;/td>
+&lt;td>관리자 콘솔 권한 제어&lt;/td>
+&lt;td>
+• 톰캣 매니저 GUI 접근 계정 및 역할(Role) 정의
+
+
+```text
+      • 운영 환경 필수 수칙: 실무 운영 서버에서는 무단 접근을 막기 위해 내부 기본 계정을 반드시 주석 처리하거나, 매니저 앱(manager, host-manager) 자체를 삭제하는 것이 원칙
+    </td>
+  </tr>
+</tbody>
+```
+
+&lt;/table>
+&lt;/div>
+
+> ** 실무 설계 패턴 (Spring 기반 처리 권장)**
+
+
+<NotionIndent>
+
+전역 `web.xml`과 `context.xml`은 톰캣 컨테이너 전역 설정을 규정하지만, 현대의 **Spring 및 Spring Boot** 기반 프로젝트에서는 환경 독립성과 인프라 이식성을 극대화하기 위해 **톰캣의 전역 설정 파일들을 거의 수정하지 않고 유지**합니다.
+
+즉, `web.xml`과 `context.xml`의 주요 설정들은 주로 **프로젝트 내부 Spring(또는 Spring Boot) 설정**에서 처리하도록 세팅합니다. 구체적으로는 프로젝트 내부의 `WEB-INF/web.xml`이나 스프링의 `Java Config(Configuration)` 클래스, 그리고 스프링 부트의 `application.yml` 설정을 통해 애플리케이션 내부 레벨에서 로컬 커넥션 풀(DataSource)과 자원 필터들을 선언하고 직접 제어하는 것이 표준 아키텍처 모델입니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="2-setenvsh-활성화-및-catalinaopts-사용-이유"></a>
+
+## 2. [setenv.sh](http://setenv.sh/) 활성화 및 CATALINA_OPTS 사용 이유
+
+<a id="catalinash를-건드리지-않고-setenvsh를-써야-하는가"></a>
 
 ### catalina.sh를 건드리지 않고 setenv.sh를 써야 하는가?
+
 톰캣의 구동 스크립트인 `catalina.sh`는 실행 시 시스템 내부에 `setenv.sh` 파일이 존재하는지 자동으로 체크하고, 있다면 이를 먼저 읽어 들여 환경 변수로 적용하도록 설계되어 있습니다.
+
 
 ```bash
 # catalina.sh 내부의 실제 동작 로직 예시
@@ -117,12 +186,16 @@ fi
 
 이 방식을 권장하는 결정적인 이유는 **유지보수와 버전 마이그레이션의 안정성** 때문입니다. 톰캣 버전을 패치하거나 보안 업데이트를 위해 바이너리를 통째로 교체할 때, `catalina.sh` 내부에 커스텀 설정을 적어두었다면 덮어쓰기 과정에서 세팅이 증발하거나 업데이트가 꼬이게 됩니다. 반면 `setenv.sh`로 설정을 격리해 두면 톰캣 엔진 버전이 바뀌어도 이 파일 하나만 쏙 복사해 주면 되므로 인프라 관리가 극도로 안전해집니다.
 
+<a id="javaopts-대신-catalinaopts를-써야-하는가"></a>
+
 ### JAVA_OPTS 대신 CATALINA_OPTS를 써야 하는가?
 
-*   **JAVA_OPTS:** 톰캣 구동(start)뿐만 아니라 톰캣 중지(stop) 명령을 내릴 때도 이 옵션이 똑같이 자바 프로세스에 주입됩니다. 또한 해당 서버 환경에서 다른 자바 도구(예: 모니터링 툴, 빌드 스크립트 등)를 실행할 때 전역적으로 영향을 미칠 수 있습니다. 만약 힙 메모리를 크게 잡았다면 톰캣을 끄는 명령(stop)을 내릴 때도 불필요하게 대용량 힙을 할당하려다가 OOM(Out Of Memory) 에러가 나거나 속도가 지연될 수 있습니다.
-*   **CATALINA_OPTS:** 오직 톰캣 서버가 '구동(start/run)'되어 비즈니스 로직을 서빙할 때만 주입되는 **철저하게 격리된 옵션**입니다. 톰캣을 중지하거나 기타 외부 자바 명령어를 실행할 때는 간섭하지 않기 때문에 사이드 이펙트가 전혀 없습니다.
+- **JAVA_OPTS:** 톰캣 구동(start)뿐만 아니라 톰캣 중지(stop) 명령을 내릴 때도 이 옵션이 똑같이 자바 프로세스에 주입됩니다. 또한 해당 서버 환경에서 다른 자바 도구(예: 모니터링 툴, 빌드 스크립트 등)를 실행할 때 전역적으로 영향을 미칠 수 있습니다. 만약 힙 메모리를 크게 잡았다면 톰캣을 끄는 명령(stop)을 내릴 때도 불필요하게 대용량 힙을 할당하려다가 OOM(Out Of Memory) 에러가 나거나 속도가 지연될 수 있습니다.
+- **CATALINA_OPTS:** 오직 톰캣 서버가 '구동(start/run)'되어 비즈니스 로직을 서빙할 때만 주입되는 **철저하게 격리된 옵션**입니다. 톰캣을 중지하거나 기타 외부 자바 명령어를 실행할 때는 간섭하지 않기 때문에 사이드 이펙트가 전혀 없습니다.
+<a id="실제-setenvsh-작성-템플릿-예시-tomcatbinsetenvsh"></a>
 
-### 실제 setenv.sh 작성 템플릿 예시 (`tomcat/bin/setenv.sh`)
+### 실제 [setenv.sh](http://setenv.sh/) 작성 템플릿 예시 (`tomcat/bin/setenv.sh`)
+
 
 ```bash
 #!/bin/sh
@@ -139,34 +212,41 @@ CATALINA_OPTS="${CATALINA_OPTS} -Djava.awt.headless=true"
 export CATALINA_OPTS
 ```
 
-</Indent>
 
----
+<NotionDivider />
+
+<a id="3-톰캣-sslhttps-설정-방법"></a>
 
 ## 3. 톰캣 SSL(HTTPS) 설정 방법
 
-<Indent>
 톰캣(Tomcat 9.x / 10.x 이상)에서는 성능이 느린 전통적인 Java JSSE 방식 대신, **리눅스 자체 OpenSSL 엔진을 활용하여 압도적인 핸드셰이크 성능을 내는 HTTP/2 및 JSSE OpenSSL 인터페이스 설정**을 표준으로 권장합니다.
 
+<a id="1-ssl-인증서-파일-준비"></a>
+
 ### ① SSL 인증서 파일 준비
+
 인증서 발급 기관에서 전달받은 키 파일들을 톰캣 서버 내부의 특정 안전한 경로(예: `conf/ssl/`)에 업로드합니다.
-*   `server.crt` (공개키 및 인증서 체인)
-*   `server.key` (개인키 / 비밀번호가 제거된 복호화 상태 권장)
+
+- `server.crt` (공개키 및 인증서 체인)
+- `server.key` (개인키 / 비밀번호가 제거된 복호화 상태 권장)
+<a id="2-serverxml-수정-confserverxml"></a>
 
 ### ② server.xml 수정 (`conf/server.xml`)
+
 과거의 복잡한 SSL 설정 태그와 달리, 최신 버전 표준은 `Certificate` 하위 태그를 이용해 가독성 높게 명시합니다. 포트 8443 또는 443 커넥터를 찾아 아래 구조로 적용합니다.
 
+
 ```xml
-<Connector port="443" 
+<Connector port="443"
            protocol="org.apache.coyote.http11.Http11NioProtocol"
-           maxThreads="150" 
-           SSLEnabled="true" 
-           scheme="https" 
+           maxThreads="150"
+           SSLEnabled="true"
+           scheme="https"
            secure="true">
-           
+
     <SSLHostConfig protocols="TLSv1.2+TLSv1.3"
                    ciphers="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384">
-        
+
         <Certificate certificateFile="conf/ssl/server.crt"
                      certificateKeyFile="conf/ssl/server.key"
                      type="RSA" />
@@ -174,7 +254,10 @@ export CATALINA_OPTS
 </Connector>
 ```
 
+<a id="보안-튜닝-포인트"></a>
+
 ### 보안 튜닝 포인트
-*   **`protocols="TLSv1.2+TLSv1.3"`**: 보안 취약점이 발견되어 무력화된 구형 프로토콜(TLSv1.0, TLSv1.1)을 명시적으로 거부하고, 최신 보안 규격만 허용하도록 명시합니다.
-*   **`ciphers="..."`**: 암호화 강도가 약한 취약한 알고리즘을 배제하고, 순방향 비밀성(Forward Secrecy)을 보장하는 고강도 GCM 계열의 암호화 스위트(Cipher Suite)만 매핑해 두는 것이 금융권 및 엔터프라이즈 보안 감사 통과의 필수 조건입니다.
-</Indent>
+
+- **`protocols="TLSv1.2+TLSv1.3"`**: 보안 취약점이 발견되어 무력화된 구형 프로토콜(TLSv1.0, TLSv1.1)을 명시적으로 거부하고, 최신 보안 규격만 허용하도록 명시합니다.
+- **`ciphers="..."`**: 암호화 강도가 약한 취약한 알고리즘을 배제하고, 순방향 비밀성(Forward Secrecy)을 보장하는 고강도 GCM 계열의 암호화 스위트(Cipher Suite)만 매핑해 두는 것이 금융권 및 엔터프라이즈 보안 감사 통과의 필수 조건입니다.
+

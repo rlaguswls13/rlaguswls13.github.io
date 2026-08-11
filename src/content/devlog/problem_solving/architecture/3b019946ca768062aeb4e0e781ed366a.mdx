@@ -8,7 +8,7 @@ description: "기존 100% 동기식 처리에서 발생하는 병목을 해결�
 title: "대용량 비동기 API 처리 아키텍처 및 해결 전략"
 page_id: "3b019946-ca76-8062-aeb4-e0e781ed366a"
 source_id: "3b019946ca768062aeb4e0e781ed366a"
-last_edited_time: "2026-08-02T17:35:00.000Z"
+last_edited_time: "2026-08-11T15:52:00.000Z"
 notion_url: "https://app.notion.com/p/API-3b019946ca768062aeb4e0e781ed366a"
 id: "3b019946ca768062aeb4e0e781ed366a"
 sourceId: "3b019946-ca76-8062-aeb4-e0e781ed366a"
@@ -18,11 +18,19 @@ package: "architecture"
 notionUrl: "https://app.notion.com/p/API-3b019946ca768062aeb4e0e781ed366a"
 ---
 
+## 목차
+
+- [1. 전체 API 처리 Flow Diagram](#1-전체-api-처리-flow-diagram)
+- [2. 병목 구간별 해결 전략 및 다이어그램](#2-병목-구간별-해결-전략-및-다이어그램)
+- [3. 결론](#3-결론)
+
 고객 맞춤형 대용량 비동기 API 처리 아키텍처 및 해결 전략입니다.
 
 기존의 100% 동기식 처리(API 수신 -> DB 저장 -> 내부 로직 -> MQ 통신 -> 결과 DB 저장 -> API 결과 전달)으로 처리합니다.
 
 해당 과정에서 데이터 처리 병목으로 인한 반응 레이턴시를 줄이기위해서 비동기 기반의 아키텍처로 개편하는 작업을 진행 했습니다.
+
+<a id="1-전체-api-처리-flow-diagram"></a>
 
 ## 1. 전체 API 처리 Flow Diagram
 
@@ -32,6 +40,8 @@ notionUrl: "https://app.notion.com/p/API-3b019946ca768062aeb4e0e781ed366a"
 B2B 고객의 특성을 살려 즉각적인 최종 결과 응답 대신, **비동기 처리 후 별도 조회**가 가능하도록 설계했습니다.
 
 > [블로그 전용 시각화: ApiFlowDiagram]
+
+<a id="2-병목-구간별-해결-전략-및-다이어그램"></a>
 
 ## 2. 병목 구간별 해결 전략 및 다이어그램
 
@@ -75,6 +85,8 @@ API의 성격에 따라 즉시 처리가 필요한 건은 Fast Channel을 타도
 별도 Response를 통해 서버 담당자에게 알림이 고지되도록 설계하여 빠른 조치가 가능하도록 구현했습니다.
 
 > [블로그 전용 시각화: TimeoutPolicyDiagram]
+
+<a id="3-결론"></a>
 
 ## 3. 결론
 

@@ -18,6 +18,17 @@ package: "migration"
 notionUrl: "https://app.notion.com/p/SVN-NAS-3b019946ca76809c936cd86896eb38db"
 ---
 
+## 목차
+
+- [1. 문제 상황](#1-문제-상황)
+- [2. 해결 방법](#2-해결-방법)
+- [3. 결과](#3-결과)
+- [4. 전제 조건 및 제약 사항](#4-전제-조건-및-제약-사항)
+- [5. 사전 조사 및 인코딩 분석 (Linux CLI)](#5-사전-조사-및-인코딩-분석-linux-cli)
+- [6. Python 기반 인코딩 자동 매핑 및 전환 솔루션](#6-python-기반-인코딩-자동-매핑-및-전환-솔루션)
+- [7. 아키텍처 비교 및 선택 가이드](#7-아키텍처-비교-및-선택-가이드)
+- [8. 최종 결론 및 성과](#8-최종-결론-및-성과)
+
 오래된 SVN 또는 NAS 환경의 데이터를 FTP/SFTP로 이관하는 과정에서 인코딩 설정 오류로 인해 파일이 깨지는 문제를 경험하여 복원하는 방법을 작성해봤습니다.
 
 10만여 건의 대량 파일 환경에서 **실질적 복원율 100%**를 달성한 사전 조사, 인코딩 매칭, 전환 및 검수 프로세스를 정리한 가이드입니다.
@@ -25,22 +36,30 @@ notionUrl: "https://app.notion.com/p/SVN-NAS-3b019946ca76809c936cd86896eb38db"
 
 <NotionDivider />
 
+<a id="1-문제-상황"></a>
+
 ## 1. 문제 상황
 
 전체적 확인이 어려운 저저되던 10년 이상 된 레거시 파일을 새로운 UTF-8 기반 시스템으로 마이그레이션해야 했습니다.
 
 단순 Dump & Restore 방식으로는 한글 텍스트가 모두 깨지거나 열리지 않는 현상이 있었습니다.
 
+<a id="2-해결-방법"></a>
+
 ## 2. 해결 방법
 
 1. **Iconv를 활용한 변환:** 초기에는 리눅스의 `iconv` 유틸리티를 사용하여 덤프 파일 전체를 변환 시도했으나, 일부 특수문자에서 변환 오류가 발생하며 프로세스가 중단되었습니다.
 1. **커스텀 파서 스크립트 작성:** 파이썬을 활용하여 데이터를 한 줄씩 읽고, 변환 중 예외가 발생하는 문자는 대체 문자(Replacement Character)로 치환 후 로깅하는 커스텀 파서를 작성했습니다.
+<a id="3-결과"></a>
+
 ## 3. 결과
 
 수백만 건의 데이터를 손실 없이(특수문자 일부 제외) 성공적으로 UTF-8 환경으로 이전 완료했습니다. 변환 실패 로그를 통해 이후 수작업 검수까지 원활하게 진행할 수 있었습니다.
 
 
 <NotionDivider />
+
+<a id="4-전제-조건-및-제약-사항"></a>
 
 ## 4. 전제 조건 및 제약 사항
 
@@ -54,6 +73,8 @@ notionUrl: "https://app.notion.com/p/SVN-NAS-3b019946ca76809c936cd86896eb38db"
 
 
 <NotionDivider />
+
+<a id="5-사전-조사-및-인코딩-분석-linux-cli"></a>
 
 ## 5. 사전 조사 및 인코딩 분석 (Linux CLI)
 
@@ -75,6 +96,8 @@ find . -type f -name "*.*" -not -path "*/.*" -exec file -i {} + | awk -F'charset
 
 
 <NotionDivider />
+
+<a id="6-python-기반-인코딩-자동-매핑-및-전환-솔루션"></a>
 
 ## 6. Python 기반 인코딩 자동 매핑 및 전환 솔루션
 
@@ -200,44 +223,48 @@ binary 파일(이미지, 영상, 압축파일, 컴파일된 `.class` 파일 등)
 
 <NotionDivider />
 
+<a id="7-아키텍처-비교-및-선택-가이드"></a>
+
 ## 7. 아키텍처 비교 및 선택 가이드
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr>
-<th>비교 항목</th>
-<th>Linux CLI + Java 조합</th>
-<th>Python 통합 스크립트</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>순수 코드 속도</td>
-<td>매우 빠름 (우세)</td>
-<td>보통</td>
-</tr>
-<tr>
-<td>디스크 I/O 횟수</td>
-<td>많음 (목록 파일 생성 후 변환 시 재접근)</td>
-<td>적음 (파일당 단 1회 접근)</td>
-</tr>
-<tr>
-<td>작업 단계</td>
-<td>복잡함 (명령어 실행 ➡️ 파일 분할 ➡️ 자바 실행)</td>
-<td>간편함 (스크립트 1회 실행으로 종료)</td>
-</tr>
-<tr>
-<td>인코딩 판별 정확도</td>
-<td>보통 (file -i 명령어의 간헐적 오판)</td>
-<td>높음 (charset-normalizer 바이트 분석)</td>
-</tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>
+&lt;th>비교 항목&lt;/th>
+&lt;th>Linux CLI + Java 조합&lt;/th>
+&lt;th>Python 통합 스크립트&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>순수 코드 속도&lt;/td>
+&lt;td>매우 빠름 (우세)&lt;/td>
+&lt;td>보통&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>디스크 I/O 횟수&lt;/td>
+&lt;td>많음 (목록 파일 생성 후 변환 시 재접근)&lt;/td>
+&lt;td>적음 (파일당 단 1회 접근)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>작업 단계&lt;/td>
+&lt;td>복잡함 (명령어 실행 ➡️ 파일 분할 ➡️ 자바 실행)&lt;/td>
+&lt;td>간편함 (스크립트 1회 실행으로 종료)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>인코딩 판별 정확도&lt;/td>
+&lt;td>보통 (file -i 명령어의 간헐적 오판)&lt;/td>
+&lt;td>높음 (charset-normalizer 바이트 분석)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
 
 
 <NotionDivider />
+
+<a id="8-최종-결론-및-성과"></a>
 
 ## 8. 최종 결론 및 성과
 

@@ -18,6 +18,15 @@ package: "storage"
 notionUrl: "https://app.notion.com/p/M-2-NVMe-SSD-vs-SATA-SSD-vs-HDD-3b019946ca76806b8b45f39febf76658"
 ---
 
+## 목차
+
+- [요약 테이블](#요약-테이블)
+- [1. M.2 NVMe SSD (가장 빠름)](#1-m2-nvme-ssd-가장-빠름)
+- [2. SATA SSD (과도기 및 범용형)](#2-sata-ssd-과도기-및-범용형)
+- [3. HDD (Hard Disk Drive / 고용량 가성비)](#3-hdd-hard-disk-drive-고용량-가성비)
+- [인프라 계층 관점의 비유](#인프라-계층-관점의-비유)
+- [5. 저장 매체 상세 비교 및 전송 시뮬레이터](#5-저장-매체-상세-비교-및-전송-시뮬레이터)
+
 이번에는 컴퓨터 본체 내부에 "**물리적 저장 매체(M.2 NVMe SSD, SATA SSD, HDD)**"들의 구조와 데이터 전송 버스의 차이점을 정리해봤습니다.
 
 물리적 저장매체는 데이터를 저장하는 물리적 메커니즘과 메인보드와 데이터를 주고받는 통로(인터페이스/프로토콜)에서 결정적인 차이가 납니다.
@@ -25,67 +34,71 @@ notionUrl: "https://app.notion.com/p/M-2-NVMe-SSD-vs-SATA-SSD-vs-HDD-3b019946ca7
 
 <NotionDivider />
 
+<a id="요약-테이블"></a>
+
 ## 요약 테이블
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr>
-<th>비교 항목</th>
-<th>M.2 NVMe SSD</th>
-<th>SATA SSD</th>
-<th>HDD (Hard Disk Drive)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>**저장 매체 방식**</td>
-<td>반도체 (NAND Flash)</td>
-<td>반도체 (NAND Flash)</td>
-<td>기계식 자성 디스크 (Platter)</td>
-</tr>
-<tr>
-<td>**물리적 형태**</td>
-<td>껌 크기의 소형 기판 (카드형)</td>
-<td>2.5인치 사각형 박스</td>
-<td>3.5인치/2.5인치 묵직한 메탈 박스</td>
-</tr>
-<tr>
-<td>**인터페이스 (통로)**</td>
-<td>PCIe (고속 도로)</td>
-<td>SATA (일반 국도)</td>
-<td>SATA (일반 국도)</td>
-</tr>
-<tr>
-<td>**프로토콜 (규격)**</td>
-<td>NVMe (최신 표준)</td>
-<td>AHCI (구형 표준)</td>
-<td>AHCI (구형 표준)</td>
-</tr>
-<tr>
-<td>**평균 읽기 속도**</td>
-<td>3,500 ~ 14,000 MB/s </td>
-<td>500 ~ 560 MB/s</td>
-<td>100 ~ 250 MB/s</td>
-</tr>
-<tr>
-<td>**소음 및 진동**</td>
-<td>없음</td>
-<td>없음</td>
-<td>있음 (모터 회전음, 헤드 마찰음)</td>
-</tr>
-<tr>
-<td>**주요 용도**</td>
-<td>OS 설치, 메인 게임, 무거운 작업</td>
-<td>서브 데이터 저장, 구형 PC 심폐소생</td>
-<td>대용량 백업 데이터, 아카이빙 전용</td>
-</tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>
+&lt;th>비교 항목&lt;/th>
+&lt;th>M.2 NVMe SSD&lt;/th>
+&lt;th>SATA SSD&lt;/th>
+&lt;th>HDD (Hard Disk Drive)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>**저장 매체 방식**&lt;/td>
+&lt;td>반도체 (NAND Flash)&lt;/td>
+&lt;td>반도체 (NAND Flash)&lt;/td>
+&lt;td>기계식 자성 디스크 (Platter)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**물리적 형태**&lt;/td>
+&lt;td>껌 크기의 소형 기판 (카드형)&lt;/td>
+&lt;td>2.5인치 사각형 박스&lt;/td>
+&lt;td>3.5인치/2.5인치 묵직한 메탈 박스&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**인터페이스 (통로)**&lt;/td>
+&lt;td>PCIe (고속 도로)&lt;/td>
+&lt;td>SATA (일반 국도)&lt;/td>
+&lt;td>SATA (일반 국도)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**프로토콜 (규격)**&lt;/td>
+&lt;td>NVMe (최신 표준)&lt;/td>
+&lt;td>AHCI (구형 표준)&lt;/td>
+&lt;td>AHCI (구형 표준)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**평균 읽기 속도**&lt;/td>
+&lt;td>3,500 ~ 14,000 MB/s &lt;/td>
+&lt;td>500 ~ 560 MB/s&lt;/td>
+&lt;td>100 ~ 250 MB/s&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**소음 및 진동**&lt;/td>
+&lt;td>없음&lt;/td>
+&lt;td>없음&lt;/td>
+&lt;td>있음 (모터 회전음, 헤드 마찰음)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**주요 용도**&lt;/td>
+&lt;td>OS 설치, 메인 게임, 무거운 작업&lt;/td>
+&lt;td>서브 데이터 저장, 구형 PC 심폐소생&lt;/td>
+&lt;td>대용량 백업 데이터, 아카이빙 전용&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
 
 
 <NotionDivider />
+
+<a id="1-m2-nvme-ssd-가장-빠름"></a>
 
 ## 1. M.2 NVMe SSD (가장 빠름)
 
@@ -98,6 +111,8 @@ notionUrl: "https://app.notion.com/p/M-2-NVMe-SSD-vs-SATA-SSD-vs-HDD-3b019946ca7
 메인보드 칩셋이나 CPU와 데이터 통로가 거의 직결되어 있어 병목 현상이 거의 없습니다. 초당 수천 MB에서 수만 MB 단위의 파일 전송 속도를 자랑하며, 최신 고사양 게임이나 대용량 영상 편집, AI 연산에 필수적입니다.
 
 <NotionDivider />
+
+<a id="2-sata-ssd-과도기-및-범용형"></a>
 
 ## 2. SATA SSD (과도기 및 범용형)
 
@@ -112,6 +127,8 @@ notionUrl: "https://app.notion.com/p/M-2-NVMe-SSD-vs-SATA-SSD-vs-HDD-3b019946ca7
 
 <NotionDivider />
 
+<a id="3-hdd-hard-disk-drive-고용량-가성비"></a>
+
 ## 3. HDD (Hard Disk Drive / 고용량 가성비)
 
 자성 물질을 입힌 플래터(Platter)라는 금속 원판을 모터로 회전시켜 데이터를 읽고 쓰는 전통적인 기계식 저장 장치입니다.
@@ -125,6 +142,8 @@ SATA SSD와 동일한 **SATA 케이블 통로**와 **AHCI 프로토콜**을 사�
 
 <NotionDivider />
 
+<a id="인프라-계층-관점의-비유"></a>
+
 ## 인프라 계층 관점의 비유
 
 앞서 다룬 데이터 전송 인프라 계층(네트워크)과 본체 내부 부품의 개념을 1:1로 매칭해 보면 아키텍처 구조가 더 직관적으로 다가올 것입니다.
@@ -134,6 +153,8 @@ SATA SSD와 동일한 **SATA 케이블 통로**와 **AHCI 프로토콜**을 사�
 - **DirectStorage ⇄ M.2 NVMe SSD**: 하드웨어의 초고속 인터페이스(PCIe 버스)를 극한으로 활용하여 소프트웨어와 하드웨어 간의 병목을 제로(0)로 만드는 최첨단 고속도로 기술이라는 맥락이 정확히 일치합니다.
 
 <NotionDivider />
+
+<a id="5-저장-매체-상세-비교-및-전송-시뮬레이터"></a>
 
 ## 5. 저장 매체 상세 비교 및 전송 시뮬레이터
 

@@ -58,6 +58,10 @@ describe("content transaction", () => {
     expect(fs.readFileSync(path.join(root, "src/content/devlog/unrelated.mdx"), "utf8")).toBe(unrelated);
     expect(fs.existsSync(path.join(root, ".notion-content-transaction"))).toBe(false);
     expect(fs.existsSync(path.join(root, ".notion-content.lock"))).toBe(false);
+    for (const relativePath of managedPaths) {
+      const directory = path.dirname(path.join(root, relativePath));
+      expect(fs.readdirSync(directory).some((name) => name.startsWith(".notion-backup-"))).toBe(false);
+    }
   });
 
   it.each(["write", "validation", "rename"])(
@@ -168,6 +172,29 @@ describe("content transaction", () => {
     expect(fs.readFileSync(path.join(root, relativePath), "utf8")).toContain("Transactional fixture");
   });
 
+  it("Given a page without a description When sync-pages writes MDX Then metadata uses the page title", async () => {
+    // Given
+    const root = fixtureRoot();
+    const client = { getBlockChildren: async () => [] };
+
+    // When
+    await syncPageContent(client, "project", [{
+      page_id: "aa-bb-cc",
+      source_id: "aabbcc",
+      title: "Description fallback fixture",
+      slug: "AI-agent-basic-tech",
+      category: "enterprise",
+      description: "",
+      last_edited_time: "2026-08-05T00:00:00.000Z",
+    }], { root });
+
+    // Then
+    const content = fs.readFileSync(path.join(root, "src/content/projects/enterprise/general/aabbcc.mdx"), "utf8");
+    expect(content).toContain('description: "Description fallback fixture"');
+    expect(content).toContain('slug: "ai-agent-basic-tech"');
+    expect(content).not.toContain("작성된 내용이 없습니다.");
+  });
+
   it("Given a Notion image When sync-pages stages content Then MDX and downloaded asset are emitted as managed paths", async () => {
     const root = fixtureRoot();
     const contentPath = "src/content/devlog/fixture/general/aabbcc.mdx";
@@ -251,5 +278,9 @@ describe("content transaction", () => {
     }
     expect(fs.existsSync(path.join(root, ".notion-content-transaction"))).toBe(false);
     expect(fs.existsSync(path.join(root, ".notion-content.lock"))).toBe(false);
+    for (const relativePath of managedPaths) {
+      const directory = path.dirname(path.join(root, relativePath));
+      expect(fs.readdirSync(directory).some((name) => name.startsWith(".notion-backup-"))).toBe(false);
+    }
   });
 });

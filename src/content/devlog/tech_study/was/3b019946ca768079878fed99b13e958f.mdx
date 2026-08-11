@@ -18,6 +18,15 @@ package: "was"
 notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca768079878fed99b13e958f"
 ---
 
+## 목차
+
+- [웹 서버 비교](#웹-서버-비교)
+- [1. Nginx: 고성능, 경량화, 리버스 프록시의 최강자](#1-nginx-고성능-경량화-리버스-프록시의-최강자)
+- [2. Apache HTTPD: 검증된 안정성, 풍부한 기능, 높은 확장성](#2-apache-httpd-검증된-안정성-풍부한-기능-높은-확장성)
+- [3. IIS (Internet Information Services): Windows 환경에 최적화된 웹 서버](#3-iis-internet-information-services-windows-환경에-최적화된-웹-서버)
+- [4. 실무 도입 시나리오별 비교 분석 및 예상 케이스](#4-실무-도입-시나리오별-비교-분석-및-예상-케이스)
+- [5. 우리 서비스에 어떤 엔진을 도입해야 할까?](#5-우리-서비스에-어떤-엔진을-도입해야-할까)
+
 웹 서버의 대표 주자인 Nginx, Apache HTTPD, IIS는 정적 콘텐츠(HTML, CSS, JS, 이미지 등)를 처리하고 배포하는 방식과 아키텍처에서 뚜렷한 차이점을 보입니다.
 
 각 엔진의 장단점과 어떤 상황에서 도입하기 좋은지 아키텍처적 관점에서 상세히 비교하여 정리했습니다.
@@ -25,45 +34,49 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 <NotionDivider />
 
+<a id="웹-서버-비교"></a>
+
 ## 웹 서버 비교
 
 Nginx, Apache, IIS 세 가지 핵심 웹 서버 솔루션의 아키텍처 특징 및 장단점을 명확하게 대조하여 핵심 요약합니다.
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr>
-<th style={{ width: "20%" }}>구분</th>
-<th style={{ width: "25%" }}>Nginx</th>
-<th style={{ width: "25%" }}>Apache HTTPD</th>
-<th style={{ width: "30%" }}>IIS (Internet Information Services)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>**핵심 강점**</td>
-<td>초고속 정적 파일 처리, 가벼움, 리버스 프록시 가속</td>
-<td>풍부한 서드파티 모듈, 디렉터리별 개별 제어(.htaccess) 가능</td>
-<td>Windows/Active Directory 및 .NET 생태계 완벽 최적화</td>
-</tr>
-<tr>
-<td>**핵심 아키텍처**</td>
-<td>비동기 이벤트 기반 (Event-Driven)</td>
-<td>프로세스/스레드 기반 (MPM)</td>
-<td>Windows 커널 모드 드라이버 (HTTP.sys) 밀착형</td>
-</tr>
-<tr>
-<td>**추천 인프라 환경**</td>
-<td>고트래픽 분산 서비스, MSA 프록시 대문, Linux/Container</td>
-<td>전통적인 웹 호스팅 환경, 다기능 보안 커스텀 서버, Linux</td>
-<td>마이크로소프트 중심의 전사 인프라 및 .NET 프레임워크 환경</td>
-</tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>
+&lt;th style=&#123;&#123; width: "20%" &#125;&#125;>구분&lt;/th>
+&lt;th style=&#123;&#123; width: "25%" &#125;&#125;>Nginx&lt;/th>
+&lt;th style=&#123;&#123; width: "25%" &#125;&#125;>Apache HTTPD&lt;/th>
+&lt;th style=&#123;&#123; width: "30%" &#125;&#125;>IIS (Internet Information Services)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>**핵심 강점**&lt;/td>
+&lt;td>초고속 정적 파일 처리, 가벼움, 리버스 프록시 가속&lt;/td>
+&lt;td>풍부한 서드파티 모듈, 디렉터리별 개별 제어(.htaccess) 가능&lt;/td>
+&lt;td>Windows/Active Directory 및 .NET 생태계 완벽 최적화&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**핵심 아키텍처**&lt;/td>
+&lt;td>비동기 이벤트 기반 (Event-Driven)&lt;/td>
+&lt;td>프로세스/스레드 기반 (MPM)&lt;/td>
+&lt;td>Windows 커널 모드 드라이버 (HTTP.sys) 밀착형&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>**추천 인프라 환경**&lt;/td>
+&lt;td>고트래픽 분산 서비스, MSA 프록시 대문, Linux/Container&lt;/td>
+&lt;td>전통적인 웹 호스팅 환경, 다기능 보안 커스텀 서버, Linux&lt;/td>
+&lt;td>마이크로소프트 중심의 전사 인프라 및 .NET 프레임워크 환경&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
 
 
 <NotionDivider />
+
+<a id="1-nginx-고성능-경량화-리버스-프록시의-최강자"></a>
 
 ## 1. Nginx: 고성능, 경량화, 리버스 프록시의 최강자
 
@@ -98,6 +111,8 @@ Apache의 `.htaccess`와 같은 디렉터리별 개별 설정을 지원하지 �
 
 <NotionDivider />
 
+<a id="2-apache-httpd-검증된-안정성-풍부한-기능-높은-확장성"></a>
+
 ## 2. Apache HTTPD: 검증된 안정성, 풍부한 기능, 높은 확장성
 
 Apache HTTPD는 1990년대부터 인터넷의 표준처럼 자리 잡은 전통적인 강자입니다. 기본적으로 **프로세스/스레드 기반(MPM - Multi-Processing Module) 아키텍처**를 사용합니다.
@@ -126,6 +141,8 @@ Apache HTTPD는 1990년대부터 인터넷의 표준처럼 자리 잡은 전통�
 
 
 <NotionDivider />
+
+<a id="3-iis-internet-information-services-windows-환경에-최적화된-웹-서버"></a>
 
 ## 3. IIS (Internet Information Services): Windows 환경에 최적화된 웹 서버
 
@@ -157,6 +174,8 @@ Windows OS 커널 단에서 HTTP 요청을 직접 가로채어 서빙하기 때�
 
 
 <NotionDivider />
+
+<a id="4-실무-도입-시나리오별-비교-분석-및-예상-케이스"></a>
 
 ## 4. 실무 도입 시나리오별 비교 분석 및 예상 케이스
 
@@ -202,6 +221,8 @@ Windows OS 커널 단에서 HTTP 요청을 직접 가로채어 서빙하기 때�
 
 
 <NotionDivider />
+
+<a id="5-우리-서비스에-어떤-엔진을-도입해야-할까"></a>
 
 ## 5. 우리 서비스에 어떤 엔진을 도입해야 할까?
 

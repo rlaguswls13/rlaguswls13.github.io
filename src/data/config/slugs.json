@@ -23,7 +23,9 @@
     "3b019946ca7680809e0fcf7c0f56c7bb": "spring-batch-job-step-scope",
     "3b019946ca768023920bc0535a88d2ae": "spring-batch-performance-tuning",
     "3b019946ca768079878fed99b13e958f": "nginx-apache-iis-comparison",
-    "3b019946ca7680849498da3bf66eaf67": "das-nas-san-storage-architecture"
+    "3b019946ca7680849498da3bf66eaf67": "das-nas-san-storage-architecture",
+    "3b819946ca7680439eecd5fe23528952": "ai-agent-basic-tech",
+    "3b919946ca7680d9a4f3c5389ea08e85": "ai-llm-rag-andrej-karpathy-thesis"
   },
   "problem_solving": {
     "3b019946ca7680b584e1c59c19e022a9": "spring-quartz-ha-optimization",

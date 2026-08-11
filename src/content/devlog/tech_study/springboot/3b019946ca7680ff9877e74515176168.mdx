@@ -18,12 +18,26 @@ package: "springboot"
 notionUrl: "https://app.notion.com/p/3b019946ca7680ff9877e74515176168"
 ---
 
+## 목차
+
+- [1. JobName 기반 추상화의 필요성](#1-jobname-기반-추상화의-필요성)
+- [2. 내부 동작 메커니즘 및 상태 전이](#2-내부-동작-메커니즘-및-상태-전이)
+- [3. 즉각적인 중단 조치가 불가능한 이유 (지연 현상의 원인)](#3-즉각적인-중단-조치가-불가능한-이유-지연-현상의-원인)
+- [4. 실무 구현 코드 (TriggerManager & Controller)](#4-실무-구현-코드-triggermanager-controller)
+  - [① JobTriggerManager (추상화 매핑 컴포넌트)](#1-jobtriggermanager-추상화-매핑-컴포넌트)
+  - [JobTriggerManager.java](#jobtriggermanagerjava)
+  - [② BatchAdminController (엔드포인트)](#2-batchadmincontroller-엔드포인트)
+  - [BatchAdminController.java](#batchadmincontrollerjava)
+- [5. 아키텍처적 결론 및 재시작(Restart) 연계](#5-아키텍처적-결론-및-재시작restart-연계)
+
 스프링 배치(Spring Batch)를 이용한 대용량 데이터 처리 환경에서, 특정 작업이 시스템 리소스를 과도하게 점유하거나 운영상 긴급히 중단해야 하는 상황은 빈번히 발생합니다.
 
 이때 프로세스를 강제 종료(kill -9)하면 비즈니스 데이터의 오염이나 메타데이터 불일치가 발생합니다. 이를 방지하기 위해 프레임워크가 제공하는 '안전한 중단(Graceful Stop)'의 내부 메커니즘과, 실무에서 외부에 노출하기 어려운 executionId 대신 고정된 jobName을 기반으로 추상화하여 제어하는 구조를 종합적으로 정리합니다.
 
 
 <NotionDivider />
+
+<a id="1-jobname-기반-추상화의-필요성"></a>
 
 ## 1. JobName 기반 추상화의 필요성
 
@@ -33,6 +47,8 @@ notionUrl: "https://app.notion.com/p/3b019946ca7680ff9877e74515176168"
 
 
 <NotionDivider />
+
+<a id="2-내부-동작-메커니즘-및-상태-전이"></a>
 
 ## 2. 내부 동작 메커니즘 및 상태 전이
 
@@ -45,6 +61,8 @@ notionUrl: "https://app.notion.com/p/3b019946ca7680ff9877e74515176168"
 1. **최종 중단**: `STOPPING` 신호가 확인되면 즉시 루프를 탈출하고, 메타 테이블의 `STATUS`와 `EXIT_CODE`를 최종적으로 `STOPPED`로 기록한 뒤 프로세스를 안전하게 종료합니다.
 
 <NotionDivider />
+
+<a id="3-즉각적인-중단-조치가-불가능한-이유-지연-현상의-원인"></a>
 
 ## 3. 즉각적인 중단 조치가 불가능한 이유 (지연 현상의 원인)
 
@@ -59,11 +77,17 @@ notionUrl: "https://app.notion.com/p/3b019946ca7680ff9877e74515176168"
 
 <NotionDivider />
 
+<a id="4-실무-구현-코드-triggermanager-controller"></a>
+
 ## 4. 실무 구현 코드 (TriggerManager & Controller)
+
+<a id="1-jobtriggermanager-추상화-매핑-컴포넌트"></a>
 
 ### ① JobTriggerManager (추상화 매핑 컴포넌트)
 
 jobName을 기반으로 `JobExplorer`를 조회하여 현재 런타임에서 실행 중인 `JobExecution`들을 찾아내고 중단 신호를 보냅니다. 별도의 인메모리 Map을 관리할 필요 없이 DB 메타데이터 레지스트리를 신뢰하므로 분산 환경에서도 안전합니다.
+
+<a id="jobtriggermanagerjava"></a>
 
 ### JobTriggerManager.java
 
@@ -110,9 +134,13 @@ public class JobTriggerManager {
 }
 ```
 
+<a id="2-batchadmincontroller-엔드포인트"></a>
+
 ### ② BatchAdminController (엔드포인트)
 
 외부 시스템이나 관리자는 복잡한 일회성 ID 대신 직관적인 jobName 문자열 파라미터만으로 중단 명령을 하달합니다.
+
+<a id="batchadmincontrollerjava"></a>
 
 ### BatchAdminController.java
 
@@ -149,6 +177,8 @@ public class BatchAdminController {
 
 
 <NotionDivider />
+
+<a id="5-아키텍처적-결론-및-재시작restart-연계"></a>
 
 ## 5. 아키텍처적 결론 및 재시작(Restart) 연계
 

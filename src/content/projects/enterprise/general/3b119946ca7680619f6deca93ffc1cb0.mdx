@@ -19,9 +19,22 @@ package: "전체"
 notionUrl: "https://app.notion.com/p/3b119946ca7680619f6deca93ffc1cb0"
 ---
 
+## 목차
+
+  - [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem)
+  - [2. 기술적 구현 및 적용 (Technical Implementation)](#2-기술적-구현-및-적용-technical-implementation)
+  - [3. 성과 및 유용성 (Result & Benefit)](#3-성과-및-유용성-result-benefit)
+  - [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem-2)
+  - [2. 기술적 구현 및 적용 (Technical Implementation)](#2-기술적-구현-및-적용-technical-implementation-2)
+  - [3. 성과 및 유용성 (Result & Benefit)](#3-성과-및-유용성-result-benefit-2)
+
+<a id="1-도입-배경-및-과제-background-problem"></a>
+
 ### 1. 도입 배경 및 과제 (Background & Problem)
 
 제3자 정보 수집 동의가 필수적이고 개인정보 보호(Privacy Protection)에 매우 민감한 대량의 고객 알림 발송 서비스 특성상, 금융/통신/항공 등 56개 주요 대형 고객사에서 발생하는 시스템 이슈는 B2B 사업 타격과 직결되는 긴급 상황이었습니다. 업무 외 시간에도 산발적으로 발생하는 장애나 버그에 대응하고, 레거시 마이그레이션(Legacy Migration) 시 발생하는 시스템의 결함을 빠르게 파악하여 서비스 연속성(Service Continuity)을 굳건히 지킬 수 있는 신속한 유지보수 체계가 시급했습니다.
+
+<a id="2-기술적-구현-및-적용-technical-implementation"></a>
 
 ### 2. 기술적 구현 및 적용 (Technical Implementation)
 
@@ -32,6 +45,8 @@ notionUrl: "https://app.notion.com/p/3b119946ca7680619f6deca93ffc1cb0"
 - 이메일 서버 보안 정책(Policy) 확인 쉘
 - 커스텀 로그 텍스트에서 Email Response Code 그룹핑 및 카운트 명령
 - 특정 메일 서버의 SSL 인증서 만료일 및 패킷 통신 상태 점검
+<a id="3-성과-및-유용성-result-benefit"></a>
+
 ### 3. 성과 및 유용성 (Result & Benefit)
 
 1년 6개월(2024.08~2026.02)이라는 기간 동안 긴급 장애와 커스텀 요구사항이 얽힌 **300여 건 이상의 B2B 고객사 CS 파이프라인을 100% 성공적으로 매니징(Managing) 및 해결**했습니다.
@@ -44,15 +59,21 @@ notionUrl: "https://app.notion.com/p/3b119946ca7680619f6deca93ffc1cb0"
 
 <NotionDivider />
 
+<a id="1-도입-배경-및-과제-background-problem-2"></a>
+
 ### 1. 도입 배경 및 과제 (Background & Problem)
 
 비개발자 직군이 가상화 환경(VMware, K8s)에서 원활하게 배포 라인을 관리하려면 야믈(YAML) 파일 설정이나 배포 파이프라인(Deployment Pipeline) 각 단계의 작동 원리 등 기초 지식이 필수적입니다. 하지만 이러한 지식의 허들로 인해 인프라 및 시스템 운영에 어려움을 겪는 부서가 많았고, 이에 대한 기술적 가이드라인 및 전문적인 컨테이너(Container) 관리 지원이 빈번하게 요구되었습니다.
+
+<a id="2-기술적-구현-및-적용-technical-implementation-2"></a>
 
 ### 2. 기술적 구현 및 적용 (Technical Implementation)
 
 사내 포털 사이트의 UI 옵션들이 실질적으로 백엔드 서버에서 어떤 YAML 파일 텍스트로 치환/작성되는지를 한눈에 매핑하여 이해할 수 있도록 맞춤형 가이드(Technical Guide) 체계를 수립했습니다.
 
 또한 도커 허브(Docker Hub) 공식 레지스트리(Registry)에서 제공되지 않는 특수한 운영 환경, 이전에 레거시 환경에서 커스텀된 온프레미스 이미지, 그리고 기존 VMware VM 환경의 애플리케이션 리소스를 추출하여 도커(Docker) 컨테이너 기반으로 마이그레이션(Migration)하기 위한 `build.script` 작성을 정기적으로 밀착 지원(Tech Support) 하였습니다.
+
+<a id="3-성과-및-유용성-result-benefit-2"></a>
 
 ### 3. 성과 및 유용성 (Result & Benefit)
 

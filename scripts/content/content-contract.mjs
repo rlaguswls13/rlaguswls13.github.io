@@ -50,7 +50,7 @@ function walkMdx(root, relativeRoot) {
     .flatMap((entry) => {
       const filePath = path.join(directory, entry.name);
       if (entry.isDirectory()) return walkMdx(root, path.join(relativeRoot, entry.name));
-      return entry.isFile() && entry.name.endsWith(".mdx") ? [filePath] : [];
+      return entry.isFile() && entry.name.endsWith(".mdx") && !entry.name.startsWith(".notion-backup-") ? [filePath] : [];
     })
     .sort((left, right) => left.localeCompare(right));
 }

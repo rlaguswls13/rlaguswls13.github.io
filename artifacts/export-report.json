@@ -1,7 +1,7 @@
 {
-  "verdict": "FAIL",
-  "route_count": 94,
-  "blocker_count": 2,
+  "verdict": "PASS",
+  "route_count": 95,
+  "blocker_count": 0,
   "routes": [
     {
       "route": "/",
@@ -109,18 +109,6 @@
       "metadata": {
         "title": "레거시 코드로 인한 메모리 누수 해결 | TECH LOG",
         "canonical": "https://rlaguswls13.github.io/projects/3b319946ca768057896fe03574856fa1",
-        "jsonLd": []
-      }
-    },
-    {
-      "route": "/projects/d",
-      "file": "projects/d.html",
-      "kind": "detail",
-      "heading": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
-      "status": "PASS",
-      "metadata": {
-        "title": "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/projects/d",
         "jsonLd": []
       }
     },
@@ -1423,7 +1411,7 @@
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": "Spring MVC에서 응답(Response)와 요청(Request) 구조 | TECH LOG",
-            "description": "Spring MVC에서 HTTP 요청이 컨트롤러에 전달되고 응답으로 변환되는 구조와 주요 처리 흐름을 정리합니다.",
+            "description": "Spring MVC에서 응답(Response)와 요청(Request) 구조",
             "url": "https://rlaguswls13.github.io/devlog/education/spring-mvc-request-response",
             "mainEntityOfPage": {
               "@type": "WebPage",
@@ -1452,7 +1440,7 @@
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": "요구사항 정의서란? | TECH LOG",
-            "description": "프로젝트의 목표와 범위, 기능과 제약사항을 명확히 정의하는 요구사항 정의서의 역할과 작성 방법을 정리합니다.",
+            "description": "요구사항 정의서란?",
             "url": "https://rlaguswls13.github.io/devlog/education/requirements-definition-document",
             "mainEntityOfPage": {
               "@type": "WebPage",
@@ -1481,7 +1469,7 @@
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": "세미프로젝트 | TECH LOG",
-            "description": "교육 과정의 세미 프로젝트를 준비하고 구현하며 정리한 요구사항, 설계, 협업 및 개발 과정을 소개합니다.",
+            "description": "세미프로젝트",
             "url": "https://rlaguswls13.github.io/devlog/education/semi-project",
             "mainEntityOfPage": {
               "@type": "WebPage",
@@ -1510,7 +1498,7 @@
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": "Spring에서 Filter와 Interceptor의 쓰임 | TECH LOG",
-            "description": "Spring 웹 요청 처리에서 Filter와 Interceptor가 개입하는 시점, 적용 범위와 주요 활용 사례를 비교해 정리합니다.",
+            "description": "Spring에서 Filter와 Interceptor의 쓰임",
             "url": "https://rlaguswls13.github.io/devlog/education/spring-filter-and-interceptor",
             "mainEntityOfPage": {
               "@type": "WebPage",
@@ -2425,24 +2413,70 @@
       }
     },
     {
+      "route": "/devlog/tech_study/ai-agent-basic-tech",
+      "file": "devlog/tech_study/ai-agent-basic-tech.html",
+      "kind": "detail",
+      "heading": "AI agent 활용한 학습: 프롬프트,하네스,루프 기법",
+      "status": "PASS",
+      "metadata": {
+        "title": "AI agent 활용한 학습: 프롬프트,하네스,루프 기법 | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/ai-agent-basic-tech",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "AI agent 활용한 학습: 프롬프트,하네스,루프 기법 | TECH LOG",
+            "description": "AI agnet를 활용하여, 단순 바이브 코딩이 아닌 생산성과 코드 생명을 향상시키는 기초방법에 대해서 정리해 봤습니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/ai-agent-basic-tech",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/ai-agent-basic-tech"
+            },
+            "datePublished": "2026-08-10",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
+      "file": "devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis.html",
+      "kind": "detail",
+      "heading": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
+      "status": "PASS",
+      "metadata": {
+        "title": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki | TECH LOG",
+        "canonical": "https://rlaguswls13.github.io/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
+        "jsonLd": [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki | TECH LOG",
+            "description": "개인 프로젝트에서 AI 에이전트를 활용하다 보면 초반에는 뛰어난 생산성과 완성도 덕분에 도구에 대한 깊은 신뢰가 생깁니다. 하지만 프로젝트가 고도화되고 특정 모듈이나 미세한 영역에 맞춘 정교한 작업을 요청하기 시작하면, AI가 의도와 전혀 다른 방향으로 코드를 변경하거나 입력한 노력 대비 출력물의 품질이 현저히 떨어지는 한계에 부딪히게 됩니다. 맥락 파악의 한계로 인해 발생하는 이러한 비효율은 AI 도구 활용에서 가장 큰 병목이 되곤 합니다.\n\n이러한 문제를 효과적으로 제어하고 관리할 방법을 모색하던 중, 2026년 초 안드레이 카파시(Andrej Karpathy)가 깃허브에 공개한 개인용 LLM RAG 관리이론을 접하게 되었습니다. 프로젝트의 문맥을 안정적으로 유지하면서 AI의 아웃풋을 정밀하게 통제하는 이 접근법에 인상을 받았으며, 본 글에서는 해당 방식을 직접 살펴보고 공부한 내용을 간략히 정리해 보고자 합니다.",
+            "url": "https://rlaguswls13.github.io/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://rlaguswls13.github.io/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis"
+            },
+            "datePublished": "2026-08-11",
+            "author": {
+              "@type": "Person",
+              "name": "김현진"
+            }
+          }
+        ]
+      }
+    },
+    {
       "route": "/404",
       "file": "404.html",
       "kind": "not-found",
       "heading": "404",
       "status": "PASS",
       "metadata": null
-    },
-    {
-      "route": "/projects/d",
-      "kind": "detail",
-      "status": "FAIL",
-      "error": "/projects/d: title duplicates another route"
-    },
-    {
-      "route": "/projects/d",
-      "kind": "detail",
-      "status": "FAIL",
-      "error": "/projects/d: canonical duplicates another route"
     }
   ]
 }

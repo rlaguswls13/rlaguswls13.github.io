@@ -5,6 +5,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { acquireContentLock } from "../../scripts/notion/connect/content-transaction.mjs";
 import { main } from "../../scripts/notion/connect/fetch.mjs";
+import { syncPageContent } from "../../scripts/notion/connect/sync-pages.mjs";
 
 const ids = {
   journal: "11111111111111111111111111111111",
@@ -261,6 +262,42 @@ describe("Notion fetch orchestration", () => {
     expect(fs.existsSync(path.join(root, "artifacts/notion-quarantine/report.json"))).toBe(true);
   });
 
+  it("Given an existing thumbnail When orchestration stages content Then the thumbnail is available to sync", async () => {
+    // Given
+    const root = fixtureRoot();
+    const thumbnailPath = path.join(root, `public/thumnail/devlog/blog/${ids.journal}.webp`);
+    fs.mkdirSync(path.dirname(thumbnailPath), { recursive: true });
+    fs.copyFileSync(path.join(process.cwd(), "public/thumnail/devlog/blog/3ab19946ca768020a285dc6c49b14793.webp"), thumbnailPath);
+
+    // When
+    const result = await main({
+      root,
+      env: configuredEnv({
+        NOTION_REQUIRED_GROUPS: "journal",
+        NOTION_PAGE_ID_DEVLOG: undefined,
+        NOTION_PAGE_ID_PROJECT: undefined,
+      }),
+      createClient: () => ({
+        queryCollection: async () => [{
+          id: ids.journal,
+          properties: {
+            title: { type: "title", title: [{ plain_text: "Thumbnail fixture" }] },
+            slug: { type: "select", select: { name: "thumbnail-fixture" } },
+            category: { type: "select", select: { name: "personal" } },
+            created_date: { type: "date", date: { start: "2026-08-01" } },
+          },
+        }],
+        getBlockChildren: async () => [],
+      }),
+      syncPageContentFn: syncPageContent,
+      generateContent: writeGenerated,
+      validateContent() {},
+    });
+
+    // Then
+    expect(result.state).toBe("committed");
+  });
+
   it("Given a hung writer owns the lock When another fetch starts Then it cannot construct a client", async () => {
     // Given
     const root = fixtureRoot();
@@ -281,5 +318,13 @@ describe("Notion fetch orchestration", () => {
     } finally {
       lock.release();
     }
+  });
+
+  it("Given a malformed lock When acquisition runs Then it fails closed", () => {
+    const root = fixtureRoot();
+    fs.writeFileSync(path.join(root, ".notion-content.lock"), "");
+
+    expect(() => acquireContentLock(root)).toThrow(/malformed.*lock/i);
+    expect(fs.readFileSync(path.join(root, ".notion-content.lock"), "utf8")).toBe("");
   });
 });

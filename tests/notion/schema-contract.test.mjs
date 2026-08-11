@@ -28,6 +28,20 @@ describe("Notion schema and manifest contracts", () => {
     expect(NOTION_SCHEMA.devlog.columns.category.enum).toContain("tech_study");
   });
 
+  it("Given a journal page with a select slug When it is validated Then it is accepted", () => {
+    const result = validateNotionPage("journal", {
+      id,
+      properties: {
+        title: { type: "title", title: [{ plain_text: "Journal entry" }] },
+        slug: { type: "select", select: { name: "journal-entry" } },
+        category: { type: "select", select: { name: "personal" } },
+        created_date: { type: "date", date: { start: "2026-08-01" } },
+      },
+    });
+
+    expect(result).toEqual({ valid: true, violations: [] });
+  });
+
   it("Given an unknown column and invalid enum When validated Then it returns quarantine violations without exposing the value", () => {
     const result = validateNotionPage("project", {
       id,

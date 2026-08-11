@@ -18,6 +18,25 @@ package: "was"
 notionUrl: "https://app.notion.com/p/WAS-3b019946ca76808e9f6ec9aec83dbaaf"
 ---
 
+## 목차
+
+- [문제 정의: WAS 이중화와 세션 불일치 (Session Inconsistency)](#문제-정의-was-이중화와-세션-불일치-session-inconsistency)
+- [1. 인프라 레벨 해결: 스티키 세션 (Sticky Session) 활성화](#1-인프라-레벨-해결-스티키-세션-sticky-session-활성화)
+  - [1. Apache + Tomcat (mod_jk) 스티키 세션 설정 예시](#1-apache-tomcat-modjk-스티키-세션-설정-예시)
+  - [2. Nginx 스티키 세션 설정 예시](#2-nginx-스티키-세션-설정-예시)
+  - [장단점 요약](#장단점-요약)
+- [2. WAS 레벨 해결: 톰캣 세션 클러스터링 (Tomcat Membership)](#2-was-레벨-해결-톰캣-세션-클러스터링-tomcat-membership)
+  - [Tomcat Cluster 설정 예시](#tomcat-cluster-설정-예시)
+  - [장단점 요약](#장단점-요약-2)
+- [3. 애플리케이션(Java/Spring Boot) 레벨 해결](#3-애플리케이션javaspring-boot-레벨-해결)
+  - [방법 A: 공유 세션 저장소 (Spring Session + Redis / RDBMS)](#방법-a-공유-세션-저장소-spring-session-redis-rdbms)
+  - [Spring Session + Redis 설정 예시](#spring-session-redis-설정-예시)
+  - [방법 B: JWT (JSON Web Token) 도입을 통한 무상태(Stateless) 인증](#방법-b-jwt-json-web-token-도입을-통한-무상태stateless-인증)
+  - [토큰 이원화 전략](#토큰-이원화-전략)
+  - [JWT 필터 설정 예시](#jwt-필터-설정-예시)
+- [결론 및 인사이트](#결론-및-인사이트)
+  - [해결 방법별 비교](#해결-방법별-비교)
+
 서비스의 가용성과 트래픽 분산을 위해 WAS(Tomcat 기반)를 이중화 또는 다중화하여 구성하는 경우가 많습니다.
 
 이때 L4/L7 로드밸런서의 분산 규칙에 따라 유저의 요청이 서로 다른 WAS 프로세스로 번갈아가며 유입될 수 있으며,
@@ -26,6 +45,8 @@ WAS 간에 인증/인가 세션 데이터가 공유되지 않으면 크리티컬
 
 
 <NotionDivider />
+
+<a id="문제-정의-was-이중화와-세션-불일치-session-inconsistency"></a>
 
 ## 문제 정의: WAS 이중화와 세션 불일치 (Session Inconsistency)
 
@@ -38,6 +59,8 @@ WAS 간에 인증/인가 세션 데이터가 공유되지 않으면 크리티컬
 
 <NotionDivider />
 
+<a id="1-인프라-레벨-해결-스티키-세션-sticky-session-활성화"></a>
+
 ## 1. 인프라 레벨 해결: 스티키 세션 (Sticky Session) 활성화
 
 가장 손쉽게 접근할 수 있는 방법으로, 로드밸런서(L4/L7) 설정으로 최초 접속한 유저의 요청이 **항상 동일한 WAS로만 전달되도록 고정**하는 방식입니다.
@@ -49,6 +72,8 @@ WAS 간에 인증/인가 세션 데이터가 공유되지 않으면 크리티컬
 **Nginx 환경 적용법**
 
 upstream 블록 내에 `ip_hash` 지시어 또는 `sticky cookie`를 사용하여 클라이언트를 특정 WAS에 고정합니다.
+
+<a id="1-apache-tomcat-modjk-스티키-세션-설정-예시"></a>
 
 ### 1. Apache + Tomcat (mod_jk) 스티키 세션 설정 예시
 
@@ -99,6 +124,8 @@ worker.balancer.sticky_session=1
 # 세션 쿠키가 없는 첫 요청이 실패했을 때 다른 서버로 리다이렉트 여부
 worker.balancer.sticky_session_force=0
 ```
+
+<a id="2-nginx-스티키-세션-설정-예시"></a>
 
 ### 2. Nginx 스티키 세션 설정 예시
 
@@ -161,22 +188,26 @@ http {
 }
 ```
 
+<a id="장단점-요약"></a>
+
 ### 장단점 요약
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr><th>구분</th><th>내용</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>장점</strong></td><td>백엔드 코드나 WAS 설정을 복잡하게 수정할 필요가 없어 소규모 서비스에서 효율적입니다.</td></tr>
-<tr><td><strong>단점</strong></td><td>특정 WAS(예: A 서버)에 장애가 발생하면, 해당 서버에 종속된 유저들은 B 서버로 이동하면서 세션 데이터가 유실되므로 인증 로직을 처음부터 다시 태워야 합니다. 또한 부하 분산의 균형이 깨질 수 있습니다.</td></tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>&lt;th>구분&lt;/th>&lt;th>내용&lt;/th>&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>&lt;td>&lt;strong>장점&lt;/strong>&lt;/td>&lt;td>백엔드 코드나 WAS 설정을 복잡하게 수정할 필요가 없어 소규모 서비스에서 효율적입니다.&lt;/td>&lt;/tr>
+&lt;tr>&lt;td>&lt;strong>단점&lt;/strong>&lt;/td>&lt;td>특정 WAS(예: A 서버)에 장애가 발생하면, 해당 서버에 종속된 유저들은 B 서버로 이동하면서 세션 데이터가 유실되므로 인증 로직을 처음부터 다시 태워야 합니다. 또한 부하 분산의 균형이 깨질 수 있습니다.&lt;/td>&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
 
 
 <NotionDivider />
+
+<a id="2-was-레벨-해결-톰캣-세션-클러스터링-tomcat-membership"></a>
 
 ## 2. WAS 레벨 해결: 톰캣 세션 클러스터링 (Tomcat Membership)
 
@@ -184,9 +215,11 @@ WAS 자체의 기능을 활용하여 서버 간 세션 데이터를 **실시간�
 
 **동작 방식**
 
-Tomcat의 `<Cluster>` 태그 설정을 활성화하고 `DeltaManager` 또는 `BackupManager`를 사용합니다.
+Tomcat의 `&lt;Cluster>` 태그 설정을 활성화하고 `DeltaManager` 또는 `BackupManager`를 사용합니다.
 
 멀티캐스트(Multicast) 통신이나 정적 멤버십(Static Membership) 설정을 통해 A 서버에서 생성된 세션 데이터를 B 서버로 실시간 복제(Replication)합니다.
+
+<a id="tomcat-cluster-설정-예시"></a>
 
 ### Tomcat Cluster 설정 예시
 
@@ -239,28 +272,34 @@ public class UserSessionInfo implements Serializable {
 }
 ```
 
+<a id="장단점-요약-2"></a>
+
 ### 장단점 요약
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr><th>구분</th><th>내용</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>장점</strong></td><td>인프라나 애플리케이션 레이어를 크게 건드리지 않고 WAS 설정만으로 세션 영속성을 보장할 수 있습니다. 한 서버가 다운되어도 다른 서버에 세션이 복제되어 있으므로 유저 단절 현상이 없습니다.</td></tr>
-<tr><td><strong>단점</strong></td><td>서버 대수가 늘어날수록 세션 복제를 위한 네트워크 트래픽(All-to-All 통신)과 메모리 오버헤드가 급격히 증가합니다. 대규모 트래픽 환경에서는 성능 저하의 원인이 됩니다.</td></tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>&lt;th>구분&lt;/th>&lt;th>내용&lt;/th>&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>&lt;td>&lt;strong>장점&lt;/strong>&lt;/td>&lt;td>인프라나 애플리케이션 레이어를 크게 건드리지 않고 WAS 설정만으로 세션 영속성을 보장할 수 있습니다. 한 서버가 다운되어도 다른 서버에 세션이 복제되어 있으므로 유저 단절 현상이 없습니다.&lt;/td>&lt;/tr>
+&lt;tr>&lt;td>&lt;strong>단점&lt;/strong>&lt;/td>&lt;td>서버 대수가 늘어날수록 세션 복제를 위한 네트워크 트래픽(All-to-All 통신)과 메모리 오버헤드가 급격히 증가합니다. 대규모 트래픽 환경에서는 성능 저하의 원인이 됩니다.&lt;/td>&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
 
 
 <NotionDivider />
+
+<a id="3-애플리케이션javaspring-boot-레벨-해결"></a>
 
 ## 3. 애플리케이션(Java/Spring Boot) 레벨 해결
 
 WAS 자체에 세션을 두지 않고 외부 저장소를 활용하거나, 세션 상태를 아예 유지하지 않는(Stateless) 구조로 변경하여 근본적인 문제를 해결하는 방식입니다.
 
 최근 엔터프라이즈 아키텍처에서 가장 선호되는 접근법입니다.
+
+<a id="방법-a-공유-세션-저장소-spring-session-redis-rdbms"></a>
 
 ### 방법 A: 공유 세션 저장소 (Spring Session + Redis / RDBMS)
 
@@ -273,6 +312,8 @@ Spring Boot 환경에서는 `Spring Session` 라이브러리를 통해 매우 �
 1. 세션 공유용 테이블 생성 (RDBMS 사용 시) 또는 인메모리 NoSQL 세팅 (Redis 사용 시)
 1. `Spring Session` 의존성 주입 후 세션 스토어 지정
 1. 공통 인증/인가 영역(Filter/Interceptor)에서 세션 고유 Key/Value를 조회하여 유효성 검증 수행
+<a id="spring-session-redis-설정-예시"></a>
+
 ### Spring Session + Redis 설정 예시
 
 
@@ -315,6 +356,8 @@ public class SessionConfig {
 
 <NotionDivider />
 
+<a id="방법-b-jwt-json-web-token-도입을-통한-무상태stateless-인증"></a>
+
 ### 방법 B: JWT (JSON Web Token) 도입을 통한 무상태(Stateless) 인증
 
 서버에 세션 자체를 저장하지 않고, 인증 정보를 **암호화된 토큰 형태로 클라이언트가 직접 보유**하게 만드는 방식입니다.
@@ -329,19 +372,23 @@ public class SessionConfig {
 
 JWT의 탈취 위험을 최소화하기 위해 토큰의 생명주기를 이원화합니다.
 
+<a id="토큰-이원화-전략"></a>
+
 ### 토큰 이원화 전략
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr><th>토큰 종류</th><th>유효시간</th><th>역할</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>Access Token</strong></td><td>짧음 (예: 30분)</td><td>실질적인 API 인가에 사용</td></tr>
-<tr><td><strong>Refresh Token</strong></td><td>비교적 김 (예: 2주)</td><td>Access Token 만료 시 재발급용, Redis 등 DB에 저장</td></tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>&lt;th>토큰 종류&lt;/th>&lt;th>유효시간&lt;/th>&lt;th>역할&lt;/th>&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>&lt;td>&lt;strong>Access Token&lt;/strong>&lt;/td>&lt;td>짧음 (예: 30분)&lt;/td>&lt;td>실질적인 API 인가에 사용&lt;/td>&lt;/tr>
+&lt;tr>&lt;td>&lt;strong>Refresh Token&lt;/strong>&lt;/td>&lt;td>비교적 김 (예: 2주)&lt;/td>&lt;td>Access Token 만료 시 재발급용, Redis 등 DB에 저장&lt;/td>&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
+
+<a id="jwt-필터-설정-예시"></a>
 
 ### JWT 필터 설정 예시
 
@@ -378,6 +425,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 <NotionDivider />
 
+<a id="결론-및-인사이트"></a>
+
 ## 결론 및 인사이트
 
 WAS 이중화 환경에서 세션 공유 실패 이슈를 해결하는 가장 이상적인 방향은,
@@ -390,19 +439,21 @@ WAS 이중화 환경에서 세션 공유 실패 이슈를 해결하는 가장 �
 
 엔드유저의 규모가 작고 빠른 서비스 안정화가 필요하다면 스티키 세션과 같은 심플하고 비용 효율적인 인프라 측면의 해결책도 충분히 훌륭한 선택지가 될 수 있습니다.
 
+<a id="해결-방법별-비교"></a>
+
 ### 해결 방법별 비교
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr><th>해결 방법</th><th>레벨</th><th>확장성</th><th>구현 난이도</th><th>장애 내성</th></tr>
-</thead>
-<tbody>
-<tr><td>스티키 세션</td><td>인프라</td><td>낮음</td><td>쉬움</td><td>낮음 (서버 다운 시 세션 유실)</td></tr>
-<tr><td>Tomcat 클러스터링</td><td>WAS</td><td>중간</td><td>중간</td><td>중간 (서버 간 복제 오버헤드)</td></tr>
-<tr><td>Spring Session + Redis</td><td>애플리케이션</td><td>높음</td><td>중간</td><td>높음</td></tr>
-<tr><td>JWT (Stateless)</td><td>애플리케이션</td><td>매우 높음</td><td>높음</td><td>매우 높음</td></tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>&lt;th>해결 방법&lt;/th>&lt;th>레벨&lt;/th>&lt;th>확장성&lt;/th>&lt;th>구현 난이도&lt;/th>&lt;th>장애 내성&lt;/th>&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>&lt;td>스티키 세션&lt;/td>&lt;td>인프라&lt;/td>&lt;td>낮음&lt;/td>&lt;td>쉬움&lt;/td>&lt;td>낮음 (서버 다운 시 세션 유실)&lt;/td>&lt;/tr>
+&lt;tr>&lt;td>Tomcat 클러스터링&lt;/td>&lt;td>WAS&lt;/td>&lt;td>중간&lt;/td>&lt;td>중간&lt;/td>&lt;td>중간 (서버 간 복제 오버헤드)&lt;/td>&lt;/tr>
+&lt;tr>&lt;td>Spring Session + Redis&lt;/td>&lt;td>애플리케이션&lt;/td>&lt;td>높음&lt;/td>&lt;td>중간&lt;/td>&lt;td>높음&lt;/td>&lt;/tr>
+&lt;tr>&lt;td>JWT (Stateless)&lt;/td>&lt;td>애플리케이션&lt;/td>&lt;td>매우 높음&lt;/td>&lt;td>높음&lt;/td>&lt;td>매우 높음&lt;/td>&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
 

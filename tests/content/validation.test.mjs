@@ -62,6 +62,22 @@ describe("content validation", () => {
     expect(determinism.first).toEqual(determinism.second);
   }, 15_000);
 
+  it("ignores generated Notion rollback snapshots", async () => {
+    // Given
+    const root = await createFixture();
+    await writeMdx(
+      root,
+      "src/content/projects/personal/general/.notion-backup-12345678-1234-4123-8123-123456789abc-project.mdx",
+      "id: \"wrong-id\"\nslug: \"invalid backup slug\"\ntitle: \"Rollback snapshot\"\ndate: \"2026-01-01\"",
+    );
+
+    // When
+    const validation = validateContent(root);
+
+    // Then
+    expect(validation.contentFiles).toBe(2);
+  });
+
   it.each([
     ["traversal", async (root) => writeJson(root, "src/data/indexes/projects.json", { projects: [{ id: "project", slug: "fixture-project", sourceFile: "../escape.mdx" }] }), "projects.json: sourceFile escapes"],
     ["duplicate slug", async (root) => writeMdx(root, `src/content/devlog/blog/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.mdx`, "id: \"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"\nslug: \"fixture-post\"\ntitle: \"Duplicate\"\ndate: \"2026-01-01\""), "Duplicate public route"],

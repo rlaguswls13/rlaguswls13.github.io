@@ -43,6 +43,51 @@ describe("project session-end hook", () => {
     }
   });
 
+  it("Given no session handoff When session end runs Then the handoff check is explicit", async () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "blog-session-hook-handoff-"));
+    try {
+      const result = await runSessionEndHook({
+        root,
+        event: { type: "session_end", session_id: "handoff-missing", summary: "recorded", commit: false },
+      });
+
+      expect(result.handoff).toEqual({
+        path: ".agent/session-handoff.md",
+        exists: false,
+        recorded: false,
+        status: "missing",
+        requestFinalWiki: false,
+        requestPrReview: false,
+      });
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("Given a recorded handoff When session end runs Then final Wiki and PR review are requested", async () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "blog-session-hook-handoff-"));
+    try {
+      fs.mkdirSync(path.join(root, ".agent"), { recursive: true });
+      fs.writeFileSync(path.join(root, ".agent/session-handoff.md"), "---\nstatus: ready\n---\n## Current status\nReady for review.\n", "utf8");
+
+      const result = await runSessionEndHook({
+        root,
+        event: { type: "session_end", session_id: "handoff-ready", summary: "recorded", commit: false },
+      });
+
+      expect(result.handoff).toEqual({
+        path: ".agent/session-handoff.md",
+        exists: true,
+        recorded: true,
+        status: "ready",
+        requestFinalWiki: true,
+        requestPrReview: true,
+      });
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("Given scoped project changes When session end commits Then unrelated files remain unstaged", async () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "blog-session-hook-git-"));
     try {

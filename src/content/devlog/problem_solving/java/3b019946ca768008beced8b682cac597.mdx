@@ -18,12 +18,23 @@ package: "java"
 notionUrl: "https://app.notion.com/p/Exception-AOP-3b019946ca768008beced8b682cac597"
 ---
 
+## 목차
+
+- [1. AS-IS: 파편화된 커스텀 예외 체계 분석](#1-as-is-파편화된-커스텀-예외-체계-분석)
+- [2. TO-BE: 개선 방향 및 아키텍처 설계](#2-to-be-개선-방향-및-아키텍처-설계)
+  - [2.1 Sysout 로그의 log4j 파사드(Facade) 전환 및 스택 트레이스(Stack Trace) 간소화](#21-sysout-로그의-log4j-파사드facade-전환-및-스택-트레이스stack-trace-간소화)
+  - [2.2 Global Exception Handler 기반 API 공통 Response 설계](#22-global-exception-handler-기반-api-공통-response-설계)
+  - [2.3 Exception Page Resolver 및 Ajax Filter 도입](#23-exception-page-resolver-및-ajax-filter-도입)
+- [3. 개선 결과 및 기대 성과](#3-개선-결과-및-기대-성과)
+
 오래된 B2B 엔터프라이즈 시스템에서는 비즈니스 요건이 추가됨에 따라 개발자마다 고유의 커스텀 예외(Custom Exception)를 양산하는 경향이 있습니다.
 
 이로 인해 예외 처리 체계가 파편화되고, 불명확한 에러 로그와 정제되지 않은 예외 전파로 인해 실제 고객 장애 대응(CS) 리소스가 과도하게 낭비되는 문제를 해결한 프로세스를 정리했습니다.
 
 
 <NotionDivider />
+
+<a id="1-as-is-파편화된-커스텀-예외-체계-분석"></a>
 
 ## 1. AS-IS: 파편화된 커스텀 예외 체계 분석
 
@@ -39,9 +50,13 @@ notionUrl: "https://app.notion.com/p/Exception-AOP-3b019946ca768008beced8b682cac
 
 <NotionDivider />
 
+<a id="2-to-be-개선-방향-및-아키텍처-설계"></a>
+
 ## 2. TO-BE: 개선 방향 및 아키텍처 설계
 
 예외 관리 전략을 직관적이고 표준화된 AOP 예외 제어 모델로 일원화하기 위해 4가지 아키텍처적 개선 단계를 적용했습니다.
+
+<a id="21-sysout-로그의-log4j-파사드facade-전환-및-스택-트레이스stack-trace-간소화"></a>
 
 ### 2.1 Sysout 로그의 log4j 파사드(Facade) 전환 및 스택 트레이스(Stack Trace) 간소화
 
@@ -82,6 +97,8 @@ public class LoggingFacade {
 }
 ```
 
+<a id="22-global-exception-handler-기반-api-공통-response-설계"></a>
+
 ### 2.2 Global Exception Handler 기반 API 공통 Response 설계
 
 모든 API 응답을 통일된 공통 포맷으로 응답(JSON)하며, 비즈니스 예외와 HTTP 상태 코드(또는 returnCode)의 1:1 매핑을 자동으로 수행하는 전역 처리기를 구축했습니다.
@@ -110,6 +127,8 @@ public class GlobalExceptionHandler {
     }
 }
 ```
+
+<a id="23-exception-page-resolver-및-ajax-filter-도입"></a>
 
 ### 2.3 Exception Page Resolver 및 Ajax Filter 도입
 
@@ -169,6 +188,8 @@ public class AjaxErrorFilter implements Filter {
 
 
 <NotionDivider />
+
+<a id="3-개선-결과-및-기대-성과"></a>
 
 ## 3. 개선 결과 및 기대 성과
 

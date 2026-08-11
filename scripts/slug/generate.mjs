@@ -32,7 +32,7 @@ function walkMdxFiles(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const fullPath = path.join(directory, entry.name);
     if (entry.isDirectory()) return walkMdxFiles(fullPath);
-    return entry.isFile() && entry.name.endsWith(".mdx") ? [fullPath] : [];
+    return entry.isFile() && entry.name.endsWith(".mdx") && !entry.name.startsWith(".notion-backup-") ? [fullPath] : [];
   });
 }
 

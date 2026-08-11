@@ -20,45 +20,84 @@ package: "2026"
 notionUrl: "https://app.notion.com/p/HTML-CSS-38019946ca768066812adf60bf9ac09a"
 ---
 
+## 목차
+
+- [1. HTML, CSS란?](#1-html-css란)
+  - [1) HTML (HyperText Markup Language)](#1-html-hypertext-markup-language)
+  - [2) CSS (Cascading Style Sheets)](#2-css-cascading-style-sheets)
+- [2. 화면 구현을 위한 HTML, CSS의 지속된 발전](#2-화면-구현을-위한-html-css의-지속된-발전)
+  - [1) HTML의 발전 (HTML5 이후)](#1-html의-발전-html5-이후)
+  - [2) CSS의 발전 (CSS3 및 현대 CSS)](#2-css의-발전-css3-및-현대-css)
+- [3. 바닐라 JS와 결합된 lib 지원](#3-바닐라-js와-결합된-lib-지원)
+  - [1) 바닐라 JS(Vanilla JS) 기반 화면 제어의 한계](#1-바닐라-jsvanilla-js-기반-화면-제어의-한계)
+  - [2) 이를 보완하는 라이브러리(Library)의 지원](#2-이를-보완하는-라이브러리library의-지원)
+- [4. 그 외 여러 프레임워크의 지원](#4-그-외-여러-프레임워크의-지원)
+  - [1) 컴포넌트 프레임워크 (Frameworks)](#1-컴포넌트-프레임워크-frameworks)
+  - [2) CSS 프레임워크 및 방법론](#2-css-프레임워크-및-방법론)
+
+<a id="1-html-css란"></a>
+
 ## 1. HTML, CSS란?
+
+<a id="1-html-hypertext-markup-language"></a>
 
 ### 1) HTML (HyperText Markup Language)
 
 - **개념:** 웹 페이지의 구조와 골격을 정의하는 마크업 언어입니다.
 - **역할:** 텍스트, 이미지, 비디오, 링크 등 화면에 표시될 구성 요소(Element)들을 배치하고 문서의 의미론적 구조(Semantic Web)를 형성합니다.
+<a id="2-css-cascading-style-sheets"></a>
+
 ### 2) CSS (Cascading Style Sheets)
 
 - **개념:** HTML로 작성된 구조에 디자인과 레이아웃을 입히는 스타일시트 언어입니다.
 - **역할:** 색상, 폰트, 정렬, 간격, 반응형 레이아웃(Flexbox, Grid), 애니메이션 등을 제어하여 사용자에게 시각적으로 완성도 높은 화면을 제공합니다.
+<a id="2-화면-구현을-위한-html-css의-지속된-발전"></a>
+
 ## 2. 화면 구현을 위한 HTML, CSS의 지속된 발전
+
+<a id="1-html의-발전-html5-이후"></a>
 
 ### 1) HTML의 발전 (HTML5 이후)
 
-- **시맨틱 태그(Semantic Tags)의 도입:** `<header>`, `<nav>`, `<article>`, `<section>`, `<footer>` 등 의미를 가진 태그가 표준화되면서 검색엔진 최적화(SEO)와 웹 접근성이 크게 향상되었습니다.
-- **멀티미디어 및 API 내장:** 플러그인(ActiveX, Flash 등) 없이도 `<video>`, `<audio>` 태그나 `<canvas>`를 통해 동적 콘텐츠를 자체 구현할 수 있게 되었습니다.
+- **시맨틱 태그(Semantic Tags)의 도입:** `&lt;header>`, `&lt;nav>`, `&lt;article>`, `&lt;section>`, `&lt;footer>` 등 의미를 가진 태그가 표준화되면서 검색엔진 최적화(SEO)와 웹 접근성이 크게 향상되었습니다.
+- **멀티미디어 및 API 내장:** 플러그인(ActiveX, Flash 등) 없이도 `&lt;video>`, `&lt;audio>` 태그나 `&lt;canvas>`를 통해 동적 콘텐츠를 자체 구현할 수 있게 되었습니다.
+<a id="2-css의-발전-css3-및-현대-css"></a>
+
 ### 2) CSS의 발전 (CSS3 및 현대 CSS)
 
 - **모던 레이아웃 시스템:** 과거 `float`나 `table` 기반의 복잡한 정렬 방식에서 벗어나, 1차원 레이아웃을 위한 **Flexbox**와 2차원 레이아웃을 위한 **Grid**가 표준화되어 복잡한 화면 구성을 직관적으로 할 수 있습니다.
 - **반응형 웹 디자인(Responsive Web):** 미디어 쿼리(Media Queries)와 반응형 단위(`vw`, `vh`, `rem` 등)를 통해 모바일, 태블릿, 데스크톱 등 다양한 디바이스에 대응하는 화면 생성이 쉬워졌습니다.
 - **CSS 변수 및 함수:** CSS 자체에서 변수(`-main-color`)와 함수(`calc()`, `minmax()`)를 지원하여 스타일의 재사용성과 유지보수성이 높아졌습니다.
+<a id="3-바닐라-js와-결합된-lib-지원"></a>
+
 ## 3. 바닐라 JS와 결합된 lib 지원
+
+<a id="1-바닐라-jsvanilla-js-기반-화면-제어의-한계"></a>
 
 ### 1) 바닐라 JS(Vanilla JS) 기반 화면 제어의 한계
 
 - 순수 자바스크립트만으로 HTML DOM을 직접 조작(`document.getElementById`, `appendChild` 등)하여 화면을 구성하면, 프로젝트 규모가 커질수록 코드가 길어지고 상태 관리가 복잡해집니다.
+<a id="2-이를-보완하는-라이브러리library의-지원"></a>
+
 ### 2) 이를 보완하는 라이브러리(Library)의 지원
 
 - **컴포넌트 기반 UI 라이브러리:** **React**가 대표적이며, 화면의 UI를 재사용 가능한 독립된 단위(Component)로 쪼개어 관리합니다.
 - **가상 DOM (Virtual DOM):** 데이터가 바뀔 때마다 전체 화면을 다시 그리는 것이 아니라, 메모리 상의 가상 DOM과 비교하여 변경된 부분만 효율적으로 업데이트하여 부드러운 화면 전환과 뛰어난 성능을 제공합니다.
 - **상태 바인딩:** 데이터(State)의 변화가 HTML 화면(View)에 자동으로 반영되는 구조를 지원하여, 개발자가 DOM 조작 코드에 신경 쓰지 않고 비즈니스 로직과 데이터 관리에만 집중할 수 있게 합니다.
+<a id="4-그-외-여러-프레임워크의-지원"></a>
+
 ## 4. 그 외 여러 프레임워크의 지원
 
 웹 애플리케이션의 규모가 커짐에 따라 HTML, CSS, JS를 통합하여 생산성을 극대화하는 다양한 프레임워크와 도구들이 화면 구성을 지원하고 있습니다.
+
+<a id="1-컴포넌트-프레임워크-frameworks"></a>
 
 ### 1) 컴포넌트 프레임워크 (Frameworks)
 
 - **Vue.js:** HTML 스타일의 템플릿 문법을 그대로 활용하여 진입 장벽이 낮고, 직관적인 양방향 데이터 바인딩을 제공합니다.
 - **Angular:** 구글에서 주도하는 프레임워크로, 컴포넌트 구성, 상태 관리, 라우팅 등 웹 화면 구현에 필요한 모든 도구를 기본으로 갖춘 거대한 오인원(All-in-one) 환경을 제공합니다.
+<a id="2-css-프레임워크-및-방법론"></a>
+
 ### 2) CSS 프레임워크 및 방법론
 
 - **Tailwind CSS (Utility-First):** HTML 태그 내의 `class` 속성에 미리 정의된 유틸리티 클래스(예: `flex`, `pt-4`, `text-center`)를 조합하여, 별도의 CSS 파일을 열지 않고도 HTML 안에서 즉시 빠르고 일관된 화면을 구성할 수 있도록 지원합니다.

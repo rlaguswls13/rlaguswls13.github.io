@@ -18,10 +18,28 @@ package: "springboot"
 notionUrl: "https://app.notion.com/p/5-Scaling-3b019946ca768060a97ee328eea5a576"
 ---
 
+## 목차
+
+- [1. Multi-thread Step: 단일 데이터 소스의 청크 병렬 처리](#1-multi-thread-step-단일-데이터-소스의-청크-병렬-처리)
+  - [자바 구현 코드 예시](#자바-구현-코드-예시)
+- [2. Partitioning: 독립된 영역의 마스터-워커 분산 처리](#2-partitioning-독립된-영역의-마스터-워커-분산-처리)
+  - [자바 구현 코드 예시](#자바-구현-코드-예시-2)
+- [3. 핵심 차이점 및 실무 선택 가이드 (Comparison Table)](#3-핵심-차이점-및-실무-선택-가이드-comparison-table)
+- [4. 실무 아키텍처 관점의 병목 포인트와 결론](#4-실무-아키텍처-관점의-병목-포인트와-결론)
+  - [참고: MQ 기반 원격 파티셔닝 활용한다면?](#참고-mq-기반-원격-파티셔닝-활용한다면)
+  - [1. MQ 기반 원격 파티셔닝 아키텍처 개요](#1-mq-기반-원격-파티셔닝-아키텍처-개요)
+  - [2. 세부 동작 흐름 (Step-by-Step)](#2-세부-동작-흐름-step-by-step)
+  - [3. Spring Batch Integration 활용 코드 명세 (Spring Batch 5.x 기준)](#3-spring-batch-integration-활용-코드-명세-spring-batch-5x-기준)
+  - [① Manager Node (마스터 서버 설정)](#1-manager-node-마스터-서버-설정)
+  - [② Worker Node (독립된 워커 서버 설정)](#2-worker-node-독립된-워커-서버-설정)
+  - [4. 실무 도입 시 핵심 고려사항 및 한계점](#4-실무-도입-시-핵심-고려사항-및-한계점)
+
 대용량 배치 성능을 끌어올리기 위해 가장 많이 비교되는 두 아키텍처 패턴은 Multi-thread Step과 Partitioning입니다. 두 방식은 병렬로 작업을 처리한다는 점은 같지만, 데이터를 분할하는 시점과 스레드 간 자원 공유 방식에서 완전히 다른 메커니즘을 가집니다.
 
 
 <NotionDivider />
+
+<a id="1-multi-thread-step-단일-데이터-소스의-청크-병렬-처리"></a>
 
 ## 1. Multi-thread Step: 단일 데이터 소스의 청크 병렬 처리
 
@@ -30,6 +48,8 @@ Multi-thread Step은 하나의 Step 내에서 단일 `ItemReader`를 여러 스�
 - **동작 원리**: 스레드 A가 Reader를 호출해 1번째 청크(1~1000번)를 가져와 처리하는 동안, 스레드 B가 동시에 Reader를 호출해 2번째 청크(1001~2000번)를 가져와 처리합니다.
 - **핵심 장점**: 설정이 매우 간단하며, 단일 프로세스 내에서 CPU 자원을 효율적으로 극대화할 수 있습니다.
 - **주의점 (Thread-safe)**: 여러 스레드가 동시에 `Reader.read()`를 호출하므로, Reader 내부의 상태(현재 읽은 로우 수 등)를 안전하게 보호해야 합니다. 상태를 공유하는 `JdbcCursorItemReader` 등은 사용할 수 없으며, 내부적으로 페이징 쿼리를 날려 스레드 안전성이 확보된 `JdbcPagingItemReader`나 `JpaPagingItemReader`를 사용해야 합니다.
+<a id="자바-구현-코드-예시"></a>
+
 ### 자바 구현 코드 예시
 
 
@@ -60,6 +80,8 @@ public TaskExecutor batchTaskExecutor() {
 
 <NotionDivider />
 
+<a id="2-partitioning-독립된-영역의-마스터-워커-분산-처리"></a>
+
 ## 2. Partitioning: 독립된 영역의 마스터-워커 분산 처리
 
 Partitioning은 데이터를 논리적 범위(예: ID 1~10000, 10001~20000)로 먼저 쪼개어 파티션을 생성한 뒤, 각 파티션마다 독립된 Worker Step(스레드 또는 개별 서버)을 할당하여 처리하는 방식입니다.
@@ -67,6 +89,8 @@ Partitioning은 데이터를 논리적 범위(예: ID 1~10000, 10001~20000)로 �
 - **동작 원리**: Master Step이 실행되면 Partitioner가 데이터 범위를 계산하여 Grid Size만큼 파티션 메타데이터를 생성합니다. 이후 각 Worker Step은 자신에게 할당된 범위 정보(`StepExecutionContext`)를 바탕으로 고유한 Reader 인스턴스를 생성해 독립적으로 실행됩니다.
 - **핵심 장점 (Thread-safe 해제)**: 각 Worker 스레드는 서로 다른 데이터를 격리된 상태로 읽기 때문에, `ItemReader`가 Thread-safe할 필요가 없습니다. 심지어 성능이 가장 빠른 Cursor 기반 리더도 병렬로 안전하게 사용할 수 있습니다.
 - **원격 확장성**: 로컬 스레드 분산에 갇히는 Multi-thread Step과 달리, Message Queue(RabbitMQ, Kafka)를 연동하면 Worker 단계를 별도의 물리 서버 노드들로 전송하여 실행하는 Remote Partitioning으로 무한히 확장할 수 있습니다.
+<a id="자바-구현-코드-예시-2"></a>
+
 ### 자바 구현 코드 예시
 
 
@@ -97,47 +121,51 @@ public Step workerStep(JobRepository jobRepository, PlatformTransactionManager t
 
 <NotionDivider />
 
+<a id="3-핵심-차이점-및-실무-선택-가이드-comparison-table"></a>
+
 ## 3. 핵심 차이점 및 실무 선택 가이드 (Comparison Table)
 
-<table className="w-full text-left border-collapse mt-4 mb-4">
-<thead>
-<tr>
-<th className="border-b-2 border-[var(--border-color)] p-2">비교 항목</th>
-<th className="border-b-2 border-[var(--border-color)] p-2">Multi-thread Step 방식</th>
-<th className="border-b-2 border-[var(--border-color)] p-2">Partitioning (마스터-워커) 방식</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td className="border-b border-[var(--border-color)] p-2"><strong>데이터 분할 방식</strong></td>
-<td className="border-b border-[var(--border-color)] p-2">청크 단위 런타임 분할 (스레드 간 레이스 컨디션 유발)</td>
-<td className="border-b border-[var(--border-color)] p-2">사전 논리적 범위 분할 (ID, 날짜, 부서 등)</td>
-</tr>
-<tr>
-<td className="border-b border-[var(--border-color)] p-2"><strong>Reader 제약 조건</strong></td>
-<td className="border-b border-[var(--border-color)] p-2">반드시 Thread-safe한 Paging 리더 계열만 사용 가능</td>
-<td className="border-b border-[var(--border-color)] p-2">제약 없음 (Cursor 기반 고속 리더 사용 가능)</td>
-</tr>
-<tr>
-<td className="border-b border-[var(--border-color)] p-2"><strong>DB 커넥션 효율</strong></td>
-<td className="border-b border-[var(--border-color)] p-2">하나의 Step 내에서 스레드 풀만큼 풀(Pool) 소모</td>
-<td className="border-b border-[var(--border-color)] p-2">각 Worker Step 인스턴스마다 전용 커넥션 점유</td>
-</tr>
-<tr>
-<td className="border-b border-[var(--border-color)] p-2"><strong>확장 한계</strong></td>
-<td className="border-b border-[var(--border-color)] p-2">단일 JVM 프로세스 내부 (상한선 명확)</td>
-<td className="border-b border-[var(--border-color)] p-2">원격 분산(Remote Partitioning)을 통해 다중 서버 확장 가능</td>
-</tr>
-<tr>
-<td className="border-b border-[var(--border-color)] p-2"><strong>구현 난이도</strong></td>
-<td className="border-b border-[var(--border-color)] p-2">매우 낮음 (TaskExecutor 주입만으로 끝)</td>
-<td className="border-b border-[var(--border-color)] p-2">보통~높음 (Partitioner 및 ExecutionContext 바인딩 필요)</td>
-</tr>
-</tbody>
-</table>
+&lt;table className="w-full text-left border-collapse mt-4 mb-4">
+&lt;thead>
+&lt;tr>
+&lt;th className="border-b-2 border-[var(--border-color)] p-2">비교 항목&lt;/th>
+&lt;th className="border-b-2 border-[var(--border-color)] p-2">Multi-thread Step 방식&lt;/th>
+&lt;th className="border-b-2 border-[var(--border-color)] p-2">Partitioning (마스터-워커) 방식&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>데이터 분할 방식&lt;/strong>&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">청크 단위 런타임 분할 (스레드 간 레이스 컨디션 유발)&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">사전 논리적 범위 분할 (ID, 날짜, 부서 등)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>Reader 제약 조건&lt;/strong>&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">반드시 Thread-safe한 Paging 리더 계열만 사용 가능&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">제약 없음 (Cursor 기반 고속 리더 사용 가능)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>DB 커넥션 효율&lt;/strong>&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">하나의 Step 내에서 스레드 풀만큼 풀(Pool) 소모&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">각 Worker Step 인스턴스마다 전용 커넥션 점유&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>확장 한계&lt;/strong>&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">단일 JVM 프로세스 내부 (상한선 명확)&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">원격 분산(Remote Partitioning)을 통해 다중 서버 확장 가능&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>구현 난이도&lt;/strong>&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">매우 낮음 (TaskExecutor 주입만으로 끝)&lt;/td>
+&lt;td className="border-b border-[var(--border-color)] p-2">보통~높음 (Partitioner 및 ExecutionContext 바인딩 필요)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
 
 
 <NotionDivider />
+
+<a id="4-실무-아키텍처-관점의-병목-포인트와-결론"></a>
 
 ## 4. 실무 아키텍처 관점의 병목 포인트와 결론
 
@@ -152,7 +180,11 @@ Partitioning은 각 Worker가 독립된 커넥션을 잡고 할당된 구역만 
 
 <NotionDivider />
 
+<a id="참고-mq-기반-원격-파티셔닝-활용한다면"></a>
+
 ### 참고: MQ 기반 원격 파티셔닝 활용한다면?
+
+<a id="1-mq-기반-원격-파티셔닝-아키텍처-개요"></a>
 
 ### 1. MQ 기반 원격 파티셔닝 아키텍처 개요
 
@@ -171,6 +203,8 @@ Partitioning은 각 Worker가 독립된 커넥션을 잡고 할당된 구역만 
 
 <NotionDivider />
 
+<a id="2-세부-동작-흐름-step-by-step"></a>
+
 ### 2. 세부 동작 흐름 (Step-by-Step)
 
 1. **파티션 분할**: 마스터 노드의 Partitioner가 가동되어 전체 대용량 데이터를 논리적 구역으로 쪼갭니다. (예: 4개 구역)
@@ -182,9 +216,13 @@ Partitioning은 각 Worker가 독립된 커넥션을 잡고 할당된 구역만 
 
 <NotionDivider />
 
+<a id="3-spring-batch-integration-활용-코드-명세-spring-batch-5x-기준"></a>
+
 ### 3. Spring Batch Integration 활용 코드 명세 (Spring Batch 5.x 기준)
 
 현대적인 스프링 배치에서는 `spring-batch-integration` 모듈의 `RemotePartitioningManagerStepBuilder`와 `RemotePartitioningWorkerStepBuilder`를 사용하여 이를 깔끔하게 구현합니다.
+
+<a id="1-manager-node-마스터-서버-설정"></a>
 
 ### ① Manager Node (마스터 서버 설정)
 
@@ -205,6 +243,8 @@ public class MasterBatchConfig {
     }
 }
 ```
+
+<a id="2-worker-node-독립된-워커-서버-설정"></a>
 
 ### ② Worker Node (독립된 워커 서버 설정)
 
@@ -232,6 +272,8 @@ public class WorkerBatchConfig {
 
 
 <NotionDivider />
+
+<a id="4-실무-도입-시-핵심-고려사항-및-한계점"></a>
 
 ### 4. 실무 도입 시 핵심 고려사항 및 한계점
 

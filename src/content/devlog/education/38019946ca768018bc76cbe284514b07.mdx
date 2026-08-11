@@ -20,13 +20,27 @@ package: "2026"
 notionUrl: "https://app.notion.com/p/38019946ca768018bc76cbe284514b07"
 ---
 
+## 목차
+
+- [문제 : 대고객 메시징 서비스 마케팅 이력관리](#문제-대고객-메시징-서비스-마케팅-이력관리)
+  - [테이블 정보](#테이블-정보)
+  - [1. SQL 쿼리 작성 :  1차 방안](#1-sql-쿼리-작성-1차-방안)
+  - [2. 파티셔닝/암묵적 FK :   1차 개선](#2-파티셔닝암묵적-fk-1차-개선)
+  - [3. 커버링 인덱스 :  2차 개선](#3-커버링-인덱스-2차-개선)
+
+<a id="문제-대고객-메시징-서비스-마케팅-이력관리"></a>
+
 ## 문제 : 대고객 메시징 서비스 마케팅 이력관리
 
 최근 3개월(2026-03-01 ~ 2026-05-31) 동안 **총 3회 이상의 캠페인 이메일을 받았으나, 단 한 번도 이메일을 열어보지 않은(status가 'OPENED'인 이력이 없는) 휴면 고객**군을 추출하려 합니다.
 
 이 조건을 만족하는 고객별로 **가장 최근에 발송 실패(BOUNCED 또는 FAILED)가 발생한 캠페인 ID와 해당 실패 일시**를 함께 조회하는 고난도 튜닝/집계 쿼리 작성 및 테이블 수정 필요 시 진행.
 
+<a id="테이블-정보"></a>
+
 ### 테이블 정보
+
+<a id="테이블-1-customers-고객-기본-정보"></a>
 
 #### 테이블 1: `customers` (고객 기본 정보)
 
@@ -39,6 +53,8 @@ notionUrl: "https://app.notion.com/p/38019946ca768018bc76cbe284514b07"
   </tbody>
 </NotionTable>
 
+<a id="테이블-2-emailcampaigns-캠페인-마스터"></a>
+
 #### 테이블 2: `email_campaigns` (캠페인 마스터)
 
 
@@ -49,6 +65,8 @@ notionUrl: "https://app.notion.com/p/38019946ca768018bc76cbe284514b07"
     <tr><td>`sent_at` </td><td>DATETIME</td><td>캠페인 발송 시작 일시</td></tr>
   </tbody>
 </NotionTable>
+
+<a id="테이블-3-emaillogs-대용량-발송-로그-테이블-매달-수천만-건-누적"></a>
 
 #### 테이블 3: `email_logs` (대용량 발송 로그 테이블 - 매달 수천만 건 누적)
 
@@ -64,7 +82,11 @@ notionUrl: "https://app.notion.com/p/38019946ca768018bc76cbe284514b07"
 </NotionTable>
 
 
+<a id="1-sql-쿼리-작성-1차-방안"></a>
+
 ### 1. SQL 쿼리 작성 :  1차 방안
+
+<a id="1-탐색-데이터-범위-축소"></a>
 
 #### 1) 탐색 데이터 범위 축소
 
@@ -126,6 +148,8 @@ LEFT JOIN failed_logs_ranked f ON rc.customer_id = f.customer_id AND f.rn = 1
 ORDER BY f.last_failed_at DESC NULLS LAST, rc.customer_id ASC;
 ```
 
+<a id="2-포인트"></a>
+
 #### 2) 포인트
 
 - **`IN (SELECT campaign_id FROM ...)`****를 통한 인덱스 프루닝**
@@ -137,7 +161,11 @@ ORDER BY f.last_failed_at DESC NULLS LAST, rc.customer_id ASC;
 - **`LEFT JOIN ... AND f.rn = 1`** **구조**
 위험 고객 중에는 이메일이 단순히 '전송 완료(DELIVERED)'만 되고 실패는 안 한 상태에서 안 열어본 고객도 존재합니다. 이들이 결과에서 누락되지 않도록 `LEFT JOIN` 처리를 하되, 윈도우 순위가 1등인 데이터만 연결되도록 조건을 결합
 
+<a id="2-파티셔닝암묵적-fk-1차-개선"></a>
+
 ### 2. 파티셔닝/암묵적 FK :   1차 개선
+
+<a id="1-파티셔닝-및-인덱스-구조-재설계-ddl"></a>
 
 #### 1) 파티셔닝 및 인덱스 구조 재설계 (DDL)
 
@@ -165,9 +193,13 @@ CREATE TABLE email_logs (
 CREATE INDEX idx_logs_query ON email_logs (workday, status, customer_id);
 ```
 
+<a id="2-java-백엔드-제어-암묵적-fk"></a>
+
 #### **2) Java 백엔드 제어 (암묵적 FK)**
 
 데이터 무결성 검증은 DB 하드웨어에 맡기지 않고, Java 애플리케이션의 비즈니스 로직(Service 레이어) 또는 무결성 체크 배치(Spring Batch 등) 단계에서 검증 후 진입할 수 있게 유도하여 설계합니다. 이로 인해 인덱스 쓰기 비용과 데드락 위험이 현저히 줄어듭니다.
+
+<a id="3-범위-축소-및-분할을-반영한-최적화-쿼리"></a>
 
 #### 3) 범위 축소 및 분할을 반영한 최적화 쿼리
 
@@ -225,7 +257,11 @@ FROM risk_customers rc
 LEFT JOIN recent_failed_log f ON rc.customer_id = f.customer_id AND f.rn = 1;
 ```
 
+<a id="3-커버링-인덱스-2차-개선"></a>
+
 ### 3. 커버링 인덱스 :  2차 개선
+
+<a id="1-마스터-테이블-커버링-인덱스-추가"></a>
 
 #### 1) 마스터 테이블 커버링 인덱스 추가
 
@@ -234,6 +270,8 @@ LEFT JOIN recent_failed_log f ON rc.customer_id = f.customer_id AND f.rn = 1;
 CREATE INDEX idx_emaillogs_covering 
 ON email_logs (workday, status, customer_id, updated_at, campaign_id);
 ```
+
+<a id="2-최종-sql"></a>
 
 #### 2) 최종 SQL
 

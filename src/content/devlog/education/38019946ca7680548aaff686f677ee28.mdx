@@ -20,7 +20,25 @@ package: "2026"
 notionUrl: "https://app.notion.com/p/dbLock-DDL-DML-DCL-TCL-38019946ca7680548aaff686f677ee28"
 ---
 
+## 목차
+
+- [1. 트랜잭션과 Isolation (격리 수준)](#1-트랜잭션과-isolation-격리-수준)
+  - [1) 트랜잭션 (Transaction)](#1-트랜잭션-transaction)
+  - [2) Isolation (격리성)](#2-isolation-격리성)
+- [2. DB Lock의 단계(Granularity)와 성능 관계](#2-db-lock의-단계granularity와-성능-관계)
+  - [1) 데이터베이스 락의 범위 단계](#1-데이터베이스-락의-범위-단계)
+  - [2) DB Lock과 성능 간의 관계](#2-db-lock과-성능-간의-관계)
+- [3. 추가 개념: SQL의 분류 (DCL, DML, DDL)](#3-추가-개념-sql의-분류-dcl-dml-ddl)
+  - [1) DCL (Data Control Language - 데이터 제어어)](#1-dcl-data-control-language-데이터-제어어)
+  - [2) DML (Data Manipulation Language - 데이터 조작어)](#2-dml-data-manipulation-language-데이터-조작어)
+  - [3) DDL (Data Definition Language - 데이터 정의어)](#3-ddl-data-definition-language-데이터-정의어)
+  - [4) TCL (Transaction Control Language - 트랜잭션 제어어)](#4-tcl-transaction-control-language-트랜잭션-제어어)
+
+<a id="1-트랜잭션과-isolation-격리-수준"></a>
+
 ## 1. 트랜잭션과 Isolation (격리 수준)
+
+<a id="1-트랜잭션-transaction"></a>
 
 ### 1) 트랜잭션 (Transaction)
 
@@ -54,9 +72,13 @@ notionUrl: "https://app.notion.com/p/dbLock-DDL-DML-DCL-TCL-38019946ca7680548aaf
  [종료: 홍길동-5만 / 이몽룡+5만]    [종료: 두 계좌 모두 처음 상태로 복구]
 ```
 
+<a id="2-isolation-격리성"></a>
+
 ### 2) Isolation (격리성)
 
 여러 트랜잭션이 동시에 실행될 때, 서로의 작업에 물리적으로 간섭하지 못하도록 독립성을 보장하는 성질입니다. 격리성이 높을수록 데이터는 안전하지만, 동시 처리 성능은 떨어지는 트레이드오프 관계를 가집니다.
+
+<a id="2-1-isolation의-종류와-발생-가능한-현상"></a>
 
 #### 2-1) Isolation의 종류와 발생 가능한 현상
 
@@ -168,6 +190,8 @@ A 트랜잭션이 수정한 데이터를 커밋하기 전에 B 트랜잭션이 �
 
 </NotionToggle>
 
+<a id="2-2-isolation에-따른-db-lock의-매커니즘-설명"></a>
+
 #### 2-2) Isolation에 따른 DB Lock의 매커니즘 설명
 
 격리 수준을 달성하기 위해 데이터베이스는 공유락(Shared Lock, S-Lock)과 배타락(Exclusive Lock, X-Lock)을 내부적으로 제어합니다.
@@ -180,7 +204,11 @@ A 트랜잭션이 수정한 데이터를 커밋하기 전에 B 트랜잭션이 �
 데이터를 조회할 때 생성된 공유락을 조회가 끝나도 바로 풀지 않고, **트랜잭션이 최종 커밋되거나 롤백될 때까지 유지**합니다. 이로 인해 트랜잭션 도중 다른 사용자가 데이터를 수정할 수 없습니다.
 - **Serializable**
 조회하는 데이터뿐만 아니라, 조회 범위에 해당하는 영역 전체에 레인지 락(Range Lock)이나 갭 락(Gap Lock)을 걸어 다른 트랜잭션이 새로운 레코드를 진입시키는 것 자체를 원천 봉쇄합니다.
+<a id="2-db-lock의-단계granularity와-성능-관계"></a>
+
 ## 2. DB Lock의 단계(Granularity)와 성능 관계
+
+<a id="1-데이터베이스-락의-범위-단계"></a>
 
 ### 1) 데이터베이스 락의 범위 단계
 
@@ -190,6 +218,8 @@ A 트랜잭션이 수정한 데이터를 커밋하기 전에 B 트랜잭션이 �
 - **파티션 락 (Partition Lock)**: 테이블이 파티셔닝되어 있을 때, 특정 파티션 구역(디스크 파일 구역)만 잠그는 방식입니다. 다른 파티션 영역은 정상적으로 동시 조회가 가능하므로 테이블 락보다 효율적입니다.
 - **레인지 락 (Range Lock) / 갭 락 (Gap Lock)**: 특정 조건 범위(`WHERE id BETWEEN 10 AND 20`)에 락을 걸거나, 데이터와 데이터 사이의 빈 공간(Gap)을 잠가서 새로운 데이터가 끼어들지 못하게 막는 정밀한 잠금 방식입니다.
 - **로우 락 (Row Lock / Record Lock)**: 단 하나의 행(Row) 레코드만 잠그는 방식입니다. 실무 비즈니스 로직에서 가장 빈번하게 발생하며, 동시성을 해치지 않는 가장 이상적인 잠금 범위입니다.
+<a id="2-db-lock과-성능-간의-관계"></a>
+
 ### 2) DB Lock과 성능 간의 관계
 
 락의 범위(Granularity)는 시스템의 동시성 성능과 데이터 무결성 간의 시소게임입니다.
@@ -211,9 +241,13 @@ A 트랜잭션이 수정한 데이터를 커밋하기 전에 B 트랜잭션이 �
 
 </NotionIndent>
 
+<a id="3-추가-개념-sql의-분류-dcl-dml-ddl"></a>
+
 ## 3. 추가 개념: SQL의 분류 (DCL, DML, DDL)
 
 데이터베이스 명세에서 명령어의 목적에 따라 관리, 조작, 정의 언어로 구분합니다.
+
+<a id="1-dcl-data-control-language-데이터-제어어"></a>
 
 ### 1) DCL (Data Control Language - 데이터 제어어)
 
@@ -232,6 +266,8 @@ GRANT SELECT, INSERT ON users TO hyeonjin_dev;
 REVOKE INSERT ON users FROM hyeonjin_dev;
 ```
 
+
+<a id="2-dml-data-manipulation-language-데이터-조작어"></a>
 
 ### 2) DML (Data Manipulation Language - 데이터 조작어)
 
@@ -264,6 +300,8 @@ UPDATE users SET status = 'BLACK' WHERE id = 45;
 DELETE FROM users WHERE id = 45;
 ```
 
+
+<a id="3-ddl-data-definition-language-데이터-정의어"></a>
 
 ### 3) DDL (Data Definition Language - 데이터 정의어)
 
@@ -299,6 +337,8 @@ DROP TABLE users;
 TRUNCATE TABLE users;
 ```
 
+
+<a id="4-tcl-transaction-control-language-트랜잭션-제어어"></a>
 
 ### 4) TCL (Transaction Control Language - 트랜잭션 제어어)
 

@@ -3,7 +3,7 @@ import path from "node:path";
 
 const COMMON_COLUMNS = Object.freeze({
   title: { types: ["title"], required: true, output: "title" },
-  slug: { types: ["rich_text", "title"], output: "slug" },
+  slug: { types: ["rich_text", "title", "select"], output: "slug" },
   description: { types: ["rich_text"], output: "description" },
   category: { types: ["select", "status", "rich_text"], required: true, output: "category" },
   subcategory: { types: ["select", "status", "rich_text"], output: "subcategory" },

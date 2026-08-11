@@ -41,9 +41,11 @@ function writeManifest(stageRoot, rowsByGroup) {
 }
 
 function copyContentBaseline(root, stageRoot) {
-  const source = path.join(root, "src", "content");
-  if (!fs.existsSync(source)) return;
-  fs.cpSync(source, path.join(stageRoot, "src", "content"), { recursive: true });
+  for (const relativePath of ["src/content", "public/images", "public/thumnail"]) {
+    const source = path.join(root, ...relativePath.split("/"));
+    if (!fs.existsSync(source)) continue;
+    fs.cpSync(source, path.join(stageRoot, ...relativePath.split("/")), { recursive: true });
+  }
 }
 
 function generateStagedContent(stageRoot) {

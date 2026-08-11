@@ -7,7 +7,7 @@ export const listRouteContracts = [
     gridClass: "devlog-grid",
     cardClass: "devlog-card",
     linkClass: "devlog-card-link",
-    firstTitle: "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+    firstTitle: "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
     visibleCount: 6,
   },
   {
@@ -25,7 +25,7 @@ export const listRouteContracts = [
     gridClass: "projects-grid",
     cardClass: "project-card",
     linkClass: null,
-    firstTitle: "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
+    firstTitle: "레거시 코드로 인한 메모리 누수 해결",
     visibleCount: 6,
   },
 ];

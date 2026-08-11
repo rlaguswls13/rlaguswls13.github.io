@@ -20,7 +20,7 @@ Keep the existing CSS component spacing and responsive breakpoints; no new spaci
 
 ## Primitives
 
-Navbar, theme toggle, cards, carousel tracks, loading placeholders, and the shared dialog surface remain the reusable primitives.
+Navbar, theme toggle, cards, carousel tracks, loading placeholders, the article table-of-contents rail, and the shared dialog surface remain the reusable primitives.
 
 ## States
 
@@ -32,7 +32,7 @@ Normal preference retains existing transitions. `prefers-reduced-motion: reduce`
 
 ## Responsive
 
-The current 375 px, 768 px, and 1280 px layouts are preserved; the 375 px hero clips only its off-canvas decorative orbit to prevent horizontal overflow.
+The current 375 px, 768 px, and 1280 px layouts are preserved; article table-of-contents content stays at the top of the article in a shrink-to-content panel with a viewport-safe maximum width. The 375 px hero clips only its off-canvas decorative orbit to prevent horizontal overflow.
 
 ## Accessibility
 

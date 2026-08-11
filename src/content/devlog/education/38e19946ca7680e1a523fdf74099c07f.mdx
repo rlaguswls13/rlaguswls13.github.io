@@ -20,7 +20,19 @@ package: "2026"
 notionUrl: "https://app.notion.com/p/js-38e19946ca7680e1a523fdf74099c07f"
 ---
 
+## 목차
+
+- [1. 브라우저 스토리지 (Storage)](#1-브라우저-스토리지-storage)
+  - [1) localStorage vs sessionStorage 한눈에 보기](#1-localstorage-vs-sessionstorage-한눈에-보기)
+  - [2) local 대신 session을 활용하는 추세 (보안 이슈 및 트렌드)](#2-local-대신-session을-활용하는-추세-보안-이슈-및-트렌드)
+  - [3) 각 스토리지의 명확한 장점 및 활용 시나리오](#3-각-스토리지의-명확한-장점-및-활용-시나리오)
+  - [4) 예시](#4-예시)
+
+<a id="1-브라우저-스토리지-storage"></a>
+
 ## 1. 브라우저 스토리지 (Storage)
+
+<a id="1-localstorage-vs-sessionstorage-한눈에-보기"></a>
 
 ### 1) localStorage vs sessionStorage 한눈에 보기
 
@@ -34,6 +46,8 @@ notionUrl: "https://app.notion.com/p/js-38e19946ca7680e1a523fdf74099c07f"
   </tbody>
 </NotionTable>
 
+<a id="2-local-대신-session을-활용하는-추세-보안-이슈-및-트렌드"></a>
+
 ### 2) local 대신 session을 활용하는 추세 (보안 이슈 및 트렌드)
 
 최근 모던 웹 개발에서는 민감하거나 중요한 데이터를 `localStorage`에 무조건 저장하는 방식을 기피합니다.
@@ -41,6 +55,8 @@ notionUrl: "https://app.notion.com/p/js-38e19946ca7680e1a523fdf74099c07f"
 - **보안 이슈 (XSS 취약성):** `localStorage`는 웹사이트의 모든 자바스크립트 코드가 아무런 제약 없이 접근할 수 있습니다. 즉, 사이트가 XSS(크로스 사이트 스크립트) 공격에 노출되어 악성 스크립트가 실행되면 `localStorage.getItem()` 단 한 줄로 사용자의 로그인 토큰(JWT 등)을 통째로 탈취당할 수 있습니다.
 - **sessionStorage 선호 트렌드:** 반면 `sessionStorage`는 해당 탭 내부에서만 격리되어 실행되므로 타 도메인이나 타 탭에서의 오염 확률이 상대적으로 낮고, 사용자가 창을 닫으면 흔적 없이 사라지기 때문에 금융권 웹앱이나 인증 세션 관리에서 '만료 관리가 명확하다'는 장점 때문에 적극적으로 채택되고 있습니다.
 - **진짜 트렌드 한 걸음 더:** 토큰 보안을 극벽화하기 위해 아예 스토리지를 쓰지 않고, 브라우저가 종료되면 날아가는 **자바스크립트 인메모리(In-Memory)** 변수에 토큰을 들고 있거나, **`httpOnly`** **및** **`secure`** **옵션이 켜진 쿠키**에 저장하는 것이 현재 프론트엔드 보안의 가장 핵심 트렌드입니다.
+<a id="3-각-스토리지의-명확한-장점-및-활용-시나리오"></a>
+
 ### 3) 각 스토리지의 명확한 장점 및 활용 시나리오
 
 - **localStorage의 장점:** 비휘발성. 브라우저를 껐다 켜도 유지되므로 유저의 개인화 설정에 최적화되어 있습니다.
@@ -48,6 +64,8 @@ notionUrl: "https://app.notion.com/p/js-38e19946ca7680e1a523fdf74099c07f"
 
 - **sessionStorage의 장점:** 생명주기의 명확성과 독립성. 동일한 사이트를 두 개의 탭으로 열었을 때 서로 데이터가 엉키지 않습니다.
 - *활용 예시:* 페이지 이탈 시 날아가면 안 되는 임시 입력 폼 데이터(글쓰기 임시 저장), 일회성 본인인증 진행 단계 상태값, 보안이 강화된 단기 세션 정보.
+
+<a id="4-예시"></a>
 
 ### 4) 예시
 

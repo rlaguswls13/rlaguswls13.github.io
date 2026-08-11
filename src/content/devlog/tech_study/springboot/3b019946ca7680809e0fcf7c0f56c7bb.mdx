@@ -18,6 +18,18 @@ package: "springboot"
 notionUrl: "https://app.notion.com/p/2-Scope-3b019946ca7680809e0fcf7c0f56c7bb"
 ---
 
+## 목차
+
+- [1. 빈 생명주기와 스코프 격리 (@JobScope / @StepScope)](#1-빈-생명주기와-스코프-격리-jobscope-stepscope)
+  - [지연 바인딩의 이점](#지연-바인딩의-이점)
+- [2. 런타임 실행 파이프라인 (Runtime Architecture)](#2-런타임-실행-파이프라인-runtime-architecture)
+  - [\[Phase 1: 인프라 구동 및 전처리\]](#phase-1-인프라-구동-및-전처리)
+  - [\[Phase 2: 비즈니스 오케스트레이션\]](#phase-2-비즈니스-오케스트레이션)
+  - [\[Phase 3: Chunk 지향 데이터 파이프라인\]](#phase-3-chunk-지향-데이터-파이프라인)
+  - [런타임 실행 파이프라인 예시 코드 및 추적](#런타임-실행-파이프라인-예시-코드-및-추적)
+  - [1. Spring Batch 5.x 표준 구현 코드](#1-spring-batch-5x-표준-구현-코드)
+  - [2. 코드 레벨에서의 실제 런타임 흐름 추적](#2-코드-레벨에서의-실제-런타임-흐름-추적)
+
 스프링 배치를 실행하기 위해서는 job이라는 설계도를 먼저 만들고 내부를 step이라는 task로 분할하여 구성해야 합니다.
 그리고 나서 해당 job을 필요한 시간이나 특정 조건에 맞춰 실행되게하는 trigger를 설정하여 실행되도록합니다.
 이때, job-step 계층(scope)에 따라서 @JobScope, @StepScope 를 사용하여 빈의 라이프사이클을 조절할 수 있습니다.
@@ -29,14 +41,16 @@ notionUrl: "https://app.notion.com/p/2-Scope-3b019946ca7680809e0fcf7c0f56c7bb"
 
 <NotionDivider />
 
+<a id="1-빈-생명주기와-스코프-격리-jobscope-stepscope"></a>
+
 ## 1. 빈 생명주기와 스코프 격리 (@JobScope / @StepScope)
 
 일반적인 스프링 싱글톤 빈은 애플리케이션 구동(Context Refresh) 시점에 생성되지만, 배치의 핵심 컴포넌트들은 배치가 실제로 구동되는 시점(런타임)에 필요한 파라미터를 받아 동적으로 빈을 생성하는 **지연 바인딩(Late Binding)** 전략을 사용합니다. 이 영역을 제한하는 것이 `@JobScope`와 `@StepScope`입니다.
 
 - **@JobScope**
-Job이 실행되는 시점에 빈이 동적으로 생성되며, 해당 스코프 내에서만 `#{jobParameters}`를 주입받을 수 있습니다. (Step 선언 메서드에 주로 사용)
+Job이 실행되는 시점에 빈이 동적으로 생성되며, 해당 스코프 내에서만 `#&#123;jobParameters&#125;`를 주입받을 수 있습니다. (Step 선언 메서드에 주로 사용)
 - **@StepScope**
-Step이 실행되는 시점에 빈이 동적으로 생성되며, `#{jobParameters}` 뿐만 아니라 이전 Step에서 저장한 `#{stepExecutionContext}` 데이터까지 스코프 내에서 안전하게 주입(late injection)받을 수 있습니다. (Reader, Processor, Writer에 필수적으로 사용)
+Step이 실행되는 시점에 빈이 동적으로 생성되며, `#&#123;jobParameters&#125;` 뿐만 아니라 이전 Step에서 저장한 `#&#123;stepExecutionContext&#125;` 데이터까지 스코프 내에서 안전하게 주입(late injection)받을 수 있습니다. (Reader, Processor, Writer에 필수적으로 사용)
 
 ```text
 +------------------------------------------------------------------------------------+
@@ -60,6 +74,8 @@ Step이 실행되는 시점에 빈이 동적으로 생성되며, `#{jobParameter
 +------------------------------------------------------------------------------------+
 ```
 
+<a id="지연-바인딩의-이점"></a>
+
 ### 지연 바인딩의 이점
 
 일반적인 스프링 빈은 애플리케이션 컴파일 및 구동 시점에 실행 매개변수를 주입받을 수 없습니다. 하지만 `@StepScope`를 명시하면 배치가 구동되어 해당 Step이 실행되는 시점(런타임)에 외부에서 유입된 `JobParameters`나 이전 단계에서 `ExecutionContext`에 임시 저장해 둔 동적 변수값들을 쏙 빼와서 빈의 생성자나 필드에 안전하게 바인딩(Late Binding)할 수 있게 됩니다.
@@ -69,9 +85,13 @@ Step이 실행되는 시점에 빈이 동적으로 생성되며, `#{jobParameter
 
 <NotionDivider />
 
+<a id="2-런타임-실행-파이프라인-runtime-architecture"></a>
+
 ## 2. 런타임 실행 파이프라인 (Runtime Architecture)
 
 스프링 배치의 실제 런타임 실행 순서는 외부 트리거부터 시작하여 최하단 데이터 처리 컴포넌트까지 순차적으로 내려갑니다. 배치 프로세스가 기동되어 종료될 때까지 데이터가 하향식으로 흐르는 동적 파이프라인 구조입니다.
+
+<a id="phase-1-인프라-구동-및-전처리"></a>
 
 ### [Phase 1: 인프라 구동 및 전처리]
 
@@ -81,12 +101,16 @@ Step이 실행되는 시점에 빈이 동적으로 생성되며, `#{jobParameter
 스프링 컨텍스트에서 해당 배치를 구동할 엔진인 JobLauncher를 깨우고, 외부로부터 실행 인자인 Job과 JobParameters를 주입받아 배치를 가동합니다.
 - **JobRepository**
 인프라 전반의 데이터 영속성 계층입니다. JobLauncher가 구동되는 즉시 메타데이터 테이블(`BATCH_JOB_INSTANCE`, `BATCH_JOB_EXECUTION`)을 조회하여 중복 실행 여부를 검증하고 현재 상태를 STARTING으로 기록합니다.
+<a id="phase-2-비즈니스-오케스트레이션"></a>
+
 ### [Phase 2: 비즈니스 오케스트레이션]
 
 - **Job**
 전체 배치의 시나리오를 정의하는 최상위 도메인입니다. 등록된 순서에 따라 배정된 Step들을 순차적으로 혹은 성공/실패 여부에 따른 조건별 분기 처리를 조율하며 실행합니다.
 - **Step**
 Job을 구성하는 개별 단계로, 실제 비즈니스 로직이 수행되는 독립적인 트랜잭션 경계입니다. 하나의 Step이 시작되면 메타데이터 테이블(`BATCH_STEP_EXECUTION`)에 물리적인 실행 기록이 커밋됩니다. 작업 성격에 따라 단발성 태스크인 Tasklet 방식 또는 대용량 처리를 위한 Chunk 방식으로 분기됩니다.
+<a id="phase-3-chunk-지향-데이터-파이프라인"></a>
+
 ### [Phase 3: Chunk 지향 데이터 파이프라인]
 
 Chunk 지향 Step 내부에서는 Read -> Process -> Write 루프가 트랜잭션 범위 내에서 반복 수행됩니다.
@@ -111,8 +135,12 @@ Chunk 지향 Step 내부에서는 Read -> Process -> Write 루프가 트랜잭�
 - **ItemProcessor**
 읽어온 데이터를 가공하는 컴포넌트로, Reader가 넘겨준 데이터를 1건씩 전달받아 비즈니스 가공, 유효성 검증, DTO 변환 등을 처리합니다. 만약 특정 데이터를 최종 저장소에서 제외(필터링)하고 싶다면 null을 리턴하여 해당 데이터가 Writer로 넘어가지 않도록 제어합니다.
 - **ItemWriter**
-(핵심) 가공된 데이터를 최종 저장하는 컴포넌트입니다. 앞선 컴포넌트들과 달리, 설정된 Commit Interval(Chunk Size)만큼 데이터가 쌓였을 때 데이터 유실 없이 `List<T>` 형태로 한 번에 전달받습니다. 영속성 컨텍스트의 쓰기 지연 기술이나 데이터베이스의 Bulk Insert/Update를 활용하여 I/O 네트워크 비용을 최소화하고 일괄 저장을 수행한 뒤, 부모 트랜잭션을 최종 COMMIT합니다. (CursorWriter나 PageWriter 등이 사용됩니다.)
+(핵심) 가공된 데이터를 최종 저장하는 컴포넌트입니다. 앞선 컴포넌트들과 달리, 설정된 Commit Interval(Chunk Size)만큼 데이터가 쌓였을 때 데이터 유실 없이 `List&lt;T>` 형태로 한 번에 전달받습니다. 영속성 컨텍스트의 쓰기 지연 기술이나 데이터베이스의 Bulk Insert/Update를 활용하여 I/O 네트워크 비용을 최소화하고 일괄 저장을 수행한 뒤, 부모 트랜잭션을 최종 COMMIT합니다. (CursorWriter나 PageWriter 등이 사용됩니다.)
+<a id="런타임-실행-파이프라인-예시-코드-및-추적"></a>
+
 ### 런타임 실행 파이프라인 예시 코드 및 추적
+
+<a id="1-spring-batch-5x-표준-구현-코드"></a>
 
 ### 1. Spring Batch 5.x 표준 구현 코드
 
@@ -244,6 +272,8 @@ public class UserProcessingJobConfig {
 }
 ```
 
+<a id="2-코드-레벨에서의-실제-런타임-흐름-추적"></a>
+
 ### 2. 코드 레벨에서의 실제 런타임 흐름 추적
 
 위 코드가 컴파일된 후 스케줄러에 의해 실행되면 내부 엔진에서는 다음 순서로 스레드가 런타임 파이프라인을 관통합니다.
@@ -255,7 +285,7 @@ public class UserProcessingJobConfig {
 - **Step 2. 스코프 격리와 빈 지연 생성 (Late Binding)**
 - `userProcessingStep`이 시작되면서 `@JobScope`와 `@StepScope`가 활성화됩니다.
 - 애플리케이션 켜질 때는 생성되지 않던 `userReader` 메서드가 이때 비로소 호출됩니다.
-- `@Value("#{jobParameters['requestDate']}")`가 트리거되어 DB 메타데이터에 저장되어 있던 `2026-06-16` 문자열을 정확히 가로채 자바 변수에 바인딩한 뒤 Reader 인스턴스를 메모리에 올립니다.
+- `@Value("#&#123;jobParameters['requestDate']&#125;")`가 트리거되어 DB 메타데이터에 저장되어 있던 `2026-06-16` 문자열을 정확히 가로채 자바 변수에 바인딩한 뒤 Reader 인스턴스를 메모리에 올립니다.
 
 - **Step 3. Chunk 단위의 트랜잭션 루프 제어**
 - `chunk(100, transactionManager)` 설정에 의해 비즈니스 DB의 트랜잭션이 시작되고 아래 루프가 작동합니다.
@@ -267,7 +297,7 @@ public class UserProcessingJobConfig {
 - 넘겨받은 유저의 상태를 체크합니다. 블랙리스트 유저라면 null을 뱉어 파이프라인에서 탈락시키고, 정상 유저라면 `ProcessedUser` DTO로 가공하여 청크 메모리 내부 List에 누적합니다.
 
 - **Writer.write(Chunk) 호출 (100건이 쌓인 순간 1회 호출)**
-- 내부 카운터가 100에 도달하면 `List<ProcessedUser>`를 컴포넌트에 통째로 던집니다.
+- 내부 카운터가 100에 도달하면 `List&lt;ProcessedUser>`를 컴포넌트에 통째로 던집니다.
 - `JdbcBatchItemWriter`는 자바의 `addBatch()`와 `executeBatch()`를 사용하여 100건의 UPDATE 쿼리를 네트워크 파이프라인을 통해 DB로 한 번에 날립니다(Bulk 연산).
 
 

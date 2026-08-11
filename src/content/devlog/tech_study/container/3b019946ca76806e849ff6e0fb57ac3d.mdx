@@ -18,10 +18,20 @@ package: "container"
 notionUrl: "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6e0fb57ac3d"
 ---
 
+## 목차
+
+- [1. Docker와 Podman 벤치마킹 및 우위 비교](#1-docker와-podman-벤치마킹-및-우위-비교)
+- [2. 네트워크 아키텍처 비교 (Network Architecture)](#2-네트워크-아키텍처-비교-network-architecture)
+- [3. Rootless 모드 심층 비교: 도커를 Rootless로 설정한다면?](#3-rootless-모드-심층-비교-도커를-rootless로-설정한다면)
+- [4. Kubernetes(K8s) 환경으로의 손쉬운 전환](#4-kubernetesk8s-환경으로의-손쉬운-전환)
+- [5. 결론: 가장 중요한 핵심은 'Shell Script'와 '컨테이너 이해도'](#5-결론-가장-중요한-핵심은-shell-script와-컨테이너-이해도)
+
 컨테이너라는 추상화 기술 자체는 DevOps 아키텍처에 영구적으로 남겠지만, 컨테이너를 구동하는 주체인 런타임 엔진 시장에서는 **Podman**이 강력한 대안으로 시장의 파이를 가져가고 있습니다.
 
 
 <NotionDivider />
+
+<a id="1-docker와-podman-벤치마킹-및-우위-비교"></a>
 
 ## 1. Docker와 Podman 벤치마킹 및 우위 비교
 
@@ -41,6 +51,8 @@ notionUrl: "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6
 
 <NotionDivider />
 
+<a id="2-네트워크-아키텍처-비교-network-architecture"></a>
+
 ## 2. 네트워크 아키텍처 비교 (Network Architecture)
 
 도커와 포드맨 네트워크의 가장 큰 차이점은 아키텍처(데몬의 유무)에서 비롯됩니다. 도커는 중앙 백그라운드 데몬이 네트워크를 관리하지만, 포드맨은 데몬 없이 사용자 프로세스로 동작하며 호스트의 네트워킹 유틸리티를 직접 활용합니다.
@@ -49,6 +61,8 @@ notionUrl: "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6
 - **Podman 네트워크:** 데몬리스(Daemonless) 및 기본 Rootless 구조입니다. `slirp4netns`나 `pasta` 유틸리티를 사용해 네트워크 트래픽을 가상화하여, 호스트의 실제 네트워크 카드에 직접 접근하는 것을 원천 차단합니다. 또한, 여러 컨테이너를 하나의 Pod으로 묶어 `localhost`를 통해 안전하게 내부 통신을 격리할 수 있습니다.
 
 <NotionDivider />
+
+<a id="3-rootless-모드-심층-비교-도커를-rootless로-설정한다면"></a>
 
 ## 3. Rootless 모드 심층 비교: 도커를 Rootless로 설정한다면?
 
@@ -62,6 +76,8 @@ notionUrl: "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6
 
 <NotionDivider />
 
+<a id="4-kubernetesk8s-환경으로의-손쉬운-전환"></a>
+
 ## 4. Kubernetes(K8s) 환경으로의 손쉬운 전환
 
 이름 자체에서도 알 수 있듯, Podman은 쿠버네티스의 최소 배포 단위인 **Pod**의 개념을 내장하고 있습니다.
@@ -70,6 +86,8 @@ notionUrl: "https://app.notion.com/p/DevOps-Docker-Podman-3b019946ca76806e849ff6
 - **Podman:** 로컬 머신에서 여러 컨테이너를 하나의 Pod으로 묶어 실행해본 뒤, `podman generate kube` 명령어를 타이핑하는 즉시 실제 쿠버네티스에서 가동될 수 있는 완벽한 K8s Manifest(YAML) 파일을 자동 추출해 줍니다. K8s 징검다리 역할로서 최강의 편의성을 자랑합니다.
 
 <NotionDivider />
+
+<a id="5-결론-가장-중요한-핵심은-shell-script와-컨테이너-이해도"></a>
 
 ## 5. 결론: 가장 중요한 핵심은 'Shell Script'와 '컨테이너 이해도'
 

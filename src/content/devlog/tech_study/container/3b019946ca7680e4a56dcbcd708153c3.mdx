@@ -18,6 +18,16 @@ package: "container"
 notionUrl: "https://app.notion.com/p/K8s-Defense-in-Depth-3b019946ca7680e4a56dcbcd708153c3"
 ---
 
+## 목차
+
+- [쿠버네티스 5대 핵심 보안 체계](#쿠버네티스-5대-핵심-보안-체계)
+  - [1. 인증(Authentication) 및 인가(Authorization)](#1-인증authentication-및-인가authorization)
+  - [2. 시크릿 및 데이터 보호 (Secrets Management)](#2-시크릿-및-데이터-보호-secrets-management)
+  - [3. 클러스터 및 워크로드 격리 (심층 분석)](#3-클러스터-및-워크로드-격리-심층-분석)
+  - [4. Admission Controller (검증 및 통제)](#4-admission-controller-검증-및-통제)
+  - [5. 모니터링 및 감사 (Auditing & Monitoring)](#5-모니터링-및-감사-auditing-monitoring)
+- [요약: 단일 호스트 vs 쿠버네티스 보안 접근법](#요약-단일-호스트-vs-쿠버네티스-보안-접근법)
+
 쿠버네티스(Kubernetes, K8s)도 근본적으로는 Docker나 Podman과 같은 **컨테이너 기술을 기반으로 작동하는 오케스트레이션(Orchestration) 플랫폼**입니다. 단일 호스트 환경의 컨테이너 제어를 넘어, 대규모 클러스터 인프라를 안정적으로 운영하기 위해 컨테이너 기술을 심층적으로 다루며, 그만큼 구조적이고 강력한 보안 및 관리 체계가 도입되어 있습니다.
 
 쿠버네티스 보안은 **4C(Cloud, Cluster, Container, Code)** 계층으로 나뉘며, 하나의 방어선이 무너지더라도 다음 계층이 방어하는 **심층 방어(Defense in Depth)** 원칙을 따릅니다.
@@ -27,9 +37,13 @@ notionUrl: "https://app.notion.com/p/K8s-Defense-in-Depth-3b019946ca7680e4a56dcb
 
 <NotionDivider />
 
+<a id="쿠버네티스-5대-핵심-보안-체계"></a>
+
 ## 쿠버네티스 5대 핵심 보안 체계
 
 쿠버네티스의 방어 계층은 다음과 같이 5가지 주요 구성 요소로 작동합니다.
+
+<a id="1-인증authentication-및-인가authorization"></a>
 
 ### 1. 인증(Authentication) 및 인가(Authorization)
 
@@ -37,15 +51,21 @@ API 서버에 접근하는 주체(사용자, 서비스 계정)의 신원을 확�
 
 - **인증 (AuthN):** OIDC, 클라이언트 인증서, Webhook 토큰 등을 통해 유효한 사용자인지 엄격하게 검증합니다.
 - **인가 (AuthB):** RBAC(Role-Based Access Control)을 사용하여 특정 사용자나 서비스 계정(ServiceAccount)이 어떤 API 리소스(파드, 네임스페이스 등)에 접근하고 조작할 수 있는지 세밀하게 제어합니다.
+<a id="2-시크릿-및-데이터-보호-secrets-management"></a>
+
 ### 2. 시크릿 및 데이터 보호 (Secrets Management)
 
 민감한 정보(비밀번호, API 토큰, TLS 키 등)를 안전하게 관리하고 중앙 저장소인 etcd의 데이터를 보호합니다.
 
 - **Secret 객체:** 민감한 데이터를 Base64로 인코딩하여 환경 변수나 파일로 주입합니다. (Base64 자체는 암호화가 아니므로 외부 노출에 주의가 필요합니다.)
 - **Secret 암호화 (Encryption at Rest):** etcd에 저장되는 기밀 데이터를 디스크 상에서 암호화합니다. AWS KMS 등 외부 클라우드 공급자의 암호화 키와 연동할 수 있습니다.
+<a id="3-클러스터-및-워크로드-격리-심층-분석"></a>
+
 ### 3. 클러스터 및 워크로드 격리 (심층 분석)
 
 단일 컨테이너 환경의 한계를 넘어, 파드(Pod)와 노드(Node), 그리고 네트워크 레벨에서 발생할 수 있는 공격 범위를 강력하게 제한합니다. 이를 구현하는 세부 메커니즘은 다음과 같습니다.
+
+<a id="31-런타임-격리-커널-공유의-한계-극복-샌드박스-컨테이너"></a>
 
 #### 3.1. 런타임 격리: 커널 공유의 한계 극복 (샌드박스 컨테이너)
 
@@ -53,6 +73,8 @@ API 서버에 접근하는 주체(사용자, 서비스 계정)의 신원을 확�
 
 - **gVisor (Google 개발):** 컨테이너와 호스트 커널 사이에 독립된 '가상 커널(Sentry)'을 둡니다. 컨테이너가 내리는 시스템 콜(Syscall)을 중간에서 가로채 필터링하므로, 컨테이너를 탈옥해도 호스트 커널에 도달할 수 없습니다.
 - **Kata Containers:** 아주 가볍고 빠른 미니 가상머신(MicroVM) 내부에서 컨테이너를 실행합니다. 하드웨어 수준(인텔 VT-x 등)에서 격리되기 때문에 완벽한 가상머신(VM) 급의 보안 경계를 제공합니다.
+<a id="32-정책-기반-제어-포드-보안-표준-pod-security-standards"></a>
+
 #### 3.2. 정책 기반 제어: 포드 보안 표준 (Pod Security Standards)
 
 쿠버네티스는 포드가 생성될 때 호스트 시스템에 해를 끼칠 수 있는 설정을 사전에 검사하고 차단하는 강력한 내장 정책 엔진을 가지고 있습니다. (과거 PSP에서 발전하여 현재는 PSS/PSA로 표준화되었습니다.)
@@ -61,24 +83,32 @@ API 서버에 접근하는 주체(사용자, 서비스 계정)의 신원을 확�
 - **Privileged:** 호스트의 모든 권한에 접근 가능 (시스템 관리용).
 - **Baseline:** 알려진 권한 상승 경로를 차단 (기본값).
 - **Restricted:** 도커/포드맨의 Rootless 모드와 유사한 환경을 강제합니다. 포드 내부 프로세스가 절대 `root`(`UID 0`) 권한으로 실행되지 못하도록 강제하며, 호스트 파일 시스템 마운트를 금지합니다.
+<a id="33-커널-보안-모듈-강제-연동"></a>
+
 #### 3.3. 커널 보안 모듈 강제 연동
 
 컨테이너가 탈옥하더라도 호스트의 자원을 건드리지 못하도록 리눅스 커널의 핵심 보안 기능들을 쿠버네티스 설정 파일(YAML) 레벨에서 직접 제어합니다. (Security Context 활용)
 
 - **Seccomp (Secure Computing Mode):** 컨테이너가 사용할 수 있는 시스템 콜의 종류를 제한합니다. 권한 상승에 자주 악용되는 시스템 콜을 차단하면 컨테이너 내부 `root`라 할지라도 무력화됩니다.
 - **AppArmor / SELinux:** 컨테이너 프로세스가 접근할 수 있는 호스트의 파일 경로, 네트워크 포트 등을 레벨 단위로 철저하게 제한합니다.
+<a id="34-네트워크-격리-네트워크-정책-network-policy"></a>
+
 #### 3.4. 네트워크 격리: 네트워크 정책 (Network Policy)
 
 도커/포드맨 단일 환경에서는 컨테이너가 호스트 네트워크로 탈옥하면 주변 모든 인프라를 스캔할 수 있는 위험이 있었습니다. 쿠버네티스는 이를 원천 차단합니다.
 
 - **기본 차단(Default Deny):** 보안 설정을 통해 허용된 포드만 통신하는 "화이트리스트" 방식으로 통신을 제한할 수 있습니다.
 - **마이크로 세그멘테이션:** 공격자가 웹 서버를 해킹해 탈옥하더라도, 네트워크 정책이 막고 있다면 인접한 데이터베이스(DB) 파드나 호스트의 다른 관리 포트로 패킷을 전송할 수 없게 만들어 네트워크 상에서 완전히 고립시킵니다.
+<a id="4-admission-controller-검증-및-통제"></a>
+
 ### 4. Admission Controller (검증 및 통제)
 
 쿠버네티스 API 요청이 인증/인가를 통과하여 etcd에 저장되기 직전, 요청을 가로채서 유효성을 검사하거나 수정하는 강력한 보안 필터(문지기)입니다.
 
 - **검증 (Validating):** 정책에 위배되는 파드 생성 요청(예: 최신/안전한 이미지가 아님, 권한 상승 시도)을 거부합니다.
 - **변형 (Mutating):** 보안 필수 라벨이나 기본 설정 값을 자동으로 주입하여, 관리자의 실수 방지 및 안전한 상태로 요청을 수정합니다.
+<a id="5-모니터링-및-감사-auditing-monitoring"></a>
+
 ### 5. 모니터링 및 감사 (Auditing & Monitoring)
 
 런타임 환경에서 발생하는 위협을 지속적으로 탐지하고 클러스터 상태를 투명하게 로깅합니다.
@@ -88,36 +118,38 @@ API 서버에 접근하는 주체(사용자, 서비스 계정)의 신원을 확�
 
 <NotionDivider />
 
+<a id="요약-단일-호스트-vs-쿠버네티스-보안-접근법"></a>
+
 ## 요약: 단일 호스트 vs 쿠버네티스 보안 접근법
 
-<div className="data-table-container">
-<table className="data-table">
-<thead>
-<tr>
-<th>구분</th>
-<th>도커 / 포드맨 (단일 호스트)</th>
-<th>쿠버네티스 (오케스트레이션)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>권한 제어</td>
-<td>실행 시 명령어 옵션(<code>--user</code> 등)에 의존</td>
-<td>YAML 선언 및 플랫폼 정책(PSS)으로 <code>root</code> 실행 원천 차단</td>
-</tr>
-<tr>
-<td>네트워크 방어</td>
-<td>호스트 방화벽이나 기본 브릿지에 의존</td>
-<td>내부 방화벽인 <code>Network Policy</code>로 포드 간 통신을 미시적으로 통제</td>
-</tr>
-<tr>
-<td>커널 격리</td>
-<td>호스트 커널을 그대로 공유</td>
-<td><code>gVisor</code>, <code>Kata</code> 등을 플러그인하여 커널 수준에서 격리 가능</td>
-</tr>
-</tbody>
-</table>
-</div>
+&lt;div className="data-table-container">
+&lt;table className="data-table">
+&lt;thead>
+&lt;tr>
+&lt;th>구분&lt;/th>
+&lt;th>도커 / 포드맨 (단일 호스트)&lt;/th>
+&lt;th>쿠버네티스 (오케스트레이션)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>권한 제어&lt;/td>
+&lt;td>실행 시 명령어 옵션(&lt;code>--user&lt;/code> 등)에 의존&lt;/td>
+&lt;td>YAML 선언 및 플랫폼 정책(PSS)으로 &lt;code>root&lt;/code> 실행 원천 차단&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>네트워크 방어&lt;/td>
+&lt;td>호스트 방화벽이나 기본 브릿지에 의존&lt;/td>
+&lt;td>내부 방화벽인 &lt;code>Network Policy&lt;/code>로 포드 간 통신을 미시적으로 통제&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>커널 격리&lt;/td>
+&lt;td>호스트 커널을 그대로 공유&lt;/td>
+&lt;td>&lt;code>gVisor&lt;/code>, &lt;code>Kata&lt;/code> 등을 플러그인하여 커널 수준에서 격리 가능&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/div>
 
 결론적으로 쿠버네티스는 **"컨테이너는 해킹당할 수 있다"**는 것을 전제로 설계되었습니다. 컨테이너가 뚫려도 호스트를 장악하지 못하고 어디로도 도망치지 못하게 사방에 바리케이드를 치는 **심층 방어(Defense in Depth)** 철학을 통해 클러스터의 안정성을 보장합니다.
 

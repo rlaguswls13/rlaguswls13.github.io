@@ -63,6 +63,10 @@ function removeState(paths) {
   fs.rmSync(paths.stateDirectory, { recursive: true, force: true });
 }
 
+function removeBackups(root, entries) {
+  for (const entry of entries) fs.rmSync(path.join(root, entry.backupPath), { force: true });
+}
+
 function restoreOriginals(root, entries) {
   for (const entry of [...entries].reverse()) {
     const target = path.join(root, entry.path);
@@ -130,6 +134,7 @@ function recoverWhileLocked(paths) {
   }
   const journal = parseJournal(paths);
   if (journal.state === "committed" && verifyCommitted(paths.root, journal.entries)) {
+    removeBackups(paths.root, journal.entries);
     removeState(paths);
     return { recovered: true, state: "committed" };
   }
@@ -222,6 +227,7 @@ export async function promoteContentTransaction({ root, managedPaths, prepare, v
       journal.state = "committed";
       writeJournal(paths.journal, journal); if (fault?.killAfterCommit) process.kill(process.pid, "SIGKILL");
       if (!verifyCommitted(paths.root, entries)) throw new ContentTransactionError("Committed content manifest verification failed.");
+      removeBackups(paths.root, entries);
       removeState(paths);
       return { state: "committed", manifest: entries.map(({ path: relativePath, sha256 }) => ({ path: relativePath, sha256 })) };
     } catch (error) {

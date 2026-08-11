@@ -18,14 +18,30 @@ package: "springboot"
 notionUrl: "https://app.notion.com/p/6-3b019946ca768023920bc0535a88d2ae"
 ---
 
+## 목차
+
+- [1. Chunk Size와 Fetch Size 일치화 + Cursor 스트리밍 (포인트 1, 2)](#1-chunk-size와-fetch-size-일치화-cursor-스트리밍-포인트-1-2)
+  - [자바 구현 코드 예시](#자바-구현-코드-예시)
+- [2. JdbcBatchItemWriter를 통한 Bulk 연산 (포인트 3)](#2-jdbcbatchitemwriter를-통한-bulk-연산-포인트-3)
+  - [자바 구현 코드 예시](#자바-구현-코드-예시-2)
+- [3. SQL 레벨 튜닝 및 No-Offset 페이징 전환 (포인트 4)](#3-sql-레벨-튜닝-및-no-offset-페이징-전환-포인트-4)
+  - [자바 구현 코드 예시](#자바-구현-코드-예시-3)
+- [4. 비즈니스 필터링의 DB 레이어 전임 (포인트 5)](#4-비즈니스-필터링의-db-레이어-전임-포인트-5)
+  - [❌ AS-IS: 잘못된 방식 (ItemProcessor에서 필터링)](#as-is-잘못된-방식-itemprocessor에서-필터링)
+  - [✅ TO-BE: 올바른 방식 (ItemReader SQL 문맥에서 필터링)](#to-be-올바른-방식-itemreader-sql-문맥에서-필터링)
+
 본 문서는 실무 환경에서 대용량 데이터를 다루는 스프링 배치(Spring Batch)의 성능을 극대화하기 위한 구체적인 튜닝 기법과 코드 구현 사례를 정리한 기록입니다.
 
 
 <NotionDivider />
 
+<a id="1-chunk-size와-fetch-size-일치화-cursor-스트리밍-포인트-1-2"></a>
+
 ## 1. Chunk Size와 Fetch Size 일치화 + Cursor 스트리밍 (포인트 1, 2)
 
 단일 스레드 대용량 처리에서 가장 효율적인 `JdbcCursorItemReader` 설정입니다. `fetchSize`를 chunk 크기와 동일하게 맞추어 오버헤드를 최소화합니다.
+
+<a id="자바-구현-코드-예시"></a>
 
 ### 자바 구현 코드 예시
 
@@ -63,9 +79,13 @@ public class CursorReaderConfig {
 
 <NotionDivider />
 
+<a id="2-jdbcbatchitemwriter를-통한-bulk-연산-포인트-3"></a>
+
 ## 2. JdbcBatchItemWriter를 통한 Bulk 연산 (포인트 3)
 
 단건 INSERT/UPDATE로 인한 네트워크 병목을 제거하고, 청크 단위로 모아서 한 번에 쏘는 벌크 라이터 설정입니다.
+
+<a id="자바-구현-코드-예시-2"></a>
 
 ### 자바 구현 코드 예시
 
@@ -85,9 +105,13 @@ public JdbcBatchItemWriter<UserDto> customBulkWriter() {
 
 <NotionDivider />
 
+<a id="3-sql-레벨-튜닝-및-no-offset-페이징-전환-포인트-4"></a>
+
 ## 3. SQL 레벨 튜닝 및 No-Offset 페이징 전환 (포인트 4)
 
 페이징 리더를 사용할 때, 대량의 데이터를 넘기면서 발생하는 OFFSET 부하(Deep Paging)를 방지하기 위해 마지막 처리된 ID를 조건절로 추적하는 No-Offset 구현 방식입니다.
+
+<a id="자바-구현-코드-예시-3"></a>
 
 ### 자바 구현 코드 예시
 
@@ -132,9 +156,13 @@ public class NoOffsetPagingConfig {
 
 <NotionDivider />
 
+<a id="4-비즈니스-필터링의-db-레이어-전임-포인트-5"></a>
+
 ## 4. 비즈니스 필터링의 DB 레이어 전임 (포인트 5)
 
 자바 애플리케이션 메모리로 데이터를 불필요하게 긁어와서 거르는 잘못된 예시와, 이를 SQL 레이어로 이관하여 튜닝한 올바른 예시의 코드 비교입니다.
+
+<a id="as-is-잘못된-방식-itemprocessor에서-필터링"></a>
 
 ### ❌ AS-IS: 잘못된 방식 (ItemProcessor에서 필터링)
 
@@ -162,6 +190,8 @@ public ItemProcessor<UserDto, UserDto> badProcessor() {
     };
 }
 ```
+
+<a id="to-be-올바른-방식-itemreader-sql-문맥에서-필터링"></a>
 
 ### ✅ TO-BE: 올바른 방식 (ItemReader SQL 문맥에서 필터링)
 

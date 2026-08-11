@@ -503,7 +503,7 @@
       "sourceFile": "src/content/devlog/education/3a319946ca76802aa2cff193b6a2456e.mdx",
       "title": "Spring MVC에서 응답(Response)와 요청(Request) 구조",
       "date": "2026-07-08",
-      "description": "Spring MVC에서 HTTP 요청이 컨트롤러에 전달되고 응답으로 변환되는 구조와 주요 처리 흐름을 정리합니다.",
+      "description": "Spring MVC에서 응답(Response)와 요청(Request) 구조",
       "author": "",
       "href": "/devlog/education/spring-mvc-request-response",
       "discussionTerm": "/devlog/education/3a319946ca76802aa2cff193b6a2456e"
@@ -515,7 +515,7 @@
       "sourceFile": "src/content/devlog/education/3a319946ca76806db9ecf8824115ebea.mdx",
       "title": "요구사항 정의서란?",
       "date": "2026-07-10",
-      "description": "프로젝트의 목표와 범위, 기능과 제약사항을 명확히 정의하는 요구사항 정의서의 역할과 작성 방법을 정리합니다.",
+      "description": "요구사항 정의서란?",
       "author": "",
       "href": "/devlog/education/requirements-definition-document",
       "discussionTerm": "/devlog/education/3a319946ca76806db9ecf8824115ebea"
@@ -527,7 +527,7 @@
       "sourceFile": "src/content/devlog/education/3a319946ca76807b8e7ac1d05c32e441.mdx",
       "title": "세미프로젝트",
       "date": "2026-07-13",
-      "description": "교육 과정의 세미 프로젝트를 준비하고 구현하며 정리한 요구사항, 설계, 협업 및 개발 과정을 소개합니다.",
+      "description": "세미프로젝트",
       "author": "",
       "href": "/devlog/education/semi-project",
       "discussionTerm": "/devlog/education/3a319946ca76807b8e7ac1d05c32e441"
@@ -539,7 +539,7 @@
       "sourceFile": "src/content/devlog/education/3a319946ca7680a6b7b3f98589e30442.mdx",
       "title": "Spring에서 Filter와 Interceptor의 쓰임",
       "date": "2026-07-09",
-      "description": "Spring 웹 요청 처리에서 Filter와 Interceptor가 개입하는 시점, 적용 범위와 주요 활용 사례를 비교해 정리합니다.",
+      "description": "Spring에서 Filter와 Interceptor의 쓰임",
       "author": "",
       "href": "/devlog/education/spring-filter-and-interceptor",
       "discussionTerm": "/devlog/education/3a319946ca7680a6b7b3f98589e30442"
@@ -915,23 +915,34 @@
       "author": "",
       "href": "/devlog/tech_study/spring-batch-graceful-stop",
       "discussionTerm": "/devlog/tech_study/3b019946ca7680ff9877e74515176168"
+    },
+    {
+      "category": "tech_study",
+      "id": "3b819946ca7680439eecd5fe23528952",
+      "slug": "ai-agent-basic-tech",
+      "sourceFile": "src/content/devlog/tech_study/ai/3b819946ca7680439eecd5fe23528952.mdx",
+      "title": "AI agent 활용한 학습: 프롬프트,하네스,루프 기법",
+      "date": "2026-08-10",
+      "description": "AI agnet를 활용하여, 단순 바이브 코딩이 아닌 생산성과 코드 생명을 향상시키는 기초방법에 대해서 정리해 봤습니다.",
+      "author": "",
+      "href": "/devlog/tech_study/ai-agent-basic-tech",
+      "discussionTerm": "/devlog/tech_study/3b819946ca7680439eecd5fe23528952"
+    },
+    {
+      "category": "tech_study",
+      "id": "3b919946ca7680d9a4f3c5389ea08e85",
+      "slug": "ai-llm-rag-andrej-karpathy-thesis",
+      "sourceFile": "src/content/devlog/tech_study/ai/3b919946ca7680d9a4f3c5389ea08e85.mdx",
+      "title": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
+      "date": "2026-08-11",
+      "description": "개인 프로젝트에서 AI 에이전트를 활용하다 보면 초반에는 뛰어난 생산성과 완성도 덕분에 도구에 대한 깊은 신뢰가 생깁니다. 하지만 프로젝트가 고도화되고 특정 모듈이나 미세한 영역에 맞춘 정교한 작업을 요청하기 시작하면, AI가 의도와 전혀 다른 방향으로 코드를 변경하거나 입력한 노력 대비 출력물의 품질이 현저히 떨어지는 한계에 부딪히게 됩니다. 맥락 파악의 한계로 인해 발생하는 이러한 비효율은 AI 도구 활용에서 가장 큰 병목이 되곤 합니다.\n\n이러한 문제를 효과적으로 제어하고 관리할 방법을 모색하던 중, 2026년 초 안드레이 카파시(Andrej Karpathy)가 깃허브에 공개한 개인용 LLM RAG 관리이론을 접하게 되었습니다. 프로젝트의 문맥을 안정적으로 유지하면서 AI의 아웃풋을 정밀하게 통제하는 이 접근법에 인상을 받았으며, 본 글에서는 해당 방식을 직접 살펴보고 공부한 내용을 간략히 정리해 보고자 합니다.",
+      "author": "",
+      "href": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
+      "discussionTerm": "/devlog/tech_study/3b919946ca7680d9a4f3c5389ea08e85"
     }
   ],
   "items": {
     "blog/3a319946ca768078b891d2ebf14c4741": [
-      {
-        "category": "blog",
-        "id": "3ab19946ca768020a285dc6c49b14793",
-        "title": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
-        "date": "2026-07-28",
-        "tags": [
-          "개인프로젝트",
-          "messaging platform"
-        ],
-        "href": "/devlog/blog/rebuilding-from-specs-without-git",
-        "sharedKeywords": [],
-        "score": 12
-      },
       {
         "category": "blog",
         "id": "3a619946ca7680288a44ef2065a0c130",
@@ -946,33 +957,6 @@
         "score": 12
       },
       {
-        "category": "education",
-        "id": "3a319946ca7680a6b7b3f98589e30442",
-        "title": "Spring에서 Filter와 Interceptor의 쓰임",
-        "date": "2026-07-09",
-        "tags": [
-          "Filter",
-          "Interceptor"
-        ],
-        "href": "/devlog/education/spring-filter-and-interceptor",
-        "sharedKeywords": [],
-        "score": 0
-      }
-    ],
-    "blog/3a619946ca7680288a44ef2065a0c130": [
-      {
-        "category": "blog",
-        "id": "3a319946ca768078b891d2ebf14c4741",
-        "title": "2026년 상반기 면접을 보면서..",
-        "date": "2026-07-20",
-        "tags": [
-          "면접"
-        ],
-        "href": "/devlog/blog/2026-first-half-interview-retrospective",
-        "sharedKeywords": [],
-        "score": 12
-      },
-      {
         "category": "blog",
         "id": "3ab19946ca768020a285dc6c49b14793",
         "title": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
@@ -987,15 +971,56 @@
       },
       {
         "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
+        "id": "37919946ca7680d68411e998f7cd476c",
+        "title": "윈도우함수와 파티셔닝/인덱스",
+        "date": "2026-06-11",
         "tags": [
-          "배열",
-          "1차원 배열",
-          "문제풀이"
+          "window함수",
+          "파티셔닝",
+          "인덱스"
         ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
+        "href": "/devlog/education/sql-window-functions-partitioning-indexes",
+        "sharedKeywords": [],
+        "score": 0
+      }
+    ],
+    "blog/3a619946ca7680288a44ef2065a0c130": [
+      {
+        "category": "blog",
+        "id": "3ab19946ca768020a285dc6c49b14793",
+        "title": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
+        "date": "2026-07-28",
+        "tags": [
+          "개인프로젝트",
+          "messaging platform"
+        ],
+        "href": "/devlog/blog/rebuilding-from-specs-without-git",
+        "sharedKeywords": [],
+        "score": 12
+      },
+      {
+        "category": "blog",
+        "id": "3a319946ca768078b891d2ebf14c4741",
+        "title": "2026년 상반기 면접을 보면서..",
+        "date": "2026-07-20",
+        "tags": [
+          "면접"
+        ],
+        "href": "/devlog/blog/2026-first-half-interview-retrospective",
+        "sharedKeywords": [],
+        "score": 12
+      },
+      {
+        "category": "education",
+        "id": "38719946ca7680639d1ecf7b31dabb61",
+        "title": "프로토타입(Prototype)과 클래스(Class) - js 구동 메커니즘은 변경되지 않았다.",
+        "date": "2026-06-26",
+        "tags": [
+          "class",
+          "prototype",
+          "javascript"
+        ],
+        "href": "/devlog/education/backend-developer-frontend-perspective",
         "sharedKeywords": [],
         "score": 0
       }
@@ -1027,18 +1052,18 @@
         "score": 12
       },
       {
-        "category": "education",
-        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
-        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
-        "date": "2026-05-13",
+        "category": "problem_solving",
+        "id": "3b019946ca7680b584e1c59c19e022a9",
+        "title": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결",
+        "date": "2026-05-15",
         "tags": [
-          "상수",
-          "형변환",
-          "메모리 구조",
-          "연산자",
-          "조건문"
+          "Spring",
+          "Quartz",
+          "Hackathon",
+          "Clustering",
+          "Sharding"
         ],
-        "href": "/devlog/education/java-constants-type-casting-and-memory",
+        "href": "/devlog/problem_solving/spring-quartz-ha-optimization",
         "sharedKeywords": [],
         "score": 0
       }
@@ -1063,35 +1088,33 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680e4a56dcbcd708153c3",
-        "title": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth)",
-        "date": "2026-05-31",
+        "id": "3b019946ca768079be45f5fdc2d4019f",
+        "title": "Docker 기본 및 Container 구동 프로세스 이해",
+        "date": "2026-04-30",
         "tags": [
-          "Security",
-          "DevOps",
-          "Container"
+          "Container",
+          "DevOps"
         ],
-        "href": "/devlog/tech_study/kubernetes-defense-in-depth-security",
+        "href": "/devlog/tech_study/docker-container-runtime-basics",
         "sharedKeywords": [
           "DevOps"
         ],
         "score": 100
       },
       {
-        "category": "problem_solving",
-        "id": "3b019946ca7680b584e1c59c19e022a9",
-        "title": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결",
-        "date": "2026-05-15",
+        "category": "tech_study",
+        "id": "3b819946ca7680439eecd5fe23528952",
+        "title": "AI agent 활용한 학습: 프롬프트,하네스,루프 기법",
+        "date": "2026-08-10",
         "tags": [
-          "Spring",
-          "Quartz",
-          "Hackathon",
-          "Clustering",
-          "Sharding"
+          "AI Agent",
+          "하네스 기법",
+          "프롬프트 기술",
+          "루프 기법"
         ],
-        "href": "/devlog/problem_solving/spring-quartz-ha-optimization",
+        "href": "/devlog/tech_study/ai-agent-basic-tech",
         "sharedKeywords": [
-          "Hackathon"
+          "AI Agent"
         ],
         "score": 100
       }
@@ -1115,26 +1138,30 @@
       },
       {
         "category": "education",
-        "id": "36e19946ca768099b9e1ed827b7817fd",
-        "title": "java 상속을 활용한 기능 구현",
-        "date": "2026-05-28",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "상속"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/java-inheritance-feature-implementation",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 30
       },
       {
         "category": "education",
-        "id": "36d19946ca7680559155e3820742c2be",
-        "title": "java 복합 기능 구현",
-        "date": "2026-05-27",
+        "id": "36419946ca768084bdebc4e8de245ef7",
+        "title": "java 1차원 배열을 활용한 문제풀이",
+        "date": "2026-05-18",
         "tags": [
-          "객체배열",
-          "MVC"
+          "배열",
+          "1차원 배열",
+          "문제풀이"
         ],
-        "href": "/devlog/education/java-composite-feature-implementation",
+        "href": "/devlog/education/java-two-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 30
       }
@@ -1429,45 +1456,42 @@
     "education/36819946ca7680ad822eeb9d40d24cdb": [
       {
         "category": "education",
-        "id": "36119946ca7680f1baccfeea7b17d64b",
-        "title": "java 조건문, 반복문을 활용한 문제풀이",
-        "date": "2026-05-15",
+        "id": "36e19946ca768099b9e1ed827b7817fd",
+        "title": "java 상속을 활용한 기능 구현",
+        "date": "2026-05-28",
         "tags": [
-          "math패키지",
-          "분기문",
-          "문제풀이"
+          "상속"
         ],
-        "href": "/devlog/education/java-conditional-loop-practice",
+        "href": "/devlog/education/java-inheritance-feature-implementation",
         "sharedKeywords": [],
         "score": 30
       },
       {
         "category": "education",
-        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
-        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
-        "date": "2026-05-13",
+        "id": "35e19946ca76807b9fe4f64d17b2e1b6",
+        "title": "Java 환경 구축 및 기본 문법",
+        "date": "2026-05-12",
         "tags": [
-          "상수",
-          "형변환",
-          "메모리 구조",
-          "연산자",
-          "조건문"
+          "eclipse 설치",
+          "변수",
+          "java설치"
         ],
-        "href": "/devlog/education/java-constants-type-casting-and-memory",
+        "href": "/devlog/education/java-development-environment-and-basic-syntax",
         "sharedKeywords": [],
         "score": 30
       },
       {
         "category": "education",
-        "id": "36419946ca76801f84b2e07084d1a544",
-        "title": "java 2차원 배열을 활용한 문제풀이",
-        "date": "2026-05-19",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "2차원배열",
-          "문제풀이",
-          "메모리접근"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/java-one-dimensional-array-practice",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 30
       }
@@ -1501,14 +1525,15 @@
       },
       {
         "category": "education",
-        "id": "38019946ca768066812adf60bf9ac09a",
-        "title": "HTML과 CSS의 기능",
-        "date": "2026-06-18",
+        "id": "36819946ca7680ad822eeb9d40d24cdb",
+        "title": "java 소스로 기능구현",
+        "date": "2026-05-26",
         "tags": [
-          "HTML",
-          "CSS"
+          "소스 유연성",
+          "오버로딩",
+          "오버라이트"
         ],
-        "href": "/devlog/education/html-and-css-fundamentals",
+        "href": "/devlog/education/java-source-feature-implementation",
         "sharedKeywords": [],
         "score": 30
       }
@@ -1529,6 +1554,20 @@
       },
       {
         "category": "education",
+        "id": "36419946ca768084bdebc4e8de245ef7",
+        "title": "java 1차원 배열을 활용한 문제풀이",
+        "date": "2026-05-18",
+        "tags": [
+          "배열",
+          "1차원 배열",
+          "문제풀이"
+        ],
+        "href": "/devlog/education/java-two-dimensional-array-practice",
+        "sharedKeywords": [],
+        "score": 48
+      },
+      {
+        "category": "education",
         "id": "36419946ca7680f6a116fe0b8c2c9648",
         "title": "java 생성자를 활용한 문제풀이",
         "date": "2026-05-20",
@@ -1539,20 +1578,6 @@
           "builder패턴"
         ],
         "href": "/devlog/education/java-constructor-practice",
-        "sharedKeywords": [],
-        "score": 48
-      },
-      {
-        "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
-        "tags": [
-          "배열",
-          "1차원 배열",
-          "문제풀이"
-        ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 48
       }
@@ -1572,20 +1597,6 @@
       },
       {
         "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
-        "tags": [
-          "배열",
-          "1차원 배열",
-          "문제풀이"
-        ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
-        "sharedKeywords": [],
-        "score": 30
-      },
-      {
-        "category": "education",
         "id": "38e19946ca7680e1a523fdf74099c07f",
         "title": "js를 활용한 화면 구현하기 (회원가입 화면)",
         "date": "2026-06-30",
@@ -1595,6 +1606,21 @@
           "Strorage"
         ],
         "href": "/devlog/education/javascript-signup-page-implementation",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "education",
+        "id": "36419946ca7680f6a116fe0b8c2c9648",
+        "title": "java 생성자를 활용한 문제풀이",
+        "date": "2026-05-20",
+        "tags": [
+          "메서드",
+          "생성자",
+          "lombok",
+          "builder패턴"
+        ],
+        "href": "/devlog/education/java-constructor-practice",
         "sharedKeywords": [],
         "score": 30
       }
@@ -1629,13 +1655,15 @@
       },
       {
         "category": "education",
-        "id": "37919946ca7680db8d27fc34d79d9c45",
-        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
-        "date": "2026-06-12",
+        "id": "36119946ca7680f1baccfeea7b17d64b",
+        "title": "java 조건문, 반복문을 활용한 문제풀이",
+        "date": "2026-05-15",
         "tags": [
-          "관계성 연산"
+          "math패키지",
+          "분기문",
+          "문제풀이"
         ],
-        "href": "/devlog/education/sql-join-normalization-index-management",
+        "href": "/devlog/education/java-conditional-loop-practice",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1654,19 +1682,6 @@
         "score": 30
       },
       {
-        "category": "tech_study",
-        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
-        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-exception-status",
-        "sharedKeywords": [],
-        "score": 18
-      },
-      {
         "category": "problem_solving",
         "id": "3b019946ca768008beced8b682cac597",
         "title": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선",
@@ -1680,6 +1695,19 @@
           "B2B"
         ],
         "href": "/devlog/problem_solving/aop-exception-handling-common-response",
+        "sharedKeywords": [],
+        "score": 18
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-exception-status",
         "sharedKeywords": [],
         "score": 18
       }
@@ -1701,31 +1729,27 @@
       },
       {
         "category": "education",
-        "id": "38719946ca7680ff854ff8a00e1f49b1",
-        "title": "백엔드 개발자가 프론트엔드를 바라볼 때",
-        "date": "2026-06-22",
+        "id": "36819946ca7680ad822eeb9d40d24cdb",
+        "title": "java 소스로 기능구현",
+        "date": "2026-05-26",
         "tags": [
-          "CSS",
-          "Selector",
-          "엣룰"
+          "소스 유연성",
+          "오버로딩",
+          "오버라이트"
         ],
-        "href": "/devlog/education/javascript-array-higher-order-functions-async",
+        "href": "/devlog/education/java-source-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
-        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
-        "date": "2026-05-13",
+        "id": "36f19946ca76807b9740c769bb81319a",
+        "title": "다형성을 활용한 소스 구현  내용 정리",
+        "date": "2026-05-29",
         "tags": [
-          "상수",
-          "형변환",
-          "메모리 구조",
-          "연산자",
-          "조건문"
+          "다형성"
         ],
-        "href": "/devlog/education/java-constants-type-casting-and-memory",
+        "href": "/devlog/education/java-polymorphism-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1750,29 +1774,25 @@
       },
       {
         "category": "education",
-        "id": "38e19946ca7680e1a523fdf74099c07f",
-        "title": "js를 활용한 화면 구현하기 (회원가입 화면)",
-        "date": "2026-06-30",
+        "id": "37919946ca7680db8d27fc34d79d9c45",
+        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
+        "date": "2026-06-12",
         "tags": [
-          "실습",
-          "forntend",
-          "Strorage"
+          "관계성 연산"
         ],
-        "href": "/devlog/education/javascript-signup-page-implementation",
+        "href": "/devlog/education/sql-join-normalization-index-management",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37919946ca7680d68411e998f7cd476c",
-        "title": "윈도우함수와 파티셔닝/인덱스",
-        "date": "2026-06-11",
+        "id": "3a319946ca76807b8e7ac1d05c32e441",
+        "title": "세미프로젝트",
+        "date": "2026-07-13",
         "tags": [
-          "window함수",
-          "파티셔닝",
-          "인덱스"
+          "세미프로젝트"
         ],
-        "href": "/devlog/education/sql-window-functions-partitioning-indexes",
+        "href": "/devlog/education/semi-project",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1780,48 +1800,62 @@
     "education/37919946ca7680568248ea033ea13f4f": [
       {
         "category": "education",
-        "id": "3a319946ca76800bb0c3ea701fc098b2",
-        "title": "JSP와 JSTL 사용법",
-        "date": "2026-07-07",
+        "id": "36419946ca7680f6a116fe0b8c2c9648",
+        "title": "java 생성자를 활용한 문제풀이",
+        "date": "2026-05-20",
         "tags": [
-          "JSP",
-          "JSTL"
+          "메서드",
+          "생성자",
+          "lombok",
+          "builder패턴"
         ],
-        "href": "/devlog/education/jsp-and-jstl",
+        "href": "/devlog/education/java-constructor-practice",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38719946ca768076a4ced4f41fd6f26c",
-        "title": "인터프린트언어인 javascirpt에서 헷갈리는 클로저/호이스팅",
-        "date": "2026-06-24",
+        "id": "38719946ca76804c968ee8521154cff7",
+        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
+        "date": "2026-06-25",
         "tags": [
-          "javascript",
-          "클로저",
-          "호이스팅",
-          "scope"
+          "배열",
+          "자료구조",
+          "javascript"
         ],
-        "href": "/devlog/education/javascript-closure-hoisting-scope",
+        "href": "/devlog/education/recover-deleted-git-history",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "36419946ca76801f84b2e07084d1a544",
-        "title": "java 2차원 배열을 활용한 문제풀이",
-        "date": "2026-05-19",
+        "id": "38719946ca7680ff854ff8a00e1f49b1",
+        "title": "백엔드 개발자가 프론트엔드를 바라볼 때",
+        "date": "2026-06-22",
         "tags": [
-          "2차원배열",
-          "문제풀이",
-          "메모리접근"
+          "CSS",
+          "Selector",
+          "엣룰"
         ],
-        "href": "/devlog/education/java-one-dimensional-array-practice",
+        "href": "/devlog/education/javascript-array-higher-order-functions-async",
         "sharedKeywords": [],
         "score": 12
       }
     ],
     "education/37919946ca7680c4b292fdd5a6ce5794": [
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768079be45f5fdc2d4019f",
+        "title": "Docker 기본 및 Container 구동 프로세스 이해",
+        "date": "2026-04-30",
+        "tags": [
+          "Container",
+          "DevOps"
+        ],
+        "href": "/devlog/tech_study/docker-container-runtime-basics",
+        "sharedKeywords": [],
+        "score": 24
+      },
       {
         "category": "tech_study",
         "id": "3b019946ca7680809e0fcf7c0f56c7bb",
@@ -1838,29 +1872,14 @@
         "score": 24
       },
       {
-        "category": "tech_study",
-        "id": "3b019946ca768079be45f5fdc2d4019f",
-        "title": "Docker 기본 및 Container 구동 프로세스 이해",
-        "date": "2026-04-30",
-        "tags": [
-          "Container",
-          "DevOps"
-        ],
-        "href": "/devlog/tech_study/docker-container-runtime-basics",
-        "sharedKeywords": [],
-        "score": 24
-      },
-      {
         "category": "education",
-        "id": "36119946ca7680f1baccfeea7b17d64b",
-        "title": "java 조건문, 반복문을 활용한 문제풀이",
-        "date": "2026-05-15",
+        "id": "36e19946ca768099b9e1ed827b7817fd",
+        "title": "java 상속을 활용한 기능 구현",
+        "date": "2026-05-28",
         "tags": [
-          "math패키지",
-          "분기문",
-          "문제풀이"
+          "상속"
         ],
-        "href": "/devlog/education/java-conditional-loop-practice",
+        "href": "/devlog/education/java-inheritance-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1868,41 +1887,46 @@
     "education/37919946ca7680ca8debe99c5967f5c9": [
       {
         "category": "education",
-        "id": "37219946ca76809a847ecd89ced12913",
-        "title": "예외처리(예외)에 대한 정리",
-        "date": "2026-06-01",
+        "id": "38719946ca76807cbcf2f458ba72068c",
+        "title": "강제로 지운 git 히스토리 되돌려보기",
+        "date": "2026-06-23",
         "tags": [
-          "예외처리"
+          "git",
+          "cherry-pick",
+          "reset --hard"
         ],
-        "href": "/devlog/education/network-fundamentals",
+        "href": "/devlog/education/javascript-prototype-and-class",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "36419946ca76801f84b2e07084d1a544",
-        "title": "java 2차원 배열을 활용한 문제풀이",
-        "date": "2026-05-19",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "2차원배열",
-          "문제풀이",
-          "메모리접근"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/java-one-dimensional-array-practice",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37919946ca7680d68411e998f7cd476c",
-        "title": "윈도우함수와 파티셔닝/인덱스",
-        "date": "2026-06-11",
+        "id": "38019946ca7680548aaff686f677ee28",
+        "title": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)",
+        "date": "2026-06-16",
         "tags": [
-          "window함수",
-          "파티셔닝",
-          "인덱스"
+          "DDL",
+          "DML",
+          "DCL",
+          "트랜잭션",
+          "dbLock"
         ],
-        "href": "/devlog/education/sql-window-functions-partitioning-indexes",
+        "href": "/devlog/education/jsp-and-modern-template-engine",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1922,27 +1946,28 @@
       },
       {
         "category": "education",
-        "id": "38019946ca768025ac09f6c9bf85e0b6",
-        "title": "JSP와 Modern Template 화면",
-        "date": "2026-06-19",
+        "id": "3a319946ca76806db9ecf8824115ebea",
+        "title": "요구사항 정의서란?",
+        "date": "2026-07-10",
         "tags": [
-          "JSP",
-          "TEMPLATE"
+          "PRD"
         ],
-        "href": "/devlog/education/pagination-limit-offset-and-partitioning",
+        "href": "/devlog/education/requirements-definition-document",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "39119946ca768076af6bf1cf7f4e52c4",
-        "title": "WAS, WEB은 무엇인가?",
-        "date": "2026-07-03",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "WAS",
-          "WEB"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/was-and-web-server-fundamentals",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1995,43 +2020,42 @@
     "education/38019946ca768018bc76cbe284514b07": [
       {
         "category": "education",
-        "id": "36419946ca7680f6a116fe0b8c2c9648",
-        "title": "java 생성자를 활용한 문제풀이",
-        "date": "2026-05-20",
+        "id": "38019946ca768025ac09f6c9bf85e0b6",
+        "title": "JSP와 Modern Template 화면",
+        "date": "2026-06-19",
         "tags": [
-          "메서드",
-          "생성자",
-          "lombok",
-          "builder패턴"
+          "JSP",
+          "TEMPLATE"
         ],
-        "href": "/devlog/education/java-constructor-practice",
+        "href": "/devlog/education/pagination-limit-offset-and-partitioning",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca7680b18b5dec7e65c0f197",
-        "title": "API + REST  → RESTful API ?",
-        "date": "2026-06-02",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "API",
-          "제네릭"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/java-exception-handling",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38719946ca7680639d1ecf7b31dabb61",
-        "title": "프로토타입(Prototype)과 클래스(Class) - js 구동 메커니즘은 변경되지 않았다.",
-        "date": "2026-06-26",
+        "id": "37919946ca7680ca8debe99c5967f5c9",
+        "title": "데이터베이스와 SQL",
+        "date": "2026-06-09",
         "tags": [
-          "class",
-          "prototype",
-          "javascript"
+          "SQL",
+          "RDBMS"
         ],
-        "href": "/devlog/education/backend-developer-frontend-perspective",
+        "href": "/devlog/education/process-and-thread",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2068,13 +2092,15 @@
       },
       {
         "category": "education",
-        "id": "39519946ca7680febec1c485280ca77b",
-        "title": "MVC 패턴이란?",
-        "date": "2026-07-06",
+        "id": "3a319946ca7680f58266f72bdafd3de8",
+        "title": "웹 애플리케이션에서 SpringFramework란?",
+        "date": "2026-07-08",
         "tags": [
-          "MVC"
+          "웹 애플리케이션",
+          "프레임워크",
+          "SpringFramework"
         ],
-        "href": "/devlog/education/mvc-pattern-fundamentals",
+        "href": "/devlog/education/spring-framework-for-web-applications",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2182,28 +2208,29 @@
       },
       {
         "category": "education",
-        "id": "38719946ca76804c968ee8521154cff7",
-        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
-        "date": "2026-06-25",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "배열",
-          "자료구조",
-          "javascript"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/recover-deleted-git-history",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca7680b18b5dec7e65c0f197",
-        "title": "API + REST  → RESTful API ?",
-        "date": "2026-06-02",
+        "id": "37919946ca7680c4b292fdd5a6ce5794",
+        "title": "프로세스와 스레드",
+        "date": "2026-06-08",
         "tags": [
-          "API",
-          "제네릭"
+          "프로세스",
+          "스레드"
         ],
-        "href": "/devlog/education/java-exception-handling",
+        "href": "/devlog/education/database-functions-and-procedures",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2327,22 +2354,6 @@
       },
       {
         "category": "education",
-        "id": "38719946ca76804c968ee8521154cff7",
-        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
-        "date": "2026-06-25",
-        "tags": [
-          "배열",
-          "자료구조",
-          "javascript"
-        ],
-        "href": "/devlog/education/recover-deleted-git-history",
-        "sharedKeywords": [
-          "javascript"
-        ],
-        "score": 112
-      },
-      {
-        "category": "education",
         "id": "38719946ca7680639d1ecf7b31dabb61",
         "title": "프로토타입(Prototype)과 클래스(Class) - js 구동 메커니즘은 변경되지 않았다.",
         "date": "2026-06-26",
@@ -2356,43 +2367,64 @@
           "javascript"
         ],
         "score": 112
+      },
+      {
+        "category": "education",
+        "id": "38719946ca76804c968ee8521154cff7",
+        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
+        "date": "2026-06-25",
+        "tags": [
+          "배열",
+          "자료구조",
+          "javascript"
+        ],
+        "href": "/devlog/education/recover-deleted-git-history",
+        "sharedKeywords": [
+          "javascript"
+        ],
+        "score": 112
       }
     ],
     "education/38719946ca76807cbcf2f458ba72068c": [
       {
         "category": "education",
-        "id": "3a319946ca76807b8e7ac1d05c32e441",
-        "title": "세미프로젝트",
-        "date": "2026-07-13",
+        "id": "36119946ca7680f1baccfeea7b17d64b",
+        "title": "java 조건문, 반복문을 활용한 문제풀이",
+        "date": "2026-05-15",
         "tags": [
-          "세미프로젝트"
+          "math패키지",
+          "분기문",
+          "문제풀이"
         ],
-        "href": "/devlog/education/semi-project",
+        "href": "/devlog/education/java-conditional-loop-practice",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38019946ca7680e7a3a2c619019d037c",
-        "title": "페이지네이션(limit, offset)과 파티션닝",
-        "date": "2026-06-15",
+        "id": "3a319946ca7680f58266f72bdafd3de8",
+        "title": "웹 애플리케이션에서 SpringFramework란?",
+        "date": "2026-07-08",
         "tags": [
-          "pagination"
+          "웹 애플리케이션",
+          "프레임워크",
+          "SpringFramework"
         ],
-        "href": "/devlog/education/customer-messaging-marketing-history",
+        "href": "/devlog/education/spring-framework-for-web-applications",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca76809eb4d7eac0cc7677af",
-        "title": "Collection 핵심정리",
-        "date": "2026-06-04",
+        "id": "36419946ca76801f84b2e07084d1a544",
+        "title": "java 2차원 배열을 활용한 문제풀이",
+        "date": "2026-05-19",
         "tags": [
-          "컬렉션",
-          "java 미니 프로젝트"
+          "2차원배열",
+          "문제풀이",
+          "메모리접근"
         ],
-        "href": "/devlog/education/java-collection-framework",
+        "href": "/devlog/education/java-one-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2431,14 +2463,15 @@
       },
       {
         "category": "education",
-        "id": "37219946ca76809eb4d7eac0cc7677af",
-        "title": "Collection 핵심정리",
-        "date": "2026-06-04",
+        "id": "38719946ca76807cbcf2f458ba72068c",
+        "title": "강제로 지운 git 히스토리 되돌려보기",
+        "date": "2026-06-23",
         "tags": [
-          "컬렉션",
-          "java 미니 프로젝트"
+          "git",
+          "cherry-pick",
+          "reset --hard"
         ],
-        "href": "/devlog/education/java-collection-framework",
+        "href": "/devlog/education/javascript-prototype-and-class",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2458,6 +2491,20 @@
         "score": 18
       },
       {
+        "category": "tech_study",
+        "id": "3b019946ca7680aab42be44f7d069738",
+        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
+        "date": "2026-05-06",
+        "tags": [
+          "Container",
+          "Network",
+          "Port"
+        ],
+        "href": "/devlog/tech_study/docker-network-inbound-outbound",
+        "sharedKeywords": [],
+        "score": 18
+      },
+      {
         "category": "problem_solving",
         "id": "3b019946ca768059b91cc1de8dbbe8f7",
         "title": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략",
@@ -2472,60 +2519,47 @@
         "href": "/devlog/problem_solving/activemq-kahadb-disk-rate-limit",
         "sharedKeywords": [],
         "score": 18
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca7680aab42be44f7d069738",
-        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
-        "date": "2026-05-06",
-        "tags": [
-          "Container",
-          "Network",
-          "Port"
-        ],
-        "href": "/devlog/tech_study/docker-network-inbound-outbound",
-        "sharedKeywords": [],
-        "score": 18
       }
     ],
     "education/38e19946ca7680e1a523fdf74099c07f": [
       {
         "category": "education",
-        "id": "36f19946ca76807b9740c769bb81319a",
-        "title": "다형성을 활용한 소스 구현  내용 정리",
-        "date": "2026-05-29",
+        "id": "36419946ca7680f6a116fe0b8c2c9648",
+        "title": "java 생성자를 활용한 문제풀이",
+        "date": "2026-05-20",
         "tags": [
-          "다형성"
+          "메서드",
+          "생성자",
+          "lombok",
+          "builder패턴"
         ],
-        "href": "/devlog/education/java-polymorphism-implementation",
+        "href": "/devlog/education/java-constructor-practice",
         "sharedKeywords": [],
         "score": 30
       },
       {
         "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
+        "id": "36e19946ca768099b9e1ed827b7817fd",
+        "title": "java 상속을 활용한 기능 구현",
+        "date": "2026-05-28",
         "tags": [
-          "배열",
-          "1차원 배열",
+          "상속"
+        ],
+        "href": "/devlog/education/java-inheritance-feature-implementation",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "education",
+        "id": "36119946ca7680f1baccfeea7b17d64b",
+        "title": "java 조건문, 반복문을 활용한 문제풀이",
+        "date": "2026-05-15",
+        "tags": [
+          "math패키지",
+          "분기문",
           "문제풀이"
         ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
-        "sharedKeywords": [],
-        "score": 30
-      },
-      {
-        "category": "education",
-        "id": "36419946ca76801f84b2e07084d1a544",
-        "title": "java 2차원 배열을 활용한 문제풀이",
-        "date": "2026-05-19",
-        "tags": [
-          "2차원배열",
-          "문제풀이",
-          "메모리접근"
-        ],
-        "href": "/devlog/education/java-one-dimensional-array-practice",
+        "href": "/devlog/education/java-conditional-loop-practice",
         "sharedKeywords": [],
         "score": 30
       }
@@ -2545,6 +2579,18 @@
       },
       {
         "category": "education",
+        "id": "37919946ca7680db8d27fc34d79d9c45",
+        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
+        "date": "2026-06-12",
+        "tags": [
+          "관계성 연산"
+        ],
+        "href": "/devlog/education/sql-join-normalization-index-management",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "education",
         "id": "38019946ca7680548aaff686f677ee28",
         "title": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)",
         "date": "2026-06-16",
@@ -2556,18 +2602,6 @@
           "dbLock"
         ],
         "href": "/devlog/education/jsp-and-modern-template-engine",
-        "sharedKeywords": [],
-        "score": 30
-      },
-      {
-        "category": "education",
-        "id": "37919946ca7680db8d27fc34d79d9c45",
-        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
-        "date": "2026-06-12",
-        "tags": [
-          "관계성 연산"
-        ],
-        "href": "/devlog/education/sql-join-normalization-index-management",
         "sharedKeywords": [],
         "score": 30
       }
@@ -2591,16 +2625,15 @@
       },
       {
         "category": "education",
-        "id": "36419946ca7680f6a116fe0b8c2c9648",
-        "title": "java 생성자를 활용한 문제풀이",
-        "date": "2026-05-20",
+        "id": "38719946ca76807cbcf2f458ba72068c",
+        "title": "강제로 지운 git 히스토리 되돌려보기",
+        "date": "2026-06-23",
         "tags": [
-          "메서드",
-          "생성자",
-          "lombok",
-          "builder패턴"
+          "git",
+          "cherry-pick",
+          "reset --hard"
         ],
-        "href": "/devlog/education/java-constructor-practice",
+        "href": "/devlog/education/javascript-prototype-and-class",
         "sharedKeywords": [],
         "score": 12
       },
@@ -2661,15 +2694,14 @@
       },
       {
         "category": "education",
-        "id": "35e19946ca76807b9fe4f64d17b2e1b6",
-        "title": "Java 환경 구축 및 기본 문법",
-        "date": "2026-05-12",
+        "id": "39119946ca76804ea9fafb60b5f42a2a",
+        "title": "Jquery와 Bootstrap (추가개념 : 네트워크 통신 ajax와 대체제)",
+        "date": "2026-07-01",
         "tags": [
-          "eclipse 설치",
-          "변수",
-          "java설치"
+          "jquery",
+          "bootstrap"
         ],
-        "href": "/devlog/education/java-development-environment-and-basic-syntax",
+        "href": "/devlog/education/jquery-bootstrap-and-ajax",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2692,27 +2724,28 @@
       },
       {
         "category": "education",
-        "id": "39119946ca76806dbd0fc549ddde2532",
-        "title": "JDBC란?",
-        "date": "2026-07-02",
+        "id": "3a319946ca76800bb0c3ea701fc098b2",
+        "title": "JSP와 JSTL 사용법",
+        "date": "2026-07-07",
         "tags": [
-          "JDBC",
-          "SpringFramework"
+          "JSP",
+          "JSTL"
         ],
-        "href": "/devlog/education/jdbc-fundamentals",
+        "href": "/devlog/education/jsp-and-jstl",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca76809eb4d7eac0cc7677af",
-        "title": "Collection 핵심정리",
-        "date": "2026-06-04",
+        "id": "36419946ca76801f84b2e07084d1a544",
+        "title": "java 2차원 배열을 활용한 문제풀이",
+        "date": "2026-05-19",
         "tags": [
-          "컬렉션",
-          "java 미니 프로젝트"
+          "2차원배열",
+          "문제풀이",
+          "메모리접근"
         ],
-        "href": "/devlog/education/java-collection-framework",
+        "href": "/devlog/education/java-one-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2735,19 +2768,6 @@
       },
       {
         "category": "education",
-        "id": "38019946ca768066812adf60bf9ac09a",
-        "title": "HTML과 CSS의 기능",
-        "date": "2026-06-18",
-        "tags": [
-          "HTML",
-          "CSS"
-        ],
-        "href": "/devlog/education/html-and-css-fundamentals",
-        "sharedKeywords": [],
-        "score": 12
-      },
-      {
-        "category": "education",
         "id": "36019946ca7680ac8b6cd025e664b34b",
         "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
         "date": "2026-05-14",
@@ -2758,6 +2778,20 @@
           "확장성"
         ],
         "href": "/devlog/education/java-control-flow-and-extensible-code",
+        "sharedKeywords": [],
+        "score": 12
+      },
+      {
+        "category": "education",
+        "id": "38e19946ca7680e1a523fdf74099c07f",
+        "title": "js를 활용한 화면 구현하기 (회원가입 화면)",
+        "date": "2026-06-30",
+        "tags": [
+          "실습",
+          "forntend",
+          "Strorage"
+        ],
+        "href": "/devlog/education/javascript-signup-page-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2798,14 +2832,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768094a4c9f440ffdf6bfd",
-        "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
+        "href": "/devlog/tech_study/spring-batch-exception-status",
         "sharedKeywords": [],
         "score": 24
       }
@@ -2813,43 +2847,45 @@
     "education/3a319946ca76806db9ecf8824115ebea": [
       {
         "category": "education",
-        "id": "38e19946ca7680e1a523fdf74099c07f",
-        "title": "js를 활용한 화면 구현하기 (회원가입 화면)",
-        "date": "2026-06-30",
+        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
+        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
+        "date": "2026-05-13",
         "tags": [
-          "실습",
-          "forntend",
-          "Strorage"
+          "상수",
+          "형변환",
+          "메모리 구조",
+          "연산자",
+          "조건문"
         ],
-        "href": "/devlog/education/javascript-signup-page-implementation",
+        "href": "/devlog/education/java-constants-type-casting-and-memory",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "36119946ca7680f1baccfeea7b17d64b",
-        "title": "java 조건문, 반복문을 활용한 문제풀이",
-        "date": "2026-05-15",
+        "id": "38719946ca7680ff854ff8a00e1f49b1",
+        "title": "백엔드 개발자가 프론트엔드를 바라볼 때",
+        "date": "2026-06-22",
         "tags": [
-          "math패키지",
-          "분기문",
-          "문제풀이"
+          "CSS",
+          "Selector",
+          "엣룰"
         ],
-        "href": "/devlog/education/java-conditional-loop-practice",
+        "href": "/devlog/education/javascript-array-higher-order-functions-async",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "36819946ca7680ad822eeb9d40d24cdb",
-        "title": "java 소스로 기능구현",
-        "date": "2026-05-26",
+        "id": "38719946ca76804c968ee8521154cff7",
+        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
+        "date": "2026-06-25",
         "tags": [
-          "소스 유연성",
-          "오버로딩",
-          "오버라이트"
+          "배열",
+          "자료구조",
+          "javascript"
         ],
-        "href": "/devlog/education/java-source-feature-implementation",
+        "href": "/devlog/education/recover-deleted-git-history",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2857,39 +2893,40 @@
     "education/3a319946ca76807b8e7ac1d05c32e441": [
       {
         "category": "education",
-        "id": "39119946ca76806dbd0fc549ddde2532",
-        "title": "JDBC란?",
-        "date": "2026-07-02",
+        "id": "3a319946ca7680f58266f72bdafd3de8",
+        "title": "웹 애플리케이션에서 SpringFramework란?",
+        "date": "2026-07-08",
         "tags": [
-          "JDBC",
+          "웹 애플리케이션",
+          "프레임워크",
           "SpringFramework"
         ],
-        "href": "/devlog/education/jdbc-fundamentals",
+        "href": "/devlog/education/spring-framework-for-web-applications",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38019946ca7680e7a3a2c619019d037c",
-        "title": "페이지네이션(limit, offset)과 파티션닝",
-        "date": "2026-06-15",
+        "id": "37919946ca7680c4b292fdd5a6ce5794",
+        "title": "프로세스와 스레드",
+        "date": "2026-06-08",
         "tags": [
-          "pagination"
+          "프로세스",
+          "스레드"
         ],
-        "href": "/devlog/education/customer-messaging-marketing-history",
+        "href": "/devlog/education/database-functions-and-procedures",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38019946ca768066812adf60bf9ac09a",
-        "title": "HTML과 CSS의 기능",
-        "date": "2026-06-18",
+        "id": "36f19946ca76807b9740c769bb81319a",
+        "title": "다형성을 활용한 소스 구현  내용 정리",
+        "date": "2026-05-29",
         "tags": [
-          "HTML",
-          "CSS"
+          "다형성"
         ],
-        "href": "/devlog/education/html-and-css-fundamentals",
+        "href": "/devlog/education/java-polymorphism-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2897,39 +2934,40 @@
     "education/3a319946ca7680a6b7b3f98589e30442": [
       {
         "category": "education",
-        "id": "37919946ca7680db8d27fc34d79d9c45",
-        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
-        "date": "2026-06-12",
+        "id": "3a319946ca76806db9ecf8824115ebea",
+        "title": "요구사항 정의서란?",
+        "date": "2026-07-10",
         "tags": [
-          "관계성 연산"
+          "PRD"
         ],
-        "href": "/devlog/education/sql-join-normalization-index-management",
+        "href": "/devlog/education/requirements-definition-document",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38719946ca7680639d1ecf7b31dabb61",
-        "title": "프로토타입(Prototype)과 클래스(Class) - js 구동 메커니즘은 변경되지 않았다.",
-        "date": "2026-06-26",
+        "id": "3a319946ca7680f58266f72bdafd3de8",
+        "title": "웹 애플리케이션에서 SpringFramework란?",
+        "date": "2026-07-08",
         "tags": [
-          "class",
-          "prototype",
-          "javascript"
+          "웹 애플리케이션",
+          "프레임워크",
+          "SpringFramework"
         ],
-        "href": "/devlog/education/backend-developer-frontend-perspective",
+        "href": "/devlog/education/spring-framework-for-web-applications",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca76809a847ecd89ced12913",
-        "title": "예외처리(예외)에 대한 정리",
-        "date": "2026-06-01",
+        "id": "37919946ca7680568248ea033ea13f4f",
+        "title": "내부함수와 프로시저",
+        "date": "2026-06-10",
         "tags": [
-          "예외처리"
+          "내부함수",
+          "프로시저"
         ],
-        "href": "/devlog/education/network-fundamentals",
+        "href": "/devlog/education/database-and-sql",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2952,26 +2990,28 @@
       },
       {
         "category": "education",
-        "id": "37219946ca76809a847ecd89ced12913",
-        "title": "예외처리(예외)에 대한 정리",
-        "date": "2026-06-01",
+        "id": "3a319946ca7680a6b7b3f98589e30442",
+        "title": "Spring에서 Filter와 Interceptor의 쓰임",
+        "date": "2026-07-09",
         "tags": [
-          "예외처리"
+          "Filter",
+          "Interceptor"
         ],
-        "href": "/devlog/education/network-fundamentals",
+        "href": "/devlog/education/spring-filter-and-interceptor",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca76809eb4d7eac0cc7677af",
-        "title": "Collection 핵심정리",
-        "date": "2026-06-04",
+        "id": "36419946ca76801f84b2e07084d1a544",
+        "title": "java 2차원 배열을 활용한 문제풀이",
+        "date": "2026-05-19",
         "tags": [
-          "컬렉션",
-          "java 미니 프로젝트"
+          "2차원배열",
+          "문제풀이",
+          "메모리접근"
         ],
-        "href": "/devlog/education/java-collection-framework",
+        "href": "/devlog/education/java-one-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3061,16 +3101,17 @@
       },
       {
         "category": "problem_solving",
-        "id": "3b019946ca768062aeb4e0e781ed366a",
-        "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
-        "date": "2026-05-26",
+        "id": "3b019946ca768059b91cc1de8dbbe8f7",
+        "title": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략",
+        "date": "2026-05-15",
         "tags": [
-          "API",
-          "Asynchronous",
-          "Architecture",
-          "MSA"
+          "ActiveMQ",
+          "KahaDB",
+          "Disk Full",
+          "Rate Limit",
+          "Backpressure"
         ],
-        "href": "/devlog/problem_solving/async-api-processing-architecture",
+        "href": "/devlog/problem_solving/activemq-kahadb-disk-rate-limit",
         "sharedKeywords": [],
         "score": 30
       }
@@ -3237,6 +3278,21 @@
     "problem_solving/3b019946ca7680b584e1c59c19e022a9": [
       {
         "category": "tech_study",
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-scaling",
+        "sharedKeywords": [
+          "Spring"
+        ],
+        "score": 142
+      },
+      {
+        "category": "tech_study",
         "id": "3b019946ca7680809e0fcf7c0f56c7bb",
         "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
         "date": "2026-06-15",
@@ -3247,21 +3303,6 @@
           "SpringBoot"
         ],
         "href": "/devlog/tech_study/spring-batch-job-step-scope",
-        "sharedKeywords": [
-          "Spring"
-        ],
-        "score": 142
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca768060a97ee328eea5a576",
-        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-scaling",
         "sharedKeywords": [
           "Spring"
         ],
@@ -3303,6 +3344,19 @@
       },
       {
         "category": "tech_study",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-exception-status",
+        "sharedKeywords": [],
+        "score": 54
+      },
+      {
+        "category": "tech_study",
         "id": "3b019946ca7680809e0fcf7c0f56c7bb",
         "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
         "date": "2026-06-15",
@@ -3313,19 +3367,6 @@
           "SpringBoot"
         ],
         "href": "/devlog/tech_study/spring-batch-job-step-scope",
-        "sharedKeywords": [],
-        "score": 54
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca768023920bc0535a88d2ae",
-        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-performance-tuning",
         "sharedKeywords": [],
         "score": 54
       }
@@ -3349,19 +3390,6 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768023920bc0535a88d2ae",
-        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-performance-tuning",
-        "sharedKeywords": [],
-        "score": 30
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca76801cb6dac264f9d0c0e1",
         "title": "파트 1. Spring Batch 핵심 아키텍처와 사용",
         "date": "2026-06-14",
@@ -3372,6 +3400,19 @@
           "spring batch"
         ],
         "href": "/devlog/tech_study/spring-batch-core-architecture",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-performance-tuning",
         "sharedKeywords": [],
         "score": 30
       }
@@ -3397,22 +3438,6 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
-        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-exception-status",
-        "sharedKeywords": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "score": 230
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca768094a4c9f440ffdf6bfd",
         "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
         "date": "2026-07-06",
@@ -3421,6 +3446,22 @@
           "SpringBoot"
         ],
         "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
+        "sharedKeywords": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "score": 230
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-exception-status",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -3446,15 +3487,15 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680aab42be44f7d069738",
-        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
-        "date": "2026-05-06",
+        "id": "3b019946ca7680a2b04ec92e293b2af4",
+        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
+        "date": "2026-05-02",
         "tags": [
           "Container",
-          "Network",
-          "Port"
+          "Command",
+          "DevOps"
         ],
-        "href": "/devlog/tech_study/docker-network-inbound-outbound",
+        "href": "/devlog/tech_study/essential-docker-commands",
         "sharedKeywords": [
           "Container"
         ],
@@ -3462,16 +3503,16 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680e290cdf2a3101148a4",
-        "title": "Docker 저장소(Storage) 및 데이터 영속화 세팅 가이드",
-        "date": "2026-05-04",
+        "id": "3b019946ca7680c8ad78c8ee01f79dfd",
+        "title": "Docker 보안: AppArmor 및 환경변수(envset) 암호화 최적화",
+        "date": "2026-05-13",
         "tags": [
           "Container",
-          "Storage",
-          "Volume",
-          "NAS"
+          "Security",
+          "AppArmor",
+          "Event-Driven"
         ],
-        "href": "/devlog/tech_study/docker-storage-data-persistence",
+        "href": "/devlog/tech_study/docker-apparmor-environment-security",
         "sharedKeywords": [
           "Container"
         ],
@@ -3516,18 +3557,16 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680c8ad78c8ee01f79dfd",
-        "title": "Docker 보안: AppArmor 및 환경변수(envset) 암호화 최적화",
-        "date": "2026-05-13",
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "date": "2026-07-06",
         "tags": [
-          "Container",
-          "Security",
-          "AppArmor",
-          "Event-Driven"
+          "Spring",
+          "SpringBoot"
         ],
-        "href": "/devlog/tech_study/docker-apparmor-environment-security",
+        "href": "/devlog/tech_study/spring-batch-performance-tuning",
         "sharedKeywords": [
-          "Event-Driven"
+          "SpringBoot"
         ],
         "score": 112
       }
@@ -3551,14 +3590,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768023920bc0535a88d2ae",
-        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-performance-tuning",
+        "href": "/devlog/tech_study/spring-batch-exception-status",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -3567,16 +3606,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
-        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
-        "date": "2026-06-15",
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "date": "2026-07-06",
         "tags": [
-          "scope",
-          "job",
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "href": "/devlog/tech_study/spring-batch-performance-tuning",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -3622,19 +3659,19 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768079878fed99b13e958f",
-        "title": "웹 서버엔진 비교: Nginx vs Apache HTTPD vs IIS",
-        "date": "2026-05-25",
+        "id": "3b919946ca7680d9a4f3c5389ea08e85",
+        "title": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
+        "date": "2026-08-11",
         "tags": [
-          "Web Server",
-          "Nginx",
-          "Apache",
-          "IIS",
-          "Architecture"
+          "LLM",
+          "Storage",
+          "WIKI"
         ],
-        "href": "/devlog/tech_study/nginx-apache-iis-comparison",
-        "sharedKeywords": [],
-        "score": 48
+        "href": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
+        "sharedKeywords": [
+          "Storage"
+        ],
+        "score": 112
       }
     ],
     "tech_study/3b019946ca76806e849ff6e0fb57ac3d": [
@@ -3656,23 +3693,6 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680e4a56dcbcd708153c3",
-        "title": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth)",
-        "date": "2026-05-31",
-        "tags": [
-          "Security",
-          "DevOps",
-          "Container"
-        ],
-        "href": "/devlog/tech_study/kubernetes-defense-in-depth-security",
-        "sharedKeywords": [
-          "DevOps",
-          "Container"
-        ],
-        "score": 236
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca7680a2b04ec92e293b2af4",
         "title": "자주 사용하는 필수 Docker Command 상세 가이드",
         "date": "2026-05-02",
@@ -3685,6 +3705,23 @@
         "sharedKeywords": [
           "Container",
           "DevOps"
+        ],
+        "score": 236
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680e4a56dcbcd708153c3",
+        "title": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth)",
+        "date": "2026-05-31",
+        "tags": [
+          "Security",
+          "DevOps",
+          "Container"
+        ],
+        "href": "/devlog/tech_study/kubernetes-defense-in-depth-security",
+        "sharedKeywords": [
+          "DevOps",
+          "Container"
         ],
         "score": 236
       }
@@ -3867,14 +3904,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
-        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-exception-status",
+        "href": "/devlog/tech_study/spring-batch-scaling",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -3989,16 +4026,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
-        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
-        "date": "2026-06-15",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "date": "2026-07-06",
         "tags": [
-          "scope",
-          "job",
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "href": "/devlog/tech_study/spring-batch-exception-status",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -4145,16 +4180,15 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca76802cab88d54846776de9",
-        "title": "Docker Image 생성법: Commit과 Dockerfile (entry.sh 활용)",
-        "date": "2026-05-14",
+        "id": "3b019946ca7680a2b04ec92e293b2af4",
+        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
+        "date": "2026-05-02",
         "tags": [
-          "Dockerfile",
-          "Entrypoint",
-          "Image",
-          "Container"
+          "Container",
+          "Command",
+          "DevOps"
         ],
-        "href": "/devlog/tech_study/docker-image-dockerfile-entrypoint",
+        "href": "/devlog/tech_study/essential-docker-commands",
         "sharedKeywords": [
           "Container"
         ],
@@ -4242,17 +4276,19 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680aab42be44f7d069738",
-        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
-        "date": "2026-05-06",
+        "id": "3b019946ca7680f69492e6e87f7a4530",
+        "title": "Apache Tomcat 운영 표준: 설정 파일 최적화 및 최신 SSL 적용 가이드",
+        "date": "2026-05-25",
         "tags": [
-          "Container",
-          "Network",
-          "Port"
+          "Tomcat",
+          "WAS",
+          "Server",
+          "SSL",
+          "Security"
         ],
-        "href": "/devlog/tech_study/docker-network-inbound-outbound",
+        "href": "/devlog/tech_study/apache-tomcat-ssl-operations-guide",
         "sharedKeywords": [
-          "Container"
+          "Security"
         ],
         "score": 130
       }
@@ -4294,19 +4330,19 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680a2b04ec92e293b2af4",
-        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
-        "date": "2026-05-02",
+        "id": "3b919946ca7680d9a4f3c5389ea08e85",
+        "title": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
+        "date": "2026-08-11",
         "tags": [
-          "Container",
-          "Command",
-          "DevOps"
+          "LLM",
+          "Storage",
+          "WIKI"
         ],
-        "href": "/devlog/tech_study/essential-docker-commands",
+        "href": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
         "sharedKeywords": [
-          "Container"
+          "Storage"
         ],
-        "score": 148
+        "score": 154
       }
     ],
     "tech_study/3b019946ca7680e4a56dcbcd708153c3": [
@@ -4346,19 +4382,18 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680c8ad78c8ee01f79dfd",
-        "title": "Docker 보안: AppArmor 및 환경변수(envset) 암호화 최적화",
-        "date": "2026-05-13",
+        "id": "3b019946ca7680a2b04ec92e293b2af4",
+        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
+        "date": "2026-05-02",
         "tags": [
           "Container",
-          "Security",
-          "AppArmor",
-          "Event-Driven"
+          "Command",
+          "DevOps"
         ],
-        "href": "/devlog/tech_study/docker-apparmor-environment-security",
+        "href": "/devlog/tech_study/essential-docker-commands",
         "sharedKeywords": [
           "Container",
-          "Security"
+          "DevOps"
         ],
         "score": 212
       }
@@ -4472,14 +4507,14 @@
     "tech_study/3b019946ca7680ff9877e74515176168": [
       {
         "category": "tech_study",
-        "id": "3b019946ca768023920bc0535a88d2ae",
-        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "id": "3b019946ca768094a4c9f440ffdf6bfd",
+        "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-performance-tuning",
+        "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -4488,14 +4523,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768060a97ee328eea5a576",
-        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-scaling",
+        "href": "/devlog/tech_study/spring-batch-performance-tuning",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -4519,6 +4554,111 @@
           "SpringBoot"
         ],
         "score": 212
+      }
+    ],
+    "tech_study/3b819946ca7680439eecd5fe23528952": [
+      {
+        "category": "competition_event",
+        "id": "3b019946ca7680c8836dcb0ed7e63c69",
+        "title": "2026 천하제일 입코딩 대회(with GitHub Copilot) 참가 회고",
+        "date": "2026-06-22",
+        "tags": [
+          "AI Agent",
+          "GitHub Copilot",
+          "Azure",
+          "Hackathon",
+          "DevOps"
+        ],
+        "href": "/devlog/competition_event/github-copilot-hackathon-retrospective",
+        "sharedKeywords": [
+          "AI Agent"
+        ],
+        "score": 100
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768030ad15dcc419fe79a4",
+        "title": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리)",
+        "date": "2026-05-25",
+        "tags": [
+          "Architecture",
+          "Spring Boot",
+          "Pub/Sub",
+          "Event-Driven",
+          "Logging"
+        ],
+        "href": "/devlog/tech_study/spring-event-logging-pub-sub-architecture",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "education",
+        "id": "36419946ca76801f84b2e07084d1a544",
+        "title": "java 2차원 배열을 활용한 문제풀이",
+        "date": "2026-05-19",
+        "tags": [
+          "2차원배열",
+          "문제풀이",
+          "메모리접근"
+        ],
+        "href": "/devlog/education/java-one-dimensional-array-practice",
+        "sharedKeywords": [],
+        "score": 18
+      }
+    ],
+    "tech_study/3b919946ca7680d9a4f3c5389ea08e85": [
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680e290cdf2a3101148a4",
+        "title": "Docker 저장소(Storage) 및 데이터 영속화 세팅 가이드",
+        "date": "2026-05-04",
+        "tags": [
+          "Container",
+          "Storage",
+          "Volume",
+          "NAS"
+        ],
+        "href": "/devlog/tech_study/docker-storage-data-persistence",
+        "sharedKeywords": [
+          "Storage"
+        ],
+        "score": 154
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680849498da3bf66eaf67",
+        "title": "스토리지 아키텍처 비교: DAS vs NAS vs SAN",
+        "date": "2026-05-25",
+        "tags": [
+          "Storage",
+          "DAS",
+          "NAS",
+          "Sharding",
+          "Architecture"
+        ],
+        "href": "/devlog/tech_study/das-nas-san-storage-architecture",
+        "sharedKeywords": [
+          "Storage"
+        ],
+        "score": 112
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca76806b8b45f39febf76658",
+        "title": "물리적 저장 매체 비교: M.2 NVMe SSD vs SATA SSD vs HDD",
+        "date": "2026-05-25",
+        "tags": [
+          "SSD",
+          "HDD",
+          "NVMe",
+          "HardWare",
+          "Storage"
+        ],
+        "href": "/devlog/tech_study/nvme-ssd-sata-ssd-hdd-comparison",
+        "sharedKeywords": [
+          "Storage"
+        ],
+        "score": 112
       }
     ]
   }
