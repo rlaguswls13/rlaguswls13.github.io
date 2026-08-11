@@ -257,3 +257,28 @@ Replaced two dark neon devlog thumbnails with bright graph-paper navy/cobalt thu
 - `DESIGN.md`
 - `project/wiki/reports/toc-design-review-2026-08-12.md`
 - `.agent/session-handoff.md`
+
+## 2026-08-11T16:13:45.514Z | toc-top-only-2026-08-12
+
+### Summary
+사용자 확인에 따라 목차를 본문 상단으로 이동하고 콘텐츠 폭에 맞는 박스로 조정했습니다.
+
+### Decisions
+- 사이드 rail을 제거하고 top-only를 적용했습니다.
+- fit-content와 max-width 100%로 내용 기반 폭과 모바일 안전성을 함께 유지했습니다.
+
+### Verification
+- npm run lint:ci PASS
+- npm run typecheck PASS
+- npm run build:local PASS
+- Playwright 1280/375px 캡처 및 geometry PASS
+- fresh visual QA 2개 레인 PASS
+
+### Risks
+- 전체 e2e 명령은 preview port contention으로 timeout됐지만 요청 페이지는 직접 검증했습니다.
+
+### Changed project surfaces
+- `src/app/globals.css`
+- `DESIGN.md`
+- `project/wiki/reports/toc-design-review-2026-08-12.md`
+- `.agent/session-handoff.md`
