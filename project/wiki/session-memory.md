@@ -282,3 +282,33 @@ Replaced two dark neon devlog thumbnails with bright graph-paper navy/cobalt thu
 - `DESIGN.md`
 - `project/wiki/reports/toc-design-review-2026-08-12.md`
 - `.agent/session-handoff.md`
+
+## 2026-08-11T16:16:31.365Z | finish-sync-2026-08-12
+
+### Summary
+세션 handoff를 finish 처리하고 Notion 콘텐츠·썸네일·top-only 목차 변경을 커밋 및 origin/main에 동기화했습니다.
+
+### Decisions
+- 기존 사용자 변경을 보존한 상태에서 현재 누적 변경을 하나의 동기화 커밋으로 반영했습니다.
+- handoff status를 ready로 유지하고 Wiki 검증 보고서를 보존했습니다.
+
+### Verification
+- npm run validate:content PASS
+- npm run test:unit -- --run PASS, 25 files / 158 tests
+- npm run validate:export PASS, 95 routes / 0 blockers
+- npm run lint:ci PASS
+- npm run typecheck PASS
+- npm run build:local PASS
+- git push origin main PASS
+
+### Risks
+- git diff --check는 생성 MDX의 기존 trailing whitespace와 EOF blank line을 보고했으며 콘텐츠 의미 변경 없이 보존했습니다.
+- npm audit --omit=dev의 기존 high 4건은 별도 의존성 작업으로 남겼습니다.
+
+### Changed project surfaces
+- `.agent/session-handoff.md`
+- `src/app/globals.css`
+- `scripts/notion/connect/content-lock.mjs`
+- `scripts/notion/connect/content-transaction.mjs`
+- `DESIGN.md`
+- `project/wiki/reports/toc-design-review-2026-08-12.md`
