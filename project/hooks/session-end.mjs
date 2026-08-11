@@ -4,7 +4,9 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const MEMORY_PATH = path.join("project", "wiki", "session-memory.md");
+const HANDOFF_PATH = path.join(".agent", "session-handoff.md");
 const COMMIT_PATHS = Object.freeze(["project/skills", "project/hooks", "project/wiki"]);
+const HANDOFF_STATUSES = Object.freeze(["empty", "active", "blocked", "ready"]);
 
 function redact(value) {
   return String(value || "")
@@ -39,6 +41,33 @@ function repositoryRoot(start = process.cwd()) {
   return execFileSync("git", ["rev-parse", "--show-toplevel"], { cwd: start, encoding: "utf8" }).trim();
 }
 
+export function readSessionHandoff(root) {
+  const handoffPath = path.join(root, HANDOFF_PATH);
+  const relativePath = HANDOFF_PATH.replaceAll("\\", "/");
+  if (!fs.existsSync(handoffPath)) {
+    return {
+      path: relativePath,
+      exists: false,
+      recorded: false,
+      status: "missing",
+      requestFinalWiki: false,
+      requestPrReview: false,
+    };
+  }
+
+  const contents = fs.readFileSync(handoffPath, "utf8");
+  const status = contents.match(/^status:\s*(\w+)\s*$/mu)?.[1] || "invalid";
+  const recorded = HANDOFF_STATUSES.includes(status) && status !== "empty";
+  return {
+    path: relativePath,
+    exists: true,
+    recorded,
+    status,
+    requestFinalWiki: recorded,
+    requestPrReview: recorded,
+  };
+}
+
 export function updateMemoryWiki(root, event) {
   const entry = eventText(event);
   const memoryPath = path.join(root, MEMORY_PATH);
@@ -63,11 +92,12 @@ export function commitProjectMemory(root, event) {
 
 export async function runSessionEndHook({ root = repositoryRoot(), event } = {}) {
   if (!event || (event.type && event.type !== "session_end")) return { updated: false, committed: false, reason: "not-session-end" };
+  const handoff = readSessionHandoff(root);
   const hasMemory = [event.summary, ...(event.decisions || []), ...(event.verification || []), ...(event.risks || [])].some(Boolean);
-  if (!hasMemory) return { updated: false, committed: false, reason: "empty-memory" };
+  if (!hasMemory) return { updated: false, committed: false, reason: "empty-memory", handoff };
   const memoryPath = updateMemoryWiki(root, event);
   const commit = commitProjectMemory(root, event);
-  return { updated: true, memoryPath, ...commit };
+  return { updated: true, memoryPath, ...commit, handoff };
 }
 
 async function readStdin() {

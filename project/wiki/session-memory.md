@@ -48,3 +48,32 @@ AGENTS.md? Kappa LLM RAG ???? agent ?? ??? ?????. metadata, retrieval cues, cano
 
 ### Changed project surfaces
 - `AGENTS.md`
+
+## 2026-08-11T08:39:17.534Z | handoff-contract-20260811
+
+### Summary
+?? .agent/session-handoff.md ??? session-end hook ??? ????. ?? baton? handoff? ?? ?? Wiki? PR review? ???? ??.
+
+### Decisions
+- handoff status? empty, active, blocked, ready? ??
+- ??? handoff? requestFinalWiki? requestPrReview? true? ??
+- hook? handoff ??? commit?? ?? project memory ??? commit
+
+### Verification
+- handoff hook tests: PASS 5/5
+- docs-surface: PASS 2/2
+- lint:ci: PASS
+- typecheck: PASS
+- full unit: 149 passed, 4 pre-existing export failures
+
+### Risks
+- ?? export fixture 4? ??
+- ?? PR/reviewer ??? ?? baton?? ?? ??
+
+### Changed project surfaces
+- `AGENTS.md`
+- `.agent/session-handoff.md`
+- `project/hooks/session-end.mjs`
+- `project/hooks/README.md`
+- `project/skills/session-memory-wiki/SKILL.md`
+- `tests/project/session-end-hook.test.mjs`
