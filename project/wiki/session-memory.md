@@ -231,3 +231,29 @@ Replaced two dark neon devlog thumbnails with bright graph-paper navy/cobalt thu
 - `public/thumnail/devlog/tech_study/3b819946ca7680439eecd5fe23528952.webp`
 - `public/thumnail/devlog/tech_study/3b919946ca7680d9a4f3c5389ea08e85.webp`
 - `.agent/session-handoff.md`
+
+## 2026-08-11T15:53:52.511Z | toc-design-2026-08-12
+
+### Summary
+목차 UI를 사용자 기준 이미지에 맞춰 읽기 rail로 개선하고 fresh visual QA를 완료했습니다.
+
+### Decisions
+- desktop에서는 우측 rail, 768px 이하에서는 bounded stacked panel을 사용했습니다.
+- 생성 MDX는 변경하지 않고 DESIGN.md에 primitive와 반응형 계약을 기록했습니다.
+
+### Verification
+- npm run build:local PASS
+- npm run lint:ci PASS
+- npm run typecheck PASS
+- focused Vitest 2 files / 5 tests PASS
+- Playwright 1280/768/375px 및 focus 캡처 PASS
+- fresh visual QA 2개 레인 PASS
+
+### Risks
+- 전체 npm run test:e2e는 preview port contention으로 300초 timeout; 요청 route는 직접 Playwright로 검증했습니다.
+
+### Changed project surfaces
+- `src/app/globals.css`
+- `DESIGN.md`
+- `project/wiki/reports/toc-design-review-2026-08-12.md`
+- `.agent/session-handoff.md`
