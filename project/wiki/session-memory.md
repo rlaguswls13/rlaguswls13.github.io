@@ -77,3 +77,31 @@ AGENTS.md? Kappa LLM RAG ???? agent ?? ??? ?????. metadata, retrieval cues, cano
 - `project/hooks/README.md`
 - `project/skills/session-memory-wiki/SKILL.md`
 - `tests/project/session-end-hook.test.mjs`
+
+## 2026-08-11T08:59:44.011Z | session-handoff-skill-20260811
+
+### Summary
+???? ?? session-handoff-workflow skill? ????. start/checkpoint/continue/finish ??? ?? .agent/session-handoff.md? ?? ????, finish? Wiki? PR review ??? hook ??? ????.
+
+### Decisions
+- ??? ??? custom skill ?? project/skills/session-handoff-workflow ?? skill? ??
+- ?? ?? ??? handoff ??? ?? start/continue/finish? ??
+- Python init_skill.py? ?? ?? SKILL.md? agents/openai.yaml? ?? ??
+
+### Verification
+- skill structure: PASS
+- handoff hook tests: PASS 5/5
+- lint:ci: PASS
+- typecheck: PASS
+- git diff --check: PASS
+- full unit baseline: 149 passed, 4 pre-existing export failures
+
+### Risks
+- host? project/skills? ?? skill ??? ???? ?? ?? AGENTS.md ?? ??? fallback
+- ?? export fixture 4? ??
+
+### Changed project surfaces
+- `AGENTS.md`
+- `.agent/session-handoff.md`
+- `project/skills/session-handoff-workflow/SKILL.md`
+- `project/skills/session-handoff-workflow/agents/openai.yaml`

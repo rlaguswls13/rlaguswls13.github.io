@@ -1,0 +1,3 @@
+display_name: Session Handoff Workflow
+short_description: Run staged work through the shared session handoff baton
+default_prompt: Use $session-handoff-workflow with start, checkpoint, continue, or finish to coordinate work through .agent/session-handoff.md.
