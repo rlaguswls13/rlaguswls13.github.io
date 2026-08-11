@@ -142,3 +142,24 @@ Finished session handoff validation; baton remains ready with existing validatio
 
 ### Changed project surfaces
 - `.agent/session-handoff.md`
+
+## 2026-08-11T09:30:26.375Z | codex-2026-08-11-notion-journal-schema
+
+### Summary
+Fixed journal Notion schema quarantine: live slug properties are select, now accepted by the schema with regression coverage.
+
+### Verification
+- npx vitest run tests/notion/schema-contract.test.mjs tests/notion/fetch-orchestration.test.mjs tests/notion/source-config.test.mjs: PASS 28/28
+- npm run lint:ci: PASS
+- npm run typecheck: PASS
+- npm run fetch-notion: journal schema passed; later stopped at independent missing-thumbnail contract
+- npm run test:unit -- --run: 150 passed, 4 pre-existing export failures
+- npm run validate:content: pre-existing backup MDX filename/id mismatch
+
+### Risks
+- Live fetch still requires missing thumbnails for downstream content; existing export/content failures remain.
+
+### Changed project surfaces
+- `scripts/notion/connect/schema-contract.mjs`
+- `tests/notion/schema-contract.test.mjs`
+- `.agent/session-handoff.md`
