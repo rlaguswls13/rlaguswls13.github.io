@@ -163,3 +163,44 @@ Fixed journal Notion schema quarantine: live slug properties are select, now acc
 - `scripts/notion/connect/schema-contract.mjs`
 - `tests/notion/schema-contract.test.mjs`
 - `.agent/session-handoff.md`
+
+## 2026-08-11T10:03:23.497Z | local
+
+### Summary
+Resolved Notion journal select-slug quarantine, missing thumbnails, staging asset omission, rollback residue, placeholder metadata, and slug normalization. Full fetch/build/export/content/lint/typecheck/unit gates pass.
+
+### Decisions
+- Accept select as a valid Notion journal slug property type.
+- Ignore generated rollback snapshots in content and index generators.
+- Use page title as description fallback and normalize generated slugs to lowercase.
+
+### Verification
+- npm run fetch-notion -- --force: PASS
+- npm run build:local with temporary non-secret GISCUS_INFO: PASS
+- npm run validate:export: PASS, 95 routes, 0 blockers
+- npm run validate:content: PASS, 87 files
+- npm run lint:ci: PASS
+- npm run typecheck: PASS
+- npm run test:unit -- --run: PASS, 25 files, 157 tests
+- manual fresh out HTML checks: PASS
+
+### Risks
+- build:local requires GISCUS_INFO in the local environment; verification used a temporary non-secret value with the expected canonical URL
+- final Wiki reflection and PR review remain requested by the handoff contract
+
+### Changed project surfaces
+- `scripts/notion/connect/schema-contract.mjs`
+- `scripts/notion/connect/sync-pages.mjs`
+- `scripts/notion/connect/content-transaction.mjs`
+- `scripts/notion/connect/fetch-orchestration.mjs`
+- `scripts/notion/transfer/build-journal-index.mjs`
+- `scripts/notion/transfer/build-devlog-index.mjs`
+- `scripts/notion/transfer/build-project-index.mjs`
+- `scripts/slug/generate.mjs`
+- `tests/notion/schema-contract.test.mjs`
+- `tests/notion/content-transaction.test.mjs`
+- `tests/notion/fetch-orchestration.test.mjs`
+- `tests/content/validation.test.mjs`
+- `tests/fixtures/list-html.mjs`
+- `public/thumnail/devlog/tech_study/3b819946ca7680439eecd5fe23528952.webp`
+- `public/thumnail/devlog/tech_study/3b919946ca7680d9a4f3c5389ea08e85.webp`
