@@ -312,3 +312,33 @@ Replaced two dark neon devlog thumbnails with bright graph-paper navy/cobalt thu
 - `scripts/notion/connect/content-transaction.mjs`
 - `DESIGN.md`
 - `project/wiki/reports/toc-design-review-2026-08-12.md`
+
+## 2026-08-12T06:38:50.322Z | project-tabs-fetch-2026-08-12
+
+### Summary
+???? ?? ??? ?? ? ?? ??? ???? ?? Notion fetch? ??? ?? ??? ??????.
+
+### Decisions
+- Notion fetch? ??? ??? process.cwd()? ??? fetch.mjs ???? ?????.
+- ???? child page? ProjectTabs? ?? ??? ?? ? ?? ?? ?????.
+
+### Verification
+- npm run validate:content PASS
+- npm run lint:ci PASS
+- npm run typecheck PASS
+- npm run test:unit -- --run PASS: 25 files, 160 tests
+- npm run build:local PASS
+- Playwright /projects/e PASS: ?? ?? open, collapse, ? ??, horizontal overflow ??
+- git push origin main PASS: 49fb5b8
+
+### Risks
+- ?? PR review? ??? ???? ?????.
+
+### Changed project surfaces
+- `scripts/notion/connect/fetch.mjs`
+- `scripts/notion/transfer/notion-blocks-to-mdx.mjs`
+- `src/components/ui/ProjectTabs.tsx`
+- `src/lib/content/rehype-article-toc.ts`
+- `src/app/globals.css`
+- `tests/notion/source-config.test.mjs`
+- `tests/notion/content-security.test.mjs`
