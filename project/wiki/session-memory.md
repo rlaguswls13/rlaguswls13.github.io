@@ -354,3 +354,15 @@ Replaced two dark neon devlog thumbnails with bright graph-paper navy/cobalt thu
 
 ### Risks
 - 전체 태그 결과가 86건으로 길어질 수 있으나 반응형 3/2/1 grid와 검색·범위 필터로 탐색 가능
+
+## 2026-08-12T07:40:13.167Z | local
+
+### Summary
+Search 메뉴를 마지막으로 이동하고 3001 preview의 stale 산출물을 새 빌드로 갱신했습니다.
+
+### Decisions
+- 메뉴명은 Search, 기존 URL은 /tags 유지
+- 개발/preview 포트는 3001 유지
+
+### Risks
+- 기존 3001 서버가 이전 산출물을 캐시하면 재시작 필요
