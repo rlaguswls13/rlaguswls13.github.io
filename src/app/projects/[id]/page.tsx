@@ -22,9 +22,11 @@ import { NotionCallout } from "@/components/ui/notion/NotionCallout";
 import { NotionDivider } from "@/components/ui/notion/NotionDivider";
 import { NotionIndent } from "@/components/ui/notion/NotionIndent";
 import { buildRouteMetadata } from "@/lib/seo/routes";
+import { rehypeArticleToc } from "@/lib/content/rehype-article-toc";
+import { ProjectTab, ProjectTabs } from "@/components/ui/ProjectTabs";
 
 const projects = projectsMeta.projects as Project[];
-const components = { NotionImage, NotionTable, NotionToggle, NotionCallout, NotionDivider, NotionIndent };
+const components = { NotionImage, NotionTable, NotionToggle, NotionCallout, NotionDivider, NotionIndent, ProjectTab, ProjectTabs };
 
 export async function generateStaticParams() {
   return projects.map((project) => ({ id: project.slug || project.id }));
@@ -69,7 +71,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <TagList tags={meta.tags} />
       </header>
       <div className="mdx-content">
-        <MDXRemote source={content} components={components} />
+        <MDXRemote
+          source={content}
+          components={components}
+          options={{ mdxOptions: { rehypePlugins: [rehypeArticleToc] } }}
+        />
       </div>
     </article>
   );

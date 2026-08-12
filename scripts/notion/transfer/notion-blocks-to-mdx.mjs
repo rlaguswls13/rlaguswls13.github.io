@@ -146,7 +146,7 @@ async function blockMarkup(client, block, indentLevel, context) {
     }
     const title = plainText(data.rich_text).trim();
     const id = headingId(title, context.headings);
-    context.headings.push({ id, level, title });
+    if (context.collectHeadings) context.headings.push({ id, level, title });
     return `${indent}<a id="${escapeAttribute(id)}"></a>\n\n${indent}${"#".repeat(level)} ${text}\n\n`;
   }
   if (block.type === "bulleted_list_item") return `${indent}- ${text}\n`;
@@ -188,13 +188,21 @@ async function blockMarkup(client, block, indentLevel, context) {
     const href = data.url ? safeMarkdownHref(data.url) : "";
     return href ? `[🔗 ${escapeMdxText(data.url)}](${href})\n\n` : "";
   }
-  if (block.type === "child_page") return `## ${escapeMdxText(data.title || "Untitled")}\n\n`;
+  if (block.type === "child_page") {
+    context.childPageCount += 1;
+    const children = block.has_children
+      ? await blocksToMarkup(client, block.id, 0, { ...context, headings: [], collectHeadings: false })
+      : "";
+    return `\n<notion-project-tab title="${escapeAttribute(data.title || "Untitled")}">\n\n${children}</notion-project-tab>\n\n`;
+  }
   if (block.type === "table_of_contents") return "";
   return "";
 }
 
 export async function blocksToMarkup(client, blockId, indentLevel = 0, context = {
   headings: [],
+  collectHeadings: true,
+  childPageCount: 0,
   root: process.cwd(),
   onAsset: () => {},
   fetch: globalThis.fetch,
@@ -204,7 +212,7 @@ export async function blocksToMarkup(client, blockId, indentLevel = 0, context =
   for (const block of blocks) {
     const listBlock = ["bulleted_list_item", "numbered_list_item", "to_do"].includes(block.type);
     output += await blockMarkup(client, block, indentLevel, context);
-    if (block.has_children && !["toggle", "table"].includes(block.type) && !block.type.startsWith("heading_")) {
+    if (block.has_children && !["toggle", "table", "child_page"].includes(block.type) && !block.type.startsWith("heading_")) {
       // MDX JSX nested inside an indented Markdown list can lose its opening-tag
       // boundary when a fenced code block follows. Flatten Notion list children
       // so generated components always remain valid top-level MDX blocks.
@@ -218,11 +226,16 @@ export async function blocksToMarkup(client, blockId, indentLevel = 0, context =
 export async function pageToMdxBody(client, pageId, options = {}) {
   const context = {
     headings: [],
+    collectHeadings: true,
+    childPageCount: 0,
     root: path.resolve(options.root || process.cwd()),
     onAsset: options.onAsset || (() => {}),
     fetch: options.fetch || globalThis.fetch,
   };
   const markup = await blocksToMarkup(client, pageId, 0, context);
-  const content = `${tableOfContents(context.headings)}${markup}`;
+  const toc = tableOfContents(context.headings);
+  const content = context.childPageCount > 0
+    ? `\n<notion-project-tabs>\n\n${toc}${markup}</notion-project-tabs>\n`
+    : `${toc}${markup}`;
   return convertMdxComponents(content, componentMapFor(options.pageName, options.componentMap));
 }

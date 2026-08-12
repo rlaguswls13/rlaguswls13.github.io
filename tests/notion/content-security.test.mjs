@@ -60,6 +60,43 @@ describe("Notion content security boundaries", () => {
     await expect(compile(body)).resolves.toBeDefined();
   });
 
+  it("Given a project child page When converted Then its content becomes a project tab", async () => {
+    // Given: a project page with one declared child page and a heading in that child page.
+    const client = {
+      async getBlockChildren(blockId) {
+        if (blockId === "parent") {
+          return [{
+            id: "parent-heading",
+            type: "heading_2",
+            has_children: false,
+            heading_2: { rich_text: [{ plain_text: "Overview" }] },
+          }, {
+            id: "child-page",
+            type: "child_page",
+            has_children: true,
+            child_page: { title: "Architecture" },
+          }];
+        }
+        return [{
+          id: "child-heading",
+          type: "heading_2",
+          has_children: false,
+          heading_2: { rich_text: [{ plain_text: "System design" }] },
+        }];
+      },
+    };
+
+    // When: the project page body is generated from Notion blocks.
+    const body = await pageToMdxBody(client, "parent", { pageName: "project" });
+
+    // Then: the child page is represented as a mapped tab with its nested content.
+    expect(body).toContain('<ProjectTabs>');
+    expect(body).toContain('<ProjectTab title="Architecture">');
+    expect(body).toContain("System design");
+    expect(body.indexOf("<ProjectTabs>")).toBeLessThan(body.indexOf("## 목차"));
+    await expect(compile(body)).resolves.toBeDefined();
+  });
+
   it("Given an unapproved image host When a page is converted Then no network request occurs", async () => {
     // Given: an image URL outside the explicit Notion storage allowlist.
     let requested = false;

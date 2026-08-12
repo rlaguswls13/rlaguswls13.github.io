@@ -1,7 +1,7 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-12T01:20:00+09:00
+updated_at: 2026-08-12T15:25:00+09:00
 agent: Codex
 ---
 
@@ -84,6 +84,44 @@ agent: Codex
 - Set the TOC heading/list to `display: table`, `width: fit-content`, and `max-width: 100%`; preserved bounded scrolling and focus-visible styling.
 - Verification: `npm run lint:ci`, `npm run typecheck`, and `npm run build:local` PASS. Playwright final captures: 1280px TOC width 387.8px, 375px TOC width 301px; both remain in viewport. Two fresh visual QA reviewers returned PASS.
 - Evidence: `artifacts/playwright/top-desktop.png`, `artifacts/playwright/top-mobile.png`, and `project/wiki/reports/toc-design-review-2026-08-12.md`.
+
+## TOC collapse checkpoint (2026-08-12)
+
+- Added a rehype transform that converts the first article TOC heading/list into native `<details open>` and `<summary>` markup for server-rendered initial expansion and keyboard-accessible collapse/expand behavior.
+- Updated `src/app/globals.css` so the top-only TOC uses approximately two-thirds of the article content width on desktop, becomes full-width below 768px, and includes open/closed chevron, focus-visible, bounded scrolling, and reduced-motion states.
+- Verification: `npm run lint:ci`, `npm run typecheck`, `npm run build:local`, and `git diff --check` PASS. Playwright verified 1280/768/375px layout, no horizontal overflow, initial open, collapse/reopen, focus, and mobile screenshots.
+- Independent fresh visual QA reviewers A and B both returned PASS. Evidence: `.omo/evidence/toc-collapse-final-fresh-review-a-gate-review.md`, `.omo/evidence/toc-collapse-fresh-review-b-gate-review.md`, and `artifacts/playwright/toc-collapse/`.
+- Changed files: `src/lib/content/rehype-article-toc.ts`, `src/app/devlog/[category]/[slug]/page.tsx`, `src/app/projects/[id]/page.tsx`, `src/app/globals.css`, `DESIGN.md`.
+
+## Checkout checkpoint (2026-08-12)
+
+- Baton checked out by the current agent; no new user task was supplied beyond session handoff.
+- The completed TOC disclosure change remains as uncommitted user work. Preserve it and inspect the existing diff before follow-up edits.
+- Next action: continue the user's next request, or run the finish workflow when handing off again.
+
+## Project child-page tabs checkpoint (2026-08-12)
+
+- Implemented Notion `child_page` traversal in `scripts/notion/transfer/notion-blocks-to-mdx.mjs`; child page content is emitted as `ProjectTab` entries and grouped by `ProjectTabs`, while child headings stay out of the parent TOC.
+- Registered `notion-project-tabs` and `notion-project-tab` mappings and added the accessible client component at `src/components/ui/ProjectTabs.tsx`. The first tab is initially active; click, ArrowLeft/ArrowRight, Home, and End navigation are supported with roving tab indices and `aria-labelledby` panel linkage.
+- Wired project MDX components and responsive styling in `src/app/projects/[id]/page.tsx` and `src/app/globals.css`; legacy JSON tabs remain supported.
+- Verification: `npm run validate:content` PASS (87 files); `npm run lint:ci` PASS; `npm run typecheck` PASS; `npm run test:unit -- --run` PASS (25 files, 159 tests); `npm run build:local` PASS; `git diff --check` PASS with only existing CRLF normalization warnings.
+- Browser evidence: `artifacts/playwright/project-tabs/1280.png`, `768.png`, and `375.png`; initial tab, click switch, keyboard switch, and no horizontal overflow were observed. Independent gate review A approved; review B identified missing `aria-labelledby`, which was fixed and revalidated by lint/typecheck/build.
+- Temporary MDX fixture was removed before the final build. No secrets or unrelated source content were added.
+
+## Existing flattened project migration checkpoint (2026-08-12)
+
+- Migrated the existing project source `src/content/projects/enterprise/general/3b119946ca768045ae69ff18b3657552.mdx`, where two Notion child pages had previously been flattened into headings, into two direct `ProjectTab` entries.
+- Removed the stale child-page entries from that page's static TOC so only the parent tab's section headings remain visible in the TOC.
+- Browser verification on `/projects/e`: two tabs rendered, first tab initially selected, second tab switched correctly, `aria-labelledby` matched the active panel, and no horizontal overflow occurred.
+- Final verification after migration: `npm run validate:content`, `npm run lint:ci`, `npm run typecheck`, `npm run build:local`, and `git diff --check` all passed.
+
+## Standalone fetch and project TOC checkpoint (2026-08-12)
+
+- Fixed `scripts/notion/connect/fetch.mjs` to resolve the repository root from `import.meta.url`, so standalone execution outside the repository cwd loads `.env.local.yml` and no longer fails with missing `journal` configuration.
+- Added regression coverage in `tests/notion/source-config.test.mjs`; parent-directory execution with `CI=true` now reports configured journal/devlog/project groups.
+- Moved project TOC markup inside `ProjectTabs`, made `ProjectTabs` render the nested heading/list as the same collapsible `.article-toc` used by other articles, and broadened the CSS selector for nested placement.
+- Updated the rehype TOC traversal to support nested content trees. Browser QA on `/projects/e` verified TOC inside the active tab panel, initially open, collapsible, matching width (`693.328125px` at 1280px), tab switching, and no horizontal overflow.
+- Verification: targeted Notion tests 26/26 then 19/19; full unit tests 25 files/160 tests; content validation, lint, typecheck, build, and diff check passed. Evidence: `artifacts/playwright/project-tabs/project-e-toc.png`.
 
 ## Verification
 

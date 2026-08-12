@@ -2,11 +2,11 @@
   "projects": [
     {
       "id": "3b319946ca768057896fe03574856fa1",
-      "slug": "3b319946ca768057896fe03574856fa1",
+      "slug": "i",
       "sourceId": "3b319946-ca76-8057-896f-e03574856fa1",
       "source_id": "3b319946ca768057896fe03574856fa1",
       "page_id": "3b319946-ca76-8057-896f-e03574856fa1",
-      "last_edited_time": "2026-08-05T03:02:00.000Z",
+      "last_edited_time": "2026-08-12T05:04:00.000Z",
       "sourceFile": "enterprise/general/3b319946ca768057896fe03574856fa1.mdx",
       "title": "레거시 코드로 인한 메모리 누수 해결",
       "date": "2026-08-05",
@@ -66,9 +66,9 @@
       "sourceId": "3b119946-ca76-8045-ae69-ff18b3657552",
       "source_id": "3b119946ca768045ae69ff18b3657552",
       "page_id": "3b119946-ca76-8045-ae69-ff18b3657552",
-      "last_edited_time": "2026-08-03T03:49:00.000Z",
+      "last_edited_time": "2026-08-12T04:47:00.000Z",
       "sourceFile": "enterprise/general/3b119946ca768045ae69ff18b3657552.mdx",
-      "title": "사내 통합지원시스템 고도화",
+      "title": "사내 지원시스템 리펙토링/개발",
       "date": "2026-08-03",
       "periods": [],
       "tags": [

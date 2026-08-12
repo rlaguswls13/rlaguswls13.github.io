@@ -1,3 +1,6 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 import { describe, expect, it, vi } from "vitest";
 import { main } from "../../scripts/notion/connect/fetch.mjs";
 import { parseSourceConfiguration } from "../../scripts/notion/connect/source-config.mjs";
@@ -12,6 +15,30 @@ const IDS = Object.freeze({
 });
 
 describe("parseSourceConfiguration", () => {
+  it("loads the repository env file when standalone fetch runs outside the repository cwd", () => {
+    const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+    const fetchScript = path.join(repositoryRoot, "scripts/notion/connect/fetch.mjs");
+    const environment = { ...process.env, CI: "true" };
+    for (const key of [
+      "NOTION_REQUIRED_GROUPS",
+      "NOTION_PAGE_ID_JOURNAL",
+      "NOTION_PAGE_ID_DEVLOG",
+      "NOTION_PAGE_ID_PROJECT",
+      "NOTION_DATA_SOURCE_ID_JOURNAL",
+      "NOTION_DATA_SOURCE_ID_DEVLOG",
+      "NOTION_DATA_SOURCE_ID_PROJECT",
+    ]) delete environment[key];
+
+    const result = spawnSync(process.execPath, [fetchScript, "--print-source-config"], {
+      cwd: path.dirname(repositoryRoot),
+      encoding: "utf8",
+      env: environment,
+    });
+
+    expect(result.status, result.stderr).toBe(0);
+    expect(JSON.parse(result.stdout).groups.journal).not.toHaveLength(0);
+  });
+
   it("returns the canonical, generic, and journal-alias sources in group order", () => {
     const result = parseSourceConfiguration({
       NOTION_PAGE_ID_JOURNAL: IDS.journal,

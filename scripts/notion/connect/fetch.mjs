@@ -7,7 +7,7 @@ import { parseSourceConfiguration } from "./source-config.mjs";
 import { runFetchOrchestration } from "./fetch-orchestration.mjs";
 import { canonicalColumnName } from "./schema-contract.mjs";
 
-const ROOT = process.cwd();
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 export const SPECIAL_CASES = {
   journal: {
     aliases: {},

@@ -32,6 +32,7 @@ import { JsonLd } from "@/lib/seo/JsonLd";
 import { buildBlogPostingJsonLd } from "@/lib/seo/metadata";
 import { buildRouteMetadata, siteAuthor } from "@/lib/seo/routes";
 import { siteConfig } from "@/lib/site";
+import { rehypeArticleToc } from "@/lib/content/rehype-article-toc";
 
 type DevlogPageIndexItem = {
   category: string;
@@ -167,6 +168,7 @@ export default async function DevlogDetailPage({
           options={{
             mdxOptions: {
               rehypePlugins: [
+                rehypeArticleToc,
                 [
                   rehypePrettyCode,
                   {

@@ -10,7 +10,10 @@ export const DEFAULT_COMPONENT_MAP = Object.freeze({
 export const PAGE_COMPONENT_MAPS = Object.freeze({
   journal: Object.freeze({}),
   devlog: Object.freeze({}),
-  project: Object.freeze({}),
+  project: Object.freeze({
+    "notion-project-tabs": "ProjectTabs",
+    "notion-project-tab": "ProjectTab",
+  }),
 });
 
 function validComponentName(value) {
