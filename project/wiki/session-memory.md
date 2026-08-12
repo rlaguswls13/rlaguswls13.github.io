@@ -342,3 +342,15 @@ Replaced two dark neon devlog thumbnails with bright graph-paper navy/cobalt thu
 - `src/app/globals.css`
 - `tests/notion/source-config.test.mjs`
 - `tests/notion/content-security.test.mjs`
+
+## 2026-08-12T07:23:09.244Z | local
+
+### Summary
+홈 일지 링크를 /journal 전체 목록으로 수정하고 /tags 통합 태그 검색을 추가했으며 개발/preview 기본 포트를 3001로 변경했습니다.
+
+### Decisions
+- 태그 검색 범위는 프로젝트·Devlog·개인일지·교육일지 인덱스 전체로 통합
+- 개발 서버와 정적 preview 기본 포트는 3001 사용
+
+### Risks
+- 전체 태그 결과가 86건으로 길어질 수 있으나 반응형 3/2/1 grid와 검색·범위 필터로 탐색 가능
