@@ -1,7 +1,7 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-13T15:10:00+09:00
+updated_at: 2026-08-13T15:18:00+09:00
 agent: Codex
 ---
 
@@ -41,17 +41,19 @@ agent: Codex
 - 진행 중인 작업: 없음. RAG Wiki 리밸런싱, indexing worklog, escaped legacy table 복구를 완료했습니다.
 - 마지막으로 완료한 작업: strict allowlist table normalizer의 MDX expression·fenced-code 경계를 보강하고 최종 5-lane 재검토를 통과했습니다.
 - 현재 branch/upstream: `main` / `origin/main`.
-- 현재 Git 상태: 기능 변경을 사용자 정책에 따라 3개 atomic commit으로 분리했습니다. 세션 기록 commit과 `origin/main` push를 진행합니다.
+- 현재 Git 상태: 기능 변경과 세션 기록을 4개 commit으로 분리해 `origin/main`에 push했습니다.
 - 성공 조건: 완료. RAG registry/index/worklog와 table 복구가 전체 테스트·build/export·반응형 시각 검증을 통과했습니다.
-- 다음 작업: 최종 검증 후 `origin/main`에 push하고 원격 SHA를 확인합니다.
+- 다음 작업: 없음. 다음 에이전트는 clean worktree와 `origin/main` 동기화 상태를 확인합니다.
 
 ## Git delivery checkpoint (2026-08-13)
 
 - `5e44b21 [ADD] : LLM RAG 인덱싱 및 개발 실행 설정 추가`
 - `3b9353f [UPDATE] : 홈 일지 연결 및 통합 검색 화면 추가`
 - `2545205 [BUGFIX] : Notion 테이블 태그 렌더링 복구`
+- `8d8d253 [UPDATE] : 세션 메모리 및 검증 산출물 갱신`
 - 사용자 지정 `[TYPE] : 한글 요약` 정책을 적용했으며, 기능·RAG·버그 수정 범위로 분리했습니다.
-- 세션 memory와 최신 export 검증 산출물은 별도 기록 commit으로 묶습니다.
+- `npm run verify` PASS (26 files/173 tests), `npm run validate:export` PASS (95 routes/0 blockers) 후 `55dd6c7..8d8d253 main -> main` push를 확인했습니다.
+- 원격은 새 GitHub 저장소 URL 안내와 main PR 규칙 우회 메시지를 반환했지만 push 자체는 성공했습니다.
 
 ## Changed features
 
