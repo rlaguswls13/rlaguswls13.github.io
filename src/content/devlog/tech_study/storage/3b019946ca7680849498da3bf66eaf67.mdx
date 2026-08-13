@@ -37,62 +37,62 @@ notionUrl: "https://app.notion.com/p/DAS-vs-NAS-vs-SAN-3b019946ca7680849498da3bf
 
 ## 요약 테이블
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>
-&lt;th>비교 항목&lt;/th>
-&lt;th>DAS (Direct Attached)&lt;/th>
-&lt;th>NAS (Network Attached)&lt;/th>
-&lt;th>SAN (Storage Area Network)&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>**개념 분류**&lt;/td>
-&lt;td>1:1 전용선 직접 연결 스토리지&lt;/td>
-&lt;td>일반 네트워크(LAN) 공유 파일 서버&lt;/td>
-&lt;td>스토리지 전용 초고속 독립 네트워크&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**전송 단위**&lt;/td>
-&lt;td>블록 (Block) 단위&lt;/td>
-&lt;td>파일 (File) 단위&lt;/td>
-&lt;td>블록 (Block) 단위&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**물리 인터페이스**&lt;/td>
-&lt;td>SATA, SAS, SCSI, PCIe, Thunderbolt&lt;/td>
-&lt;td>일반 Ethernet LAN (RJ45, 광케이블)&lt;/td>
-&lt;td>Fibre Channel (FC-SAN), IP (iSCSI)&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**서버 인식 형태**&lt;/td>
-&lt;td>로컬 내장/외장 디스크로 직접 인식&lt;/td>
-&lt;td>네트워크 드라이브 마운트 (공유 폴더)&lt;/td>
-&lt;td>로컬 디스크로 직접 인식 (LUN 매핑)&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**주요 장점**&lt;/td>
-&lt;td>구축 단순함, 저비용, 무네트워크 병목&lt;/td>
-&lt;td>손쉬운 다중 공유, 저렴한 구축 비용&lt;/td>
-&lt;td>초고속/저지연, 고용량 확장성, 무부하&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**주요 단점**&lt;/td>
-&lt;td>타 서버와 스토리지 자원 공유 불가&lt;/td>
-&lt;td>LAN 트래픽 증가 시 성능 저하 및 병목&lt;/td>
-&lt;td>매우 비싼 도입 비용, 전문 관리 지식 필요&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**적합한 환경**&lt;/td>
-&lt;td>단일 웹 서버, 백업, 개인용 워크스테이션&lt;/td>
-&lt;td>사내 문서 공유 서버, 소규모 가상화&lt;/td>
-&lt;td>대규모 엔터프라이즈 DB, 가상화 환경 (VMware)&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>DAS (Direct Attached)</th>
+<th>NAS (Network Attached)</th>
+<th>SAN (Storage Area Network)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>**개념 분류**</td>
+<td>1:1 전용선 직접 연결 스토리지</td>
+<td>일반 네트워크(LAN) 공유 파일 서버</td>
+<td>스토리지 전용 초고속 독립 네트워크</td>
+</tr>
+<tr>
+<td>**전송 단위**</td>
+<td>블록 (Block) 단위</td>
+<td>파일 (File) 단위</td>
+<td>블록 (Block) 단위</td>
+</tr>
+<tr>
+<td>**물리 인터페이스**</td>
+<td>SATA, SAS, SCSI, PCIe, Thunderbolt</td>
+<td>일반 Ethernet LAN (RJ45, 광케이블)</td>
+<td>Fibre Channel (FC-SAN), IP (iSCSI)</td>
+</tr>
+<tr>
+<td>**서버 인식 형태**</td>
+<td>로컬 내장/외장 디스크로 직접 인식</td>
+<td>네트워크 드라이브 마운트 (공유 폴더)</td>
+<td>로컬 디스크로 직접 인식 (LUN 매핑)</td>
+</tr>
+<tr>
+<td>**주요 장점**</td>
+<td>구축 단순함, 저비용, 무네트워크 병목</td>
+<td>손쉬운 다중 공유, 저렴한 구축 비용</td>
+<td>초고속/저지연, 고용량 확장성, 무부하</td>
+</tr>
+<tr>
+<td>**주요 단점**</td>
+<td>타 서버와 스토리지 자원 공유 불가</td>
+<td>LAN 트래픽 증가 시 성능 저하 및 병목</td>
+<td>매우 비싼 도입 비용, 전문 관리 지식 필요</td>
+</tr>
+<tr>
+<td>**적합한 환경**</td>
+<td>단일 웹 서버, 백업, 개인용 워크스테이션</td>
+<td>사내 문서 공유 서버, 소규모 가상화</td>
+<td>대규모 엔터프라이즈 DB, 가상화 환경 (VMware)</td>
+</tr>
+</tbody>
+</NotionTable>
+
 
 
 <NotionDivider />

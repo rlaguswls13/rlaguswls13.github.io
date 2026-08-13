@@ -57,12 +57,18 @@ function walkMdx(root, relativeRoot) {
 
 function frontmatter(root, filePath) {
   const file = relative(root, filePath);
-  let data;
+  let parsed;
   try {
-    data = matter(fs.readFileSync(filePath, "utf8")).data;
+    parsed = matter(fs.readFileSync(filePath, "utf8"));
   } catch {
     fail(file, "invalid frontmatter");
   }
+  if (/&lt;table\b/iu.test(parsed.content)) fail(file, "escaped table markup must be repaired");
+  const notionTables = parsed.content.match(/<NotionTable\b[^>]*>[\s\S]*?<\/NotionTable>/giu) || [];
+  if (notionTables.some((table) => /[{}]/u.test(table))) {
+    fail(file, "NotionTable text must not contain raw MDX expressions");
+  }
+  const data = parsed.data;
   const id = String(data.id || data.source_id || data.page_id || data.sourceId || "").replaceAll("-", "").trim();
   const slug = String(data.slug || "").trim();
   const title = String(data.title || "").trim();

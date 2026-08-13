@@ -125,42 +125,42 @@ public Step workerStep(JobRepository jobRepository, PlatformTransactionManager t
 
 ## 3. 핵심 차이점 및 실무 선택 가이드 (Comparison Table)
 
-&lt;table className="w-full text-left border-collapse mt-4 mb-4">
-&lt;thead>
-&lt;tr>
-&lt;th className="border-b-2 border-[var(--border-color)] p-2">비교 항목&lt;/th>
-&lt;th className="border-b-2 border-[var(--border-color)] p-2">Multi-thread Step 방식&lt;/th>
-&lt;th className="border-b-2 border-[var(--border-color)] p-2">Partitioning (마스터-워커) 방식&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>데이터 분할 방식&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">청크 단위 런타임 분할 (스레드 간 레이스 컨디션 유발)&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">사전 논리적 범위 분할 (ID, 날짜, 부서 등)&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>Reader 제약 조건&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">반드시 Thread-safe한 Paging 리더 계열만 사용 가능&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">제약 없음 (Cursor 기반 고속 리더 사용 가능)&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>DB 커넥션 효율&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">하나의 Step 내에서 스레드 풀만큼 풀(Pool) 소모&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">각 Worker Step 인스턴스마다 전용 커넥션 점유&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>확장 한계&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">단일 JVM 프로세스 내부 (상한선 명확)&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">원격 분산(Remote Partitioning)을 통해 다중 서버 확장 가능&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>구현 난이도&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">매우 낮음 (TaskExecutor 주입만으로 끝)&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">보통~높음 (Partitioner 및 ExecutionContext 바인딩 필요)&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
+<NotionTable>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>Multi-thread Step 방식</th>
+<th>Partitioning (마스터-워커) 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>데이터 분할 방식</strong></td>
+<td>청크 단위 런타임 분할 (스레드 간 레이스 컨디션 유발)</td>
+<td>사전 논리적 범위 분할 (ID, 날짜, 부서 등)</td>
+</tr>
+<tr>
+<td><strong>Reader 제약 조건</strong></td>
+<td>반드시 Thread-safe한 Paging 리더 계열만 사용 가능</td>
+<td>제약 없음 (Cursor 기반 고속 리더 사용 가능)</td>
+</tr>
+<tr>
+<td><strong>DB 커넥션 효율</strong></td>
+<td>하나의 Step 내에서 스레드 풀만큼 풀(Pool) 소모</td>
+<td>각 Worker Step 인스턴스마다 전용 커넥션 점유</td>
+</tr>
+<tr>
+<td><strong>확장 한계</strong></td>
+<td>단일 JVM 프로세스 내부 (상한선 명확)</td>
+<td>원격 분산(Remote Partitioning)을 통해 다중 서버 확장 가능</td>
+</tr>
+<tr>
+<td><strong>구현 난이도</strong></td>
+<td>매우 낮음 (TaskExecutor 주입만으로 끝)</td>
+<td>보통~높음 (Partitioner 및 ExecutionContext 바인딩 필요)</td>
+</tr>
+</tbody>
+</NotionTable>
 
 
 <NotionDivider />

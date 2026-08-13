@@ -192,17 +192,16 @@ http {
 
 ### 장단점 요약
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>&lt;th>구분&lt;/th>&lt;th>내용&lt;/th>&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>&lt;td>&lt;strong>장점&lt;/strong>&lt;/td>&lt;td>백엔드 코드나 WAS 설정을 복잡하게 수정할 필요가 없어 소규모 서비스에서 효율적입니다.&lt;/td>&lt;/tr>
-&lt;tr>&lt;td>&lt;strong>단점&lt;/strong>&lt;/td>&lt;td>특정 WAS(예: A 서버)에 장애가 발생하면, 해당 서버에 종속된 유저들은 B 서버로 이동하면서 세션 데이터가 유실되므로 인증 로직을 처음부터 다시 태워야 합니다. 또한 부하 분산의 균형이 깨질 수 있습니다.&lt;/td>&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr><th>구분</th><th>내용</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>장점</strong></td><td>백엔드 코드나 WAS 설정을 복잡하게 수정할 필요가 없어 소규모 서비스에서 효율적입니다.</td></tr>
+<tr><td><strong>단점</strong></td><td>특정 WAS(예: A 서버)에 장애가 발생하면, 해당 서버에 종속된 유저들은 B 서버로 이동하면서 세션 데이터가 유실되므로 인증 로직을 처음부터 다시 태워야 합니다. 또한 부하 분산의 균형이 깨질 수 있습니다.</td></tr>
+</tbody>
+</NotionTable>
 
 
 <NotionDivider />
@@ -276,17 +275,17 @@ public class UserSessionInfo implements Serializable {
 
 ### 장단점 요약
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>&lt;th>구분&lt;/th>&lt;th>내용&lt;/th>&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>&lt;td>&lt;strong>장점&lt;/strong>&lt;/td>&lt;td>인프라나 애플리케이션 레이어를 크게 건드리지 않고 WAS 설정만으로 세션 영속성을 보장할 수 있습니다. 한 서버가 다운되어도 다른 서버에 세션이 복제되어 있으므로 유저 단절 현상이 없습니다.&lt;/td>&lt;/tr>
-&lt;tr>&lt;td>&lt;strong>단점&lt;/strong>&lt;/td>&lt;td>서버 대수가 늘어날수록 세션 복제를 위한 네트워크 트래픽(All-to-All 통신)과 메모리 오버헤드가 급격히 증가합니다. 대규모 트래픽 환경에서는 성능 저하의 원인이 됩니다.&lt;/td>&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr><th>구분</th><th>내용</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>장점</strong></td><td>인프라나 애플리케이션 레이어를 크게 건드리지 않고 WAS 설정만으로 세션 영속성을 보장할 수 있습니다. 한 서버가 다운되어도 다른 서버에 세션이 복제되어 있으므로 유저 단절 현상이 없습니다.</td></tr>
+<tr><td><strong>단점</strong></td><td>서버 대수가 늘어날수록 세션 복제를 위한 네트워크 트래픽(All-to-All 통신)과 메모리 오버헤드가 급격히 증가합니다. 대규모 트래픽 환경에서는 성능 저하의 원인이 됩니다.</td></tr>
+</tbody>
+</NotionTable>
+
 
 
 <NotionDivider />
@@ -376,17 +375,17 @@ JWT의 탈취 위험을 최소화하기 위해 토큰의 생명주기를 이원�
 
 ### 토큰 이원화 전략
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>&lt;th>토큰 종류&lt;/th>&lt;th>유효시간&lt;/th>&lt;th>역할&lt;/th>&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>&lt;td>&lt;strong>Access Token&lt;/strong>&lt;/td>&lt;td>짧음 (예: 30분)&lt;/td>&lt;td>실질적인 API 인가에 사용&lt;/td>&lt;/tr>
-&lt;tr>&lt;td>&lt;strong>Refresh Token&lt;/strong>&lt;/td>&lt;td>비교적 김 (예: 2주)&lt;/td>&lt;td>Access Token 만료 시 재발급용, Redis 등 DB에 저장&lt;/td>&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr><th>토큰 종류</th><th>유효시간</th><th>역할</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Access Token</strong></td><td>짧음 (예: 30분)</td><td>실질적인 API 인가에 사용</td></tr>
+<tr><td><strong>Refresh Token</strong></td><td>비교적 김 (예: 2주)</td><td>Access Token 만료 시 재발급용, Redis 등 DB에 저장</td></tr>
+</tbody>
+</NotionTable>
+
 
 <a id="jwt-필터-설정-예시"></a>
 
@@ -443,17 +442,16 @@ WAS 이중화 환경에서 세션 공유 실패 이슈를 해결하는 가장 �
 
 ### 해결 방법별 비교
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>&lt;th>해결 방법&lt;/th>&lt;th>레벨&lt;/th>&lt;th>확장성&lt;/th>&lt;th>구현 난이도&lt;/th>&lt;th>장애 내성&lt;/th>&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>&lt;td>스티키 세션&lt;/td>&lt;td>인프라&lt;/td>&lt;td>낮음&lt;/td>&lt;td>쉬움&lt;/td>&lt;td>낮음 (서버 다운 시 세션 유실)&lt;/td>&lt;/tr>
-&lt;tr>&lt;td>Tomcat 클러스터링&lt;/td>&lt;td>WAS&lt;/td>&lt;td>중간&lt;/td>&lt;td>중간&lt;/td>&lt;td>중간 (서버 간 복제 오버헤드)&lt;/td>&lt;/tr>
-&lt;tr>&lt;td>Spring Session + Redis&lt;/td>&lt;td>애플리케이션&lt;/td>&lt;td>높음&lt;/td>&lt;td>중간&lt;/td>&lt;td>높음&lt;/td>&lt;/tr>
-&lt;tr>&lt;td>JWT (Stateless)&lt;/td>&lt;td>애플리케이션&lt;/td>&lt;td>매우 높음&lt;/td>&lt;td>높음&lt;/td>&lt;td>매우 높음&lt;/td>&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr><th>해결 방법</th><th>레벨</th><th>확장성</th><th>구현 난이도</th><th>장애 내성</th></tr>
+</thead>
+<tbody>
+<tr><td>스티키 세션</td><td>인프라</td><td>낮음</td><td>쉬움</td><td>낮음 (서버 다운 시 세션 유실)</td></tr>
+<tr><td>Tomcat 클러스터링</td><td>WAS</td><td>중간</td><td>중간</td><td>중간 (서버 간 복제 오버헤드)</td></tr>
+<tr><td>Spring Session + Redis</td><td>애플리케이션</td><td>높음</td><td>중간</td><td>높음</td></tr>
+<tr><td>JWT (Stateless)</td><td>애플리케이션</td><td>매우 높음</td><td>높음</td><td>매우 높음</td></tr>
+</tbody>
+</NotionTable>
 

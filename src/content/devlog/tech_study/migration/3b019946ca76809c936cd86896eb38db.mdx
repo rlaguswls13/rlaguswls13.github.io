@@ -227,39 +227,39 @@ binary 파일(이미지, 영상, 압축파일, 컴파일된 `.class` 파일 등)
 
 ## 7. 아키텍처 비교 및 선택 가이드
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>
-&lt;th>비교 항목&lt;/th>
-&lt;th>Linux CLI + Java 조합&lt;/th>
-&lt;th>Python 통합 스크립트&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>순수 코드 속도&lt;/td>
-&lt;td>매우 빠름 (우세)&lt;/td>
-&lt;td>보통&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>디스크 I/O 횟수&lt;/td>
-&lt;td>많음 (목록 파일 생성 후 변환 시 재접근)&lt;/td>
-&lt;td>적음 (파일당 단 1회 접근)&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>작업 단계&lt;/td>
-&lt;td>복잡함 (명령어 실행 ➡️ 파일 분할 ➡️ 자바 실행)&lt;/td>
-&lt;td>간편함 (스크립트 1회 실행으로 종료)&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>인코딩 판별 정확도&lt;/td>
-&lt;td>보통 (file -i 명령어의 간헐적 오판)&lt;/td>
-&lt;td>높음 (charset-normalizer 바이트 분석)&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>Linux CLI + Java 조합</th>
+<th>Python 통합 스크립트</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>순수 코드 속도</td>
+<td>매우 빠름 (우세)</td>
+<td>보통</td>
+</tr>
+<tr>
+<td>디스크 I/O 횟수</td>
+<td>많음 (목록 파일 생성 후 변환 시 재접근)</td>
+<td>적음 (파일당 단 1회 접근)</td>
+</tr>
+<tr>
+<td>작업 단계</td>
+<td>복잡함 (명령어 실행 ➡️ 파일 분할 ➡️ 자바 실행)</td>
+<td>간편함 (스크립트 1회 실행으로 종료)</td>
+</tr>
+<tr>
+<td>인코딩 판별 정확도</td>
+<td>보통 (file -i 명령어의 간헐적 오판)</td>
+<td>높음 (charset-normalizer 바이트 분석)</td>
+</tr>
+</tbody>
+</NotionTable>
+
 
 
 <NotionDivider />

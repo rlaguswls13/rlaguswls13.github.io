@@ -40,38 +40,38 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 Nginx, Apache, IIS 세 가지 핵심 웹 서버 솔루션의 아키텍처 특징 및 장단점을 명확하게 대조하여 핵심 요약합니다.
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>
-&lt;th style=&#123;&#123; width: "20%" &#125;&#125;>구분&lt;/th>
-&lt;th style=&#123;&#123; width: "25%" &#125;&#125;>Nginx&lt;/th>
-&lt;th style=&#123;&#123; width: "25%" &#125;&#125;>Apache HTTPD&lt;/th>
-&lt;th style=&#123;&#123; width: "30%" &#125;&#125;>IIS (Internet Information Services)&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>**핵심 강점**&lt;/td>
-&lt;td>초고속 정적 파일 처리, 가벼움, 리버스 프록시 가속&lt;/td>
-&lt;td>풍부한 서드파티 모듈, 디렉터리별 개별 제어(.htaccess) 가능&lt;/td>
-&lt;td>Windows/Active Directory 및 .NET 생태계 완벽 최적화&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**핵심 아키텍처**&lt;/td>
-&lt;td>비동기 이벤트 기반 (Event-Driven)&lt;/td>
-&lt;td>프로세스/스레드 기반 (MPM)&lt;/td>
-&lt;td>Windows 커널 모드 드라이버 (HTTP.sys) 밀착형&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>**추천 인프라 환경**&lt;/td>
-&lt;td>고트래픽 분산 서비스, MSA 프록시 대문, Linux/Container&lt;/td>
-&lt;td>전통적인 웹 호스팅 환경, 다기능 보안 커스텀 서버, Linux&lt;/td>
-&lt;td>마이크로소프트 중심의 전사 인프라 및 .NET 프레임워크 환경&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr>
+<th>구분</th>
+<th>Nginx</th>
+<th>Apache HTTPD</th>
+<th>IIS (Internet Information Services)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>**핵심 강점**</td>
+<td>초고속 정적 파일 처리, 가벼움, 리버스 프록시 가속</td>
+<td>풍부한 서드파티 모듈, 디렉터리별 개별 제어(.htaccess) 가능</td>
+<td>Windows/Active Directory 및 .NET 생태계 완벽 최적화</td>
+</tr>
+<tr>
+<td>**핵심 아키텍처**</td>
+<td>비동기 이벤트 기반 (Event-Driven)</td>
+<td>프로세스/스레드 기반 (MPM)</td>
+<td>Windows 커널 모드 드라이버 (HTTP.sys) 밀착형</td>
+</tr>
+<tr>
+<td>**추천 인프라 환경**</td>
+<td>고트래픽 분산 서비스, MSA 프록시 대문, Linux/Container</td>
+<td>전통적인 웹 호스팅 환경, 다기능 보안 커스텀 서버, Linux</td>
+<td>마이크로소프트 중심의 전사 인프라 및 .NET 프레임워크 환경</td>
+</tr>
+</tbody>
+</NotionTable>
+
 
 
 <NotionDivider />

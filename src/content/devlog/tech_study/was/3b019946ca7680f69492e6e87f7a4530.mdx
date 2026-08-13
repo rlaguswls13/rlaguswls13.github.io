@@ -45,27 +45,25 @@ notionUrl: "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87
 
 톰캣의 `conf/` 디렉터리에는 `server.xml` 외에도 각자의 명확한 역할을 가진 핵심 설정 파일들이 있습니다.
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>
-&lt;th style=&#123;&#123; width: "18%", whiteSpace: "nowrap" &#125;&#125;>파일명&lt;/th>
-&lt;th style=&#123;&#123; width: "22%" &#125;&#125;>핵심 역할&lt;/th>
-&lt;th style=&#123;&#123; width: "60%" &#125;&#125;>중요 관리 포인트 (보안 및 운영)&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td style=&#123;&#123; whiteSpace: "nowrap" &#125;&#125;>
+
+<NotionTable>
+<thead>
+<tr>
+<th>파일명</th>
+<th>핵심 역할</th>
+<th>중요 관리 포인트 (보안 및 운영)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
 
 > [블로그 전용 코드 팝업: 원본 MDX 확인]
-&lt;/td>
-&lt;td>톰캣 서버 주 설정 파일&lt;/td>
-&lt;td>
+</td>
+<td>톰캣 서버 주 설정 파일</td>
+<td>
 • 서버의 포트, 커넥터, 엔진, 호스트 등 핵심 인프라 구조 정의
 
-
-```text
       • 포트 관리: 서비스 포트(HTTP: 8080, HTTPS: 443) 및 톰캣 종료 포트(Shutdown: 8005) 변경/보안 설정
 
       • 성능 최적화: Connector 태그 내 최대 스레드(maxThreads), 대기 큐(acceptCount) 설정
@@ -74,17 +72,14 @@ notionUrl: "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87
     </td>
   </tr>
   <tr>
-    <td style={{ whiteSpace: "nowrap" }}>
-```
+    <td>
 
 > [블로그 전용 코드 팝업: 원본 MDX 확인]
-&lt;/td>
-&lt;td>전역 웹 애플리케이션 설정&lt;/td>
-&lt;td>
+</td>
+<td>전역 웹 애플리케이션 설정</td>
+<td>
 • 모든 웹 앱에 공통 적용되는 기본 서블릿, MIME 타입, 세션 정의
 
-
-```text
       • 디렉터리 리스팅 방지: listings 설정을 false로 유지하여 웹 서버 내부 파일 목록 노출 차단
 
       • 세션 관리: session-timeout을 전역 설정하여 일정 시간 이후 세션 자동 만료
@@ -95,17 +90,14 @@ notionUrl: "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87
     </td>
   </tr>
   <tr>
-    <td style={{ whiteSpace: "nowrap" }}>
-```
+    <td>
 
 > [블로그 전용 코드 팝업: 원본 MDX 확인]
-&lt;/td>
-&lt;td>웹 애플리케이션 컨텍스트 설정&lt;/td>
-&lt;td>
+</td>
+<td>웹 애플리케이션 컨텍스트 설정</td>
+<td>
 • 모든 웹 에셋이 공유하는 컨텍스트 환경 및 외부 리소스 정의
 
-
-```text
       • 자원 관리: DB 커넥션 풀(DataSource)이나 JNDI 리소스를 전역/로컬로 정의
 
       • 자동 리로드: WatchedResource 설정을 통해 소스코드나 설정 변경 시 컨테이너가 자동 리로드하도록 감시 세팅 가능 (운영 환경에서는 성능 저하 우려로 주의 필요)
@@ -114,42 +106,35 @@ notionUrl: "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87
     </td>
   </tr>
   <tr>
-    <td style={{ whiteSpace: "nowrap" }}>
-```
+    <td>
 
 > [블로그 전용 코드 팝업: 원본 MDX 확인]
-&lt;/td>
-&lt;td>톰캣 자체 로그 제어&lt;/td>
-&lt;td>
+</td>
+<td>톰캣 자체 로그 제어</td>
+<td>
 • 카탈리나, 로컬호스트 등 톰캣 엔진 내부 로그의 출력 방식 정의
 
-
-```text
       • 디스크 풀(Full) 장애 예방: 로그 레벨(INFO, DEBUG) 제어 및 파일당 최대 용량, 보관 주기 관리
 
       • 운영 환경 주의: 애플리케이션 내부에서 Logback, Log4j2 등을 별도로 사용하는 경우, 중복 로깅으로 인한 리소스 낭비를 막기 위해 톰캣 자체 로그 설정 최적화 필요
     </td>
   </tr>
   <tr>
-    <td style={{ whiteSpace: "nowrap" }}>
-```
+    <td>
 
 > [블로그 전용 코드 팝업: 원본 MDX 확인]
-&lt;/td>
-&lt;td>관리자 콘솔 권한 제어&lt;/td>
-&lt;td>
+</td>
+<td>관리자 콘솔 권한 제어</td>
+<td>
 • 톰캣 매니저 GUI 접근 계정 및 역할(Role) 정의
 
-
-```text
       • 운영 환경 필수 수칙: 실무 운영 서버에서는 무단 접근을 막기 위해 내부 기본 계정을 반드시 주석 처리하거나, 매니저 앱(manager, host-manager) 자체를 삭제하는 것이 원칙
     </td>
   </tr>
 </tbody>
-```
 
-&lt;/table>
-&lt;/div>
+</NotionTable>
+
 
 > ** 실무 설계 패턴 (Spring 기반 처리 권장)**
 

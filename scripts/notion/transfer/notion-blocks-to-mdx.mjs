@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { componentMapFor, convertMdxComponents } from "./component-mappings.mjs";
 import { normalizeText } from "./compatibility.mjs";
+import { normalizeLegacyEscapedTables } from "./legacy-table-normalizer.mjs";
 
 const NOTION_IMAGE_HOSTS = new Set([
   "file.notion.so",
@@ -237,5 +238,8 @@ export async function pageToMdxBody(client, pageId, options = {}) {
   const content = context.childPageCount > 0
     ? `\n<notion-project-tabs>\n\n${toc}${markup}</notion-project-tabs>\n`
     : `${toc}${markup}`;
-  return convertMdxComponents(content, componentMapFor(options.pageName, options.componentMap));
+  return convertMdxComponents(
+    normalizeLegacyEscapedTables(content),
+    componentMapFor(options.pageName, options.componentMap),
+  );
 }

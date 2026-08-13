@@ -122,34 +122,34 @@ API 서버에 접근하는 주체(사용자, 서비스 계정)의 신원을 확�
 
 ## 요약: 단일 호스트 vs 쿠버네티스 보안 접근법
 
-&lt;div className="data-table-container">
-&lt;table className="data-table">
-&lt;thead>
-&lt;tr>
-&lt;th>구분&lt;/th>
-&lt;th>도커 / 포드맨 (단일 호스트)&lt;/th>
-&lt;th>쿠버네티스 (오케스트레이션)&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>권한 제어&lt;/td>
-&lt;td>실행 시 명령어 옵션(&lt;code>--user&lt;/code> 등)에 의존&lt;/td>
-&lt;td>YAML 선언 및 플랫폼 정책(PSS)으로 &lt;code>root&lt;/code> 실행 원천 차단&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>네트워크 방어&lt;/td>
-&lt;td>호스트 방화벽이나 기본 브릿지에 의존&lt;/td>
-&lt;td>내부 방화벽인 &lt;code>Network Policy&lt;/code>로 포드 간 통신을 미시적으로 통제&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>커널 격리&lt;/td>
-&lt;td>호스트 커널을 그대로 공유&lt;/td>
-&lt;td>&lt;code>gVisor&lt;/code>, &lt;code>Kata&lt;/code> 등을 플러그인하여 커널 수준에서 격리 가능&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;/div>
+
+<NotionTable>
+<thead>
+<tr>
+<th>구분</th>
+<th>도커 / 포드맨 (단일 호스트)</th>
+<th>쿠버네티스 (오케스트레이션)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>권한 제어</td>
+<td>실행 시 명령어 옵션(<code>--user</code> 등)에 의존</td>
+<td>YAML 선언 및 플랫폼 정책(PSS)으로 <code>root</code> 실행 원천 차단</td>
+</tr>
+<tr>
+<td>네트워크 방어</td>
+<td>호스트 방화벽이나 기본 브릿지에 의존</td>
+<td>내부 방화벽인 <code>Network Policy</code>로 포드 간 통신을 미시적으로 통제</td>
+</tr>
+<tr>
+<td>커널 격리</td>
+<td>호스트 커널을 그대로 공유</td>
+<td><code>gVisor</code>, <code>Kata</code> 등을 플러그인하여 커널 수준에서 격리 가능</td>
+</tr>
+</tbody>
+</NotionTable>
+
 
 결론적으로 쿠버네티스는 **"컨테이너는 해킹당할 수 있다"**는 것을 전제로 설계되었습니다. 컨테이너가 뚫려도 호스트를 장악하지 못하고 어디로도 도망치지 못하게 사방에 바리케이드를 치는 **심층 방어(Defense in Depth)** 철학을 통해 클러스터의 안정성을 보장합니다.
 

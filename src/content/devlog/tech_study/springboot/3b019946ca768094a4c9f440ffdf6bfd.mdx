@@ -223,42 +223,42 @@ public RepositoryItemWriter<User> userItemWriter() {
 
 ## 4. 핵심 차이점 요약 (Comparison Table)
 
-&lt;table className="w-full text-left border-collapse mt-4 mb-4">
-&lt;thead>
-&lt;tr>
-&lt;th className="border-b-2 border-[var(--border-color)] p-2">비교 항목&lt;/th>
-&lt;th className="border-b-2 border-[var(--border-color)] p-2">Tasklet 방식&lt;/th>
-&lt;th className="border-b-2 border-[var(--border-color)] p-2">Chunk 지향 방식&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>핵심 목적&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">단발성 제어 작업 및 관리성 태스크&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">대용량 데이터의 조회, 가공, 적재&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>처리 구조&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">단일 메서드 통짜 실행 (&lt;code>execute&lt;/code>)&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">Reader ➡️ Processor ➡️ Writer 파이프라인 반복&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>트랜잭션 단위&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">Step 전체가 하나의 트랜잭션&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">Chunk Size 단위로 분할 커밋&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>메모리 효율성&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">개발자의 로직 구현에 따라 달라짐&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">지정된 Chunk 단위만큼만 소모하여 매우 안정적&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td className="border-b border-[var(--border-color)] p-2">&lt;strong>주요 활용 예시&lt;/strong>&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">파일 삭제, 테이블 초기화, 프로시저 호출&lt;/td>
-&lt;td className="border-b border-[var(--border-color)] p-2">통계 산출, 대량 메일 발송, DB 이관 마이그레이션&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
+<NotionTable>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>Tasklet 방식</th>
+<th>Chunk 지향 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>핵심 목적</strong></td>
+<td>단발성 제어 작업 및 관리성 태스크</td>
+<td>대용량 데이터의 조회, 가공, 적재</td>
+</tr>
+<tr>
+<td><strong>처리 구조</strong></td>
+<td>단일 메서드 통짜 실행 (<code>execute</code>)</td>
+<td>Reader ➡️ Processor ➡️ Writer 파이프라인 반복</td>
+</tr>
+<tr>
+<td><strong>트랜잭션 단위</strong></td>
+<td>Step 전체가 하나의 트랜잭션</td>
+<td>Chunk Size 단위로 분할 커밋</td>
+</tr>
+<tr>
+<td><strong>메모리 효율성</strong></td>
+<td>개발자의 로직 구현에 따라 달라짐</td>
+<td>지정된 Chunk 단위만큼만 소모하여 매우 안정적</td>
+</tr>
+<tr>
+<td><strong>주요 활용 예시</strong></td>
+<td>파일 삭제, 테이블 초기화, 프로시저 호출</td>
+<td>통계 산출, 대량 메일 발송, DB 이관 마이그레이션</td>
+</tr>
+</tbody>
+</NotionTable>
 
 
 <NotionDivider />

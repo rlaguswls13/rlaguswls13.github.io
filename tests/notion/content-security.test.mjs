@@ -5,6 +5,7 @@ import { compile } from "@mdx-js/mdx";
 import { describe, expect, it } from "vitest";
 import { pageToMdxBody, richTextToMarkdown } from "../../scripts/notion/transfer/notion-blocks-to-mdx.mjs";
 import { convertMdxComponents } from "../../scripts/notion/transfer/component-mappings.mjs";
+import { normalizeLegacyEscapedTables } from "../../scripts/notion/transfer/legacy-table-normalizer.mjs";
 
 const approvedImageUrl = "https://prod-files-secure.s3.us-west-2.amazonaws.com/image.png";
 
@@ -47,6 +48,83 @@ describe("Notion content security boundaries", () => {
     expect(markdown).not.toContain("<script>");
     expect(markdown).not.toContain("{process.env.SECRET}");
     await expect(compile(markdown)).resolves.toBeDefined();
+  });
+
+  it("Given a legacy HTML table in Notion text When converted Then it becomes a safe NotionTable", async () => {
+    const table = [
+      '<table className="w-full" onclick="alert(1)">',
+      "<thead><tr><th>방식</th><th>특징</th></tr></thead>",
+      "<tbody><tr><td><strong>Chunk</strong></td><td><code>Reader</code> 기반</td></tr></tbody>",
+      "</table>",
+    ].join("\n");
+    const client = {
+      async getBlockChildren() {
+        return [{
+          id: "legacy-table",
+          type: "paragraph",
+          has_children: false,
+          paragraph: { rich_text: [{ plain_text: table }] },
+        }];
+      },
+    };
+
+    const body = await pageToMdxBody(client, "page");
+
+    expect(body).toContain("<NotionTable>");
+    expect(body).toContain("<strong>Chunk</strong>");
+    expect(body).not.toContain("className");
+    expect(body).not.toContain("onclick");
+    expect(body).not.toContain("&lt;table");
+    await expect(compile(body)).resolves.toBeDefined();
+  });
+
+  it("Given an unapproved tag inside a legacy table When converted Then the payload stays inert", async () => {
+    const table = "<table><tbody><tr><td><script>alert(1)</script></td></tr></tbody></table>";
+    const client = {
+      async getBlockChildren() {
+        return [{
+          id: "unsafe-table",
+          type: "paragraph",
+          has_children: false,
+          paragraph: { rich_text: [{ plain_text: table }] },
+        }];
+      },
+    };
+
+    const body = await pageToMdxBody(client, "page");
+
+    expect(body).not.toContain("<NotionTable>");
+    expect(body).not.toContain("<script>");
+    expect(body).toContain("&lt;script>");
+    await expect(compile(body)).resolves.toBeDefined();
+  });
+
+  it("Given an MDX expression inside an escaped legacy table When normalized Then it remains text", async () => {
+    const source = "&lt;table>&lt;tbody>&lt;tr>&lt;td>{process.env.SECRET}&lt;/td>&lt;/tr>&lt;/tbody>&lt;/table>";
+
+    const normalized = normalizeLegacyEscapedTables(source);
+
+    expect(normalized).toContain("<notion-table>");
+    expect(normalized).toContain("&#123;process.env.SECRET&#125;");
+    expect(normalized).not.toContain("{process.env.SECRET}");
+    await expect(compile(convertMdxComponents(normalized))).resolves.toBeDefined();
+  });
+
+  it("Given fenced code inside a hybrid legacy table When normalized Then the fences are preserved", async () => {
+    const source = [
+      "&lt;table>",
+      "<tbody><tr><td>",
+      "```text",
+      "const value = 1;",
+      "```",
+      "</td></tr></tbody>",
+      "&lt;/table>",
+    ].join("\n");
+
+    const normalized = normalizeLegacyEscapedTables(source);
+
+    expect(normalized).toContain("```text\nconst value = 1;\n```");
+    await expect(compile(convertMdxComponents(normalized))).resolves.toBeDefined();
   });
 
   it("Given an unsafe bookmark URL When converted Then it is omitted", async () => {

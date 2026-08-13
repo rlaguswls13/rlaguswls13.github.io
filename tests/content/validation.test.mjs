@@ -14,10 +14,10 @@ async function writeJson(root, relativePath, value) {
   await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
-async function writeMdx(root, relativePath, frontmatter) {
+async function writeMdx(root, relativePath, frontmatter, body = "Fixture body.") {
   const filePath = path.join(root, relativePath);
   await mkdir(path.dirname(filePath), { recursive: true });
-  await writeFile(filePath, `---\n${frontmatter}\n---\n\nFixture body.\n`, "utf8");
+  await writeFile(filePath, `---\n${frontmatter}\n---\n\n${body}\n`, "utf8");
 }
 
 async function createFixture() {
@@ -84,6 +84,8 @@ describe("content validation", () => {
     ["missing indexed MDX", async (root) => rm(path.join(root, "src/content/projects/personal/general/project.mdx")), "projects.json: sourceFile does not exist"],
     ["malformed index", async (root) => writeFile(path.join(root, "src/data/indexes/journal.json"), "{ invalid", "utf8"), "journal.json: invalid JSON"],
     ["disallowed zero-row replacement", async (root) => writeJson(root, "src/data/indexes/projects.json", { projects: [] }), "projects.json: zero rows are not allowed"],
+    ["escaped table markup", async (root) => writeMdx(root, `src/content/devlog/blog/${id}.mdx`, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, "&lt;table><tbody></tbody>&lt;/table>"), "escaped table markup"],
+    ["raw MDX table expression", async (root) => writeMdx(root, `src/content/devlog/blog/${id}.mdx`, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, "<NotionTable><tbody><tr><td>{process.env.SECRET}</td></tr></tbody></NotionTable>"), "NotionTable text must not contain raw MDX expressions"],
   ])("rejects %s with a path-specific error", async (_name, mutate, expectedMessage) => {
     // Given
     const root = await createFixture();
