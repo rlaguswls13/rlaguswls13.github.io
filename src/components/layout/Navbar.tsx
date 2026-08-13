@@ -11,6 +11,7 @@ const navItems = [
   { href: "/journal", label: "Journal" },
   { href: "/career", label: "Career" },
   { href: "/contact", label: "Contact" },
+  { href: "/tags", label: "Search" },
 ];
 
 export function Navbar() {

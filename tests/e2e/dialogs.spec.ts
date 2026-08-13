@@ -1,7 +1,7 @@
 import { expect, test } from "playwright/test";
 import type { Locator, Page } from "playwright/test";
 
-const BASE_URL = "http://127.0.0.1:3000";
+const BASE_URL = "http://127.0.0.1:3001";
 
 type DialogSurface = {
   readonly name: string;

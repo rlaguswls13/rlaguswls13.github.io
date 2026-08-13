@@ -38,6 +38,11 @@ const staticRoutes = {
     title: "Projects | 김현진 TECH LOG",
     description: "실무와 개인 프로젝트에서 해결한 문제, 적용한 기술과 결과를 소개합니다.",
   },
+  tags: {
+    pathname: "/tags",
+    title: "Tags | 김현진 TECH LOG",
+    description: "프로젝트, Devlog와 일지의 모든 기록을 태그와 검색어로 찾아봅니다.",
+  },
 } as const;
 
 export type StaticRouteKey = keyof typeof staticRoutes;

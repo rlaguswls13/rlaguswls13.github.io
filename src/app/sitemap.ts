@@ -8,7 +8,7 @@ const SITE_URL = siteConfig.siteUrl;
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/projects", "/devlog", "/journal", "/career", "/contact"];
+  const staticRoutes = ["", "/about", "/projects", "/devlog", "/journal", "/tags", "/career", "/contact"];
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: new URL(route || "/", SITE_URL).href,
     changeFrequency: route === "" ? "weekly" : "monthly",

@@ -3,7 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { expect, test } from "playwright/test";
 
-const origin = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3000";
+const origin = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3001";
 const evidenceRoot = process.env.TODO17_EVIDENCE_DIR ?? ".omo/evidence/todo-17";
 const routes = [
   { name: "home", path: "/" },

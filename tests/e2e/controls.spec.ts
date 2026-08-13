@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "playwright/test";
 
-const origin = "http://127.0.0.1:3000";
+const origin = "http://127.0.0.1:3001";
 
 async function expectVisibleFocus(locator: Locator) {
   await locator.focus();

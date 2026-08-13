@@ -78,7 +78,7 @@ const popularEntries = [...sortedHomeEntries].sort(compareByEngagement);
 
 function getCategoryListHref(category: HomeFilter) {
   return category === "journal"
-    ? journalListQuery.href({ tab: "education" })
+    ? journalListQuery.href({ tab: "all" })
     : devlogListQuery.href({ tab: category });
 }
 
@@ -104,7 +104,7 @@ export default function HomePageClient() {
   const categoryListHref = activeCategory === "all"
     ? devlogListQuery.href({})
     : activeCategory === "journal"
-      ? journalListQuery.href({ tab: "education" })
+      ? journalListQuery.href({ tab: "all" })
       : devlogListQuery.href({ tab: activeCategory });
 
   const getFilterCount = (filter: HomeFilter) => filter === "journal"
@@ -209,7 +209,7 @@ export default function HomePageClient() {
             <h2>인기 태그</h2>
             <div className="tech-tag-cloud">
               {sidebarTags.map(([tag, count]) => (
-                <Link key={tag} href={devlogListQuery.href({ q: tag })}>
+                <Link key={tag} href={`/tags?tag=${encodeURIComponent(tag)}`}>
                   {tag}<small>{count}</small>
                 </Link>
               ))}
@@ -257,7 +257,7 @@ export default function HomePageClient() {
             <p>태그를 선택하면 관련 기록을 바로 확인할 수 있습니다.</p>
             <div className="tech-tag-cloud tech-tag-modal-cloud">
               {sortedTags.map(([tag, count]) => (
-                <Link key={tag} href={devlogListQuery.href({ q: tag })} onClick={() => setIsTagModalOpen(false)}>
+                <Link key={tag} href={`/tags?tag=${encodeURIComponent(tag)}`} onClick={() => setIsTagModalOpen(false)}>
                   {tag}<small>{count}</small>
                 </Link>
               ))}

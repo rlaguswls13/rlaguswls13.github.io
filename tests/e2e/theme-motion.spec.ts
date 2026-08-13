@@ -1,6 +1,6 @@
 import { expect, test } from "playwright/test";
 
-const origin = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3000";
+const origin = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3001";
 const viewports = [375, 768, 1280] as const;
 
 test.describe("theme and motion preferences", () => {
