@@ -10,6 +10,8 @@
 | `project/hooks/` | 세션 종료처럼 host agent lifecycle에 연결되는 자동화 | [`README.md`](../project/hooks/README.md) |
 | `project/wiki/` | 아키텍처, 정책, 결정, 검증 근거, 잔여 위험 | [`index.md`](../project/wiki/index.md) |
 
+LLM RAG 소비자는 [`source-registry.json`](../project/wiki/rag/source-registry.json)을 문서 분류의 단일 기준으로 사용합니다. canonical Wiki, 시점별 report, append-only worklog는 서로 다른 검색 우선순위를 가집니다.
+
 ## Operating order
 
 1. `AGENTS.md`와 이 컨트롤러를 읽습니다.

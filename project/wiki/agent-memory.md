@@ -2,6 +2,8 @@
 
 `project/wiki`는 저장소에서 재사용할 durable memory와 운영 지식의 canonical 영역이다. 규칙 자체는 skill에 두고, wiki에는 결정·근거·검증·위험을 기록한다.
 
+`session-memory.md`는 기존 hook 호환성을 위한 append-only 실행 이력이며 canonical 정책보다 권위가 낮다. RAG 기본 검색에서는 제외하고 세션 이력 질의에서만 사용한다. 문서 인덱싱 실행 자체의 이력은 `worklogs/indexing.jsonl`이 별도로 소유한다.
+
 ## 세션 종료 계약
 
 `project/hooks/session-end.mjs`는 `session_end` JSON event를 입력으로 받는다.

@@ -38,7 +38,7 @@ npm ci
 npm run dev:no-fetch
 ```
 
-브라우저에서 `http://localhost:3000`을 엽니다. 저장된 로컬 콘텐츠만 사용할 때는 `dev:no-fetch`가 가장 빠릅니다.
+브라우저에서 `http://localhost:3001`을 엽니다. 저장된 로컬 콘텐츠만 사용할 때는 `dev:no-fetch`가 가장 빠릅니다.
 
 Notion 원격 콘텐츠까지 갱신하며 실행하려면 환경 변수를 설정한 뒤 `npm run dev`를 사용합니다.
 

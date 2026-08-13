@@ -7,7 +7,7 @@ document_status: canonical-entrypoint
 audience: coding-agents
 language: ko
 scope: repository-wide
-canonical_detail: docs/README.md, project/skills/, project/wiki/
+canonical_detail: docs/README.md, project/skills/, project/wiki/, project/wiki/rag/source-registry.json
 retrieval_queries: agent 작업 순서, skill 라우팅, 검증 게이트, 변경 안전성, 세션 memory
 -->
 
@@ -25,10 +25,12 @@ retrieval_queries: agent 작업 순서, skill 라우팅, 검증 게이트, 변�
 | 적용 범위 | repository-wide |
 | 권위 수준 | entrypoint; 상세 절차와 정책은 linked canonical source가 우선 |
 | 최신성 기준 | 현재 checkout의 `AGENTS.md`, linked skill/wiki, 실제 코드·테스트 |
-| 주요 source group | `agent-harness`, `project-skills`, `project-wiki` |
+| 주요 source group | 기본: `agent-harness`, `project-skills`, `project-wiki`; 보조: `project-reports`; 이력 전용: `project-worklogs` |
 | 인용 기준 | 이 파일의 해당 heading과 연결된 repository path를 함께 제시 |
 
 이 문서는 Markdown heading과 표를 기준으로 의미 단위가 나뉩니다. Kapa 또는 다른 RAG 소비자는 `문서 역할과 우선순위`, `작업 시작`, `skill 라우팅`, `검증 게이트`, `변경 안전성`, `세션 종료` heading을 section title과 citation anchor로 사용해야 합니다. HTML 주석 metadata만으로 문서의 의미를 판단하지 않습니다.
+
+문서 경로와 검색 우선순위의 기계 판독 기준은 `project/wiki/rag/source-registry.json`입니다. reports는 시점별 근거로 보조 검색하고, worklog와 `session-memory.md`는 기본 검색에서 제외해 이력 질의에만 사용합니다.
 
 ### 이 문서에 대한 자주 묻는 질문
 

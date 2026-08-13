@@ -9,7 +9,7 @@ import { chromium } from "playwright";
 
 import { evaluateLighthouseRuns } from "./lighthouse-contract.mjs";
 
-const origin = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3000";
+const origin = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3001";
 const evidenceRoot = process.env.TODO17_EVIDENCE_DIR ?? ".omo/evidence/todo-17/lighthouse";
 const routes = [
   { name: "home", path: "/" },

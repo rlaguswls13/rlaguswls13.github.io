@@ -1,0 +1,1218 @@
+{
+  "schemaVersion": 1,
+  "registrySha256": "2f033cee047e1f55733776bf2caec0e738d26667b1ddd78156ed9e5e9f727fa8",
+  "documentCount": 31,
+  "groupCounts": {
+    "agent-harness": 2,
+    "project-skills": 9,
+    "project-wiki": 13,
+    "project-reports": 5,
+    "project-worklogs": 2
+  },
+  "documents": [
+    {
+      "path": "AGENTS.md",
+      "sourceGroup": "agent-harness",
+      "role": "entrypoint",
+      "authority": 100,
+      "retrieval": "default",
+      "title": "Blog Agent Harness",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Blog Agent Harness",
+          "anchor": "blog-agent-harness"
+        },
+        {
+          "level": 2,
+          "text": "문서 역할과 우선순위",
+          "anchor": "문서-역할과-우선순위"
+        },
+        {
+          "level": 2,
+          "text": "Kapa RAG 문서 프로필",
+          "anchor": "kapa-rag-문서-프로필"
+        },
+        {
+          "level": 3,
+          "text": "이 문서에 대한 자주 묻는 질문",
+          "anchor": "이-문서에-대한-자주-묻는-질문"
+        },
+        {
+          "level": 4,
+          "text": "Q: 작업을 시작할 때 가장 먼저 읽을 문서는 무엇인가?",
+          "anchor": "q-작업을-시작할-때-가장-먼저-읽을-문서는-무엇인가"
+        },
+        {
+          "level": 4,
+          "text": "Q: 상세 절차와 장기 정책은 어디에 있는가?",
+          "anchor": "q-상세-절차와-장기-정책은-어디에-있는가"
+        },
+        {
+          "level": 4,
+          "text": "Q: 답변에 어떤 출처를 인용해야 하는가?",
+          "anchor": "q-답변에-어떤-출처를-인용해야-하는가"
+        },
+        {
+          "level": 4,
+          "text": "Q: 문서와 코드가 서로 다르면 무엇을 우선하는가?",
+          "anchor": "q-문서와-코드가-서로-다르면-무엇을-우선하는가"
+        },
+        {
+          "level": 4,
+          "text": "Q: 이 문서가 답하지 않는 질문에는 어떻게 해야 하는가?",
+          "anchor": "q-이-문서가-답하지-않는-질문에는-어떻게-해야-하는가"
+        },
+        {
+          "level": 3,
+          "text": "검색용 주제와 동의어",
+          "anchor": "검색용-주제와-동의어"
+        },
+        {
+          "level": 2,
+          "text": "작업 시작: 컨텍스트와 영향 범위",
+          "anchor": "작업-시작-컨텍스트와-영향-범위"
+        },
+        {
+          "level": 2,
+          "text": "공통 세션 handoff 계약",
+          "anchor": "공통-세션-handoff-계약"
+        },
+        {
+          "level": 3,
+          "text": "단계형 skill 호출",
+          "anchor": "단계형-skill-호출"
+        },
+        {
+          "level": 2,
+          "text": "Canonical agent surfaces",
+          "anchor": "canonical-agent-surfaces"
+        },
+        {
+          "level": 2,
+          "text": "작업 유형별 skill 라우팅",
+          "anchor": "작업-유형별-skill-라우팅"
+        },
+        {
+          "level": 2,
+          "text": "검증 게이트",
+          "anchor": "검증-게이트"
+        },
+        {
+          "level": 2,
+          "text": "변경 안전성 계약",
+          "anchor": "변경-안전성-계약"
+        },
+        {
+          "level": 2,
+          "text": "세션 종료와 durable memory",
+          "anchor": "세션-종료와-durable-memory"
+        }
+      ],
+      "bytes": 11543,
+      "sha256": "319358619e0932c8bd231020a1c8047d606c27daa3483026ac669ed2e0dae42a"
+    },
+    {
+      "path": "docs/README.md",
+      "sourceGroup": "agent-harness",
+      "role": "entrypoint",
+      "authority": 100,
+      "retrieval": "default",
+      "title": "Blog Agent Project Surfaces",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Blog Agent Project Surfaces",
+          "anchor": "blog-agent-project-surfaces"
+        },
+        {
+          "level": 2,
+          "text": "Canonical surfaces",
+          "anchor": "canonical-surfaces"
+        },
+        {
+          "level": 2,
+          "text": "Operating order",
+          "anchor": "operating-order"
+        }
+      ],
+      "bytes": 1638,
+      "sha256": "8febcc840fe73b4bfa2672e586ac54e5bd96954c543d5abc972378ef1f6f4405"
+    },
+    {
+      "path": "project/skills/blog-content-pipeline/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Blog Content Pipeline",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Blog Content Pipeline",
+          "anchor": "blog-content-pipeline"
+        },
+        {
+          "level": 2,
+          "text": "작업 순서",
+          "anchor": "작업-순서"
+        },
+        {
+          "level": 2,
+          "text": "분할된 운영 지식",
+          "anchor": "분할된-운영-지식"
+        },
+        {
+          "level": 2,
+          "text": "금지",
+          "anchor": "금지"
+        }
+      ],
+      "bytes": 2657,
+      "sha256": "39e4bedae06521425c02303c67123fbed0f4ac56d870064f2d3485af4d65fcef"
+    },
+    {
+      "path": "project/skills/google-adsense-operations/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Google AdSense Operations",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Google AdSense Operations",
+          "anchor": "google-adsense-operations"
+        },
+        {
+          "level": 2,
+          "text": "Read before changing",
+          "anchor": "read-before-changing"
+        },
+        {
+          "level": 2,
+          "text": "Setup",
+          "anchor": "setup"
+        },
+        {
+          "level": 2,
+          "text": "Verify deployment",
+          "anchor": "verify-deployment"
+        },
+        {
+          "level": 2,
+          "text": "Safety",
+          "anchor": "safety"
+        }
+      ],
+      "bytes": 2809,
+      "sha256": "0b454938bcb61d5c4413164d90e605bfdfaa69fb90b861c98a58256f56c3ab45"
+    },
+    {
+      "path": "project/skills/google-search-console-operations/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Google Search Console Operations",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Google Search Console Operations",
+          "anchor": "google-search-console-operations"
+        },
+        {
+          "level": 2,
+          "text": "Read before changing",
+          "anchor": "read-before-changing"
+        },
+        {
+          "level": 2,
+          "text": "Register and verify",
+          "anchor": "register-and-verify"
+        },
+        {
+          "level": 2,
+          "text": "Confirm status later",
+          "anchor": "confirm-status-later"
+        },
+        {
+          "level": 2,
+          "text": "Troubleshooting",
+          "anchor": "troubleshooting"
+        }
+      ],
+      "bytes": 3336,
+      "sha256": "a69ee81531ba48a268ca621dd68c17bb265edbabc3953433aa79b9bef86adaa5"
+    },
+    {
+      "path": "project/skills/google-search-feeds/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Google Search Feeds",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Google Search Feeds",
+          "anchor": "google-search-feeds"
+        },
+        {
+          "level": 2,
+          "text": "Sitemap contract",
+          "anchor": "sitemap-contract"
+        },
+        {
+          "level": 2,
+          "text": "RSS/Atom contract",
+          "anchor": "rssatom-contract"
+        },
+        {
+          "level": 2,
+          "text": "Verification matrix",
+          "anchor": "verification-matrix"
+        }
+      ],
+      "bytes": 3342,
+      "sha256": "762e261494ce34f639fc4697e3741fb279acc7e336eb58da909f81fad3c2b6d6"
+    },
+    {
+      "path": "project/skills/release-gate/references/pre-commit-checklist.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "커밋 전 체크리스트",
+      "headings": [
+        {
+          "level": 1,
+          "text": "커밋 전 체크리스트",
+          "anchor": "커밋-전-체크리스트"
+        },
+        {
+          "level": 2,
+          "text": "변경 범위",
+          "anchor": "변경-범위"
+        },
+        {
+          "level": 2,
+          "text": "Devlog와 slug",
+          "anchor": "devlog와-slug"
+        },
+        {
+          "level": 2,
+          "text": "Notion",
+          "anchor": "notion"
+        },
+        {
+          "level": 2,
+          "text": "생성 데이터",
+          "anchor": "생성-데이터"
+        },
+        {
+          "level": 2,
+          "text": "품질 검사",
+          "anchor": "품질-검사"
+        },
+        {
+          "level": 2,
+          "text": "보안",
+          "anchor": "보안"
+        },
+        {
+          "level": 2,
+          "text": "Git 확인",
+          "anchor": "git-확인"
+        }
+      ],
+      "bytes": 2756,
+      "sha256": "35658e47185cb1487c3754cf793051a5799e74f5f6b170bc6c6c47f9f7a5eed7"
+    },
+    {
+      "path": "project/skills/release-gate/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Release Gate",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Release Gate",
+          "anchor": "release-gate"
+        },
+        {
+          "level": 2,
+          "text": "Procedure",
+          "anchor": "procedure"
+        }
+      ],
+      "bytes": 1181,
+      "sha256": "7d4cb0cbb1abe15f3b84f3c20fc1594d2b3cdd4e8a87b660b32e1ad3c80653ea"
+    },
+    {
+      "path": "project/skills/session-handoff-workflow/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Session Handoff Workflow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Session Handoff Workflow",
+          "anchor": "session-handoff-workflow"
+        },
+        {
+          "level": 2,
+          "text": "호출 형식",
+          "anchor": "호출-형식"
+        },
+        {
+          "level": 2,
+          "text": "공통 시작 규칙",
+          "anchor": "공통-시작-규칙"
+        },
+        {
+          "level": 2,
+          "text": "옵션별 동작",
+          "anchor": "옵션별-동작"
+        },
+        {
+          "level": 3,
+          "text": "`start <task>`",
+          "anchor": "start-task"
+        },
+        {
+          "level": 3,
+          "text": "`checkpoint [note]`",
+          "anchor": "checkpoint-note"
+        },
+        {
+          "level": 3,
+          "text": "`continue [task]`",
+          "anchor": "continue-task"
+        },
+        {
+          "level": 3,
+          "text": "`finish`",
+          "anchor": "finish"
+        },
+        {
+          "level": 2,
+          "text": "상태 전이",
+          "anchor": "상태-전이"
+        },
+        {
+          "level": 2,
+          "text": "종료 산출물",
+          "anchor": "종료-산출물"
+        }
+      ],
+      "bytes": 4484,
+      "sha256": "0ab3670c92149c758632bb8e0ccb494c64012bf79f970c85d7c6b1f7b6f806cb"
+    },
+    {
+      "path": "project/skills/session-memory-wiki/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Session Memory Wiki",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Session Memory Wiki",
+          "anchor": "session-memory-wiki"
+        },
+        {
+          "level": 2,
+          "text": "기록할 것",
+          "anchor": "기록할-것"
+        },
+        {
+          "level": 2,
+          "text": "Session handoff",
+          "anchor": "session-handoff"
+        },
+        {
+          "level": 2,
+          "text": "수동 실행",
+          "anchor": "수동-실행"
+        }
+      ],
+      "bytes": 1576,
+      "sha256": "d9c5741d01e670a044ff432d0b33ae89c13a9d2117252d254008c96e06b9938e"
+    },
+    {
+      "path": "project/skills/thumbnail-contract/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Thumbnail Contract",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Thumbnail Contract",
+          "anchor": "thumbnail-contract"
+        },
+        {
+          "level": 2,
+          "text": "Procedure",
+          "anchor": "procedure"
+        },
+        {
+          "level": 2,
+          "text": "Verification",
+          "anchor": "verification"
+        }
+      ],
+      "bytes": 1090,
+      "sha256": "3ebf0342900088e60a88c5c58f09f288e98f50c9cc1e6053a4087e252c4378eb"
+    },
+    {
+      "path": "project/wiki/agent-harness-rules.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Agent Harness Rules",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Agent Harness Rules",
+          "anchor": "agent-harness-rules"
+        },
+        {
+          "level": 2,
+          "text": "Execution order",
+          "anchor": "execution-order"
+        },
+        {
+          "level": 2,
+          "text": "Pipeline boundaries",
+          "anchor": "pipeline-boundaries"
+        },
+        {
+          "level": 2,
+          "text": "UI and quality boundaries",
+          "anchor": "ui-and-quality-boundaries"
+        },
+        {
+          "level": 2,
+          "text": "Maintenance and security",
+          "anchor": "maintenance-and-security"
+        }
+      ],
+      "bytes": 2471,
+      "sha256": "630ba24f665e7e2822eaaa9152c47bc5d701b07bea1d4100338b1ca670d6b901"
+    },
+    {
+      "path": "project/wiki/agent-memory.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Agent Memory Wiki 운영 규칙",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Agent Memory Wiki 운영 규칙",
+          "anchor": "agent-memory-wiki-운영-규칙"
+        },
+        {
+          "level": 2,
+          "text": "세션 종료 계약",
+          "anchor": "세션-종료-계약"
+        },
+        {
+          "level": 2,
+          "text": "기억 품질",
+          "anchor": "기억-품질"
+        }
+      ],
+      "bytes": 1498,
+      "sha256": "b631505eea3b2d6aa5dba196a3510a1e52af674b480a1fea2f107a7657537d77"
+    },
+    {
+      "path": "project/wiki/architecture/tech-stack.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "기술 스택과 구조",
+      "headings": [
+        {
+          "level": 1,
+          "text": "기술 스택과 구조",
+          "anchor": "기술-스택과-구조"
+        },
+        {
+          "level": 2,
+          "text": "런타임과 프레임워크",
+          "anchor": "런타임과-프레임워크"
+        },
+        {
+          "level": 2,
+          "text": "애플리케이션 데이터",
+          "anchor": "애플리케이션-데이터"
+        },
+        {
+          "level": 2,
+          "text": "콘텐츠와 라우팅",
+          "anchor": "콘텐츠와-라우팅"
+        },
+        {
+          "level": 2,
+          "text": "Notion 파이프라인",
+          "anchor": "notion-파이프라인"
+        },
+        {
+          "level": 2,
+          "text": "작업 스크립트",
+          "anchor": "작업-스크립트"
+        },
+        {
+          "level": 2,
+          "text": "빌드 흐름",
+          "anchor": "빌드-흐름"
+        }
+      ],
+      "bytes": 3112,
+      "sha256": "f80e5987d05c9da808f28a0535678757712855e291a4fdc5590e59e91db5e1f9"
+    },
+    {
+      "path": "project/wiki/content-pipeline.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Blog Content Pipeline Wiki",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Blog Content Pipeline Wiki",
+          "anchor": "blog-content-pipeline-wiki"
+        },
+        {
+          "level": 2,
+          "text": "Source groups",
+          "anchor": "source-groups"
+        },
+        {
+          "level": 2,
+          "text": "Safe promotion",
+          "anchor": "safe-promotion"
+        },
+        {
+          "level": 2,
+          "text": "Schema and quarantine",
+          "anchor": "schema-and-quarantine"
+        },
+        {
+          "level": 2,
+          "text": "MDX and thumbnail",
+          "anchor": "mdx-and-thumbnail"
+        },
+        {
+          "level": 2,
+          "text": "Generated outputs",
+          "anchor": "generated-outputs"
+        }
+      ],
+      "bytes": 1608,
+      "sha256": "e555cd691920ee6f61969b575227bd6726fe66f0c2538aa71343fcf6bb8227f4"
+    },
+    {
+      "path": "project/wiki/index.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Project Wiki",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Project Wiki",
+          "anchor": "project-wiki"
+        },
+        {
+          "level": 2,
+          "text": "Navigation",
+          "anchor": "navigation"
+        },
+        {
+          "level": 2,
+          "text": "Ownership",
+          "anchor": "ownership"
+        },
+        {
+          "level": 2,
+          "text": "RAG 경계",
+          "anchor": "rag-경계"
+        }
+      ],
+      "bytes": 1915,
+      "sha256": "4eb5e669fa4f58c10bc531798e47e74534dbc93a56a045d97683b864e0cc3bd6"
+    },
+    {
+      "path": "project/wiki/operations/guide.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "개발 및 운영 가이드",
+      "headings": [
+        {
+          "level": 1,
+          "text": "개발 및 운영 가이드",
+          "anchor": "개발-및-운영-가이드"
+        },
+        {
+          "level": 2,
+          "text": "통합 Notion 콘텐츠 소스",
+          "anchor": "통합-notion-콘텐츠-소스"
+        },
+        {
+          "level": 2,
+          "text": "로컬 실행",
+          "anchor": "로컬-실행"
+        },
+        {
+          "level": 2,
+          "text": "환경 변수",
+          "anchor": "환경-변수"
+        },
+        {
+          "level": 3,
+          "text": "Google Search Console 인증",
+          "anchor": "google-search-console-인증"
+        },
+        {
+          "level": 3,
+          "text": "AdSense ads.txt 인증",
+          "anchor": "adsense-adstxt-인증"
+        },
+        {
+          "level": 2,
+          "text": "콘텐츠 작업",
+          "anchor": "콘텐츠-작업"
+        },
+        {
+          "level": 3,
+          "text": "수동 MDX",
+          "anchor": "수동-mdx"
+        },
+        {
+          "level": 3,
+          "text": "Notion",
+          "anchor": "notion"
+        },
+        {
+          "level": 2,
+          "text": "데이터 생성 명령",
+          "anchor": "데이터-생성-명령"
+        },
+        {
+          "level": 2,
+          "text": "검증",
+          "anchor": "검증"
+        },
+        {
+          "level": 2,
+          "text": "배포",
+          "anchor": "배포"
+        }
+      ],
+      "bytes": 5951,
+      "sha256": "48bdaf91082720a8132ae37c10d72aeb48556fdff2f0be2019b10dbb98fd5ad1"
+    },
+    {
+      "path": "project/wiki/pipeline/data-sorting.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "데이터 정렬 및 분리 기준",
+      "headings": [
+        {
+          "level": 1,
+          "text": "데이터 정렬 및 분리 기준",
+          "anchor": "데이터-정렬-및-분리-기준"
+        },
+        {
+          "level": 2,
+          "text": "데이터 디렉터리",
+          "anchor": "데이터-디렉터리"
+        },
+        {
+          "level": 2,
+          "text": "Devlog 카테고리",
+          "anchor": "devlog-카테고리"
+        },
+        {
+          "level": 2,
+          "text": "정렬 기준",
+          "anchor": "정렬-기준"
+        },
+        {
+          "level": 3,
+          "text": "고정 Devlog 목록",
+          "anchor": "고정-devlog-목록"
+        },
+        {
+          "level": 3,
+          "text": "Notion 목록",
+          "anchor": "notion-목록"
+        },
+        {
+          "level": 3,
+          "text": "인기 콘텐츠",
+          "anchor": "인기-콘텐츠"
+        },
+        {
+          "level": 3,
+          "text": "프로젝트",
+          "anchor": "프로젝트"
+        },
+        {
+          "level": 2,
+          "text": "ID와 slug 규칙",
+          "anchor": "id와-slug-규칙"
+        }
+      ],
+      "bytes": 3760,
+      "sha256": "1b4c416a7e984aa6dace2d531ab5c2bc1e78f6810ebfbcac0b44145887e5233e"
+    },
+    {
+      "path": "project/wiki/pipeline/engagement-stats.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "댓글 참여 통계",
+      "headings": [
+        {
+          "level": 1,
+          "text": "댓글 참여 통계",
+          "anchor": "댓글-참여-통계"
+        },
+        {
+          "level": 2,
+          "text": "생성 파일",
+          "anchor": "생성-파일"
+        },
+        {
+          "level": 2,
+          "text": "실행",
+          "anchor": "실행"
+        },
+        {
+          "level": 2,
+          "text": "빌드 연동",
+          "anchor": "빌드-연동"
+        }
+      ],
+      "bytes": 1172,
+      "sha256": "01602b97c513507bfca04eee384201fb6bf6339c9262c159ea798b818ecf8cbe"
+    },
+    {
+      "path": "project/wiki/pipeline/giscus-comments.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Giscus 댓글 연결",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Giscus 댓글 연결",
+          "anchor": "giscus-댓글-연결"
+        },
+        {
+          "level": 2,
+          "text": "경로 규칙",
+          "anchor": "경로-규칙"
+        },
+        {
+          "level": 2,
+          "text": "설정",
+          "anchor": "설정"
+        },
+        {
+          "level": 2,
+          "text": "변경 시 확인 사항",
+          "anchor": "변경-시-확인-사항"
+        }
+      ],
+      "bytes": 1603,
+      "sha256": "fbef47c606d2a109f4ee8483119e0e2366cfda11d5eb713189e9e91252c3dd22"
+    },
+    {
+      "path": "project/wiki/pipeline/notion-devlog-migration.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Devlog Notion 동기화",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Devlog Notion 동기화",
+          "anchor": "devlog-notion-동기화"
+        },
+        {
+          "level": 2,
+          "text": "1. API 연결",
+          "anchor": "1-api-연결"
+        },
+        {
+          "level": 2,
+          "text": "2. 동기화와 배포",
+          "anchor": "2-동기화와-배포"
+        }
+      ],
+      "bytes": 2583,
+      "sha256": "69038b5dadb314dd89c013a910f257151890fc3fe3fc5b8d8adb7ec44bba1a23"
+    },
+    {
+      "path": "project/wiki/pipeline/notion-package-structure.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Notion 패키지 구조",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Notion 패키지 구조",
+          "anchor": "notion-패키지-구조"
+        },
+        {
+          "level": 2,
+          "text": "connect",
+          "anchor": "connect"
+        },
+        {
+          "level": 2,
+          "text": "transfer",
+          "anchor": "transfer"
+        },
+        {
+          "level": 2,
+          "text": "실행",
+          "anchor": "실행"
+        },
+        {
+          "level": 2,
+          "text": "URL 맵",
+          "anchor": "url-맵"
+        }
+      ],
+      "bytes": 1922,
+      "sha256": "18e7654c575724e8b3ab70d4f68a2dd7fe8ffdfaa839bfae48d9fceb1acaa8c5"
+    },
+    {
+      "path": "project/wiki/pipeline/thumbnail-rules.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Thumbnail Rules",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Thumbnail Rules",
+          "anchor": "thumbnail-rules"
+        },
+        {
+          "level": 2,
+          "text": "파일 규칙",
+          "anchor": "파일-규칙"
+        },
+        {
+          "level": 2,
+          "text": "시각 규칙",
+          "anchor": "시각-규칙"
+        },
+        {
+          "level": 2,
+          "text": "주제별 방향",
+          "anchor": "주제별-방향"
+        },
+        {
+          "level": 2,
+          "text": "검수 체크리스트",
+          "anchor": "검수-체크리스트"
+        }
+      ],
+      "bytes": 1983,
+      "sha256": "674f391a3a6cb8ddc1278f69c8854ca0030996628313dc8cf4c4628f47d2a8e5"
+    },
+    {
+      "path": "project/wiki/rag/README.md",
+      "sourceGroup": "project-wiki",
+      "role": "canonical",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "LLM RAG 문서 인덱싱 계약",
+      "headings": [
+        {
+          "level": 1,
+          "text": "LLM RAG 문서 인덱싱 계약",
+          "anchor": "llm-rag-문서-인덱싱-계약"
+        },
+        {
+          "level": 2,
+          "text": "권위와 검색 우선순위",
+          "anchor": "권위와-검색-우선순위"
+        },
+        {
+          "level": 2,
+          "text": "Registry와 생성 인덱스",
+          "anchor": "registry와-생성-인덱스"
+        },
+        {
+          "level": 2,
+          "text": "Chunk와 citation",
+          "anchor": "chunk와-citation"
+        },
+        {
+          "level": 2,
+          "text": "Worklog 경계",
+          "anchor": "worklog-경계"
+        }
+      ],
+      "bytes": 2698,
+      "sha256": "422b36c0cef66085bb9df40511e7d32e1a6210b0965e9ba5aa84da3ca13163b2"
+    },
+    {
+      "path": "project/wiki/reports/agent-harness-report.md",
+      "sourceGroup": "project-reports",
+      "role": "evidence",
+      "authority": 50,
+      "retrieval": "secondary",
+      "title": "Agent Harness 운영 정리 보고서",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Agent Harness 운영 정리 보고서",
+          "anchor": "agent-harness-운영-정리-보고서"
+        },
+        {
+          "level": 2,
+          "text": "승인 상태",
+          "anchor": "승인-상태"
+        },
+        {
+          "level": 2,
+          "text": "현재 상태와 충돌",
+          "anchor": "현재-상태와-충돌"
+        },
+        {
+          "level": 2,
+          "text": "변경 정책",
+          "anchor": "변경-정책"
+        },
+        {
+          "level": 2,
+          "text": "검토 체크리스트",
+          "anchor": "검토-체크리스트"
+        },
+        {
+          "level": 2,
+          "text": "구현 후 검증",
+          "anchor": "구현-후-검증"
+        },
+        {
+          "level": 2,
+          "text": "기존 실패와 잔여 위험",
+          "anchor": "기존-실패와-잔여-위험"
+        },
+        {
+          "level": 2,
+          "text": "최종 결과",
+          "anchor": "최종-결과"
+        },
+        {
+          "level": 3,
+          "text": "Gate 결과",
+          "anchor": "gate-결과"
+        },
+        {
+          "level": 3,
+          "text": "최종 review 상태",
+          "anchor": "최종-review-상태"
+        }
+      ],
+      "bytes": 3735,
+      "sha256": "b0897c32eaee15b21fb63e4d89d1785dc0f9b39b2d6d579940f9e1352fe085c0"
+    },
+    {
+      "path": "project/wiki/reports/agent-harness-review.md",
+      "sourceGroup": "project-reports",
+      "role": "evidence",
+      "authority": 50,
+      "retrieval": "secondary",
+      "title": "Agent Harness 최종 Review Report",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Agent Harness 최종 Review Report",
+          "anchor": "agent-harness-최종-review-report"
+        },
+        {
+          "level": 2,
+          "text": "Overall Verdict: INCONCLUSIVE",
+          "anchor": "overall-verdict-inconclusive"
+        },
+        {
+          "level": 2,
+          "text": "Blocking Issues",
+          "anchor": "blocking-issues"
+        },
+        {
+          "level": 2,
+          "text": "Current-delta evidence",
+          "anchor": "current-delta-evidence"
+        },
+        {
+          "level": 2,
+          "text": "Recommendations",
+          "anchor": "recommendations"
+        }
+      ],
+      "bytes": 2148,
+      "sha256": "ebd1f9cbb9d17518d808f55f2a1d7efa3a08d0c7ba381354f18f785daadf90b1"
+    },
+    {
+      "path": "project/wiki/reports/docs-to-project-surface-gate-review.md",
+      "sourceGroup": "project-reports",
+      "role": "evidence",
+      "authority": 50,
+      "retrieval": "secondary",
+      "title": "Docs to Project Surface Gate Review",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Docs to Project Surface Gate Review",
+          "anchor": "docs-to-project-surface-gate-review"
+        },
+        {
+          "level": 2,
+          "text": "Verdict",
+          "anchor": "verdict"
+        },
+        {
+          "level": 2,
+          "text": "Scope",
+          "anchor": "scope"
+        },
+        {
+          "level": 2,
+          "text": "Evidence",
+          "anchor": "evidence"
+        },
+        {
+          "level": 2,
+          "text": "Non-blocking warning",
+          "anchor": "non-blocking-warning"
+        }
+      ],
+      "bytes": 1184,
+      "sha256": "5bbe6ae6e4cf455318dece17ba18b3f69dd1dfaa38071d17e309ce3fee346044"
+    },
+    {
+      "path": "project/wiki/reports/notion-thumbnail-repair-review-2026-08-12.md",
+      "sourceGroup": "project-reports",
+      "role": "evidence",
+      "authority": 50,
+      "retrieval": "secondary",
+      "title": "Notion·썸네일 복구 검토 보고서",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Notion·썸네일 복구 검토 보고서",
+          "anchor": "notion썸네일-복구-검토-보고서"
+        },
+        {
+          "level": 2,
+          "text": "결론",
+          "anchor": "결론"
+        },
+        {
+          "level": 2,
+          "text": "반영한 수정",
+          "anchor": "반영한-수정"
+        },
+        {
+          "level": 2,
+          "text": "검증 증거",
+          "anchor": "검증-증거"
+        },
+        {
+          "level": 2,
+          "text": "PR review 결과",
+          "anchor": "pr-review-결과"
+        },
+        {
+          "level": 2,
+          "text": "잔여 위험",
+          "anchor": "잔여-위험"
+        }
+      ],
+      "bytes": 2612,
+      "sha256": "f56c96b5cea0d3023f43a6b27a71cf6554a5d1b66b6f3a3b62e9281aeac544c5"
+    },
+    {
+      "path": "project/wiki/reports/toc-design-review-2026-08-12.md",
+      "sourceGroup": "project-reports",
+      "role": "evidence",
+      "authority": 50,
+      "retrieval": "secondary",
+      "title": "목차 UI 디자인 검토",
+      "headings": [
+        {
+          "level": 1,
+          "text": "목차 UI 디자인 검토",
+          "anchor": "목차-ui-디자인-검토"
+        },
+        {
+          "level": 2,
+          "text": "최종 방향",
+          "anchor": "최종-방향"
+        },
+        {
+          "level": 2,
+          "text": "변경",
+          "anchor": "변경"
+        },
+        {
+          "level": 2,
+          "text": "검증",
+          "anchor": "검증"
+        }
+      ],
+      "bytes": 1820,
+      "sha256": "69f7c300499082b4b74bc12246db89c70072036fb0e8d84374a67e72b5ae16b5"
+    },
+    {
+      "path": "project/wiki/session-memory.md",
+      "sourceGroup": "project-worklogs",
+      "role": "worklog",
+      "authority": 10,
+      "retrieval": "history-only",
+      "title": "Session Memory"
+    },
+    {
+      "path": "project/wiki/worklogs/README.md",
+      "sourceGroup": "project-worklogs",
+      "role": "worklog",
+      "authority": 10,
+      "retrieval": "history-only",
+      "title": "Wiki Worklogs"
+    }
+  ]
+}

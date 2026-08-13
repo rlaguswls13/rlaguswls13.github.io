@@ -6,8 +6,8 @@
     "node": ">=20.9 <26"
   },
   "scripts": {
-    "dev": "npm run fetch-notion && npm run generate-build-resources && next dev",
-    "dev:no-fetch": "npm run generate-build-resources && npm run generate-content-indexes && node scripts/slug/generate.mjs && node scripts/recommendations/generate.mjs && next dev",
+    "dev": "npm run fetch-notion && npm run generate-build-resources && next dev --port 3001",
+    "dev:no-fetch": "npm run generate-build-resources && npm run generate-content-indexes && node scripts/slug/generate.mjs && node scripts/recommendations/generate.mjs && next dev --port 3001",
     "fetch-notion": "node scripts/notion/connect/fetch.mjs",
     "transfer-notion-json": "node scripts/notion/transfer/json-to-mdx.mjs",
     "generate-content-indexes": "node scripts/notion/transfer/build-journal-index.mjs && node scripts/notion/transfer/build-devlog-index.mjs && node scripts/notion/transfer/build-project-index.mjs",
@@ -26,12 +26,15 @@
     "test:lighthouse": "node scripts/quality/run-lighthouse.mjs",
     "build:local": "node --import ./tests/fixtures/reject-network.mjs scripts/config/generate-build-resources.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/notion/transfer/build-journal-index.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/notion/transfer/build-devlog-index.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/notion/transfer/build-project-index.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/slug/generate.mjs && node --import ./tests/fixtures/reject-network.mjs scripts/recommendations/generate.mjs && node --import ./tests/fixtures/reject-network.mjs node_modules/next/dist/bin/next build",
     "validate:export": "node scripts/export/validate-export.mjs",
-    "preview": "serve out --listen 3000 --no-clipboard",
-    "verify": "npm run validate:content && npm run lint:ci && npm run typecheck && npm run test:unit -- --run",
+    "preview": "serve out --listen 3001 --no-clipboard",
+    "verify": "npm run wiki:index:check && npm run validate:content && npm run lint:ci && npm run typecheck && npm run test:unit -- --run",
     "verify:evidence": "node scripts/quality/verify-evidence.mjs",
     "review:quality": "node scripts/quality/review-quality.mjs",
     "review:manual": "node scripts/quality/review-manual.mjs",
     "review:scope": "node scripts/quality/review-scope.mjs",
+    "wiki:index": "node scripts/wiki/build-rag-index.mjs",
+    "wiki:index:check": "node scripts/wiki/build-rag-index.mjs --check",
+    "wiki:index:worklog": "node scripts/wiki/build-rag-index.mjs --record-worklog",
     "session:end": "node project/hooks/session-end.mjs",
     "audit:react": "npx react-doctor@0.9.4 . --json --category Performance --category Accessibility --blocking warning --no-telemetry --json-out artifacts/react-doctor.json -y",
     "audit:prod": "npm audit --omit=dev --audit-level=high"
