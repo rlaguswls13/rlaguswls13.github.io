@@ -1,9 +1,20 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-12T15:25:00+09:00
+updated_at: 2026-08-13T15:10:00+09:00
 agent: Codex
 ---
+
+## Runtime error resolution checkpoint (2026-08-13)
+
+- 원인: 2026-08-12 16:38부터 남아 있던 정적 preview 프로세스 `serve out --listen 3001 --no-clipboard`(PID 42988)가 개발 서버와 같은 3001 포트를 점유했습니다. `npm run dev:no-fetch`는 모든 generator를 완료한 뒤 `EADDRINUSE`로 종료됐습니다.
+- 해결: command line을 검증한 PID 42988만 종료했습니다. 저장소 소스는 수정하지 않았고 기존 dirty worktree를 보존했습니다.
+- red→green: 점유 상태에서 `npm run dev:no-fetch`와 `npx next dev --port 3001`이 각각 exit 1; 점유 프로세스 종료 후 같은 `npm run dev:no-fetch`가 `Ready in 562ms`에 도달하고 `/`가 HTTP 200을 반환했습니다.
+- 브라우저 QA: `npx playwright test tests/e2e/home.spec.ts --project=chrome --headed` PASS 1/1. 한국어 홈이 실제 Chrome에서 정상 렌더링됐습니다.
+- 전체 검증: `npm run verify` PASS (26 files, 173 tests); `npm run build:local` PASS; `npm run validate:export` PASS (95 routes, 0 blockers).
+- 종료 상태: QA용 dev process와 임시 로그를 정리하고 3001 포트를 비워 둡니다. 다음 실행은 `npm run dev:no-fetch`를 사용합니다.
+- 잔여 비차단 경고: `127.0.0.1`로 dev HMR에 접근하면 Next.js `allowedDevOrigins` 경고가 발생합니다. 구성된 사용자 URL `http://localhost:3001` 사용 시 본 오류와 무관합니다.
+- 남은 태스크: 최종 Wiki 반영 및 PR review 요청은 session-end hook 결과에 따라 후속으로 남깁니다. 이번 해결에는 source diff가 없어 별도 PR 변경은 없습니다.
 
 ## Finish checkpoint (2026-08-11)
 
@@ -27,16 +38,84 @@ agent: Codex
 
 ## Current status
 
-- 진행 중인 작업: 없음; 글로벌 `session-handoff-workflow` skill 등록과 현재 세션 적용을 완료했습니다.
-- 마지막으로 완료한 작업: 전역 skill의 frontmatter/openai metadata 검증 및 현재 baton 종료 처리.
-- 현재 판단이 필요한 사항: 없음.
+- 진행 중인 작업: 없음. RAG Wiki 리밸런싱, indexing worklog, escaped legacy table 복구를 완료했습니다.
+- 마지막으로 완료한 작업: strict allowlist table normalizer의 MDX expression·fenced-code 경계를 보강하고 최종 5-lane 재검토를 통과했습니다.
+- 현재 branch/upstream: `main` / `origin/main`.
+- 현재 Git 상태: 기능 변경을 사용자 정책에 따라 3개 atomic commit으로 분리했습니다. 세션 기록 commit과 `origin/main` push를 진행합니다.
+- 성공 조건: 완료. RAG registry/index/worklog와 table 복구가 전체 테스트·build/export·반응형 시각 검증을 통과했습니다.
+- 다음 작업: 최종 검증 후 `origin/main`에 push하고 원격 SHA를 확인합니다.
+
+## Git delivery checkpoint (2026-08-13)
+
+- `5e44b21 [ADD] : LLM RAG 인덱싱 및 개발 실행 설정 추가`
+- `3b9353f [UPDATE] : 홈 일지 연결 및 통합 검색 화면 추가`
+- `2545205 [BUGFIX] : Notion 테이블 태그 렌더링 복구`
+- 사용자 지정 `[TYPE] : 한글 요약` 정책을 적용했으며, 기능·RAG·버그 수정 범위로 분리했습니다.
+- 세션 memory와 최신 export 검증 산출물은 별도 기록 commit으로 묶습니다.
 
 ## Changed features
 
-- 변경 파일과 변경 이유: `AGENTS.md`, `.agent/session-handoff.md`, `project/hooks/session-end.mjs`, hook 문서, 회귀 테스트, `project/skills/session-handoff-workflow`, 전역 `C:/Users/rlagu/.codex/skills/session-handoff-workflow`.
-- 사용자에게 보이는 동작 변화: 다음 에이전트가 전역 `$session-handoff-workflow`를 자동 라우팅하고 동일한 handoff 파일을 읽어 작업을 이어받습니다.
+- 홈의 일지 카테고리 카드와 일지 선택 상태의 `모든 글 보기`가 `/journal`의 `전체` 탭으로 이동합니다.
+- `/tags`에서 프로젝트, Devlog, 개인일지, 교육일지를 태그·검색어·콘텐츠 범위로 통합 검색합니다.
+- 홈 인기 태그와 전체 태그 dialog가 `/tags?tag=...`로 연결되며, `/tags`는 sitemap과 SEO metadata에 포함됩니다.
+- Navbar의 `/tags` 메뉴 표시는 `Search`이며 전체 메뉴 중 마지막에 위치합니다.
+- `npm run dev`, `dev:no-fetch`, `preview`와 Playwright/Lighthouse 기본 주소를 3001 포트로 통일했습니다.
+- 주요 변경 파일: `src/app/HomePageClient.tsx`, `src/app/tags/*`, `src/lib/tag-search.ts`, `src/app/globals.css`, `src/components/layout/Navbar.tsx`, `src/app/sitemap.ts`, `src/lib/seo/routes.ts`, `package.json`, `playwright.config.ts`, 관련 e2e와 README.
+- RAG 문서 분류는 `project/wiki/rag/source-registry.json`, 생성 인덱스는 `project/wiki/rag/document-index.json`, 실행 이력은 `project/wiki/worklogs/indexing.jsonl`이 소유합니다.
+
+## Commit policy (user-owned)
+
+- 커밋과 push는 사용자가 명시적으로 요청한 경우에만 실행합니다.
+- 사용자 기능 변경의 commit message는 저장소에서 사용 중인 사용자 지정 형식인 `[TYPE] : 한글 요약`을 사용합니다. Conventional Commit 형식(`feat:`, `fix:`, `chore:`)으로 대체하지 않습니다.
+- 허용 TYPE과 용도: `[ADD]` 신규 기능·문서, `[UPDATE]` 기존 기능 변경·통합, `[FIX]` 일반 수정, `[BUGFIX]` 명확한 버그 수정, `[FETCH]` Notion/API 동기화·수집 변경.
+- 현재 변경 묶음의 권장 메시지는 `[UPDATE] : 홈 일지·통합 검색 및 개발 포트 개선`입니다. 실제 커밋 전 diff를 다시 읽고 atomic scope에 따라 분리할 수 있습니다.
+- 기능 커밋에는 요청 범위 파일만 path 단위로 stage하고, 관련 없는 dirty worktree는 stage·수정·삭제하지 않습니다.
+- `session-end` hook의 `chore(agent): ...` 자동 memory commit은 사용자 기능 commit 정책과 다릅니다. 앞으로 이 세션의 handoff 정리에서는 `commit: false`로 hook을 호출하고, Wiki/handoff 변경도 다음 사용자 승인 커밋에 사용자 지정 형식으로 포함합니다.
+- 이미 생성된 `5f5761a`, `55dd6c7` memory commit은 사용자가 history rewrite를 요청하지 않는 한 수정하지 않습니다.
 
 ## Remaining tasks
+
+- [x] 현재 홈/목록 라우팅과 인덱스 구조를 기준으로 태그 검색 공용 데이터와 `/tags` UI 구현
+- [x] lint/typecheck/unit/build 및 브라우저에서 홈 일지 링크와 태그 검색 동작 검증
+- [x] canonical/evidence/worklog 권위와 검색 모드를 source registry로 분리
+- [x] 결정적 RAG document index와 append-only indexing worklog 구현
+- [x] stale index gate, 중복 소유권, 분류, diff worklog 계약 테스트 및 전체 gate 검증
+- [x] 10개 legacy escaped table을 실제 `NotionTable`로 복구하고 future Notion fetch 변환 경계에 strict allowlist 적용
+- [x] raw MDX expression, unknown tag, fenced-code 보존 회귀 테스트와 반응형 light/dark 브라우저 검증
+
+## Escaped table rendering checkpoint (2026-08-12)
+
+- 원인: Notion paragraph rich text에 저장된 legacy HTML/JSX table이 안전 escape되어 `&lt;table...` 텍스트로 렌더링됐습니다.
+- `scripts/notion/transfer/legacy-table-normalizer.mjs`를 추가해 `table/thead/tbody/tr/th/td/strong/code/br`만 허용하고 모든 attribute를 제거한 뒤 기존 MDX component mapping에 연결했습니다. 알 수 없는 tag는 변환하지 않고 inert 상태로 유지합니다.
+- table text node의 `<`, `{`, `}`를 entity로 유지해 MDX expression 실행을 차단하고, content validation도 `NotionTable` 내부 raw expression을 fail-closed 처리합니다. paired Markdown fence는 보존하며 기존 비정상 unclosed ` ```text` marker만 제거합니다.
+- 기존 10개 MDX의 13개 escaped table block을 복구했습니다. 10개 실제 route 모두 `tableCount >= 1`, raw tag 미노출, page horizontal overflow 없음이 확인됐습니다.
+- 브라우저: 1280/768/375px, light/dark에서 표와 내부 horizontal scroll을 확인했습니다. 증거는 `artifacts/playwright/table-render/`와 `.omo/evidence/table-render-visual-pass-*.md`입니다.
+- 최종 검증: `npm run verify` PASS (26 files/173 tests), `npm run build:local` PASS (100 pages), `npm run validate:export` PASS (95 routes/0 blockers), `git diff --check` PASS, RAG index 31 documents current.
+- 최종 recheck 5 lanes(goal/code/security/QA/context) 모두 PASS. LSP는 사용자 선택으로 미설치 상태이며 ESLint와 TypeScript compiler를 사용했습니다.
+
+## RAG Wiki and indexing worklog checkpoint (2026-08-12)
+
+- 기존 Wiki 문서를 이동하지 않고 `agent-harness`, `project-skills`, `project-wiki`, `project-reports`, `project-worklogs`의 권위와 검색 모드를 `project/wiki/rag/source-registry.json`에 명시했습니다.
+- `scripts/wiki/build-rag-index.mjs`가 Markdown 제목·heading anchor·SHA-256·source group을 결정적으로 생성하며, 중복 문서 소유권과 stale 인덱스를 실패 처리합니다.
+- `project/wiki/worklogs/indexing.jsonl`에 baseline 실행의 registry/index hash, 31개 문서의 그룹별 수, added/updated/removed 경로를 기록했습니다. JSONL 자체는 self-referential stale 상태를 피하기 위해 RAG document index에서 제외합니다.
+- 기존 `session-memory.md`와 session-end hook은 호환성을 유지하되 `history-only`로 분류했습니다. reports는 `secondary`, canonical Wiki와 skills는 `default` 검색입니다.
+- 검증: `npm run verify` PASS (26 files/164 tests), `npm run build:local` PASS, `npm run validate:export` PASS (95 routes/0 blockers), `npm run wiki:index:check` PASS (31 documents), `git diff --check` PASS.
+- LSP는 사용자 선택에 따라 설치되지 않아 실행하지 않았으며, ESLint와 TypeScript compiler가 변경 코드 검증을 대신했습니다. 외부 Kapa workspace/credential/embedding 설정은 저장소에 없어 로컬에서 확인할 수 없습니다.
+
+## Tag search and dev port checkpoint (2026-08-12)
+
+- 홈의 일지 카테고리 링크와 모든 글 보기 링크가 `/journal` 전체 목록으로 이동하도록 수정했습니다.
+- 프로젝트, Devlog, 개인일지, 교육일지 인덱스를 통합하는 `/tags` 태그 검색 페이지를 추가하고, Navbar·홈 인기 태그·sitemap에 연결했습니다. 태그 선택, 텍스트 검색, 콘텐츠 범위 필터를 지원합니다.
+- 개발 서버와 정적 preview 기본 포트를 3000에서 3001로 변경하고 Playwright·Lighthouse 기본 URL과 README를 맞췄습니다.
+- 검증: `npm run typecheck`, `npm run lint:ci`, `npm run test:unit -- --run` (25 files/160 tests), `npm run build:local`, `git diff --check` PASS.
+- 브라우저 검증: port 3001에서 1280/768/375px 모두 홈 `/journal` 링크, `/tags?tag=LLM` 1건, 프로젝트 필터 8건, Spring 검색 20건, 수평 overflow 없음 확인. 증거: `artifacts/playwright/tag-search/final-1280.png`, `final-768.png`, `final-375.png`.
+- 독립 visual QA pass A/B 모두 PASS. `Andrej Karpathy` 혼합 언어 줄바꿈 문제를 nowrap 처리 후 재검증했습니다.
+
+## Search menu and preview CSS checkpoint (2026-08-12)
+
+- Navbar의 `/tags` 메뉴명을 `Search`로 변경하고 메뉴 배열의 마지막으로 이동했습니다.
+- 3001 preview를 새 빌드로 재생성하고 기존 stale 서버 프로세스를 종료한 뒤 재시작했습니다. `/tags` CSS가 정상 로드되어 1280/768/375px에서 3/2/1열 카드와 수평 overflow 없음이 확인되었습니다.
+- 검증: `npm run build:local`, `npm run typecheck`, `npm run lint:ci`, `git diff --check` PASS. Playwright on `http://localhost:3001/tags`: Search 마지막 메뉴, 86 cards, 1280/768/375 반응형 PASS.
 
 - [x] 새 skill frontmatter/YAML과 관련 gate를 검증합니다.
 - [x] 전역 skill `C:/Users/rlagu/.codex/skills/session-handoff-workflow`를 등록하고 metadata를 검증합니다.
@@ -125,14 +204,17 @@ agent: Codex
 
 ## Verification
 
-- 실행한 명령과 결과: `npm run test:unit -- --run tests/project/session-end-hook.test.mjs` PASS 5/5; docs-surface PASS 2/2; `npm run lint:ci` PASS; `npm run typecheck` PASS.
-- 아직 실행하지 않은 검증: 기존 export fixture가 수정되지 않아 전체 unit의 기존 4건 실패는 남아 있습니다.
+- 최신 실행 결과: `npm run build:local` PASS; `npm run typecheck` PASS; `npm run lint:ci` PASS; `npm run test:unit -- --run` PASS (25 files, 160 tests); `git diff --check` PASS.
+- 브라우저: `http://localhost:3001/tags`에서 1280/768/375px 모두 Search 메뉴가 마지막, 86개 결과, 3/2/1열 grid, 수평 overflow 없음 확인.
+- 검색 동작: `LLM` 태그 1건, 프로젝트 범위 8건, `Spring` 검색 20건 확인. 홈 일지 링크는 `/journal` 확인.
+- visual QA: 최종 독립 reviewer A/B 모두 PASS. 증거는 `artifacts/playwright/tag-search/`와 `.omo/evidence/tag-search-visual-qa-*-gate-review.md`에 있습니다.
 
 ## Risks and decisions
 
-- 알려진 위험 또는 기존 실패: `tests/export/list-html.test.mjs`와 `tests/export/metadata-integration.test.mjs`의 기존 4건 실패.
-- 결정과 결정 이유: handoff `status`를 machine-readable하게 두고 `active|blocked|ready`일 때만 후속 요청을 생성합니다. 빈 템플릿만으로 review가 발생하면 안 되기 때문입니다.
+- 3001 포트에 오래된 dev/preview 프로세스가 남아 있으면 stale chunk를 제공할 수 있습니다. 화면이 이전 상태이면 해당 프로세스를 종료하고 `npm run build:local` 후 `npm run preview` 또는 `npm run dev:no-fetch`로 재시작합니다.
+- `/tags` 기본 결과는 현재 86건이라 페이지가 길지만 검색·태그·범위 필터와 3/2/1열 반응형 grid로 탐색할 수 있습니다.
+- 이 문장은 이전 태그 검색 checkpoint 당시의 ready 기록입니다. 현재 baton 상태는 파일 상단 YAML과 `Current status`를 권위 있는 값으로 사용합니다.
 
 ## Next agent
 
-다음 에이전트는 이 파일을 먼저 읽고, 기록된 내용을 기준으로 작업을 이어갑니다. `status`가 `active`, `blocked`, `ready`이면 세션 종료 시 최종 Wiki 생성과 PR review 요청을 확인합니다.
+다음 에이전트는 먼저 `git status --short`와 이 파일의 `Commit policy (user-owned)`를 확인합니다. 사용자가 commit/push를 요청하지 않았다면 Git history를 변경하지 않습니다. 요청받은 경우 사용자 지정 `[TYPE] : 한글 요약` 형식과 요청 범위 staging을 적용합니다.

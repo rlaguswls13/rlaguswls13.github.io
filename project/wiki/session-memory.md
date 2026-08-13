@@ -366,3 +366,72 @@ Search 메뉴를 마지막으로 이동하고 3001 preview의 stale 산출물을
 
 ### Risks
 - 기존 3001 서버가 이전 산출물을 캐시하면 재시작 필요
+
+## 2026-08-12T07:43:18.684Z | search-handoff-2026-08-12
+
+### Summary
+홈 일지 전체 연결, 전 콘텐츠 통합 Search, 3001 포트 전환과 Search 메뉴 마지막 배치를 완료했다. 사용자 지정 commit 정책은 [TYPE] : 한글 요약이며 명시적 요청 전에는 commit/push하지 않는다.
+
+### Decisions
+- 사용자 기능 commit은 [ADD|UPDATE|FIX|BUGFIX|FETCH] : 한글 요약 형식 사용
+- session-end 자동 chore(agent) commit은 사용하지 않고 commit false로 호출
+- 관련 없는 dirty worktree를 stage하지 않음
+
+### Risks
+- 3001에 stale 프로세스가 남으면 새 빌드 후 재시작 필요
+- 기능 변경은 아직 uncommitted and unpushed
+
+## 2026-08-12T09:58:50.647Z | local
+
+### Summary
+LLM RAG Wiki source registry와 deterministic document index, append-only indexing worklog를 추가하고 legacy escaped table 렌더링을 안전하게 복구함
+
+### Decisions
+- canonical/secondary/history-only 검색 경계를 source registry로 관리
+- legacy table은 strict allowlist와 text-node MDX escaping을 거쳐 NotionTable로 변환
+- 커밋은 사용자 요청 전까지 수행하지 않음
+
+### Verification
+- npm run verify: 26 files/173 tests PASS
+- npm run build:local: 100 pages PASS
+- npm run validate:export: 95 routes/0 blockers PASS
+- 10 repaired routes responsive/light/dark browser QA PASS
+- five-lane final recheck PASS
+
+### Risks
+- external Kapa workspace/embedding integration is outside repository and was not verified
+- Tomcat legacy source already contained placeholder code-popup text; table rendering is fixed without reconstructing missing source text
+
+### Changed project surfaces
+- `project/wiki/rag/`
+- `project/wiki/worklogs/`
+- `scripts/wiki/build-rag-index.mjs`
+- `scripts/notion/transfer/legacy-table-normalizer.mjs`
+- `scripts/notion/transfer/notion-blocks-to-mdx.mjs`
+- `scripts/content/content-contract.mjs`
+- `src/content/devlog/**/*.mdx`
+- `tests/notion/content-security.test.mjs`
+- `tests/content/validation.test.mjs`
+
+## 2026-08-13T05:48:47.579Z | runtime-error-2026-08-13
+
+### Summary
+Resolved local startup EADDRINUSE by identifying and terminating the stale static preview process that owned port 3001. No source code was changed.
+
+### Decisions
+- Preserved all pre-existing dirty worktree changes and applied an operational process cleanup only.
+- Left port 3001 free after QA so the next npm run dev:no-fetch starts cleanly.
+
+### Verification
+- npm run dev:no-fetch: red EADDRINUSE before cleanup, green Ready in 562ms after cleanup.
+- Playwright Chrome home smoke: 1 passed.
+- npm run verify: PASS, 26 files and 173 tests.
+- npm run build:local: PASS.
+- npm run validate:export: PASS, 95 routes and 0 blockers.
+
+### Risks
+- Using 127.0.0.1 rather than localhost during dev triggers a non-fatal Next.js allowedDevOrigins HMR warning.
+
+### Changed project surfaces
+- `.agent/session-handoff.md`
+- `project/wiki/session-memory.md`

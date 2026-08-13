@@ -101,14 +101,14 @@
       }
     },
     {
-      "route": "/projects/3b319946ca768057896fe03574856fa1",
-      "file": "projects/3b319946ca768057896fe03574856fa1.html",
+      "route": "/projects/i",
+      "file": "projects/i.html",
       "kind": "detail",
       "heading": "레거시 코드로 인한 메모리 누수 해결",
       "status": "PASS",
       "metadata": {
         "title": "레거시 코드로 인한 메모리 누수 해결 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/projects/3b319946ca768057896fe03574856fa1",
+        "canonical": "https://rlaguswls13.github.io/projects/i",
         "jsonLd": []
       }
     },
@@ -140,10 +140,10 @@
       "route": "/projects/e",
       "file": "projects/e.html",
       "kind": "detail",
-      "heading": "사내 통합지원시스템 고도화",
+      "heading": "사내 지원시스템 리펙토링/개발",
       "status": "PASS",
       "metadata": {
-        "title": "사내 통합지원시스템 고도화 | TECH LOG",
+        "title": "사내 지원시스템 리펙토링/개발 | TECH LOG",
         "canonical": "https://rlaguswls13.github.io/projects/e",
         "jsonLd": []
       }
