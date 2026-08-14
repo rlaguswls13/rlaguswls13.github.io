@@ -435,3 +435,43 @@ Resolved local startup EADDRINUSE by identifying and terminating the stale stati
 ### Changed project surfaces
 - `.agent/session-handoff.md`
 - `project/wiki/session-memory.md`
+
+## 2026-08-13T11:25:59.205Z | resume-audit-2026-08-13
+
+### Summary
+Resumed the repository baton and confirmed the prior runtime-error resolution is complete; no source or generated content changes were required.
+
+### Decisions
+- Treat the ready baton, synced main branch, and existing durable memory as authoritative; do not duplicate completed implementation work.
+- No PR reviewable source diff exists in the resumed worktree.
+
+### Verification
+- git status --short: only unrelated untracked .omc tool state
+- origin/main...HEAD: 0 0
+- project/wiki/session-memory.md contains the runtime-error decision and verification record
+- port 3001: FREE
+
+### Risks
+- Using 127.0.0.1 instead of localhost may still emit the documented non-fatal Next.js allowedDevOrigins warning.
+
+## 2026-08-14T12:27:26.534Z | notion-fetch-diagnosis-2026-08-14
+
+### Summary
+Confirmed the repeated Notion fetch CI failure is caused by workflow Secret-name wiring, not the Notion API or content schema.
+
+### Decisions
+- Keep canonical data-source configuration unchanged; the next fix should forward the existing page-ID compatibility secrets in the workflow and lock the mapping with the workflow contract test.
+- Do not modify GitHub Secrets or production content during diagnosis.
+
+### Verification
+- Eight consecutive workflow runs show the identical pre-API journal source-group error.
+- Latest run exposes empty NOTION_DATA_SOURCE_ID_* variables while NOTION_TOKEN is present.
+- GitHub environment contains NOTION_PAGE_ID_JOURNAL, NOTION_PAGE_ID_DEVLOG, and NOTION_PAGE_ID_PROJECT.
+- Local parser toggle: empty current mapping fails; three page-ID inputs configure journal/devlog/project as 1/1/1.
+
+### Risks
+- Scheduled Notion content synchronization remains broken until workflow compatibility wiring is fixed and a real Actions run passes.
+
+### Changed project surfaces
+- `.agent/session-handoff.md`
+- `project/wiki/session-memory.md`

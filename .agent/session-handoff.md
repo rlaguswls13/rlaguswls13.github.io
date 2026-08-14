@@ -1,9 +1,27 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-13T15:18:00+09:00
+updated_at: 2026-08-14T21:26:51+09:00
 agent: Codex
 ---
+
+## Notion fetch failure diagnosis (2026-08-14)
+
+- 목표: 반복 실패하는 GitHub Actions `Fetch Notion content`의 원인을 최신 실행 로그와 환경 계약으로 확정합니다.
+- 성공 조건: 실패 단계, 원인 층, 재현 가능한 토글 증거, 다음 수정 범위를 비밀 값 노출 없이 기록합니다.
+- 결과: 8개 연속 실패가 모두 API 호출 전 `journal` source group 미구성 오류였습니다. workflow는 비어 있는 `NOTION_DATA_SOURCE_ID_*` Secret만 전달하고, 실제 환경에 존재하는 호환 `NOTION_PAGE_ID_*` Secret을 전달하지 않습니다.
+- 토글 증거: 현재 빈 data-source 입력은 동일 오류를 재현하고, page-ID 형식 세 그룹을 전달하면 같은 parser가 `journal/devlog/project`를 각 1개로 구성합니다.
+- 배제: Notion API 인증·schema·thumbnail 단계에는 도달하지 않았고 commit 단계도 모두 skipped여서 이번 실패 원인이 아닙니다.
+- 다음 태스크: workflow에 기존 page-ID Secret 호환 연결을 추가하고 `tests/workflows/deploy-contract.test.ts`를 failing-first로 갱신한 뒤 실제 Actions Fetch → Commit → Deploy를 확인합니다.
+- 기존 `.agent/session-handoff.md`, `project/wiki/session-memory.md`, `.omc/` 변경은 보존합니다.
+
+## Resume audit checkpoint (2026-08-13)
+
+- 사용자의 재개 요청에 따라 baton, Git 이력, durable memory, 원격 동기화 상태를 다시 확인했습니다.
+- 이전 runtime error 해결 기록은 `project/wiki/session-memory.md`에 이미 반영되어 있고 `main`과 `origin/main`은 동일합니다.
+- 현재 source/generated-content diff는 없으며 PR review 대상 변경도 없습니다. 관련 없는 `.omc/` tool state는 그대로 보존했습니다.
+- `npm run session:end`를 `commit: false`로 실행했고 hook은 정상 종료했습니다. 3001 포트는 비어 있습니다.
+- 남은 구현 작업은 없습니다. 새 기능 요청이 들어오면 이 ready baton에서 새 작업을 시작합니다.
 
 ## Runtime error resolution checkpoint (2026-08-13)
 
