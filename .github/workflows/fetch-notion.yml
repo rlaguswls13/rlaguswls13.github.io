@@ -29,9 +29,9 @@ jobs:
       - name: Fetch Notion sources
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DATA_SOURCE_ID_JOURNAL: ${{ secrets.NOTION_DATA_SOURCE_ID_JOURNAL }}
-          NOTION_DATA_SOURCE_ID_DEVLOG: ${{ secrets.NOTION_DATA_SOURCE_ID_DEVLOG }}
-          NOTION_DATA_SOURCE_ID_PROJECT: ${{ secrets.NOTION_DATA_SOURCE_ID_PROJECT }}
+          NOTION_DATA_SOURCE_ID_JOURNAL: ${{ secrets.NOTION_PAGE_ID_JOURNAL }}
+          NOTION_DATA_SOURCE_ID_DEVLOG: ${{ secrets.NOTION_PAGE_ID_DEVLOG }}
+          NOTION_DATA_SOURCE_ID_PROJECT: ${{ secrets.NOTION_PAGE_ID_PROJECT }}
           NOTION_REQUIRED_GROUPS: journal,devlog,project
         run: npm run fetch-notion
       - name: Commit fetched content
