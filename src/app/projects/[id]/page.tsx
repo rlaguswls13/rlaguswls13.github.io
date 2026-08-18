@@ -12,6 +12,7 @@ import {
 } from "@/content/detail/boundaries";
 import ProjectDetailClient from "./ProjectDetailClient";
 import { ProjectBackLink } from "@/components/layout/ProjectBackLink";
+import { EditingPlaceholder } from "@/components/ui/EditingPlaceholder";
 import { TagList } from "@/components/ui/TagBadge";
 import { CalendarIcon } from "@/components/ui/Icons";
 import { formatPeriods } from "@/lib/utils";
@@ -54,6 +55,23 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   );
   if (!source.ok) notFound();
   const { data, content } = matter(fs.readFileSync(source.value, "utf8"));
+
+  if (data.status === "ready") {
+    return (
+      <article className="detail-content-page project-detail-page">
+        <ProjectBackLink />
+        <header className="detail-page-heading project-card" style={{ marginBottom: 40 }}>
+          <span className="page-heading-eyebrow">PROJECT · {(meta.subcategory || "general").toUpperCase()}</span>
+          <h1 className="page-title">{meta.title}</h1>
+          <p className="project-period"><CalendarIcon /> {formatPeriods(meta.periods)}</p>
+          <TagList tags={meta.tags} />
+        </header>
+        <div className="mdx-content">
+          <EditingPlaceholder />
+        </div>
+      </article>
+    );
+  }
 
   if (data.legacyDetail) {
     const detail = parseLegacyProjectDetail(data.legacyDetail);

@@ -63,6 +63,7 @@ function parseEntry(filePath) {
   const relative = path.relative(CONTENT_ROOT, filePath);
   const [category] = relative.split(path.sep);
   const { data } = matter(fs.readFileSync(filePath, "utf8"));
+  if (data.status === "temp") return null;
   const sourceId = String(data.sourceId || "").replaceAll("-", "").trim();
   const id = String(data.id || sourceId || path.basename(filePath, ".mdx")).trim();
   const slug = slugConfig[category]?.[id];
@@ -142,6 +143,7 @@ function buildRecommendations(entries) {
 
 const entries = walkMdxFiles(CONTENT_ROOT)
   .map(parseEntry)
+  .filter((entry) => entry !== null)
   .sort((a, b) => a.key.localeCompare(b.key));
 
 const output = {

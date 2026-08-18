@@ -44,6 +44,7 @@ function readFrontmatter(filePath) {
 
 function parseEntry(filePath) {
   const data = readFrontmatter(filePath);
+  if (data.status === "temp") return null;
   const filenameId = path.basename(filePath, ".mdx");
   const id = String(data.id || sourceId(data.sourceId) || filenameId).trim();
   const title = String(data.title || "").trim();
@@ -78,7 +79,9 @@ export function buildDevlogIndex() {
   for (const filePath of walkMdxFiles(CONTENT_ROOT)) {
     const category = path.relative(CONTENT_ROOT, filePath).split(path.sep)[0];
     if (category === "blog" || category === "education") continue;
-    (output[category] ||= []).push(parseEntry(filePath));
+    const entry = parseEntry(filePath);
+    if (!entry) continue;
+    (output[category] ||= []).push(entry);
   }
   for (const entries of Object.values(output)) {
     entries.sort((left, right) => right.date.localeCompare(left.date) || left.id.localeCompare(right.id, "en", { numeric: true }));

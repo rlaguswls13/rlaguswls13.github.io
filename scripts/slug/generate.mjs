@@ -40,8 +40,9 @@ const output = {};
 
 for (const category of CATEGORIES) {
   const entries = walkMdxFiles(path.join(CONTENT_ROOT, category))
-    .map((filePath) => {
+    .flatMap((filePath) => {
       const { data } = matter(fs.readFileSync(filePath, "utf8"));
+      if (data.status === "temp") return [];
       const rawId = data.source_id || data.page_id || data.sourceId || data.id;
       const id = String(rawId || "").trim();
       const normalizedId = id.replaceAll("-", "");
@@ -60,7 +61,7 @@ for (const category of CATEGORIES) {
         );
       }
 
-      return [normalizedId, slug];
+      return [[normalizedId, slug]];
     })
     .sort(([left], [right]) => left.localeCompare(right, "en", { numeric: true }));
 

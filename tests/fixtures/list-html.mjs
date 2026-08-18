@@ -16,7 +16,7 @@ export const listRouteContracts = [
     gridClass: "devlog-grid",
     cardClass: "devlog-card",
     linkClass: "devlog-card-link",
-    firstTitle: "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
+    firstTitle: "웹 애플리케이션에서 SpringFramework란?",
     visibleCount: 6,
   },
   {
@@ -25,7 +25,7 @@ export const listRouteContracts = [
     gridClass: "projects-grid",
     cardClass: "project-card",
     linkClass: null,
-    firstTitle: "레거시 코드로 인한 메모리 누수 해결",
+    firstTitle: "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
     visibleCount: 6,
   },
 ];

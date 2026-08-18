@@ -12,10 +12,10 @@ import recommendationData from "../../src/data/indexes/devlog-recommendations.js
 
 const siteUrl = "https://example.com";
 const approvedDescriptionSources = [
-  "src/content/devlog/education/3a319946ca76806db9ecf8824115ebea.mdx",
-  "src/content/devlog/education/3a319946ca76802aa2cff193b6a2456e.mdx",
-  "src/content/devlog/education/3a319946ca76807b8e7ac1d05c32e441.mdx",
-  "src/content/devlog/education/3a319946ca7680a6b7b3f98589e30442.mdx",
+  "src/content/devlog/education/35e19946ca76807b9fe4f64d17b2e1b6.mdx",
+  "src/content/devlog/education/35f19946ca7680aaab2de0ba2b1acd0b.mdx",
+  "src/content/devlog/education/36019946ca7680ac8b6cd025e664b34b.mdx",
+  "src/content/devlog/education/36119946ca7680f1baccfeea7b17d64b.mdx",
 ] as const;
 
 function requireApprovedDescriptions(pages: readonly { readonly sourceFile: string; readonly description: string }[]): void {

@@ -24,10 +24,11 @@ function files(directory) {
 export function buildJournalIndex() {
   const output = {};
   for (const [journalCategory, storageCategory] of Object.entries(STORAGE)) {
-    output[journalCategory] = files(path.join(CONTENT_ROOT, storageCategory)).map((filePath) => {
+    output[journalCategory] = files(path.join(CONTENT_ROOT, storageCategory)).flatMap((filePath) => {
       const { data } = matter(fs.readFileSync(filePath, "utf8"));
+      if (data.status === "temp") return [];
       const id = String(data.id || data.sourceId || path.basename(filePath, ".mdx")).replaceAll("-", "");
-      return {
+      return [{
         id,
         slug: String(data.slug || ""),
         sourceId: data.sourceId ? String(data.sourceId) : undefined,
@@ -46,7 +47,7 @@ export function buildJournalIndex() {
         blogTitle: String(data.blogTitle || data.title || id),
         impression: String(data.impression || data.description || "작성된 내용이 없습니다."),
         notionUrl: String(data.notionUrl || ""),
-      };
+      }];
     }).sort((left, right) => right.date.localeCompare(left.date));
   }
   fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });

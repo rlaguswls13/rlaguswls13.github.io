@@ -73,10 +73,11 @@ function frontmatter(root, filePath) {
   const slug = String(data.slug || "").trim();
   const title = String(data.title || "").trim();
   const date = String(data.date || "").trim();
+  const status = String(data.status || "publish").trim();
   if (!id || !slug || !title || !date) fail(file, "missing required frontmatter id/title/date/slug");
   if (!SLUG_PATTERN.test(slug)) fail(file, "invalid slug");
   if (id !== path.basename(filePath, ".mdx")) fail(file, "frontmatter id must match filename");
-  return { file, id, slug, title, date };
+  return { file, id, slug, title, date, status };
 }
 
 function contentEntries(root, sourceRoot, allowedCategories) {
@@ -87,7 +88,7 @@ function contentEntries(root, sourceRoot, allowedCategories) {
     const entry = frontmatter(root, filePath);
     const fromRoot = relative(path.join(root, sourceRoot), filePath).split("/");
     return { ...entry, category: fromRoot[0] || "" };
-  });
+  }).filter((entry) => entry.status !== "temp");
 }
 
 function requiredArray(value, filePath, field) {
@@ -150,8 +151,10 @@ function validateSlugRoutes(root, devlog, projects) {
   }
   const publicRoutes = new Set();
   const expectedCategories = new Set(devlog.map((entry) => entry.category));
-  expectSameKeys("slugs.json", slugs, expectedCategories);
-  expectSameKeys("routes.json", routes, expectedCategories);
+  const nonEmptySlugs = Object.fromEntries(Object.entries(slugs).filter(([, value]) => Object.keys(value || {}).length > 0));
+  const nonEmptyRoutes = Object.fromEntries(Object.entries(routes).filter(([, value]) => Object.keys(value?.byPageId || {}).length > 0));
+  expectSameKeys("slugs.json", nonEmptySlugs, expectedCategories);
+  expectSameKeys("routes.json", nonEmptyRoutes, expectedCategories);
   for (const entry of devlog) {
     const route = `/devlog/${entry.category}/${entry.slug}`;
     if (publicRoutes.has(route)) fail(entry.file, `Duplicate public route ${route}`);

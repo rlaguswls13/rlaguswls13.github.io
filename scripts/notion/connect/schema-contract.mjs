@@ -24,6 +24,7 @@ const COMMON_COLUMNS = Object.freeze({
   impression: { types: ["rich_text"], output: "impression" },
   journalcategory: { types: ["select", "status", "rich_text"], output: "journalCategory" },
   회차: { types: ["number", "rich_text"], output: "round" },
+  status: { types: ["select", "status", "rich_text"], output: "status", enum: ["publish", "ready", "temp"] },
 });
 
 const GROUPS = Object.freeze({
@@ -45,7 +46,11 @@ export const NOTION_SCHEMA = Object.freeze(Object.fromEntries(Object.entries(GRO
         allowedTypes: Object.freeze([...column.types]),
         required: Boolean(column.required),
         outputKey: column.output,
-        enum: name === "category" ? Object.freeze([...definition.categories]) : undefined,
+        enum: name === "category"
+          ? Object.freeze([...definition.categories])
+          : column.enum
+            ? Object.freeze([...column.enum])
+            : undefined,
       }),
     ]))),
   },

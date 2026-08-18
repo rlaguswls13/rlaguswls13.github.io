@@ -21,12 +21,13 @@ function files(directory) {
 }
 
 export function buildProjectIndex() {
-  const projects = files(CONTENT_ROOT).map((filePath) => {
+  const projects = files(CONTENT_ROOT).flatMap((filePath) => {
     const relative = path.relative(CONTENT_ROOT, filePath);
     const [pathCategory, pathSubcategory] = relative.split(path.sep);
     const { data } = matter(fs.readFileSync(filePath, "utf8"));
+    if (data.status === "temp") return [];
     const id = String(data.id || path.basename(filePath, ".mdx"));
-    return {
+    return [{
       id,
       slug: String(data.slug || id),
       sourceId: data.sourceId ? String(data.sourceId) : undefined,
@@ -42,7 +43,7 @@ export function buildProjectIndex() {
       category: String(data.category || pathCategory || "enterprise"),
       subcategory: displaySubcategory(data.subcategory || pathSubcategory),
       type: String(data.type || data.category || pathCategory || "enterprise"),
-    };
+    }];
   }).sort((left, right) => right.date.localeCompare(left.date) || left.id.localeCompare(right.id));
   fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
   fs.writeFileSync(OUTPUT_PATH, `${JSON.stringify({ projects }, null, 2)}\n`, "utf8");

@@ -89,6 +89,7 @@ function frontmatterFor(pageName, row) {
     subcategory: row.subcategory || "전체",
     package: row.subcategory || "전체",
     notionUrl: row.notion_url || "",
+    status: row.status || "publish",
   };
 }
 
@@ -108,7 +109,7 @@ export async function syncPageContent(client, pageName, rows, options = {}) {
   const managedPaths = new Set();
   for (const row of rows) {
     const filePath = contentPathFor(pageName, row, root);
-    if (options.requireThumbnails) {
+    if (options.requireThumbnails && row.status !== "temp") {
       const sourceId = normalizeSourceId(row.source_id || row.page_id);
       const category = pageName === "journal" && row.category === "personal" ? "blog" : String(row.category || "uncategorized");
       const thumbnailPath = requiredThumbnailPath(pageName === "project" ? "projects" : "devlog", category, sourceId);

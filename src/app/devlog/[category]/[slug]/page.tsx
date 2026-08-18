@@ -6,6 +6,7 @@ import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import { DevlogBackLink } from "@/components/layout/DevlogBackLink";
+import { EditingPlaceholder } from "@/components/ui/EditingPlaceholder";
 import { TagList } from "@/components/ui/TagBadge";
 import { CalendarIcon } from "@/components/ui/Icons";
 import { Indent } from "@/components/ui/Indent";
@@ -162,24 +163,28 @@ export default async function DevlogDetailPage({
       <RelatedDevlogs items={relatedDevlogs} />
 
       <div className="mdx-content">
-        <MDXRemote
-          source={content}
-          components={components}
-          options={{
-            mdxOptions: {
-              rehypePlugins: [
-                rehypeArticleToc,
-                [
-                  rehypePrettyCode,
-                  {
-                    theme: "github-dark-dimmed",
-                    keepBackground: true,
-                  },
+        {data.status === "ready" ? (
+          <EditingPlaceholder />
+        ) : (
+          <MDXRemote
+            source={content}
+            components={components}
+            options={{
+              mdxOptions: {
+                rehypePlugins: [
+                  rehypeArticleToc,
+                  [
+                    rehypePrettyCode,
+                    {
+                      theme: "github-dark-dimmed",
+                      keepBackground: true,
+                    },
+                  ],
                 ],
-              ],
-            },
-          }}
-        />
+              },
+            }}
+          />
+        )}
       </div>
       <GiscusComments config={siteConfig.giscus} term={pageEntry.discussionTerm} />
     </article>
