@@ -7,6 +7,7 @@ import { siteConfig } from "@/lib/site";
 import { buildStaticRouteMetadata } from "@/lib/seo/routes";
 
 const { adsenseAccount, ga4MeasurementId, searchConsoleVerification } = siteConfig.google;
+const { siteVerification: naverSiteVerification } = siteConfig.naver;
 const themeBootstrap = `(() => { let theme; try { theme = localStorage.getItem("theme"); } catch { theme = null; } if (theme === "dark") document.documentElement.classList.replace("theme-light", "theme-dark"); })();`;
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
   other: {
     ...(adsenseAccount ? { "google-adsense-account": adsenseAccount } : {}),
     ...(searchConsoleVerification ? { "google-site-verification": searchConsoleVerification } : {}),
+    ...(naverSiteVerification ? { "naver-site-verification": naverSiteVerification } : {}),
   },
 };
 

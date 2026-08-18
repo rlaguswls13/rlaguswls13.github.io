@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "registrySha256": "2f033cee047e1f55733776bf2caec0e738d26667b1ddd78156ed9e5e9f727fa8",
-  "documentCount": 31,
+  "documentCount": 32,
   "groupCounts": {
     "agent-harness": 2,
-    "project-skills": 9,
+    "project-skills": 10,
     "project-wiki": 13,
     "project-reports": 5,
     "project-worklogs": 2
@@ -274,8 +274,45 @@
           "anchor": "verification-matrix"
         }
       ],
-      "bytes": 3342,
-      "sha256": "762e261494ce34f639fc4697e3741fb279acc7e336eb58da909f81fad3c2b6d6"
+      "bytes": 3541,
+      "sha256": "daf1c8bc613352f9087cbceb0c9ecd8365e9f0427db3dffd8edd3b11b345f1dc"
+    },
+    {
+      "path": "project/skills/naver-search-advisor-operations/SKILL.md",
+      "sourceGroup": "project-skills",
+      "role": "procedure",
+      "authority": 90,
+      "retrieval": "default",
+      "title": "Naver Search Advisor Operations",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Naver Search Advisor Operations",
+          "anchor": "naver-search-advisor-operations"
+        },
+        {
+          "level": 2,
+          "text": "Read before changing",
+          "anchor": "read-before-changing"
+        },
+        {
+          "level": 2,
+          "text": "Register and verify",
+          "anchor": "register-and-verify"
+        },
+        {
+          "level": 2,
+          "text": "Confirm status later",
+          "anchor": "confirm-status-later"
+        },
+        {
+          "level": 2,
+          "text": "Troubleshooting",
+          "anchor": "troubleshooting"
+        }
+      ],
+      "bytes": 3476,
+      "sha256": "9ab529ab827fa6fd8854806df9b421a70424e9e6402dc74e77ad6847d33d8f63"
     },
     {
       "path": "project/skills/release-gate/references/pre-commit-checklist.md",
@@ -576,12 +613,17 @@
         },
         {
           "level": 2,
+          "text": "SEO 메타데이터와 Open Graph 이미지",
+          "anchor": "seo-메타데이터와-open-graph-이미지"
+        },
+        {
+          "level": 2,
           "text": "빌드 흐름",
           "anchor": "빌드-흐름"
         }
       ],
-      "bytes": 3112,
-      "sha256": "f80e5987d05c9da808f28a0535678757712855e291a4fdc5590e59e91db5e1f9"
+      "bytes": 4754,
+      "sha256": "2dcbe404ba15fcb0cb62e1c7e4af50ba25cd6c06c3904c68004e93e1db40088b"
     },
     {
       "path": "project/wiki/content-pipeline.md",
@@ -654,8 +696,8 @@
           "anchor": "rag-경계"
         }
       ],
-      "bytes": 1915,
-      "sha256": "4eb5e669fa4f58c10bc531798e47e74534dbc93a56a045d97683b864e0cc3bd6"
+      "bytes": 1951,
+      "sha256": "3fa013fa60a65e957852d28e50a247b25a1e3e8f9f50b0faf2ff1483fe5d3ace"
     },
     {
       "path": "project/wiki/operations/guide.md",
@@ -689,6 +731,16 @@
           "level": 3,
           "text": "Google Search Console 인증",
           "anchor": "google-search-console-인증"
+        },
+        {
+          "level": 3,
+          "text": "네이버 서치어드바이저 인증",
+          "anchor": "네이버-서치어드바이저-인증"
+        },
+        {
+          "level": 3,
+          "text": "Open Graph 이미지",
+          "anchor": "open-graph-이미지"
         },
         {
           "level": 3,
@@ -726,8 +778,8 @@
           "anchor": "배포"
         }
       ],
-      "bytes": 5951,
-      "sha256": "48bdaf91082720a8132ae37c10d72aeb48556fdff2f0be2019b10dbb98fd5ad1"
+      "bytes": 7587,
+      "sha256": "01289358e25ed85767de05a1007301ce8ab4735294803a92ec3c649e39268a50"
     },
     {
       "path": "project/wiki/pipeline/data-sorting.md",

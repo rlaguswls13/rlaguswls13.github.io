@@ -22,11 +22,14 @@ const publicConfig = JSON.stringify({
     ga4MeasurementId: null,
     searchConsoleVerification: null,
   },
+  naver: {
+    siteVerification: null,
+  },
 });
 
 function html({ route, title, body, jsonLd = "" }) {
   const canonical = `https://example.test${route === "/" ? "" : route}`;
-  return `<!doctype html><html><head><title>${title}</title><meta name="description" content="${title} description"><link rel="canonical" href="${canonical}"><meta property="og:title" content="${title}"><meta property="og:description" content="${title} description"><meta property="og:url" content="${canonical}"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${title} description">${jsonLd}</head><body>${body}</body></html>`;
+  return `<!doctype html><html><head><title>${title}</title><meta name="description" content="${title} description"><link rel="canonical" href="${canonical}"><meta property="og:title" content="${title}"><meta property="og:description" content="${title} description"><meta property="og:url" content="${canonical}"><meta property="og:image" content="https://example.test/opengraph-image.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${title} description"><meta name="twitter:image" content="https://example.test/opengraph-image.png">${jsonLd}</head><body>${body}</body></html>`;
 }
 
 async function writeRoute(outputRoot, route, markup, nested = false) {

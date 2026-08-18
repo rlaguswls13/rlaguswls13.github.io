@@ -122,7 +122,18 @@ describe("SEO metadata contracts", () => {
       url: devlog.canonical,
       type: "article",
     });
-    expect(devlog.metadata.twitter).toMatchObject({ card: "summary" });
+    expect(devlog.metadata.openGraph?.images).toMatchObject([
+      { url: "https://example.com/portfolio/opengraph-image.png", width: 1200, height: 630 },
+    ]);
+    expect(devlog.metadata.twitter).toMatchObject({
+      card: "summary_large_image",
+      images: ["https://example.com/portfolio/opengraph-image.png"],
+    });
+    expect(devlog.metadata.robots).toMatchObject({
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    });
     expect(() => assertUniqueMetadataTitles(metadata)).not.toThrow();
   });
 

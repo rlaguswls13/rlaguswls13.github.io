@@ -47,6 +47,8 @@ NOTION_DATA_SOURCE_ID_PROJECT=...
 BASE_PATH=ROOT
 ADSENSE_ACCOUNT=ca-pub-...
 GA4_PROPERTY_ID=G-...
+SEARCH_CONSOLE_VERIFICATION=...
+NAVER_SITE_VERIFICATION=...
 GISCUS_GITHUB_TOKEN=...
 ```
 
@@ -63,6 +65,20 @@ Meta 태그 방식을 사용할 때는 `SEARCH_CONSOLE_VERIFICATION`에 Search C
 ```html
 <meta name="google-site-verification" content="<Search Console content value>" />
 ```
+
+### 네이버 서치어드바이저 인증
+
+네이버 서치어드바이저도 동일하게 공개 `NAVER_SITE_VERIFICATION` content 값을 build resource로 materialize하는 meta 태그 방식만 사용합니다. 서치어드바이저에서 사이트를 등록하고 HTML 태그 방식 소유확인을 선택하면 발급되는 `<meta name="naver-site-verification" content="...">`에서 content 값만 복사해 설정합니다.
+
+```html
+<meta name="naver-site-verification" content="<서치어드바이저 content value>" />
+```
+
+등록 후 서치어드바이저의 사이트맵 제출 메뉴에 `/sitemap.xml`을 동일하게 제출합니다. robots.txt는 `User-Agent: *`로 Yeti를 포함한 모든 크롤러를 허용하므로 별도 설정이 필요 없습니다.
+
+### Open Graph 이미지
+
+`scripts/deploy/generate-opengraph-image.mjs`가 `generate-build-resources` 실행 시 `public/opengraph-image.png`(1200x630)를 빌드 시점에 생성합니다. 소스는 `src/assets/og-fonts/`(서브셋 Noto Sans KR TTF)와 `src/assets/og-image/blog-cover.jpg`이며, `public/opengraph-image.png`는 생성 산출물이라 커밋하지 않습니다. `src/app/opengraph-image.tsx` 파일 컨벤션은 `output: export`에서 확장자 없는 파일을 만들어 GitHub Pages가 `image/png` 대신 `application/octet-stream`으로 서빙하는 문제([vercel/next.js#82177](https://github.com/vercel/next.js/issues/82177))가 있어 사용하지 않습니다. 파비콘은 동일한 이유로 `src/app/icon.jpg`(정적 파일 컨벤션, 확장자 유지)를 사용합니다.
 
 ### AdSense ads.txt 인증
 

@@ -62,10 +62,19 @@ scripts/
 ├─ slug/             # slug 맵과 고정 Devlog 인덱스
 ├─ notion/           # Notion 추출·변환
 ├─ engagement/       # Giscus 댓글 수
-└─ recommendations/  # 연관 Devlog 인덱스
+├─ recommendations/  # 연관 Devlog 인덱스
+└─ deploy/           # ads.txt, Open Graph 이미지 등 정적 배포 산출물 생성
 ```
 
 GA4는 `@blog/ga4-analytics` 로컬 패키지로 애플리케이션에서 사용하며 Next.js가 transpile합니다. 댓글 수와 추천 데이터는 빌드 전에 JSON으로 계산해 브라우저의 외부 조회와 반복 계산을 줄입니다.
+
+## SEO 메타데이터와 Open Graph 이미지
+
+`src/lib/seo/metadata.ts`의 `buildPageMetadata()`가 모든 라우트에 canonical URL, `openGraph`/`twitter`(`summary_large_image`), 명시적 `robots`(`index,follow`, `max-image-preview:large`) 필드를 부여합니다. `src/lib/seo/JsonLd.tsx`가 루트 `WebSite`/`Person`, devlog 상세 `BlogPosting` 구조화 데이터를 스크립트 태그로 삽입합니다.
+
+`og:image`/`twitter:image`는 `/opengraph-image.png`(1200x630) 고정 경로를 가리키며, `scripts/deploy/generate-opengraph-image.mjs`가 `generate-build-resources` 실행 시 `next/og`(`ImageResponse`)로 빌드 시점에 렌더링해 `public/opengraph-image.png`에 씁니다. 소스 자산은 `src/assets/og-fonts/`(서브셋 Noto Sans KR TTF)와 `src/assets/og-image/blog-cover.jpg`이며, 생성된 PNG 자체는 gitignore 대상입니다. `src/app/opengraph-image.tsx` 파일 컨벤션은 `output: export`에서 확장자 없는 파일을 생성해 GitHub Pages가 `application/octet-stream`으로 서빙하는 문제가 있어([vercel/next.js#82177](https://github.com/vercel/next.js/issues/82177)) 사용하지 않습니다. 파비콘은 정적 파일 컨벤션인 `src/app/icon.jpg`를 사용합니다(확장자가 유지되어 같은 문제가 없음).
+
+검색엔진 소유확인 meta 태그 배선은 [`google-search-console-operations`](../../skills/google-search-console-operations/SKILL.md)와 [`naver-search-advisor-operations`](../../skills/naver-search-advisor-operations/SKILL.md) skill을 참고합니다.
 
 ## 빌드 흐름
 

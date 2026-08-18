@@ -81,9 +81,11 @@ function inspectMetadata(html, route, siteUrl) {
   singleValue(nodes, route, "og:title", (node) => node.tagName === "meta" && attribute(node, "property") === "og:title", (node) => attribute(node, "content"));
   singleValue(nodes, route, "og:description", (node) => node.tagName === "meta" && attribute(node, "property") === "og:description", (node) => attribute(node, "content"));
   singleValue(nodes, route, "og:url", (node) => node.tagName === "meta" && attribute(node, "property") === "og:url", (node) => attribute(node, "content"));
+  singleValue(nodes, route, "og:image", (node) => node.tagName === "meta" && attribute(node, "property") === "og:image", (node) => attribute(node, "content"));
   const twitterCard = singleValue(nodes, route, "twitter:card", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:card", (node) => attribute(node, "content"));
   singleValue(nodes, route, "twitter:title", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:title", (node) => attribute(node, "content"));
   singleValue(nodes, route, "twitter:description", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:description", (node) => attribute(node, "content"));
+  singleValue(nodes, route, "twitter:image", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:image", (node) => attribute(node, "content"));
   const jsonLd = nodes
     .filter((node) => node.tagName === "script" && attribute(node, "type") === "application/ld+json")
     .map((node, index) => {
@@ -102,7 +104,7 @@ function inspectMetadata(html, route, siteUrl) {
     });
 
   if (canonical !== expectedCanonical(siteUrl, route)) throw new Error(`${route}: canonical does not match route`);
-  if (twitterCard !== "summary") throw new Error(`${route}: twitter:card must be summary`);
+  if (twitterCard !== "summary_large_image") throw new Error(`${route}: twitter:card must be summary_large_image`);
   return { title, canonical, jsonLd };
 }
 

@@ -10,11 +10,11 @@ function requiredString(record, key) {
   return value;
 }
 
-function optionalString(record, key) {
+function optionalString(record, key, section) {
   const value = record[key];
   if (value === null) return null;
   if (typeof value !== "string" || value.trim() === "") {
-    throw new Error(`public build config.google.${key} must be a string or null`);
+    throw new Error(`public build config.${section}.${key} must be a string or null`);
   }
   return value;
 }
@@ -56,12 +56,18 @@ export function parsePublicBuildConfig(serialized) {
   if (!isRecord(value) || !isRecord(value.google)) {
     throw new Error("public build config must contain Google settings");
   }
+  if (!isRecord(value.naver)) {
+    throw new Error("public build config must contain Naver settings");
+  }
   return {
     ...giscusInfo,
     google: {
-      adsenseAccount: optionalString(value.google, "adsenseAccount"),
-      ga4MeasurementId: optionalString(value.google, "ga4MeasurementId"),
-      searchConsoleVerification: optionalString(value.google, "searchConsoleVerification"),
+      adsenseAccount: optionalString(value.google, "adsenseAccount", "google"),
+      ga4MeasurementId: optionalString(value.google, "ga4MeasurementId", "google"),
+      searchConsoleVerification: optionalString(value.google, "searchConsoleVerification", "google"),
+    },
+    naver: {
+      siteVerification: optionalString(value.naver, "siteVerification", "naver"),
     },
   };
 }

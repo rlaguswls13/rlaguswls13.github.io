@@ -1,9 +1,22 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-14T21:26:51+09:00
-agent: Codex
+updated_at: 2026-08-18T09:20:00+09:00
+agent: Claude Code
 ---
+
+## SEO/검색엔진 등록 정비 checkpoint (2026-08-18)
+
+- 목표: 네이버 서치어드바이저 가이드(https://searchadvisor.naver.com/guide)와 구글 서치 콘솔 가이드에 맞춰 sitemap.xml, ads.txt, Open Graph, 콘텐츠 마크업(구조화 데이터), 소유권 meta, robots meta, robots.txt를 점검하고 빠진 부분을 구현했습니다.
+- 기존 확인: sitemap.xml(`src/app/sitemap.ts`), robots.txt(`src/app/robots.ts`), ads.txt(`scripts/deploy/publish-ads-txt.mjs`), 구조화 데이터(`src/lib/seo/JsonLd.tsx`), Google 소유권 meta는 이미 구현되어 있었습니다.
+- 신규 구현: (1) `naver-site-verification` meta 태그 — `.env.local.yml`/`NAVER_SITE_VERIFICATION` → `generate-build-resources.mjs` → `giscus-info.ts`/`giscus-info.mjs`(`naver.siteVerification`) → `layout.tsx` 전배선, `.github/workflows/deploy.yml`에 Actions Variable 추가. (2) 모든 페이지에 명시적 `robots` meta(`index,follow`, `max-image-preview:large`) 추가(`src/lib/seo/metadata.ts`). (3) `og:image`/`twitter:image`가 아예 없던 것을 발견해 `/opengraph-image.png`(1200x630) 파이프라인 신규 구축.
+- Open Graph 이미지: `scripts/deploy/generate-opengraph-image.mjs`가 `next/og`의 `ImageResponse`를 순수 Node 스크립트에서 호출해 `generate-build-resources` 실행 시 `public/opengraph-image.png`를 렌더링합니다. 소스 자산은 `src/assets/og-fonts/NotoSansKR-{Regular,Bold}.ttf`(사용 문구만 서브셋)와 사용자가 제공한 `src/assets/og-image/blog-cover.jpg`. 배경은 진한 다크 스크림 + 사이트 accent(퍼플/틸) radial gradient로 원본 스톡 이미지의 텍스트를 거의 지우고 그 위에 실제 사이트 타이틀(김현진/TECH LOG)을 렌더링합니다.
+- 발견한 버그: Next.js `output: export` + `src/app/opengraph-image.tsx` 파일 컨벤션 조합은 확장자 없는 산출 파일을 만들어 GitHub Pages가 `image/png` 대신 `application/octet-stream`으로 서빙합니다([vercel/next.js#82177](https://github.com/vercel/next.js/issues/82177)). `opengraph-image.tsx`를 삭제하고 빌드 스크립트에서 `.png` 확장자를 가진 정적 파일로 직접 생성하는 방식으로 우회했습니다. `twitter:card`도 `summary`→`summary_large_image`로 수정했습니다.
+- 파비콘: 사용자가 세션 중간에 `public/images/favicon.jpg`를 추가로 제공해 `src/app/icon.jpg`(Next.js 정적 파일 컨벤션)로 배치했습니다. 이 컨벤션은 확장자가 유지되어 opengraph-image와 같은 문제가 없습니다.
+- 문서: 이 저장소의 canonical 문서 위치(`project/wiki/`, `project/skills/`)를 따라 `project/wiki/operations/guide.md`(네이버/OG 환경변수·인증 절차), `project/wiki/architecture/tech-stack.md`(SEO 메타데이터·OG 이미지 파이프라인 아키텍처), `project/wiki/index.md`(nav 업데이트)를 갱신하고, 기존 `google-search-console-operations` 패턴을 그대로 따라 신규 skill `project/skills/naver-search-advisor-operations/`(SKILL.md + agents/openai.yaml)를 추가했습니다. `google-search-feeds/SKILL.md`에 네이버 사이트맵 제출 한 줄을 추가했습니다. RAG 인덱스는 `npm run wiki:index`로 재생성했습니다(32 documents).
+- 검증: `npm run typecheck`, `npm run lint:ci`, `npm run wiki:index:check`(32 documents current), `npm run validate:content`(87 files) 모두 PASS. `npx vitest run` 173개 중 172 PASS — 유일한 실패는 이 작업과 무관한 기존 `tests/workflows/deploy-contract.test.ts`의 `fetch-notion.yml` secret 이름 불일치(이전 checkpoint에서 이미 알려진 미해결 항목, 이번 세션에서 손대지 않음). 실제 `next build` 후 `npm run validate:export` PASS(95 routes, 0 blockers) — `out/opengraph-image.png`, `out/icon.jpg` 모두 올바른 확장자로 생성되고 `<head>`의 og:image/twitter:image/robots/naver-site-verification meta가 기대대로 렌더링됨을 직접 확인했습니다.
+- 남은 사용자 작업: https://searchadvisor.naver.com 에서 사이트 등록 후 발급받는 소유확인 코드를 로컬 `.env.local.yml`의 `NAVER_SITE_VERIFICATION=`과 GitHub repo Variable `NAVER_SITE_VERIFICATION`에 채워 넣어야 실제 meta 태그가 생성됩니다(현재는 빈 값이라 태그가 출력되지 않음, 정상 동작). 등록 후 서치어드바이저와 구글 서치 콘솔 양쪽에 `/sitemap.xml`을 제출해야 합니다.
+- 커밋 범위: 위 변경 전체(신규 SEO 기능 + 문서). `.omc/wiki/seo.md`(OMC 플러그인 로컬 wiki 도구로 작성한 보조 메모)는 이 저장소의 canonical 문서가 아니므로 커밋 대상에서 제외했습니다 — 필요하면 `project/wiki/`가 authoritative 소스입니다.
 
 ## Notion fetch failure diagnosis (2026-08-14)
 

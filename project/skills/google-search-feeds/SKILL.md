@@ -22,7 +22,7 @@ curl -fsSL https://<site>/sitemap.xml
 curl -fsSL https://<site>/robots.txt
 ```
 
-Search Console에서는 **Sitemaps → Add a new sitemap**에 `sitemap.xml`을 제출합니다. 제출은 crawl/indexing 힌트이며 색인이나 순위를 보장하지 않습니다.
+Search Console에서는 **Sitemaps → Add a new sitemap**에 `sitemap.xml`을 제출합니다. 제출은 crawl/indexing 힌트이며 색인이나 순위를 보장하지 않습니다. 네이버 서치어드바이저도 동일한 `/sitemap.xml`을 사이트맵 제출 메뉴에 제출합니다([`naver-search-advisor-operations`](../naver-search-advisor-operations/SKILL.md) 참고).
 
 ## RSS/Atom contract
 

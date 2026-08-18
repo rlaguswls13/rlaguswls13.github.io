@@ -8,7 +8,7 @@
 - [Pipeline references](pipeline/): 정렬, Giscus, engagement, migration, package structure, thumbnail 세부 규칙
 - [Architecture](architecture/tech-stack.md): 런타임·앱·빌드 구조
 - [Operations](operations/guide.md): 로컬 실행·환경·배포 운영 지식
-- [Google operations](../skills/): AdSense, Search Console, sitemap/RSS 실행 skill
+- [Search engine operations](../skills/): AdSense, Google Search Console, Naver Search Advisor, sitemap/RSS 실행 skill
 - [Agent memory](agent-memory.md): 세션 종료 memory와 redaction 정책
 - [RAG indexing contract](rag/README.md): source group, 문서 권위, 검색 우선순위, 생성 인덱스
 - [Reports](reports/): 낮은 권위의 시점별 검증 근거와 [surface gate review](reports/docs-to-project-surface-gate-review.md)

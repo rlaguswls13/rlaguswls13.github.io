@@ -1,0 +1,4 @@
+interface:
+  display_name: "Naver Search Advisor Operations"
+  short_description: "Register and verify Naver Search Advisor"
+  default_prompt: "Use $naver-search-advisor-operations to register the correct site and validate its live ownership tag safely."

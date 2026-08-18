@@ -119,22 +119,29 @@ export function buildCanonicalUrl(siteUrl: string, pathname: string, basePath = 
   return new URL(path, site.origin).toString();
 }
 
+const OPENGRAPH_IMAGE_PATH = "/opengraph-image.png";
+const OPENGRAPH_IMAGE_WIDTH = 1200;
+const OPENGRAPH_IMAGE_HEIGHT = 630;
+
 export function buildPageMetadata(input: PageMetadataInput): PageMetadataContract {
   const title = requireText(input.title, "title");
   const description = requireText(input.description, "description");
   const canonical = buildCanonicalUrl(input.siteUrl, input.pathname, input.basePath);
   const author = input.author === undefined ? undefined : requireText(input.author, "author");
   const publishedTime = input.publishedTime === undefined ? undefined : requireText(input.publishedTime, "publishedTime");
+  const ogImageUrl = buildCanonicalUrl(input.siteUrl, OPENGRAPH_IMAGE_PATH, input.basePath);
+  const ogImage = { url: ogImageUrl, width: OPENGRAPH_IMAGE_WIDTH, height: OPENGRAPH_IMAGE_HEIGHT, alt: title };
   const openGraph = input.kind === "article"
     ? {
       title,
       description,
       url: canonical,
       type: "article" as const,
+      images: [ogImage],
       ...(author === undefined ? {} : { authors: [author] }),
       ...(publishedTime === undefined ? {} : { publishedTime }),
     }
-    : { title, description, url: canonical, type: "website" as const };
+    : { title, description, url: canonical, type: "website" as const, images: [ogImage] };
 
   return {
     metadata: {
@@ -142,7 +149,18 @@ export function buildPageMetadata(input: PageMetadataInput): PageMetadataContrac
       description,
       alternates: { canonical },
       openGraph,
-      twitter: { card: "summary", title, description },
+      twitter: { card: "summary_large_image", title, description, images: [ogImageUrl] },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
+      },
     },
     canonical,
     title,

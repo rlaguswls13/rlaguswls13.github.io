@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -20,6 +20,21 @@ const giscusInfo = JSON.stringify({
 async function temporaryRoot() {
   const root = await mkdtemp(path.join(os.tmpdir(), "build-resources-"));
   temporaryRoots.push(root);
+  await mkdir(path.join(root, "src", "data", "pages", "main"), { recursive: true });
+  await writeFile(
+    path.join(root, "src", "data", "pages", "main", "profile.json"),
+    JSON.stringify({ profile: { name: "테스트 작성자" } }),
+  );
+  await cp(
+    path.join(process.cwd(), "src", "assets", "og-fonts"),
+    path.join(root, "src", "assets", "og-fonts"),
+    { recursive: true },
+  );
+  await cp(
+    path.join(process.cwd(), "src", "assets", "og-image"),
+    path.join(root, "src", "assets", "og-image"),
+    { recursive: true },
+  );
   return root;
 }
 
@@ -38,6 +53,7 @@ describe("static build resources", () => {
         ADSENSE_ACCOUNT: "ca-pub-1234",
         GA4_PROPERTY_ID: "G-TEST123",
         SEARCH_CONSOLE_VERIFICATION: "verification-token",
+        NAVER_SITE_VERIFICATION: "naver-verification-token",
       },
     });
 
@@ -49,11 +65,16 @@ describe("static build resources", () => {
         ga4MeasurementId: "G-TEST123",
         searchConsoleVerification: "verification-token",
       },
+      naver: {
+        siteVerification: "naver-verification-token",
+      },
     });
     expect(await readFile(path.join(root, "public", "ads.txt"), "utf8")).toBe(
       "google.com, pub-1234, DIRECT, f08c47fec0942fa0\n",
     );
-  });
+    const ogImage = await readFile(path.join(root, "public", "opengraph-image.png"));
+    expect(ogImage.subarray(0, 8)).toEqual(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  }, 20000);
 
   it("omits optional Google output and removes a stale ads.txt", async () => {
     const root = await temporaryRoot();
@@ -67,6 +88,7 @@ describe("static build resources", () => {
       ga4MeasurementId: null,
       searchConsoleVerification: null,
     });
+    expect(config.naver).toEqual({ siteVerification: null });
     expect(existsSync(path.join(root, "public", "ads.txt"))).toBe(false);
-  });
+  }, 20000);
 });

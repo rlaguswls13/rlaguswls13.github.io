@@ -71,9 +71,11 @@ export function inspectRouteMetadata(html, contract) {
   const ogTitle = singleValue(nodes, contract.route, "og:title", (node) => node.tagName === "meta" && attribute(node, "property") === "og:title", (node) => attribute(node, "content"));
   const ogDescription = singleValue(nodes, contract.route, "og:description", (node) => node.tagName === "meta" && attribute(node, "property") === "og:description", (node) => attribute(node, "content"));
   const ogUrl = singleValue(nodes, contract.route, "og:url", (node) => node.tagName === "meta" && attribute(node, "property") === "og:url", (node) => attribute(node, "content"));
+  const ogImage = singleValue(nodes, contract.route, "og:image", (node) => node.tagName === "meta" && attribute(node, "property") === "og:image", (node) => attribute(node, "content"));
   const twitterCard = singleValue(nodes, contract.route, "twitter:card", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:card", (node) => attribute(node, "content"));
   const twitterTitle = singleValue(nodes, contract.route, "twitter:title", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:title", (node) => attribute(node, "content"));
   const twitterDescription = singleValue(nodes, contract.route, "twitter:description", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:description", (node) => attribute(node, "content"));
+  const twitterImage = singleValue(nodes, contract.route, "twitter:image", (node) => node.tagName === "meta" && attribute(node, "name") === "twitter:image", (node) => attribute(node, "content"));
   const jsonLd = nodes
     .filter((node) => node.tagName === "script" && attribute(node, "type") === "application/ld+json")
     .map((node, index) => {
@@ -86,7 +88,7 @@ export function inspectRouteMetadata(html, contract) {
       }
     });
 
-  return { title, description, canonical, ogTitle, ogDescription, ogUrl, twitterCard, twitterTitle, twitterDescription, jsonLd };
+  return { title, description, canonical, ogTitle, ogDescription, ogUrl, ogImage, twitterCard, twitterTitle, twitterDescription, twitterImage, jsonLd };
 }
 
 export function requireRouteMetadata(html, contract) {
@@ -97,7 +99,9 @@ export function requireRouteMetadata(html, contract) {
   if (result.ogTitle !== result.title) throw new Error(`${contract.route}: og:title does not match title`);
   if (result.ogDescription !== result.description) throw new Error(`${contract.route}: og:description does not match description`);
   if (result.ogUrl !== result.canonical) throw new Error(`${contract.route}: og:url does not match canonical`);
-  if (result.twitterCard !== "summary") throw new Error(`${contract.route}: twitter:card must be summary`);
+  if (!result.ogImage.endsWith("/opengraph-image.png")) throw new Error(`${contract.route}: og:image does not point at the static opengraph image`);
+  if (result.twitterCard !== "summary_large_image") throw new Error(`${contract.route}: twitter:card must be summary_large_image`);
+  if (result.twitterImage !== result.ogImage) throw new Error(`${contract.route}: twitter:image does not match og:image`);
   if (result.twitterTitle !== result.title) throw new Error(`${contract.route}: twitter:title does not match title`);
   if (result.twitterDescription !== result.description) throw new Error(`${contract.route}: twitter:description does not match description`);
   return result;

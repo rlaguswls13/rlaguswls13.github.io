@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { publishAdsTxt } from "../deploy/publish-ads-txt.mjs";
+import { generateOpengraphImage } from "../deploy/generate-opengraph-image.mjs";
 import { parseGiscusInfo } from "./giscus-info.mjs";
 import { loadLocalEnv } from "./load-local-env.mjs";
 
@@ -17,6 +18,9 @@ export async function generateBuildResources({ root = process.cwd(), env = proce
       ga4MeasurementId: optionalValue(env.GA4_PROPERTY_ID),
       searchConsoleVerification: optionalValue(env.SEARCH_CONSOLE_VERIFICATION),
     },
+    naver: {
+      siteVerification: optionalValue(env.NAVER_SITE_VERIFICATION),
+    },
   };
   const configDirectory = path.join(root, ".cache", "build");
   await mkdir(configDirectory, { recursive: true });
@@ -26,6 +30,8 @@ export async function generateBuildResources({ root = process.cwd(), env = proce
     "utf8",
   );
   publishAdsTxt(path.join(root, "public"), config.google.adsenseAccount || "");
+  await mkdir(path.join(root, "public"), { recursive: true });
+  await generateOpengraphImage(path.join(root, "public"), { root });
 }
 
 if (path.resolve(process.argv[1] || "") === fileURLToPath(import.meta.url)) {

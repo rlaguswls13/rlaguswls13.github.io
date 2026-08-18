@@ -19,6 +19,7 @@
 /.next/
 /out/
 /public/ads.txt
+/public/opengraph-image.png
 
 # production
 /build
