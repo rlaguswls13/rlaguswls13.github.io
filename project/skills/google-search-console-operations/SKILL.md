@@ -9,7 +9,7 @@ Search Console property 등록과 소유권 verification을 수행합니다. 현
 
 ## Read before changing
 
-- `project/wiki/operations/guide.md`
+- `wiki/operations/guide.md`
 - `scripts/config/generate-build-resources.mjs`
 - `src/app/layout.tsx`
 - `src/app/robots.ts`

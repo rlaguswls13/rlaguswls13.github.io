@@ -9,7 +9,7 @@ AdSense 연결·배포·검증을 수행합니다. 저장소의 현재 경계는
 
 ## Read before changing
 
-- `project/wiki/operations/guide.md`
+- `wiki/operations/guide.md`
 - `scripts/config/generate-build-resources.mjs`
 - `scripts/deploy/publish-ads-txt.mjs`
 - `src/app/layout.tsx`

@@ -158,4 +158,4 @@ npm run validate:export
 
 에이전트 운영의 대표 진입점은 [`docs/README.md`](docs/README.md)입니다. 실행 절차는
 [`project/skills/`](project/skills/), lifecycle 자동화는 [`project/hooks/`](project/hooks/),
-상세 정책과 기술 배경은 [`project/wiki/`](project/wiki/)에서 관리합니다.
+상세 정책과 기술 배경은 [`wiki/`](wiki/)에서 관리합니다.

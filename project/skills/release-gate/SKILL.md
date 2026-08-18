@@ -5,7 +5,7 @@ description: Use before committing or promoting blog content, generated indexes,
 
 # Release Gate
 
-커밋·promote 전 변경 범위와 자동 생성 결과를 검증합니다. 원본 checklist는 [`references/pre-commit-checklist.md`](references/pre-commit-checklist.md)이고 pipeline 규칙은 [`project/wiki/content-pipeline.md`](../../wiki/content-pipeline.md)입니다.
+커밋·promote 전 변경 범위와 자동 생성 결과를 검증합니다. 원본 checklist는 [`references/pre-commit-checklist.md`](references/pre-commit-checklist.md)이고 pipeline 규칙은 [`wiki/content-pipeline.md`](../../../wiki/content-pipeline.md)입니다.
 
 ## Procedure
 

@@ -6,8 +6,8 @@
 @'{"type":"session_end","session_id":"local","summary":"...","verification":["npm run typecheck: PASS"],"risks":[]}'@ | npm run session:end
 ```
 
-It updates `project/wiki/session-memory.md`, redacts secret-shaped values, and commits only `project/skills`, `project/hooks`, and `project/wiki`. It never stages source, generated content, environment files, or unrelated user changes.
-`project/hooks/`는 host agent lifecycle에 연결되는 얇은 adapter만 보관합니다. 운영 정책과 장기 기록은 `project/skills/session-memory-wiki`와 `project/wiki/agent-memory.md`가 소유합니다.
+It updates `wiki/session-memory.md` locally, redacts secret-shaped values, and commits only `project/skills` and `project/hooks`. `wiki/` is gitignored and never staged or committed — it is managed locally (planned: Obsidian vault) and never enters repo history. It never stages source, generated content, environment files, or unrelated user changes.
+`project/hooks/`는 host agent lifecycle에 연결되는 얇은 adapter만 보관합니다. 운영 정책과 장기 기록은 `project/skills/session-memory-wiki`와 `wiki/agent-memory.md`가 소유합니다.
 
 ## Session handoff
 
@@ -30,6 +30,6 @@ It updates `project/wiki/session-memory.md`, redacts secret-shaped values, and c
 
 ## Session end
 
-`node project/hooks/session-end.mjs`는 `session_end` JSON event를 받아 memory를 append하고, `project/skills`, `project/hooks`, `project/wiki` 범위만 선택적으로 commit합니다. 범위 밖 파일은 stage하거나 commit하지 않습니다. token·PII는 redaction 후에도 원문을 기록하지 않습니다.
+`node project/hooks/session-end.mjs`는 `session_end` JSON event를 받아 `wiki/session-memory.md`에 memory를 append하고, `project/skills`, `project/hooks` 범위만 선택적으로 commit합니다. `wiki/`는 gitignore 대상이라 hook이 절대 stage·commit하지 않습니다. 범위 밖 파일은 stage하거나 commit하지 않습니다. token·PII는 redaction 후에도 원문을 기록하지 않습니다.
 
 실행 계약과 fixture는 [`tests/project/session-end-hook.test.mjs`](../../tests/project/session-end-hook.test.mjs)에서 확인합니다.

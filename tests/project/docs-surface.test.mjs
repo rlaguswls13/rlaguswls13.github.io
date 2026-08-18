@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const root = process.cwd();
 const docsRoot = path.join(root, "docs");
-const inventoryPath = path.join(root, "project/wiki/docs-migration.json");
+const inventoryPath = path.join(root, "wiki/docs-migration.json");
 
 describe("project documentation surfaces", () => {
   it("maps every legacy docs page to an existing project surface", () => {
@@ -32,6 +32,6 @@ describe("project documentation surfaces", () => {
     expect(docsMarkdown).toEqual(["README.md"]);
     expect(controller).toContain("project/skills/");
     expect(controller).toContain("project/hooks/");
-    expect(controller).toContain("project/wiki/");
+    expect(controller).toContain("wiki/");
   });
 });

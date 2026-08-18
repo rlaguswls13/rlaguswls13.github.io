@@ -9,7 +9,7 @@ description: Use when registering this blog in Naver Search Advisor, configuring
 
 ## Read before changing
 
-- `project/wiki/operations/guide.md`
+- `wiki/operations/guide.md`
 - `scripts/config/generate-build-resources.mjs`
 - `src/lib/giscus-info.ts`
 - `src/app/layout.tsx`

@@ -1,9 +1,30 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-18T14:20:00+09:00
+updated_at: 2026-08-18T18:10:00+09:00
 agent: Claude Code
 ---
+
+## Wiki gitignore 전환 checkpoint (2026-08-18)
+
+- 사용자 결정: `wiki/`는 이 repo에 커밋하지 않는다. 로컬에서 관리하다가 나중에 별도 Obsidian repo로 이관할 예정이다.
+- `.gitignore`에 `/wiki/` 추가. `project/hooks/session-end.mjs`의 `COMMIT_PATHS`에서 `"wiki"`를 제거해 `project/skills`, `project/hooks`만 커밋 대상으로 남겼다 — session-end hook은 이제 `wiki/session-memory.md`를 로컬에만 append하고 절대 stage하지 않는다.
+- "hook이 wiki를 커밋한다"고 서술하던 4개 문서(`AGENTS.md`, `project/hooks/README.md`, `project/skills/session-memory-wiki/SKILL.md`, `wiki/agent-memory.md`)를 실제 동작에 맞춰 정정했다.
+- `tests/project/session-end-hook.test.mjs`의 커밋 범위 테스트를 `wiki/`가 커밋되지 않는다는 것을 검증하도록 재작성(고정 fixture를 `wiki` mkdir에서 `project/skills/example.md`로 교체). 7/7 PASS.
+- 직전 checkpoint에서 staged였던 `project/wiki → wiki` git mv를 `git reset`으로 unstage했다 — `wiki/`는 이제 완전히 untracked/ignored 상태이고, `project/wiki/*`는 삭제 대기(unstaged) 상태로 남아 이번 커밋에 포함된다.
+- 이력 문서(`wiki/session-memory.md`, `wiki/worklogs/indexing.jsonl`, 이 파일의 기존 항목)의 과거 "project/wiki에 commit" 서술은 당시 실제 동작이므로 의도적으로 수정하지 않았다.
+
+## Wiki 루트 이동 및 OMC 스크래치 wiki 정리 checkpoint (2026-08-18)
+
+- 사용자 승인에 따라 `git mv project/wiki wiki`로 canonical wiki를 저장소 루트로 옮겼습니다(24개 파일 전부 rename으로 기록되어 history 보존). `project/skills/`와 `project/hooks/`는 이동하지 않았습니다.
+- 배선 수정: `project/hooks/session-end.mjs`(`MEMORY_PATH` non-literal `path.join` + `COMMIT_PATHS`), `scripts/wiki/build-rag-index.mjs`(`DEFAULT_{REGISTRY,INDEX,WORKLOG}_PATH` 3개), `wiki/rag/source-registry.json`, `wiki/docs-migration.json`, `AGENTS.md`, `README.md`, `docs/README.md`, `project/hooks/README.md`, skill 7개(`blog-content-pipeline`, `google-adsense-operations`, `google-search-console-operations`, `naver-search-advisor-operations`, `release-gate`, `session-memory-wiki`, `thumbnail-contract`), 테스트 2개(`session-end-hook`, `docs-surface`).
+- 상대 링크 depth drift도 함께 정정했습니다. wiki 밖으로 나가는 링크는 `../skills/`→`../project/skills/`, `../../hooks/`→`../../project/hooks/`, skill 쪽은 `../../wiki/`→`../../../wiki/`로 조정했고, 스크립트로 34개 마크다운의 모든 상대 링크가 실제 파일로 resolve됨을 확인했습니다.
+- `.omc/wiki/`(OMC 플러그인이 세션마다 자동 생성하는 gitignored 스크래치)는 디렉터리째 삭제했습니다. 이 저장소의 문서 시스템이 아니므로 앞으로도 canonical 소스로 쓰지 않습니다.
+- 내용 정리: `.omc/wiki/seo.md`는 `wiki/operations/guide.md`와 `wiki/architecture/tech-stack.md`에 이미 전부 반영돼 있고(opengraph-image.tsx 미사용 근거, 파비콘, 사용자 등록 절차 포함) 오히려 환경변수명이 옛 `NAVER_SITE_VERIFICATION`으로 stale해서 폐기했습니다. `notion-status.md`/`notion-status-3.md`/`notion.md` 3건은 canonical에 전혀 없던 내용이라 신규 `wiki/pipeline/notion-status.md`로 병합했습니다(상태별 동작표, 생성기 5곳/`content-contract.mjs` 데이터 흐름, force 재동기화 조건, 컬럼명·`output` 죽은 필드·generator/validator 동시 갱신 3개 주의사항). 나머지 tool-generated 파일은 정보가치가 없어 이동 없이 폐기했습니다.
+- 신규 문서는 `wiki/index.md`의 Pipeline references와 `wiki/content-pipeline.md`의 Schema and quarantine 절에서 링크했고, `source-registry.json`의 `wiki/pipeline` 디렉터리 항목이 이미 커버하므로 registry 추가 항목은 필요 없었습니다.
+- 검증: `npm run wiki:index`(33 documents, 기존 32 + 신규 1) → `wiki:index:check` PASS, `lint:ci` PASS, `typecheck` PASS, `session-end-hook`/`docs-surface` 7/7 PASS, `npm run test:unit -- --run` 178/179 PASS(기존 무관 실패 `tests/workflows/deploy-contract.test.ts` 1건 제외 — 변경 전과 동일).
+- 사용자 요청이 없어 커밋하지 않았습니다. 변경은 전부 워킹 트리에 남아 있습니다.
+- 이력 문서(`wiki/session-memory.md`, `wiki/worklogs/indexing.jsonl`, 이 파일의 기존 항목)의 과거 `project/wiki/...` 언급은 당시 실제 경로이므로 의도적으로 수정하지 않았습니다.
 
 ## Notion status 게시 제어 기능 checkpoint (2026-08-18)
 

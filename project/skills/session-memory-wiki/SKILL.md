@@ -1,11 +1,11 @@
 ---
 name: session-memory-wiki
-description: Use when a blog agent session ends or when durable decisions, verification evidence, open risks, or implementation memory must be written to project/wiki and safely committed.
+description: Use when a blog agent session ends or when durable decisions, verification evidence, open risks, or implementation memory must be written to the local (gitignored) wiki.
 ---
 
 # Session Memory Wiki
 
-세션 종료 시 `project/hooks/session-end.mjs`가 이 skill의 계약을 실행한다. 상세 wiki 운영 규칙은 [`project/wiki/agent-memory.md`](../../wiki/agent-memory.md)를 읽는다.
+세션 종료 시 `project/hooks/session-end.mjs`가 이 skill의 계약을 실행한다. 상세 wiki 운영 규칙은 [`wiki/agent-memory.md`](../../../wiki/agent-memory.md)를 읽는다.
 
 ## 기록할 것
 
@@ -26,4 +26,4 @@ description: Use when a blog agent session ends or when durable decisions, verif
 @'{"type":"session_end","session_id":"local","summary":"...","decisions":["..."],"risks":["..."]}'@ | node project/hooks/session-end.mjs
 ```
 
-hook은 wiki memory를 갱신하고 `project/skills`, `project/hooks`, `project/wiki` 범위만 stage한 뒤 commit한다. 범위 밖의 사용자 변경은 자동 commit하지 않는다.
+hook은 `wiki/` memory를 로컬에 갱신한다(`wiki/`는 gitignore 대상, 커밋되지 않음 — 로컬 관리 후 별도 Obsidian repo로 이관 예정). `project/skills`, `project/hooks` 범위만 stage한 뒤 commit한다. 범위 밖의 사용자 변경은 자동 commit하지 않는다.

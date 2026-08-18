@@ -95,3 +95,6 @@ next-env.d.ts
 # notion api data cache
 .cache
 
+# local wiki (Obsidian-managed, not tracked in this repo)
+/wiki/
+

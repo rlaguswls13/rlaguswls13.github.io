@@ -3,9 +3,9 @@ import path from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-const MEMORY_PATH = path.join("project", "wiki", "session-memory.md");
+const MEMORY_PATH = path.join("wiki", "session-memory.md");
 const HANDOFF_PATH = path.join(".agent", "session-handoff.md");
-const COMMIT_PATHS = Object.freeze(["project/skills", "project/hooks", "project/wiki"]);
+const COMMIT_PATHS = Object.freeze(["project/skills", "project/hooks"]);
 const HANDOFF_STATUSES = Object.freeze(["empty", "active", "blocked", "ready"]);
 
 function redact(value) {

@@ -3,9 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const DEFAULT_REGISTRY_PATH = "project/wiki/rag/source-registry.json";
-const DEFAULT_INDEX_PATH = "project/wiki/rag/document-index.json";
-const DEFAULT_WORKLOG_PATH = "project/wiki/worklogs/indexing.jsonl";
+const DEFAULT_REGISTRY_PATH = "wiki/rag/source-registry.json";
+const DEFAULT_INDEX_PATH = "wiki/rag/document-index.json";
+const DEFAULT_WORKLOG_PATH = "wiki/worklogs/indexing.jsonl";
 const RETRIEVAL_MODES = new Set(["default", "secondary", "history-only"]);
 
 function sha256(value) {

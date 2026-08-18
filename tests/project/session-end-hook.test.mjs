@@ -20,7 +20,7 @@ describe("project session-end hook", () => {
         },
       });
 
-      const memory = fs.readFileSync(path.join(root, "project/wiki/session-memory.md"), "utf8");
+      const memory = fs.readFileSync(path.join(root, "wiki/session-memory.md"), "utf8");
       expect(result).toMatchObject({ updated: true, committed: false });
       expect(memory).toContain("NOTION_TOKEN=[REDACTED]");
       expect(memory).not.toContain("secret-value");
@@ -37,7 +37,7 @@ describe("project session-end hook", () => {
         committed: false,
         reason: "not-session-end",
       });
-      expect(fs.existsSync(path.join(root, "project/wiki/session-memory.md"))).toBe(false);
+      expect(fs.existsSync(path.join(root, "wiki/session-memory.md"))).toBe(false);
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }
@@ -88,13 +88,14 @@ describe("project session-end hook", () => {
     }
   });
 
-  it("Given scoped project changes When session end commits Then unrelated files remain unstaged", async () => {
+  it("Given scoped project changes When session end commits Then wiki and unrelated files remain unstaged", async () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "blog-session-hook-git-"));
     try {
       execFileSync("git", ["init", "-q"], { cwd: root });
       execFileSync("git", ["config", "user.name", "fixture"], { cwd: root });
       execFileSync("git", ["config", "user.email", "fixture@example.test"], { cwd: root });
-      fs.mkdirSync(path.join(root, "project/wiki"), { recursive: true });
+      fs.mkdirSync(path.join(root, "project/skills"), { recursive: true });
+      fs.writeFileSync(path.join(root, "project/skills/example.md"), "# Example\n", "utf8");
       fs.writeFileSync(path.join(root, "outside.txt"), "user change", "utf8");
       execFileSync("git", ["add", "outside.txt"], { cwd: root });
 
@@ -102,8 +103,10 @@ describe("project session-end hook", () => {
       const tracked = execFileSync("git", ["show", "--name-only", "--format=", "HEAD"], { cwd: root, encoding: "utf8" });
 
       expect(result.committed).toBe(true);
-      expect(tracked).toContain("project/wiki/session-memory.md");
+      expect(tracked).toContain("project/skills/example.md");
+      expect(tracked).not.toContain("wiki/session-memory.md");
       expect(tracked).not.toContain("outside.txt");
+      expect(fs.existsSync(path.join(root, "wiki/session-memory.md"))).toBe(true);
       expect(fs.readFileSync(path.join(root, "outside.txt"), "utf8")).toBe("user change");
       expect(execFileSync("git", ["diff", "--cached", "--name-only"], { cwd: root, encoding: "utf8" })).toContain("outside.txt");
     } finally {
