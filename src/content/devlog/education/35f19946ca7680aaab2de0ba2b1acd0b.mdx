@@ -1,4 +1,5 @@
 ---
+status: "publish"
 tag: ["상수","형변환","메모리 구조","연산자","조건문"]
 description: "오늘 교육을 들으며 평소 익숙하게만 생각했던 상수와 형변환, 그리고 그 이면의 메모리 구조에 대해 다시금 깊이 생각해보게 되었습니다.\n\n사실 현업에서 바쁘게 코드를 작성하다 보면 메모리 구조까지 세심하게 신경 쓰지 못할 때가 많은데, 그로 인해 발생하는 예상치 못한 문제들이 참 많았다는 점이 새삼 와닿았습니다. 특히 형변환 과정에서 마주할 수 있는 NPE나 오버플로우 같은 문제들은 자칫 간과하기 쉽지만, 시스템에는 치명적일 수 있다는 점을 다시 한번 되새기는 유익한 시간이었습니다."
 subcategory: "2026"
@@ -9,7 +10,7 @@ slug: "java-constants-type-casting-and-memory"
 title: "Java 기본 : 상수, 형변환 (메모리구조)"
 page_id: "35f19946-ca76-80aa-ab2d-e0ba2b1acd0b"
 source_id: "35f19946ca7680aaab2de0ba2b1acd0b"
-last_edited_time: "2026-08-03T03:41:00.000Z"
+last_edited_time: "2026-08-18T03:22:00.000Z"
 notion_url: "https://app.notion.com/p/Java-35f19946ca7680aaab2de0ba2b1acd0b"
 id: "35f19946ca7680aaab2de0ba2b1acd0b"
 sourceId: "35f19946-ca76-80aa-ab2d-e0ba2b1acd0b"
@@ -19,6 +20,8 @@ journal_category: "education"
 package: "2026"
 notionUrl: "https://app.notion.com/p/Java-35f19946ca7680aaab2de0ba2b1acd0b"
 ---
+
+<notion-project-tabs>
 
 ## 목차
 
@@ -182,10 +185,8 @@ Java 프로그래밍에서 형변환은 단순히 데이터의 타입을 바꾸�
 
 <NotionImage src="/images/notion/35f19946ca768083b34bdc26c2f64270.png" caption="image" />
 
-## cavans 이미지 소스
 
-
-<NotionIndent>
+<notion-project-tab title="cavans 이미지 소스">
 
 
 ```html
@@ -472,7 +473,7 @@ Java 프로그래밍에서 형변환은 단순히 데이터의 타입을 바꾸�
 ```
 
 
-</NotionIndent>
+</notion-project-tab>
 
 JVM의 메모리 관리는 프로그램의 성능과 직결됩니다. 노션에서 시각적으로 확인할 수 있도록 구조화합니다.
 
@@ -551,4 +552,7 @@ public class CalculatorProject {
 - **상수 관리**: `final`과 스네이크 케이스를 사용하여 값의 불변성을 보장하고 가독성을 높입니다.
 - **안전한 형변환**: 명시적 형변환 시 데이터 유실에 주의하며, 문자열 변환 시에는 반드시 `try-catch`로 예외를 방어합니다.
 - **메모리 효율**: 객체는 Heap에, 실행 로직은 Stack에 쌓인다는 점을 이해하여 메모리 누수를 방지합니다.
+
+
+</notion-project-tabs>
 

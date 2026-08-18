@@ -1,4 +1,5 @@
 ---
+status: "publish"
 tag: ["DOM","BOM"]
 description: "자바스크립트의 최하단 구동 엔진 메커니즘을 파악하고 나면, 브라우저 환경을 구성하는 BOM(Browser Object Model)과 DOM(Document Object Model)은 자바스크립트로 제어 가능한 객체들의 집합일 뿐임을 알 수 있습니다. 브라우저 창 전체를 제어하는 규칙인 BOM의 계층 구조 내에서, 실제 HTML 문서의 뼈대를 이루는 DOM 객체들이 유기적으로 상호작용하게 됩니다. 이 DOM 트리 위에서 발생하는 이벤트는 자식에서 부모로 자연스럽게 흐르는 버블링(Bubbling) 특성을 가지며, 이 메커니즘을 활용해 최상위 요소에서 하위 액션들을 한 번에 통제하는 이벤트 위임(Event Delegation)이라는 영리한 제약 조건이 성립합니다. 결국 바닐라 자바스크립트 환경에서의 웹 개발이란, 브라우저가 제공하는 이 원시적인 객체 구조 속에서 이벤트(Event)의 흐름과 데이터(Data)의 상태를 적절히 조합하여 일관된 실행 규칙을 만들어가는 과정입니다.\n 이러한 이벤트와 데이터의 조합 규칙과 앞서 공부했던 리액트(React) 생태계에 대입해 보면, 프레임워크가 강제하는 데이터 바인딩과 수명 주기의 본질을 한층 더 깊이 있게 이해할 수 있습니다.  컴포넌트의 마운트(Mount)와 언마운트(Unmount)는 계산된 가상 DOM 스냅샷을 브라우저의 원시 DOM API(appendChild, removeChild)를 통해 물리적인 트리 구조에 삽입하고 제거하는 규칙의 추상화입니다. 결과적으로 프런트엔드의 생명주기 관리란 하이레벨에서 정립된 고도화된 약속의 집합체인 것입니다."
 subcategory: "2026"
@@ -9,7 +10,7 @@ slug: "dom-bom-event-delegation-bubbling"
 title: "DOM/BOM, 이벤트 위임, 버블링 특성과 제어"
 page_id: "38e19946-ca76-8000-b2fa-dd797469364b"
 source_id: "38e19946ca768000b2fadd797469364b"
-last_edited_time: "2026-08-03T03:41:00.000Z"
+last_edited_time: "2026-08-18T03:22:00.000Z"
 notion_url: "https://app.notion.com/p/DOM-BOM-38e19946ca768000b2fadd797469364b"
 id: "38e19946ca768000b2fadd797469364b"
 sourceId: "38e19946-ca76-8000-b2fa-dd797469364b"

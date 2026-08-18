@@ -1,6 +1,6 @@
 {
   "verdict": "PASS",
-  "route_count": 95,
+  "route_count": 85,
   "blocker_count": 0,
   "routes": [
     {
@@ -101,18 +101,6 @@
       }
     },
     {
-      "route": "/projects/i",
-      "file": "projects/i.html",
-      "kind": "detail",
-      "heading": "레거시 코드로 인한 메모리 누수 해결",
-      "status": "PASS",
-      "metadata": {
-        "title": "레거시 코드로 인한 메모리 누수 해결 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/projects/i",
-        "jsonLd": []
-      }
-    },
-    {
       "route": "/projects/d",
       "file": "projects/d.html",
       "kind": "detail",
@@ -182,117 +170,6 @@
         "title": "솔루션 배포/개발 파이프라인(DevOps) 체계 구축 | TECH LOG",
         "canonical": "https://rlaguswls13.github.io/projects/c",
         "jsonLd": []
-      }
-    },
-    {
-      "route": "/projects/b",
-      "file": "projects/b.html",
-      "kind": "detail",
-      "heading": "개인 포트폴리오 홈페이지 생성",
-      "status": "PASS",
-      "metadata": {
-        "title": "개인 포트폴리오 홈페이지 생성 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/projects/b",
-        "jsonLd": []
-      }
-    },
-    {
-      "route": "/projects/a",
-      "file": "projects/a.html",
-      "kind": "detail",
-      "heading": "파일 업로드",
-      "status": "PASS",
-      "metadata": {
-        "title": "파일 업로드 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/projects/a",
-        "jsonLd": []
-      }
-    },
-    {
-      "route": "/devlog/blog/2026-first-half-interview-retrospective",
-      "file": "devlog/blog/2026-first-half-interview-retrospective.html",
-      "kind": "detail",
-      "heading": "2026년 상반기 면접을 보면서..",
-      "status": "PASS",
-      "metadata": {
-        "title": "2026년 상반기 면접을 보면서.. | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/devlog/blog/2026-first-half-interview-retrospective",
-        "jsonLd": [
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": "2026년 상반기 면접을 보면서.. | TECH LOG",
-            "description": "26년도 6~7월 취업을 위해서 면접을 본 후기와 면담 이후 개선점에 대한 생각을 작성해봤다.",
-            "url": "https://rlaguswls13.github.io/devlog/blog/2026-first-half-interview-retrospective",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://rlaguswls13.github.io/devlog/blog/2026-first-half-interview-retrospective"
-            },
-            "datePublished": "2026-07-20",
-            "author": {
-              "@type": "Person",
-              "name": "김현진"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "route": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
-      "file": "devlog/blog/building-a-knowledge-mind-map-with-obsidian.html",
-      "kind": "detail",
-      "heading": "옵시디언으로 지식 마인드맵 만들어보기",
-      "status": "PASS",
-      "metadata": {
-        "title": "옵시디언으로 지식 마인드맵 만들어보기 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
-        "jsonLd": [
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": "옵시디언으로 지식 마인드맵 만들어보기 | TECH LOG",
-            "description": "상황이 바쁘다보면 AI 질의, 인터넷 서치를 빠르게하고 휘발성으로 찾은 정보를 사용하는게 주가 되어서 이걸 좀 더 체계적으로 활용해보고자 옵시디언을 사용해봤다.",
-            "url": "https://rlaguswls13.github.io/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://rlaguswls13.github.io/devlog/blog/building-a-knowledge-mind-map-with-obsidian"
-            },
-            "datePublished": "2026-07-23",
-            "author": {
-              "@type": "Person",
-              "name": "김현진"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "route": "/devlog/blog/rebuilding-from-specs-without-git",
-      "file": "devlog/blog/rebuilding-from-specs-without-git.html",
-      "kind": "detail",
-      "heading": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
-      "status": "PASS",
-      "metadata": {
-        "title": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/devlog/blog/rebuilding-from-specs-without-git",
-        "jsonLd": [
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중 | TECH LOG",
-            "description": "메시지 규약에 따른 템플릿과 타깃팅 정보를 눈으로 쉽게 확인하기 위한 무료 툴을 제작하고 있었다. 하지만 작업물을 합치는 과정에서 Git이 심하게 꼬였고, 하필 이 타이밍에 PC 초기화까지 진행되면서 그동안 작성한 코드가 전멸했다.\n순간 아찔했지만, 다행히 메모장에 남겨둔 작업 명세가 있었다. 지금은 그 기록과 기억을 이정표 삼아 차근차근 복구해 나가는 중이다.",
-            "url": "https://rlaguswls13.github.io/devlog/blog/rebuilding-from-specs-without-git",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://rlaguswls13.github.io/devlog/blog/rebuilding-from-specs-without-git"
-            },
-            "datePublished": "2026-07-28",
-            "author": {
-              "@type": "Person",
-              "name": "김현진"
-            }
-          }
-        ]
       }
     },
     {
@@ -1389,122 +1266,6 @@
               "@id": "https://rlaguswls13.github.io/devlog/education/jsp-and-jstl"
             },
             "datePublished": "2026-07-07",
-            "author": {
-              "@type": "Person",
-              "name": "김현진"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "route": "/devlog/education/spring-mvc-request-response",
-      "file": "devlog/education/spring-mvc-request-response.html",
-      "kind": "detail",
-      "heading": "Spring MVC에서 응답(Response)와 요청(Request) 구조",
-      "status": "PASS",
-      "metadata": {
-        "title": "Spring MVC에서 응답(Response)와 요청(Request) 구조 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/devlog/education/spring-mvc-request-response",
-        "jsonLd": [
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": "Spring MVC에서 응답(Response)와 요청(Request) 구조 | TECH LOG",
-            "description": "Spring MVC에서 응답(Response)와 요청(Request) 구조",
-            "url": "https://rlaguswls13.github.io/devlog/education/spring-mvc-request-response",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://rlaguswls13.github.io/devlog/education/spring-mvc-request-response"
-            },
-            "datePublished": "2026-07-08",
-            "author": {
-              "@type": "Person",
-              "name": "김현진"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "route": "/devlog/education/requirements-definition-document",
-      "file": "devlog/education/requirements-definition-document.html",
-      "kind": "detail",
-      "heading": "요구사항 정의서란?",
-      "status": "PASS",
-      "metadata": {
-        "title": "요구사항 정의서란? | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/devlog/education/requirements-definition-document",
-        "jsonLd": [
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": "요구사항 정의서란? | TECH LOG",
-            "description": "요구사항 정의서란?",
-            "url": "https://rlaguswls13.github.io/devlog/education/requirements-definition-document",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://rlaguswls13.github.io/devlog/education/requirements-definition-document"
-            },
-            "datePublished": "2026-07-10",
-            "author": {
-              "@type": "Person",
-              "name": "김현진"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "route": "/devlog/education/semi-project",
-      "file": "devlog/education/semi-project.html",
-      "kind": "detail",
-      "heading": "세미프로젝트",
-      "status": "PASS",
-      "metadata": {
-        "title": "세미프로젝트 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/devlog/education/semi-project",
-        "jsonLd": [
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": "세미프로젝트 | TECH LOG",
-            "description": "세미프로젝트",
-            "url": "https://rlaguswls13.github.io/devlog/education/semi-project",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://rlaguswls13.github.io/devlog/education/semi-project"
-            },
-            "datePublished": "2026-07-13",
-            "author": {
-              "@type": "Person",
-              "name": "김현진"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "route": "/devlog/education/spring-filter-and-interceptor",
-      "file": "devlog/education/spring-filter-and-interceptor.html",
-      "kind": "detail",
-      "heading": "Spring에서 Filter와 Interceptor의 쓰임",
-      "status": "PASS",
-      "metadata": {
-        "title": "Spring에서 Filter와 Interceptor의 쓰임 | TECH LOG",
-        "canonical": "https://rlaguswls13.github.io/devlog/education/spring-filter-and-interceptor",
-        "jsonLd": [
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": "Spring에서 Filter와 Interceptor의 쓰임 | TECH LOG",
-            "description": "Spring에서 Filter와 Interceptor의 쓰임",
-            "url": "https://rlaguswls13.github.io/devlog/education/spring-filter-and-interceptor",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://rlaguswls13.github.io/devlog/education/spring-filter-and-interceptor"
-            },
-            "datePublished": "2026-07-09",
             "author": {
               "@type": "Person",
               "name": "김현진"

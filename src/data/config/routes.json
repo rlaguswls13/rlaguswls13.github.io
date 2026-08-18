@@ -183,34 +183,13 @@
     }
   },
   "blog": {
-    "byPageId": {
-      "3a319946ca768078b891d2ebf14c4741": "/devlog/blog/2026-first-half-interview-retrospective",
-      "3a619946ca7680288a44ef2065a0c130": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
-      "3ab19946ca768020a285dc6c49b14793": "/devlog/blog/rebuilding-from-specs-without-git"
-    },
-    "bySlug": {
-      "2026-first-half-interview-retrospective": {
-        "id": "3a319946ca768078b891d2ebf14c4741",
-        "url": "/devlog/blog/2026-first-half-interview-retrospective"
-      },
-      "building-a-knowledge-mind-map-with-obsidian": {
-        "id": "3a619946ca7680288a44ef2065a0c130",
-        "url": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian"
-      },
-      "rebuilding-from-specs-without-git": {
-        "id": "3ab19946ca768020a285dc6c49b14793",
-        "url": "/devlog/blog/rebuilding-from-specs-without-git"
-      }
-    }
+    "byPageId": {},
+    "bySlug": {}
   },
   "education": {
     "byPageId": {
-      "3a319946ca7680a6b7b3f98589e30442": "/devlog/education/spring-filter-and-interceptor",
       "3a319946ca7680f58266f72bdafd3de8": "/devlog/education/spring-framework-for-web-applications",
       "3a319946ca76800bb0c3ea701fc098b2": "/devlog/education/jsp-and-jstl",
-      "3a319946ca76802aa2cff193b6a2456e": "/devlog/education/spring-mvc-request-response",
-      "3a319946ca76806db9ecf8824115ebea": "/devlog/education/requirements-definition-document",
-      "3a319946ca76807b8e7ac1d05c32e441": "/devlog/education/semi-project",
       "35e19946ca76807b9fe4f64d17b2e1b6": "/devlog/education/java-development-environment-and-basic-syntax",
       "35f19946ca7680aaab2de0ba2b1acd0b": "/devlog/education/java-constants-type-casting-and-memory",
       "36d19946ca7680559155e3820742c2be": "/devlog/education/java-composite-feature-implementation",
@@ -249,10 +228,6 @@
       "39519946ca7680febec1c485280ca77b": "/devlog/education/mvc-pattern-fundamentals"
     },
     "bySlug": {
-      "spring-filter-and-interceptor": {
-        "id": "3a319946ca7680a6b7b3f98589e30442",
-        "url": "/devlog/education/spring-filter-and-interceptor"
-      },
       "spring-framework-for-web-applications": {
         "id": "3a319946ca7680f58266f72bdafd3de8",
         "url": "/devlog/education/spring-framework-for-web-applications"
@@ -260,18 +235,6 @@
       "jsp-and-jstl": {
         "id": "3a319946ca76800bb0c3ea701fc098b2",
         "url": "/devlog/education/jsp-and-jstl"
-      },
-      "spring-mvc-request-response": {
-        "id": "3a319946ca76802aa2cff193b6a2456e",
-        "url": "/devlog/education/spring-mvc-request-response"
-      },
-      "requirements-definition-document": {
-        "id": "3a319946ca76806db9ecf8824115ebea",
-        "url": "/devlog/education/requirements-definition-document"
-      },
-      "semi-project": {
-        "id": "3a319946ca76807b8e7ac1d05c32e441",
-        "url": "/devlog/education/semi-project"
       },
       "java-development-environment-and-basic-syntax": {
         "id": "35e19946ca76807b9fe4f64d17b2e1b6",

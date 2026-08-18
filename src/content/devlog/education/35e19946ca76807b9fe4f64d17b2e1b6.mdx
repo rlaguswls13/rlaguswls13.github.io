@@ -1,4 +1,5 @@
 ---
+status: "publish"
 tag: ["eclipse 설치","변수","java설치"]
 description: "오늘 교육은 이전에 해본 경험이 있어서 쉬운 내용이 였습니다.\n앞으로의 목표는 지각하지 않고 성실하게 교육 참여하고 꾸준히 교육 내용 정리해서 작성하는 게  1번 입니다 . :)"
 subcategory: "2026"
@@ -9,7 +10,7 @@ slug: "java-development-environment-and-basic-syntax"
 title: "Java 환경 구축 및 기본 문법"
 page_id: "35e19946-ca76-807b-9fe4-f64d17b2e1b6"
 source_id: "35e19946ca76807b9fe4f64d17b2e1b6"
-last_edited_time: "2026-08-03T03:40:00.000Z"
+last_edited_time: "2026-08-18T03:22:00.000Z"
 notion_url: "https://app.notion.com/p/Java-35e19946ca76807b9fe4f64d17b2e1b6"
 id: "35e19946ca76807b9fe4f64d17b2e1b6"
 sourceId: "35e19946-ca76-807b-9fe4-f64d17b2e1b6"
@@ -19,6 +20,8 @@ journal_category: "education"
 package: "2026"
 notionUrl: "https://app.notion.com/p/Java-35e19946ca76807b9fe4f64d17b2e1b6"
 ---
+
+<notion-project-tabs>
 
 ## 목차
 
@@ -33,14 +36,6 @@ notionUrl: "https://app.notion.com/p/Java-35e19946ca76807b9fe4f64d17b2e1b6"
 - [4. 표준 출력과 에러 출력 (sout, serr)](#4-표준-출력과-에러-출력-sout-serr)
 - [5. 특수 문자 표기 방법 (Escape Sequence)](#5-특수-문자-표기-방법-escape-sequence)
 - [6. 다양한 변수 사용에 앞서 고민할 사항](#6-다양한-변수-사용에-앞서-고민할-사항)
-  - [개념 비유를 통한 이해](#개념-비유를-통한-이해)
-  - [실무적 선택 기준](#실무적-선택-기준)
-  - [Nullable 처리 시 주의점](#nullable-처리-시-주의점)
-  - [주제 1 관련 예시 코드](#주제-1-관련-예시-코드)
-  - [개념 비유를 통한 이해](#개념-비유를-통한-이해-2)
-  - [구분의 이유와 장단점](#구분의-이유와-장단점)
-  - [불변 설계를 위한 Builder 패턴의 효용성](#불변-설계를-위한-builder-패턴의-효용성)
-  - [주제 2 관련 예시 코드](#주제-2-관련-예시-코드)
   - [성능과 가독성의 균형](#성능과-가독성의-균형)
 
 <a id="1-java-및-ide-설치-환경-구성"></a>
@@ -193,10 +188,8 @@ public class EscapeExample {
 
 ## 6. 다양한 변수 사용에 앞서 고민할 사항
 
-## 1. 기본형(Primitive) vs 래퍼 클래스(Wrapper Class)
 
-
-<NotionIndent>
+<notion-project-tab title="1. 기본형(Primitive) vs 래퍼 클래스(Wrapper Class)">
 
 Java 개발 시 가장 먼저 마주하는 선택은 데이터를 기본형으로 선언할 것인지, 아니면 객체 형태인 래퍼 클래스로 선언할 것인지에 대한 결정입니다.
 
@@ -255,16 +248,14 @@ public class PrimitiveWrapperComparison {
 ```
 
 
-</NotionIndent>
-
-## 2. 가변(Mutable) vs 불변(Immutable) 객체
+</notion-project-tab>
 
 
-<NotionIndent>
+<notion-project-tab title="2. 가변(Mutable) vs 불변(Immutable) 객체">
 
 객체의 상태를 생성 후에 변경할 수 있는지 여부는 시스템의 안정성과 멀티스레드 환경에서의 데이터 정합성을 결정짓는 중요한 설계 포인트입니다.
 
-<a id="개념-비유를-통한-이해-2"></a>
+<a id="개념-비유를-통한-이해"></a>
 
 ### 개념 비유를 통한 이해
 
@@ -356,7 +347,7 @@ public class MutableImmutableTest {
 ```
 
 
-</NotionIndent>
+</notion-project-tab>
 
 위 두 주제를 실무에 적용할 때 가장 중요하게 고려해야 할 포인트는 다음과 같습니다.
 
@@ -370,4 +361,8 @@ public class MutableImmutableTest {
 *msi : 마이크로소프트 인스톨러(Microsoft Installer)
 
 *binary : 소스 코드를 컴퓨터가 즉시 실행할 수 있는 영문과 숫자의 집합(기계어)으로 변환한 파일 구조를 바이너리
+
+
+
+</notion-project-tabs>
 

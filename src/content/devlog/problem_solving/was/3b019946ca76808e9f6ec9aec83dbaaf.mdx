@@ -4,11 +4,12 @@ created_date: "2026-05-26"
 tag: ["SpringBoot","LoadBalance","Redis","JWT","Clustering","Session","Tomcat","WAS"]
 slug: "was-session-consistency"
 subcategory: "was"
+status: "publish"
 description: "WAS 이중화 환경에서 로드밸런서에 의해 요청이 분산될 때 발생하는 세션 불일치 문제를 인프라·WAS·애플리케이션 3개 레벨의 해결 방안으로 분석합니다."
 title: "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안"
 page_id: "3b019946-ca76-808e-9f6e-c9aec83dbaaf"
 source_id: "3b019946ca76808e9f6ec9aec83dbaaf"
-last_edited_time: "2026-08-02T17:35:00.000Z"
+last_edited_time: "2026-08-18T03:21:00.000Z"
 notion_url: "https://app.notion.com/p/WAS-3b019946ca76808e9f6ec9aec83dbaaf"
 id: "3b019946ca76808e9f6ec9aec83dbaaf"
 sourceId: "3b019946-ca76-808e-9f6e-c9aec83dbaaf"
@@ -202,6 +203,7 @@ http {
 <tr><td><strong>단점</strong></td><td>특정 WAS(예: A 서버)에 장애가 발생하면, 해당 서버에 종속된 유저들은 B 서버로 이동하면서 세션 데이터가 유실되므로 인증 로직을 처음부터 다시 태워야 합니다. 또한 부하 분산의 균형이 깨질 수 있습니다.</td></tr>
 </tbody>
 </NotionTable>
+
 
 
 <NotionDivider />
