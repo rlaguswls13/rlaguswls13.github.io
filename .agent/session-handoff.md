@@ -1,9 +1,16 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-18T09:20:00+09:00
+updated_at: 2026-08-18T09:28:00+09:00
 agent: Claude Code
 ---
+
+## 환경변수 rename checkpoint (2026-08-18)
+
+- 사용자 요청으로 `NAVER_SITE_VERIFICATION` 환경변수명을 `SEARCH_ADVISER_VERIFICATION`으로 교체했습니다. 내부 config 필드명(`naver.siteVerification`)과 실제 HTML meta 태그명(`naver-site-verification`, 네이버가 요구하는 고정 값)은 변경하지 않았습니다 — env var 이름만 바뀐 것입니다.
+- 변경 파일: `.env.local.yml`(gitignored, 사용자가 직접 실 소유확인 토큰을 채워 넣음), `scripts/config/generate-build-resources.mjs`, `.github/workflows/deploy.yml`, `tests/config/build-resources.test.mjs`, `project/wiki/operations/guide.md`, `project/skills/naver-search-advisor-operations/SKILL.md`.
+- 검증: `npm run typecheck`/`lint:ci` PASS, `npx vitest run tests/config` PASS(10/10), 실제 `next build` 후 `out/index.html`에 `<meta name="naver-site-verification" content="c70da3cf7f445873e4effc6281cfaab00c4eb3c1">`가 실제 토큰으로 렌더링됨을 확인, `npm run validate:export` PASS(95 routes, 0 blockers).
+- GitHub Actions Variable도 기존에 `NAVER_SITE_VERIFICATION`으로 설정했다면 `SEARCH_ADVISER_VERIFICATION`으로 다시 설정해야 배포본에 태그가 반영됩니다.
 
 ## SEO/검색엔진 등록 정비 checkpoint (2026-08-18)
 

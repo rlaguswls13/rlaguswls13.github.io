@@ -51,7 +51,7 @@ jobs:
           ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
           GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
           SEARCH_CONSOLE_VERIFICATION: ${{ vars.SEARCH_CONSOLE_VERIFICATION }}
-          NAVER_SITE_VERIFICATION: ${{ vars.NAVER_SITE_VERIFICATION }}
+          SEARCH_ADVISER_VERIFICATION: ${{ vars.SEARCH_ADVISER_VERIFICATION }}
           GISCUS_INFO: ${{ vars.GISCUS_INFO }}
         run: npm run build:no-fetch
       - uses: actions/configure-pages@v5

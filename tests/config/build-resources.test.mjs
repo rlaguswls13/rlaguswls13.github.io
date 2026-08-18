@@ -53,7 +53,7 @@ describe("static build resources", () => {
         ADSENSE_ACCOUNT: "ca-pub-1234",
         GA4_PROPERTY_ID: "G-TEST123",
         SEARCH_CONSOLE_VERIFICATION: "verification-token",
-        NAVER_SITE_VERIFICATION: "naver-verification-token",
+        SEARCH_ADVISER_VERIFICATION: "naver-verification-token",
       },
     });
 

@@ -19,7 +19,7 @@ export async function generateBuildResources({ root = process.cwd(), env = proce
       searchConsoleVerification: optionalValue(env.SEARCH_CONSOLE_VERIFICATION),
     },
     naver: {
-      siteVerification: optionalValue(env.NAVER_SITE_VERIFICATION),
+      siteVerification: optionalValue(env.SEARCH_ADVISER_VERIFICATION),
     },
   };
   const configDirectory = path.join(root, ".cache", "build");
