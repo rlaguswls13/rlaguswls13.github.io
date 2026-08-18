@@ -1,9 +1,28 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-18T09:45:00+09:00
+updated_at: 2026-08-18T14:20:00+09:00
 agent: Claude Code
 ---
+
+## Notion status 게시 제어 기능 checkpoint (2026-08-18)
+
+- 사용자 요청: Notion `status` 컬럼(select) 값에 따라 `publish`는 실제 게시, `ready`는 "수정중" 대체화면 게시, `temp`는 URL 자체를 숨겨 미게시하도록 구현.
+- 구현: `schema-contract.mjs`에 `status` 컬럼(enum: publish/ready/temp) 등록 → `sync-pages.mjs`가 frontmatter에 `status` 필드를 기록(값 없으면 `publish` 기본) → `build-{devlog,journal,project}-index.mjs`, `scripts/slug/generate.mjs`, `scripts/recommendations/generate.mjs` 5곳 모두 `status === "temp"`인 항목을 목록/슬러그/라우트/추천 인덱스에서 제외 → devlog/projects 상세 페이지는 `status === "ready"`일 때 신규 `EditingPlaceholder` 컴포넌트를 렌더링.
+- 발견/수정한 버그 3건(순서대로): (1) 실제 Notion 컬럼명이 `state`가 아니라 `status`인데 스키마 키를 `state`로 잘못 등록해 전체 journal quarantine 발생 — `status`로 정정. (2) `output` 필드가 실제로는 어디서도 적용되지 않는 죽은 메타데이터라 `row.state`가 항상 undefined였음 — `row.status`를 읽도록 수정. (3) `sync-pages.mjs`가 `status==="temp"` 행을 통째로 skip해서, 이미 발행됐다가 나중에 temp로 바뀐 기존 글은 frontmatter가 영원히 갱신 안 됨 — 썸네일 요구만 건너뛰고 나머지는 정상 동기화하도록 수정. (4) `scripts/content/content-contract.mjs` 검증 계약이 `status` 개념을 몰라 temp 제외 항목/빈 카테고리에서 fetch 파이프라인 전체가 막힘 — temp 항목과, temp로 인해 완전히 빈 카테고리를 검증에서 제외하도록 수정.
+- 사용자 피드백으로 내부 필드명을 `state`에서 실제 Notion 컬럼명인 `status`로 전부 통일(코드 8개 파일 + frontmatter 전체 재동기화).
+- `npm run fetch-notion -- --force`로 전체 콘텐츠를 재동기화한 결과, 라이브 Notion에서 실제로 10개 게시글이 `temp`였고 전부 정상 제외됨(저널 45→38, 프로젝트 9→6, 브랜드 뉴 temp 저널 1건은 파일만 생성되고 인덱스엔 미노출).
+- 콘텐츠 변화로 스냅샷을 하드코딩했던 테스트 3개(`tests/export/list-html.test.mjs`의 journal/projects firstTitle 2건, `tests/seo/metadata.test.ts`의 approvedDescriptionSources 중 3/4이 temp가 됨)를 현재 실제 콘텐츠에 맞게 재핀했다.
+- 검증: `npm run validate:content` PASS(77 files), `npm run typecheck`/`lint:ci` PASS, `npx vitest run` 178/179 PASS(무관한 기존 `deploy-contract.test.ts` 실패 1건 제외), `npm run build:no-fetch` 성공, `npm run validate:export` PASS(85 routes, 0 blockers — 95에서 정확히 10개 감소).
+- 사용자 요청으로 커밋 2개 완료: `[ADD] : Notion status(publish/ready/temp) 기반 게시 제어 기능 추가`(코드), `[FETCH] : Notion status 필드 반영 재동기화`(콘텐츠 재생성). PR review는 이 저장소의 기존 관행(직접 push)을 그대로 따라 미수행.
+- 잠재 리스크: `content-contract.mjs`의 empty-category 허용 완화가 향후 실제 devlog 카테고리가 통째로 비는 다른 버그를 가릴 수 있음. 테스트에 새로 핀한 firstTitle/approvedDescriptionSources는 Notion에서 status가 더 바뀌면 다시 깨질 수 있는 하드코딩 값임(사용자가 콘텐츠를 계속 temp/ready로 옮기는 워크플로를 쓰는 것으로 보임).
+
+## 세션 종료 checkpoint (2026-08-18)
+
+- 사용자 요청 `세션 종료`에 따라 마무리 정리를 수행했습니다. `node project/hooks/session-end.mjs`를 `commit: false`로 실행해 이번 세션(네이버/구글 SEO 정비, OG 이미지·파비콘·RSS 신규 구현)의 summary/decisions/verification/risks를 `project/wiki/session-memory.md`에 append했습니다. hook 자체 커밋은 비활성화했으므로 이 diff는 사용자 승인 커밋에 포함되어야 합니다.
+- `npm run wiki:index` 재생성 후 `npm run wiki:index:check` PASS(32 documents).
+- PR review 요청은 이번 세션에서 진행하지 않았습니다 — 이 저장소의 실제 관행은 `main`에 직접 push(브랜치 보호 규칙은 매번 bypass됨)이고, 과거 checkpoint들에서도 PR review는 반복적으로 명시적 미수행 상태로 기록돼 있어 임의로 새 관행을 만들지 않았습니다. 필요하면 사용자가 명시적으로 `/code-review` 등을 요청하면 됩니다.
+- 워킹 트리는 `project/wiki/session-memory.md`와 `project/wiki/rag/document-index.json`(+ 이 파일)만 남아 있고 나머지는 이전 두 커밋(`b91dc53`, `fdb38e6`)에 이미 반영되어 push 완료 상태입니다. `.omc/`는 계속 커밋 대상에서 제외합니다.
 
 ## RSS 피드 구현 checkpoint (2026-08-18)
 

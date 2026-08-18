@@ -475,3 +475,81 @@ Confirmed the repeated Notion fetch CI failure is caused by workflow Secret-name
 ### Changed project surfaces
 - `.agent/session-handoff.md`
 - `project/wiki/session-memory.md`
+
+## 2026-08-18T01:13:18.741Z | claude-code-2026-08-18-seo
+
+### Summary
+네이버 서치어드바이저/구글 서치 콘솔 가이드에 맞춰 SEO 요소를 점검하고 빠진 부분을 구현했습니다. naver-site-verification meta(env var는 사용자 요청으로 SEARCH_ADVISER_VERIFICATION으로 명명), 모든 페이지 robots meta, og:image/twitter:image(next/og 기반 빌드 시 생성되는 opengraph-image.png, 사용자 제공 blog-cover.jpg 배경 사용), favicon(icon.jpg, 사용자 제공), RSS 2.0 피드(/rss.xml)를 신규 구현했습니다. 기존 sitemap.xml/robots.txt/ads.txt/구조화 데이터/google-site-verification은 이미 구현되어 있어 문서화만 했습니다.
+
+### Decisions
+- output: export 환경에서 opengraph-image.tsx 파일 컨벤션이 확장자 없는 파일을 만들어 GitHub Pages가 octet-stream으로 서빙하는 버그(vercel/next.js#82177)를 발견해, 빌드 스크립트에서 직접 .png로 렌더링하는 방식으로 우회함
+- twitter:card를 summary에서 summary_large_image로 변경
+- 이 저장소의 canonical 문서는 project/wiki·project/skills이므로 SEO 관련 신규 skill(naver-search-advisor-operations)과 문서 갱신은 그쪽에 반영하고 OMC 로컬 wiki(.omc/wiki)는 커밋 대상에서 제외
+- RSS 아이템 소스는 devlog-recommendations.json 하나만 사용 (journal 콘텐츠도 devlog blog 카테고리로 이미 발행되어 있어 별도 journal 소스 불필요)
+
+### Verification
+- npm run typecheck / lint:ci / validate:content / wiki:index:check 전부 PASS
+- npx vitest run 178/179 PASS (나머지 1개는 무관한 기존 deploy-contract.test.ts 실패, 이번 세션에서 발생시키지 않음)
+- 실제 next build 후 npm run validate:export PASS (95 routes, 0 blockers)
+- out/opengraph-image.png, out/icon.jpg, out/rss.xml 모두 올바른 확장자/내용으로 생성 확인
+
+### Risks
+- tests/workflows/deploy-contract.test.ts의 fetch-notion.yml secret 이름 불일치 실패는 이 세션 이전부터 존재하던 무관한 이슈로, 손대지 않았습니다
+
+### Changed project surfaces
+- `src/lib/seo/metadata.ts`
+- `src/lib/seo/rss.ts`
+- `src/app/rss.xml/route.ts`
+- `src/app/layout.tsx`
+- `src/app/icon.jpg`
+- `src/app/robots.ts`
+- `scripts/deploy/generate-opengraph-image.mjs`
+- `scripts/config/generate-build-resources.mjs`
+- `src/lib/giscus-info.ts`
+- `scripts/config/giscus-info.mjs`
+- `project/skills/naver-search-advisor-operations/SKILL.md`
+- `project/skills/google-search-feeds/SKILL.md`
+- `project/wiki/operations/guide.md`
+- `project/wiki/architecture/tech-stack.md`
+- `.github/workflows/deploy.yml`
+- `tests/seo/rss.test.ts`
+- `tests/config/build-resources.test.mjs`
+
+## 2026-08-18T05:52:53.237Z | notion-status-publish-gate-2026-08-18
+
+### Summary
+Notion status(publish/ready/temp) 프로퍼티 기반 게시 제어 기능을 구현했다. temp는 slug/route/인덱스에서 완전히 제외해 URL을 숨기고, ready는 상세 페이지를 수정중 대체화면으로 표시하며, publish는 기존과 동일하게 노출한다.
+
+### Decisions
+- Notion 실 컬럼명은 status이므로 코드 필드명도 state가 아닌 status로 통일했다(사용자 피드백 반영).
+- sync-pages.mjs는 temp 행도 정상 동기화하되 썸네일 요구만 건너뛴다 — 이미 발행됐다가 나중에 temp로 바뀐 글도 frontmatter가 갱신되어야 하기 때문이다(초기에는 전체 skip으로 잘못 구현했다가 발견/수정).
+- content-contract.mjs 검증 계약이 temp 개념을 몰라 전체 fetch가 막혔던 문제를 수정 — temp 항목과 temp로 인해 완전히 비어버린 카테고리를 검증에서 제외하도록 했다.
+- state 필드는 output 메타데이터가 실제로는 적용되지 않는 죽은 코드였다는 걸 발견 — row 키는 항상 Notion 원본 속성명을 그대로 쓴다.
+
+### Verification
+- npm run fetch-notion -- --force: 성공, temp 10건 정상 제외
+- npm run validate:content: PASS (77 files)
+- npm run typecheck / lint:ci: PASS
+- npx vitest run: 178/179 PASS (무관한 기존 deploy-contract.test.ts 실패 1건 제외)
+- npm run build:no-fetch + validate:export: PASS (85 routes, 0 blockers, 95에서 10개 정확히 감소)
+
+### Risks
+- content-contract.mjs의 empty-category 허용 완화가 향후 실제로 5개 devlog 카테고리 중 하나가 통째로 비게 되는 다른 버그를 가릴 수 있다 — 필요시 재검토.
+- tests/seo/metadata.test.ts의 approvedDescriptionSources, tests/fixtures/list-html.mjs의 firstTitle은 실 콘텐츠 상태를 하드코딩한 핀 값이라 Notion에서 status를 더 바꾸면 다시 깨질 수 있다.
+
+### Changed project surfaces
+- `scripts/notion/connect/schema-contract.mjs`
+- `scripts/notion/connect/sync-pages.mjs`
+- `scripts/notion/transfer/build-devlog-index.mjs`
+- `scripts/notion/transfer/build-journal-index.mjs`
+- `scripts/notion/transfer/build-project-index.mjs`
+- `scripts/recommendations/generate.mjs`
+- `scripts/slug/generate.mjs`
+- `scripts/content/content-contract.mjs`
+- `src/app/devlog/[category]/[slug]/page.tsx`
+- `src/app/projects/[id]/page.tsx`
+- `src/components/ui/EditingPlaceholder.tsx`
+- `tests/seo/metadata.test.ts`
+- `tests/fixtures/list-html.mjs`
+- `src/content/** (재동기화)`
+- `src/data/** (재생성)`
