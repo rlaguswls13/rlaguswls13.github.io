@@ -274,8 +274,8 @@
           "anchor": "verification-matrix"
         }
       ],
-      "bytes": 3541,
-      "sha256": "daf1c8bc613352f9087cbceb0c9ecd8365e9f0427db3dffd8edd3b11b345f1dc"
+      "bytes": 3827,
+      "sha256": "a0aaa123fd2d677b4f0fa7a2c626b08ab249285f3021e75622fe04bf54e130b2"
     },
     {
       "path": "project/skills/naver-search-advisor-operations/SKILL.md",
@@ -311,8 +311,8 @@
           "anchor": "troubleshooting"
         }
       ],
-      "bytes": 3476,
-      "sha256": "9ab529ab827fa6fd8854806df9b421a70424e9e6402dc74e77ad6847d33d8f63"
+      "bytes": 3492,
+      "sha256": "89595cc08c29f0852abc7a7060301fba8818a569fadcc241f6c6980abc18097e"
     },
     {
       "path": "project/skills/release-gate/references/pre-commit-checklist.md",
@@ -778,8 +778,8 @@
           "anchor": "배포"
         }
       ],
-      "bytes": 7587,
-      "sha256": "01289358e25ed85767de05a1007301ce8ab4735294803a92ec3c649e39268a50"
+      "bytes": 7595,
+      "sha256": "f92e18cff8bdadaeb6da8f1bdffb776907771478214c6e5b3c2be69bc74658c5"
     },
     {
       "path": "project/wiki/pipeline/data-sorting.md",

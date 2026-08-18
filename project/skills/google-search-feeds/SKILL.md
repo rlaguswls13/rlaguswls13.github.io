@@ -5,7 +5,7 @@ description: Use when generating or validating sitemap.xml, RSS or Atom feeds, r
 
 # Google Search Feeds
 
-검색엔진 전용 산출물과 범용 discovery feed를 분리합니다. 현재 `src/app/sitemap.ts`가 canonical absolute URL 기반 `/sitemap.xml`을 생성하고 `src/app/robots.ts`가 이를 선언합니다. RSS route는 아직 없으므로 추가할 때 sitemap과 동일한 URL source를 공유합니다.
+검색엔진 전용 산출물과 범용 discovery feed를 분리합니다. `src/app/sitemap.ts`가 canonical absolute URL 기반 `/sitemap.xml`을 생성하고 `src/app/robots.ts`가 이를 선언합니다. `src/app/rss.xml/route.ts`가 동일한 `devlog-recommendations.json` URL source를 공유하는 `/rss.xml`을 생성해 sitemap과 drift하지 않습니다.
 
 ## Sitemap contract
 
@@ -20,6 +20,7 @@ npm run build:no-fetch
 npm run validate:export
 curl -fsSL https://<site>/sitemap.xml
 curl -fsSL https://<site>/robots.txt
+curl -fsSL https://<site>/rss.xml
 ```
 
 Search Console에서는 **Sitemaps → Add a new sitemap**에 `sitemap.xml`을 제출합니다. 제출은 crawl/indexing 힌트이며 색인이나 순위를 보장하지 않습니다. 네이버 서치어드바이저도 동일한 `/sitemap.xml`을 사이트맵 제출 메뉴에 제출합니다([`naver-search-advisor-operations`](../naver-search-advisor-operations/SKILL.md) 참고).
@@ -28,21 +29,21 @@ Search Console에서는 **Sitemaps → Add a new sitemap**에 `sitemap.xml`을 �
 
 RSS는 Google 전용 파일이 아니라 최신 콘텐츠 배포와 범용 feed discovery용으로 만듭니다.
 
-- 권장 경로: `/rss.xml` 또는 `/feed.xml`; `Content-Type: application/rss+xml; charset=utf-8`
+- 경로: `/rss.xml`; `Content-Type: application/rss+xml; charset=utf-8`
 - RSS 2.0 `channel`, `title`, `link`, `description`, `lastBuildDate`, `item`을 생성합니다.
 - 각 item은 absolute `link`, stable permalink `guid`, `title`, escaped `description`, `pubDate`를 가집니다.
-- 최신 published devlog/journal만 넣고 전체 URL coverage는 sitemap이 책임집니다.
+- 최신 devlog(구 journal 콘텐츠 포함, `devlog-recommendations.json` 기준 20건)만 넣고 전체 URL coverage는 sitemap이 책임집니다.
 - HTML escape, XML 선언, 날짜의 RFC 822/UTC 변환, duplicate guid를 테스트합니다.
-- layout에 `application/rss+xml` alternate link를 추가하면 브라우저·feed reader가 자동 발견할 수 있습니다.
+- 모든 페이지의 `alternates.types["application/rss+xml"]`(`src/lib/seo/metadata.ts`)로 `<link rel="alternate" type="application/rss+xml">`가 자동 삽입되어 브라우저·feed reader가 자동 발견합니다.
 
-Next App Router에서는 `src/app/rss.xml/route.ts`의 `GET` route와 shared URL/content builder를 사용합니다. `new URL()`로 absolute URL을 만들고 `Response`로 XML을 반환합니다. feed에 secret, token, internal path를 포함하지 않습니다.
+구현: `src/lib/seo/rss.ts`의 순수 함수 `buildRssFeed()`가 escape/정렬/dedup/RFC 822 변환을 담당하고(`tests/seo/rss.test.ts`), `src/app/rss.xml/route.ts`의 `GET` route가 실제 `siteConfig`/`devlog-recommendations.json`을 주입해 `Response`로 XML을 반환합니다. feed에 secret, token, internal path를 포함하지 않습니다.
 
 ## Verification matrix
 
 | Surface | Check |
 | --- | --- |
 | `/sitemap.xml` | HTTP 200, valid XML, canonical absolute URLs, no duplicates |
-| `/rss.xml` or `/feed.xml` | HTTP 200, RSS/Atom schema, escaped text, stable guid |
+| `/rss.xml` | HTTP 200, RSS 2.0 schema, escaped text, stable guid |
 | `/robots.txt` | sitemap URL points to the public canonical host |
 | Search Console | submitted sitemap status is readable and errors are investigated |
 | Generic consumers | feed URL works without Search Console and advertises the declared media type |

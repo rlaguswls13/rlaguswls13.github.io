@@ -1,9 +1,18 @@
 ---
 handoff_version: 1
 status: ready
-updated_at: 2026-08-18T09:28:00+09:00
+updated_at: 2026-08-18T09:45:00+09:00
 agent: Claude Code
 ---
+
+## RSS 피드 구현 checkpoint (2026-08-18)
+
+- 사용자가 `rss.xml`이 보이지 않는다고 지적해 확인한 결과, `google-search-feeds` skill 문서에 이미 스펙은 있었으나("RSS route는 아직 없음") 실제 구현이 없었습니다. 스펙대로 신규 구현했습니다.
+- `src/lib/seo/rss.ts` — 순수 함수 `buildRssFeed()`. escape, RFC 822/UTC `pubDate` 변환, 최신순 정렬, guid 기준 dedup, `itemLimit`(기본 20) 담당. `tests/seo/rss.test.ts` 6개 테스트로 커버.
+- `src/app/rss.xml/route.ts` — `GET` route handler, `dynamic = "force-static"`. `devlog-recommendations.json`(sitemap과 동일 source, journal 콘텐츠도 devlog `blog` 카테고리로 이미 발행되어 있어 별도 journal 소스 불필요)과 `siteConfig`, `buildStaticRouteMetadata("root")`를 주입해 `buildRssFeed()` 호출.
+- `src/lib/seo/metadata.ts`의 `buildPageMetadata()`에 `alternates.types["application/rss+xml"]`을 추가해 모든 페이지 `<head>`에 `<link rel="alternate" type="application/rss+xml">` 자동 삽입.
+- `project/skills/google-search-feeds/SKILL.md`를 실제 구현 상태로 갱신(스펙 문서 → 구현 반영 문서), RAG 인덱스 재생성(32 documents, `wiki:index:check` PASS).
+- 검증: `npx vitest run tests/seo/rss.test.ts` 6/6 PASS, 전체 unit 178/179(무관한 기존 `deploy-contract.test.ts` 실패 1건 제외) PASS, `npm run typecheck`/`lint:ci`/`validate:content` PASS, 실제 `next build` 후 `out/rss.xml` 20 items 확인, `npm run validate:export` PASS(95 routes, 0 blockers).
 
 ## 환경변수 rename checkpoint (2026-08-18)
 

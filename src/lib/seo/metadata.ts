@@ -122,6 +122,7 @@ export function buildCanonicalUrl(siteUrl: string, pathname: string, basePath = 
 const OPENGRAPH_IMAGE_PATH = "/opengraph-image.png";
 const OPENGRAPH_IMAGE_WIDTH = 1200;
 const OPENGRAPH_IMAGE_HEIGHT = 630;
+const RSS_FEED_PATH = "/rss.xml";
 
 export function buildPageMetadata(input: PageMetadataInput): PageMetadataContract {
   const title = requireText(input.title, "title");
@@ -129,6 +130,7 @@ export function buildPageMetadata(input: PageMetadataInput): PageMetadataContrac
   const canonical = buildCanonicalUrl(input.siteUrl, input.pathname, input.basePath);
   const author = input.author === undefined ? undefined : requireText(input.author, "author");
   const publishedTime = input.publishedTime === undefined ? undefined : requireText(input.publishedTime, "publishedTime");
+  const rssUrl = buildCanonicalUrl(input.siteUrl, RSS_FEED_PATH, input.basePath);
   const ogImageUrl = buildCanonicalUrl(input.siteUrl, OPENGRAPH_IMAGE_PATH, input.basePath);
   const ogImage = { url: ogImageUrl, width: OPENGRAPH_IMAGE_WIDTH, height: OPENGRAPH_IMAGE_HEIGHT, alt: title };
   const openGraph = input.kind === "article"
@@ -147,7 +149,7 @@ export function buildPageMetadata(input: PageMetadataInput): PageMetadataContrac
     metadata: {
       title,
       description,
-      alternates: { canonical },
+      alternates: { canonical, types: { "application/rss+xml": rssUrl } },
       openGraph,
       twitter: { card: "summary_large_image", title, description, images: [ogImageUrl] },
       robots: {
