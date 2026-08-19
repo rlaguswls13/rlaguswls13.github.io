@@ -72,6 +72,7 @@ next-env.d.ts
 /.vscode/
 /.fleet/
 /.codex/
+/.agent/
 /.agents/
 *.iml
 
@@ -80,6 +81,7 @@ next-env.d.ts
 /.eslintcache
 /.stylelintcache
 /.venv/
+/.omc/
 /.omo/
 /artifacts/
 **/__pycache__/
