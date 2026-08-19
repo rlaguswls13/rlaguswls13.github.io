@@ -1,11 +1,9 @@
-import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { resolvePagesBasePath } from "../../scripts/deploy/resolve-pages-path.mjs";
 import { publishAdsTxt } from "../../scripts/deploy/publish-ads-txt.mjs";
-import { commitNotionSync } from "../../scripts/notion/commit-sync.mjs";
 
 const temporaryDirectories = [];
 
@@ -51,35 +49,4 @@ describe("Pages deployment scripts", () => {
 
     expect(existsSync(path.join(outputDirectory, "ads.txt"))).toBe(false);
   });
-});
-
-describe("Notion sync commit script", () => {
-  it("commits and pushes changed static content once", () => {
-    const root = temporaryDirectory();
-    const remote = path.join(root, "remote.git");
-    const worktree = path.join(root, "worktree");
-    execFileSync("git", ["init", "--bare", remote]);
-    execFileSync("git", ["clone", remote, worktree]);
-    execFileSync("git", ["config", "user.name", "fixture"], { cwd: worktree });
-    execFileSync("git", ["config", "user.email", "fixture@example.com"], { cwd: worktree });
-    mkdirSync(path.join(worktree, "src", "content"), { recursive: true });
-    mkdirSync(path.join(worktree, "src", "data"), { recursive: true });
-    mkdirSync(path.join(worktree, "public", "images"), { recursive: true });
-    writeFileSync(path.join(worktree, "src", "content", "entry.mdx"), "before\n");
-    writeFileSync(path.join(worktree, "src", "data", "index.json"), "{}\n");
-    writeFileSync(path.join(worktree, "public", "images", "fixture.txt"), "fixture\n");
-    execFileSync("git", ["add", "."], { cwd: worktree });
-    execFileSync("git", ["commit", "-m", "fixture"], { cwd: worktree });
-    execFileSync("git", ["push", "origin", "HEAD:main"], { cwd: worktree });
-    writeFileSync(path.join(worktree, "src", "content", "entry.mdx"), "after\n");
-
-    const firstResult = commitNotionSync(worktree);
-    const secondResult = commitNotionSync(worktree);
-
-    expect(firstResult).toBe(true);
-    expect(secondResult).toBe(false);
-    expect(execFileSync("git", ["show", "main:src/content/entry.mdx"], { cwd: remote, encoding: "utf8" })).toBe(
-      "after\n",
-    );
-  }, 15_000);
 });

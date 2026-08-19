@@ -6,21 +6,28 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: notion-fetch
-  cancel-in-progress: false
+  group: pages-production
+  cancel-in-progress: true
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
@@ -34,5 +41,27 @@ jobs:
           NOTION_DATA_SOURCE_ID_PROJECT: ${{ secrets.NOTION_PAGE_ID_PROJECT }}
           NOTION_REQUIRED_GROUPS: journal,devlog,project
         run: npm run fetch-notion
-      - name: Commit fetched content
-        run: node scripts/notion/commit-sync.mjs
+      - name: Resolve GitHub Pages base path
+        id: resolve-pages-path
+        env:
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          FORCE_ROOT: ${{ vars.USE_ROOT_BASE_PATH }}
+        run: node scripts/deploy/resolve-pages-path.mjs
+      - name: Build static export
+        env:
+          BASE_PATH: ${{ steps.resolve-pages-path.outputs.base_path }}
+          ADSENSE_ACCOUNT: ${{ vars.ADSENSE_ACCOUNT }}
+          GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
+          SEARCH_CONSOLE_VERIFICATION: ${{ vars.SEARCH_CONSOLE_VERIFICATION }}
+          SEARCH_ADVISER_VERIFICATION: ${{ vars.SEARCH_ADVISER_VERIFICATION }}
+          GISCUS_INFO: ${{ vars.GISCUS_INFO }}
+        run: npm run build:no-fetch
+      - uses: actions/configure-pages@v5
+      - name: Upload verified Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

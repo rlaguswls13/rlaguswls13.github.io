@@ -22,9 +22,7 @@ describe("GitHub Pages deployment contracts", () => {
 
     expect(deploy).toContain('branches: ["main"]');
     expect(deploy).toContain("workflow_dispatch:");
-    expect(deploy).toContain('workflows: ["Fetch Notion content"]');
-    expect(deploy).toContain("types: [completed]");
-    expect(deploy).toContain("github.event.workflow_run.conclusion == 'success'");
+    expect(deploy).not.toMatch(/workflow_run|Fetch Notion content/);
     expect(deploy).toContain("ref: main");
     expect(deploy).toContain("name: github-pages");
     expect(deploy).toContain("group: pages-production");
@@ -68,10 +66,26 @@ describe("GitHub Pages deployment contracts", () => {
     expect(fetchNotion.match(/run: npm run fetch-notion/g)).toHaveLength(1);
     expect(fetchNotion).toContain("name: github-pages");
     expect(fetchNotion).toContain("NOTION_TOKEN: \${{ secrets.NOTION_TOKEN }}");
-    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_JOURNAL: \${{ secrets.NOTION_DATA_SOURCE_ID_JOURNAL }}");
-    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_DEVLOG: \${{ secrets.NOTION_DATA_SOURCE_ID_DEVLOG }}");
-    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_PROJECT: \${{ secrets.NOTION_DATA_SOURCE_ID_PROJECT }}");
+    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_JOURNAL: \${{ secrets.NOTION_PAGE_ID_JOURNAL }}");
+    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_DEVLOG: \${{ secrets.NOTION_PAGE_ID_DEVLOG }}");
+    expect(fetchNotion).toContain("NOTION_DATA_SOURCE_ID_PROJECT: \${{ secrets.NOTION_PAGE_ID_PROJECT }}");
     expect(fetchNotion).not.toContain("npm run validate:content");
-    expect(fetchNotion).toContain("node scripts/notion/commit-sync.mjs");
+  });
+
+  it("builds and deploys fetched Notion content directly, without committing it to git", () => {
+    const fetchNotion = workflow("fetch-notion.yml");
+    const fetchPosition = fetchNotion.indexOf("run: npm run fetch-notion");
+    const buildPosition = fetchNotion.indexOf("npm run build:no-fetch");
+    const uploadPosition = fetchNotion.indexOf("uses: actions/upload-pages-artifact@v3");
+    const deployPosition = fetchNotion.indexOf("uses: actions/deploy-pages@v4");
+
+    expect(fetchNotion).not.toMatch(/commit-sync|git push|git commit/);
+    expect(fetchNotion).toContain("id-token: write");
+    expect(fetchNotion).toContain("pages: write");
+    expect(fetchNotion).toContain("group: pages-production");
+    expect(fetchPosition).toBeGreaterThan(-1);
+    expect(buildPosition).toBeGreaterThan(fetchPosition);
+    expect(uploadPosition).toBeGreaterThan(buildPosition);
+    expect(deployPosition).toBeGreaterThan(uploadPosition);
   });
 });
