@@ -4,13 +4,14 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import matter from "gray-matter";
+import { NOTION_SCHEMA } from "../notion/connect/schema-contract.mjs";
 
 const DEVLOG_ROOT = "src/content/devlog";
 const PROJECT_ROOT = "src/content/projects";
 const OWNED_ROOTS = ["src/content", "src/data", "public/images", "public/thumnail"];
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const JOURNAL_CATEGORIES = { personal: "blog", education: "education" };
-const DEVLOG_CATEGORIES = new Set(["tech_study", "problem_solving", "competition_event", "blog", "education"]);
+const DEVLOG_CATEGORIES = new Set([...NOTION_SCHEMA.devlog.categories, ...Object.values(JOURNAL_CATEGORIES)]);
 const GENERATORS = [
   "scripts/notion/transfer/build-journal-index.mjs",
   "scripts/notion/transfer/build-devlog-index.mjs",
@@ -80,6 +81,14 @@ function frontmatter(root, filePath) {
   return { file, id, slug, title, date, status };
 }
 
+function presentCategories(root, sourceRoot, allowedCategories) {
+  return new Set(
+    walkMdx(root, sourceRoot)
+      .map((filePath) => relative(path.join(root, sourceRoot), filePath).split("/")[0] || "")
+      .filter((category) => !allowedCategories || allowedCategories.has(category)),
+  );
+}
+
 function contentEntries(root, sourceRoot, allowedCategories) {
   return walkMdx(root, sourceRoot).filter((filePath) => {
     const category = relative(path.join(root, sourceRoot), filePath).split("/")[0] || "";
@@ -126,7 +135,8 @@ function validateIndexes(root, devlog, projects) {
     const actual = new Set(records.map((record) => String(record?.id || "")));
     expectSameIds("journal.json", actual, expected);
   }
-  const indexedDevlogCategories = new Set(devlog.filter((entry) => !Object.values(JOURNAL_CATEGORIES).includes(entry.category)).map((entry) => entry.category));
+  const presentDevlogCategories = presentCategories(root, DEVLOG_ROOT, DEVLOG_CATEGORIES);
+  const indexedDevlogCategories = new Set([...presentDevlogCategories].filter((category) => !Object.values(JOURNAL_CATEGORIES).includes(category)));
   expectSameKeys("devlog.json", devlogIndex, indexedDevlogCategories);
   for (const category of indexedDevlogCategories) {
     const records = requiredArray(devlogIndex[category], "devlog.json", category);

@@ -14,7 +14,7 @@ type DisplayEntry = DevlogEntry & { category: CoreCategory };
 const categories: readonly CoreCategory[] = ["tech_study", "problem_solving", "competition_event"];
 const indexedEntries = devlogData as Record<CoreCategory, DevlogEntry[]>;
 const entries = sortByDateDesc<DisplayEntry>(categories.flatMap((category) =>
-  indexedEntries[category].map((entry) => ({ ...entry, category })),
+  (indexedEntries[category] ?? []).map((entry) => ({ ...entry, category })),
 ));
 
 export default function DevlogPage() {

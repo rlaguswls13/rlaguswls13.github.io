@@ -62,6 +62,26 @@ describe("content validation", () => {
     expect(determinism.first).toEqual(determinism.second);
   }, 15_000);
 
+  it("accepts a devlog category kept present with an empty list when every entry is temp", async () => {
+    // Given
+    const root = await createFixture();
+    const tempId = "cccccccccccccccccccccccccccccccc";
+    await writeMdx(
+      root,
+      `src/content/devlog/tech_study/${tempId}.mdx`,
+      `id: "${tempId}"\nslug: "temp-post"\ntitle: "Temp post"\ndate: "2026-01-01"\nstatus: "temp"`,
+    );
+    await writeJson(root, "src/data/indexes/devlog.json", { tech_study: [] });
+
+    // When
+    const validation = validateContent(root);
+
+    // Then: the temp entry is excluded from devlog.devlogFiles, but the "tech_study" key
+    // in devlog.json must still be accepted as present (empty) rather than unexpected.
+    expect(validation.contentFiles).toBe(2);
+    expect(validation.devlogFiles).toBe(1);
+  });
+
   it("ignores generated Notion rollback snapshots", async () => {
     // Given
     const root = await createFixture();
@@ -84,6 +104,7 @@ describe("content validation", () => {
     ["missing indexed MDX", async (root) => rm(path.join(root, "src/content/projects/personal/general/project.mdx")), "projects.json: sourceFile does not exist"],
     ["malformed index", async (root) => writeFile(path.join(root, "src/data/indexes/journal.json"), "{ invalid", "utf8"), "journal.json: invalid JSON"],
     ["disallowed zero-row replacement", async (root) => writeJson(root, "src/data/indexes/projects.json", { projects: [] }), "projects.json: zero rows are not allowed"],
+    ["fabricated devlog category with no backing MDX file", async (root) => writeJson(root, "src/data/indexes/devlog.json", { tech_study: [] }), "devlog.json: missing or unexpected index reference"],
     ["escaped table markup", async (root) => writeMdx(root, `src/content/devlog/blog/${id}.mdx`, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, "&lt;table><tbody></tbody>&lt;/table>"), "escaped table markup"],
     ["raw MDX table expression", async (root) => writeMdx(root, `src/content/devlog/blog/${id}.mdx`, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, "<NotionTable><tbody><tr><td>{process.env.SECRET}</td></tr></tbody></NotionTable>"), "NotionTable text must not contain raw MDX expressions"],
   ])("rejects %s with a path-specific error", async (_name, mutate, expectedMessage) => {

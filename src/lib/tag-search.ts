@@ -96,7 +96,7 @@ function compareDates(left: TagSearchEntry, right: TagSearchEntry): number {
 
 export function buildTagSearchEntries(): readonly TagSearchEntry[] {
   const devlogEntries = devlogCategories.flatMap((category) =>
-    (devlogData[category] as DevlogEntry[]).map((entry) => toDevlogEntry(entry, category)),
+    ((devlogData[category] as DevlogEntry[] | undefined) ?? []).map((entry) => toDevlogEntry(entry, category)),
   );
   const journalEntries = journalCategories.flatMap((category) =>
     (journalData[category] as DevlogEntry[]).map((entry) => toJournalEntry(entry, category)),

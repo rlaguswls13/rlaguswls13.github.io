@@ -2,9 +2,11 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import matter from "gray-matter";
+import { NOTION_SCHEMA } from "../connect/schema-contract.mjs";
 
 const CONTENT_ROOT = path.join(process.cwd(), "src", "content", "devlog");
 const OUTPUT_PATH = path.join(process.cwd(), "src", "data", "indexes", "devlog.json");
+const DEVLOG_ONLY_CATEGORIES = new Set(NOTION_SCHEMA.devlog.categories);
 
 function walkMdxFiles(directory) {
   if (!fs.existsSync(directory)) return [];
@@ -78,10 +80,10 @@ export function buildDevlogIndex() {
   const output = {};
   for (const filePath of walkMdxFiles(CONTENT_ROOT)) {
     const category = path.relative(CONTENT_ROOT, filePath).split(path.sep)[0];
-    if (category === "blog" || category === "education") continue;
+    if (!DEVLOG_ONLY_CATEGORIES.has(category)) continue;
+    output[category] ||= [];
     const entry = parseEntry(filePath);
-    if (!entry) continue;
-    (output[category] ||= []).push(entry);
+    if (entry) output[category].push(entry);
   }
   for (const entries of Object.values(output)) {
     entries.sort((left, right) => right.date.localeCompare(left.date) || left.id.localeCompare(right.id, "en", { numeric: true }));
