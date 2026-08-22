@@ -38,7 +38,11 @@
   "competition_event": {
     "3b019946ca7680c8836dcb0ed7e63c69": "github-copilot-hackathon-retrospective"
   },
-  "blog": {},
+  "blog": {
+    "3a319946ca768078b891d2ebf14c4741": "2026-first-half-interview-retrospective",
+    "3a619946ca7680288a44ef2065a0c130": "building-a-knowledge-mind-map-with-obsidian",
+    "3ab19946ca768020a285dc6c49b14793": "rebuilding-from-specs-without-git"
+  },
   "education": {
     "3a319946ca7680f58266f72bdafd3de8": "spring-framework-for-web-applications",
     "3a319946ca76800bb0c3ea701fc098b2": "jsp-and-jstl",

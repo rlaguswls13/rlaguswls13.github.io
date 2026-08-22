@@ -183,8 +183,25 @@
     }
   },
   "blog": {
-    "byPageId": {},
-    "bySlug": {}
+    "byPageId": {
+      "3a319946ca768078b891d2ebf14c4741": "/devlog/blog/2026-first-half-interview-retrospective",
+      "3a619946ca7680288a44ef2065a0c130": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
+      "3ab19946ca768020a285dc6c49b14793": "/devlog/blog/rebuilding-from-specs-without-git"
+    },
+    "bySlug": {
+      "2026-first-half-interview-retrospective": {
+        "id": "3a319946ca768078b891d2ebf14c4741",
+        "url": "/devlog/blog/2026-first-half-interview-retrospective"
+      },
+      "building-a-knowledge-mind-map-with-obsidian": {
+        "id": "3a619946ca7680288a44ef2065a0c130",
+        "url": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian"
+      },
+      "rebuilding-from-specs-without-git": {
+        "id": "3ab19946ca768020a285dc6c49b14793",
+        "url": "/devlog/blog/rebuilding-from-specs-without-git"
+      }
+    }
   },
   "education": {
     "byPageId": {
