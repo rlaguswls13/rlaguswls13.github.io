@@ -14,7 +14,7 @@ type JournalDisplayEntry = DevlogEntry & { journalCategory: JournalCategory };
 const categories: readonly JournalCategory[] = ["personal", "education"];
 const indexedEntries = journalData as Record<JournalCategory, DevlogEntry[]>;
 const entries = sortByDateDesc<JournalDisplayEntry>(categories.flatMap((journalCategory) =>
-  indexedEntries[journalCategory].map((entry) => ({ ...entry, journalCategory })),
+  (indexedEntries[journalCategory] ?? []).map((entry) => ({ ...entry, journalCategory })),
 ));
 
 export default function JournalPage() {

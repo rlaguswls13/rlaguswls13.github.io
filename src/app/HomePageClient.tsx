@@ -43,10 +43,10 @@ const devlogCategories: Exclude<DevlogCategory, "blog">[] = [
 const fixedDevlogEntries: HomeEntry[] = devlogCategories.flatMap((category) =>
   ((devlogData[category] || []) as DevlogEntry[]).map((entry) => ({ ...entry, category })),
 );
-const blogEntries: HomeEntry[] = (journalData.personal as DevlogEntry[])
+const blogEntries: HomeEntry[] = ((journalData.personal || []) as DevlogEntry[])
   .map((entry) => ({ ...entry, category: "blog" }));
 const devlogEntries: HomeEntry[] = [...fixedDevlogEntries, ...blogEntries];
-const educationEntries: HomeEntry[] = (journalData.education as DevlogEntry[])
+const educationEntries: HomeEntry[] = ((journalData.education || []) as DevlogEntry[])
   .map((entry) => ({ ...entry, category: "education" }));
 const allEntries: HomeEntry[] = [...devlogEntries, ...educationEntries];
 const sortedHomeEntries = sortByDateDesc(allEntries);

@@ -32,7 +32,7 @@ async function createFixture() {
       bySlug: { "fixture-post": { id, url: "/devlog/blog/fixture-post" } },
     },
   });
-  await writeJson(root, "src/data/indexes/journal.json", { personal: [{ id, slug: "fixture-post", category: "blog" }], education: [] });
+  await writeJson(root, "src/data/indexes/journal.json", { personal: [{ id, slug: "fixture-post", category: "blog" }] });
   await writeJson(root, "src/data/indexes/devlog.json", {});
   await writeJson(root, "src/data/indexes/projects.json", {
     projects: [{ id: "project", slug: "fixture-project", sourceFile: "personal/general/project.mdx" }],
@@ -82,6 +82,24 @@ describe("content validation", () => {
     expect(validation.devlogFiles).toBe(1);
   });
 
+  it("accepts a journal category kept present with an empty list when every entry is temp", async () => {
+    // Given
+    const root = await createFixture();
+    const tempId = "dddddddddddddddddddddddddddddddd";
+    await writeMdx(
+      root,
+      `src/content/devlog/education/${tempId}.mdx`,
+      `id: "${tempId}"\nslug: "temp-lesson"\ntitle: "Temp lesson"\ndate: "2026-01-01"\nstatus: "temp"`,
+    );
+    await writeJson(root, "src/data/indexes/journal.json", { personal: [{ id, slug: "fixture-post", category: "blog" }], education: [] });
+
+    // When
+    const validation = validateContent(root);
+
+    // Then
+    expect(validation.contentFiles).toBe(2);
+  });
+
   it("ignores generated Notion rollback snapshots", async () => {
     // Given
     const root = await createFixture();
@@ -105,6 +123,7 @@ describe("content validation", () => {
     ["malformed index", async (root) => writeFile(path.join(root, "src/data/indexes/journal.json"), "{ invalid", "utf8"), "journal.json: invalid JSON"],
     ["disallowed zero-row replacement", async (root) => writeJson(root, "src/data/indexes/projects.json", { projects: [] }), "projects.json: zero rows are not allowed"],
     ["fabricated devlog category with no backing MDX file", async (root) => writeJson(root, "src/data/indexes/devlog.json", { tech_study: [] }), "devlog.json: missing or unexpected index reference"],
+    ["fabricated journal category with no backing MDX file", async (root) => writeJson(root, "src/data/indexes/journal.json", { personal: [{ id, slug: "fixture-post", category: "blog" }], education: [] }), "journal.json: unexpected key education"],
     ["escaped table markup", async (root) => writeMdx(root, `src/content/devlog/blog/${id}.mdx`, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, "&lt;table><tbody></tbody>&lt;/table>"), "escaped table markup"],
     ["raw MDX table expression", async (root) => writeMdx(root, `src/content/devlog/blog/${id}.mdx`, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, "<NotionTable><tbody><tr><td>{process.env.SECRET}</td></tr></tbody></NotionTable>"), "NotionTable text must not contain raw MDX expressions"],
   ])("rejects %s with a path-specific error", async (_name, mutate, expectedMessage) => {

@@ -129,13 +129,17 @@ function validateIndexes(root, devlog, projects) {
   const devlogIndex = readJson(root, "src/data/indexes/devlog.json");
   const projectsIndex = readJson(root, "src/data/indexes/projects.json");
   const recommendations = readJson(root, "src/data/indexes/devlog-recommendations.json");
+  const presentDevlogCategories = presentCategories(root, DEVLOG_ROOT, DEVLOG_CATEGORIES);
   for (const [journalCategory, contentCategory] of Object.entries(JOURNAL_CATEGORIES)) {
+    if (!presentDevlogCategories.has(contentCategory)) {
+      if (journalCategory in journal) fail("journal.json", `unexpected key ${journalCategory} with no backing MDX file`);
+      continue;
+    }
     const records = requiredArray(journal[journalCategory], "journal.json", journalCategory);
     const expected = new Set(devlog.filter((entry) => entry.category === contentCategory).map((entry) => entry.id));
     const actual = new Set(records.map((record) => String(record?.id || "")));
     expectSameIds("journal.json", actual, expected);
   }
-  const presentDevlogCategories = presentCategories(root, DEVLOG_ROOT, DEVLOG_CATEGORIES);
   const indexedDevlogCategories = new Set([...presentDevlogCategories].filter((category) => !Object.values(JOURNAL_CATEGORIES).includes(category)));
   expectSameKeys("devlog.json", devlogIndex, indexedDevlogCategories);
   for (const category of indexedDevlogCategories) {

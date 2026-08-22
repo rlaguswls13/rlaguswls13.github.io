@@ -24,7 +24,9 @@ function files(directory) {
 export function buildJournalIndex() {
   const output = {};
   for (const [journalCategory, storageCategory] of Object.entries(STORAGE)) {
-    output[journalCategory] = files(path.join(CONTENT_ROOT, storageCategory)).flatMap((filePath) => {
+    const storageFiles = files(path.join(CONTENT_ROOT, storageCategory));
+    if (storageFiles.length === 0) continue;
+    output[journalCategory] = storageFiles.flatMap((filePath) => {
       const { data } = matter(fs.readFileSync(filePath, "utf8"));
       if (data.status === "temp") return [];
       const id = String(data.id || data.sourceId || path.basename(filePath, ".mdx")).replaceAll("-", "");

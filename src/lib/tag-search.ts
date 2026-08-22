@@ -99,7 +99,7 @@ export function buildTagSearchEntries(): readonly TagSearchEntry[] {
     ((devlogData[category] as DevlogEntry[] | undefined) ?? []).map((entry) => toDevlogEntry(entry, category)),
   );
   const journalEntries = journalCategories.flatMap((category) =>
-    (journalData[category] as DevlogEntry[]).map((entry) => toJournalEntry(entry, category)),
+    ((journalData[category] as DevlogEntry[] | undefined) ?? []).map((entry) => toJournalEntry(entry, category)),
   );
   const projectEntries = (projectsData.projects as Project[]).map(toProjectEntry);
 
