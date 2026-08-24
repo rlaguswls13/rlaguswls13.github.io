@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { acquireContentLock } from "../../scripts/notion/connect/content-transaction.mjs";
 import { main } from "../../scripts/notion/connect/fetch.mjs";
 import { syncPageContent } from "../../scripts/notion/connect/sync-pages.mjs";
+import { inspectThumbnail } from "../../scripts/thumbnail/thumbnail-contract.mjs";
 
 const ids = {
   journal: "11111111111111111111111111111111",
@@ -296,6 +297,79 @@ describe("Notion fetch orchestration", () => {
 
     // Then
     expect(result.state).toBe("committed");
+  });
+
+  it.each(["publish", "ready"])("Given a %s-status page with no thumbnail When orchestration stages content Then a placeholder thumbnail is written instead of failing", async (status) => {
+    // Given
+    const root = fixtureRoot();
+    const thumbnailPath = path.join(root, `public/thumnail/devlog/blog/${ids.journal}.webp`);
+
+    // When
+    const result = await main({
+      root,
+      env: configuredEnv({
+        NOTION_REQUIRED_GROUPS: "journal",
+        NOTION_PAGE_ID_DEVLOG: undefined,
+        NOTION_PAGE_ID_PROJECT: undefined,
+      }),
+      createClient: () => ({
+        queryCollection: async () => [{
+          id: ids.journal,
+          properties: {
+            title: { type: "title", title: [{ plain_text: `${status} fixture` }] },
+            slug: { type: "select", select: { name: `${status}-fixture` } },
+            category: { type: "select", select: { name: "personal" } },
+            created_date: { type: "date", date: { start: "2026-08-01" } },
+            status: { type: "select", select: { name: status } },
+          },
+        }],
+        getBlockChildren: async () => [],
+      }),
+      syncPageContentFn: syncPageContent,
+      generateContent: writeGenerated,
+      validateContent() {},
+    });
+
+    // Then
+    expect(result.state).toBe("committed");
+    expect(fs.existsSync(thumbnailPath)).toBe(true);
+    expect(inspectThumbnail(fs.readFileSync(thumbnailPath), thumbnailPath)).toMatchObject({ valid: true });
+  });
+
+  it("Given a page with a corrupt existing thumbnail When orchestration stages content Then the thumbnail contract still fails", async () => {
+    // Given
+    const root = fixtureRoot();
+    const thumbnailPath = path.join(root, `public/thumnail/devlog/blog/${ids.journal}.webp`);
+    fs.mkdirSync(path.dirname(thumbnailPath), { recursive: true });
+    fs.writeFileSync(thumbnailPath, "not a real webp");
+
+    // When
+    const action = main({
+      root,
+      env: configuredEnv({
+        NOTION_REQUIRED_GROUPS: "journal",
+        NOTION_PAGE_ID_DEVLOG: undefined,
+        NOTION_PAGE_ID_PROJECT: undefined,
+      }),
+      createClient: () => ({
+        queryCollection: async () => [{
+          id: ids.journal,
+          properties: {
+            title: { type: "title", title: [{ plain_text: "Corrupt thumbnail fixture" }] },
+            slug: { type: "select", select: { name: "corrupt-thumbnail-fixture" } },
+            category: { type: "select", select: { name: "personal" } },
+            created_date: { type: "date", date: { start: "2026-08-01" } },
+          },
+        }],
+        getBlockChildren: async () => [],
+      }),
+      syncPageContentFn: syncPageContent,
+      generateContent: writeGenerated,
+      validateContent() {},
+    });
+
+    // Then
+    await expect(action).rejects.toThrow(/Thumbnail contract failed/);
   });
 
   it("Given a hung writer owns the lock When another fetch starts Then it cannot construct a client", async () => {

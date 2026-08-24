@@ -1,10 +1,16 @@
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import matter from "gray-matter";
 import { compile } from "@mdx-js/mdx";
 import { buildMdxDocument } from "../transfer/json-to-mdx.mjs";
 import { pageToMdxBody } from "../transfer/notion-blocks-to-mdx.mjs";
 import { inspectThumbnail, requiredThumbnailPath } from "../../thumbnail/thumbnail-contract.mjs";
+
+const PLACEHOLDER_THUMBNAIL_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../../src/assets/thumbnail/placeholder.webp",
+);
 
 const PAGE_PATHS = {
   journal: {
@@ -113,11 +119,19 @@ export async function syncPageContent(client, pageName, rows, options = {}) {
       const sourceId = normalizeSourceId(row.source_id || row.page_id);
       const category = pageName === "journal" && row.category === "personal" ? "blog" : String(row.category || "uncategorized");
       const thumbnailPath = requiredThumbnailPath(pageName === "project" ? "projects" : "devlog", category, sourceId);
-      const thumbnail = fs.existsSync(path.join(root, ...thumbnailPath.split("/")))
-        ? fs.readFileSync(path.join(root, ...thumbnailPath.split("/")))
-        : null;
+      const absoluteThumbnailPath = path.join(root, ...thumbnailPath.split("/"));
+      const thumbnailExists = fs.existsSync(absoluteThumbnailPath);
+      const thumbnail = thumbnailExists ? fs.readFileSync(absoluteThumbnailPath) : null;
       const inspection = inspectThumbnail(thumbnail, thumbnailPath);
-      if (!inspection.valid) throw new Error(`Thumbnail contract failed for ${sourceId}: ${inspection.issues.join(", ")}; action=${inspection.action}.`);
+      if (!inspection.valid) {
+        if (thumbnailExists) {
+          throw new Error(`Thumbnail contract failed for ${sourceId}: ${inspection.issues.join(", ")}; action=${inspection.action}.`);
+        }
+        fs.mkdirSync(path.dirname(absoluteThumbnailPath), { recursive: true });
+        fs.copyFileSync(PLACEHOLDER_THUMBNAIL_PATH, absoluteThumbnailPath);
+        managedPaths.add(thumbnailPath);
+        console.log(`[notion] ${pageName} thumbnail missing for ${sourceId}; using placeholder`);
+      }
     }
 
     const revision = String(row.last_edited_time || "");
