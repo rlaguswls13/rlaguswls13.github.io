@@ -66,7 +66,9 @@ function frontmatter(root, filePath) {
   }
   if (/&lt;table\b/iu.test(parsed.content)) fail(file, "escaped table markup must be repaired");
   const notionTables = parsed.content.match(/<NotionTable\b[^>]*>[\s\S]*?<\/NotionTable>/giu) || [];
-  if (notionTables.some((table) => /[{}]/u.test(table))) {
+  // Braces inside inline code spans (`{...}`) are literal text, not JSX expressions -
+  // only flag braces that appear outside backticks, where MDX would actually evaluate them.
+  if (notionTables.some((table) => /[{}]/u.test(table.replaceAll(/`[^`]*`/gu, "")))) {
     fail(file, "NotionTable text must not contain raw MDX expressions");
   }
   const data = parsed.data;

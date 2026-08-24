@@ -27,7 +27,11 @@ export function richTextToMarkdown(items = []) {
     const value = item.plain_text || item.text?.content || "";
     const leading = value.match(/^\s*/)?.[0] || "";
     const trailing = value.match(/\s*$/)?.[0] || "";
-    let content = escapeMdxText(value.trim());
+    const trimmed = value.trim();
+    // Inline code spans are literal in CommonMark/MDX: entity refs like `&#123;` are not
+    // decoded inside backticks, so escaping `<`/`{`/`}` here would leak raw entity text
+    // onto the page instead of rendering `<`/`{`/`}`.
+    let content = item.annotations?.code ? trimmed : escapeMdxText(trimmed);
     if (!content) return value;
     if (item.annotations?.code) content = "`" + content + "`";
     if (item.annotations?.bold) content = `**${content}**`;
