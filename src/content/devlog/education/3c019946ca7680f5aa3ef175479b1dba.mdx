@@ -10,7 +10,7 @@ slug: "python-basic"
 title: "파이썬 기초 문법"
 page_id: "3c019946-ca76-80f5-aa3e-f175479b1dba"
 source_id: "3c019946ca7680f5aa3ef175479b1dba"
-last_edited_time: "2026-08-24T02:51:00.000Z"
+last_edited_time: "2026-08-24T09:05:00.000Z"
 notion_url: "https://app.notion.com/p/3c019946ca7680f5aa3ef175479b1dba"
 id: "3c019946ca7680f5aa3ef175479b1dba"
 sourceId: "3c019946-ca76-80f5-aa3e-f175479b1dba"
@@ -37,7 +37,7 @@ notionUrl: "https://app.notion.com/p/3c019946ca7680f5aa3ef175479b1dba"
 
 ## **핵심 요약**
 
-파이썬(Python)은 문법이 간결하고 가독성이 뛰어난 **인터프리터 방식의 동적 타이핑(Dynamic Typing) 고급 프로그래밍 언어**다. 코드 블록을 중괄호(`&#123;&#125;`) 대신 **들여쓰기(Indentation)**로 구분한다.
+파이썬(Python)은 문법이 간결하고 가독성이 뛰어난 **인터프리터 방식의 동적 타이핑(Dynamic Typing) 고급 프로그래밍 언어**다. 코드 블록을 중괄호(`{}`) 대신 **들여쓰기(Indentation)**로 구분한다.
 
 
 <NotionDivider />
@@ -51,14 +51,15 @@ notionUrl: "https://app.notion.com/p/3c019946ca7680f5aa3ef175479b1dba"
 
 ```python
 # 변수 선언 및 타입 동적 결정
-age=25# int
-gpa=3.8# float
-name="Alice"# str
-is_active=True# bool
+age = 25          # int
+gpa = 3.8         # float
+name = "Alice"    # str
+is_active = True  # bool
+
 # 파이썬의 모든 것은 객체(Object)다.
 # id() 함수로 객체의 메모리 주소를 확인할 수 있다.
-print(type(name))# <class 'str'>
-print(id(name))# 객체 메모리 주소 출력
+print(type(name)) # <class 'str'>
+print(id(name))   # 객체 메모리 주소 출력
 ```
 
 
@@ -68,15 +69,15 @@ print(id(name))# 객체 메모리 주소 출력
 
 ## **2. 주요 연산자**
 
-- **산술 연산자**: `+`, , , `/` (실수 나눗셈), `//` (정수 몫), `%` (나머지), `*` (거듭제곱)
-- **비교 연산자**: `==`, `!=`, `>`, `&lt;`, `>=`, `&lt;=`
+- **산술 연산자**: `+`, `-`,`*` , `/` (실수 나눗셈), `//` (정수 몫), `%` (나머지), `**` (거듭제곱)
+- **비교 연산자**: `==`, `!=`, `>`, `<`, `>=`, `<=`
 - **논리 연산자**: `and`, `or`, `not`
 - **멤버십 연산자**: `in`, `not in` (리스트, 튜플, 문자열 내부 포함 여부 확인)
 
 ```python
 # 멤버십 연산자 예시
-fruits=["apple","banana","cherry"]
-print("banana"in fruits)# True
+fruits = ["apple", "banana", "cherry"]
+print("banana" in fruits)  # True
 ```
 
 
@@ -108,29 +109,29 @@ else:
 
 ```python
 # for 문과 range()
-for iinrange(1,6):# 1부터 5까지 반복
-	print(f"Count:{i}")
+for i in range(1, 6): # 1부터 5까지 반복
+    print(f"Count: {i}")
 
 # range() 응용: range(start, stop, step)
-for oddinrange(1,10,2):# 1, 3, 5, 7, 9
-	print(odd)
+for odd in range(1, 10, 2): # 1, 3, 5, 7, 9
+    print(odd)
 
 # while 문과 break / continue
-count=0
-while count<5:
-    count+=1
-	if count==3:
-			continue# 3일 때 건너뜀
-	print(count)
+count = 0
+while count < 5:
+    count += 1
+    if count == 3:
+        continue # 3일 때 건너뜀
+    print(count)
 ```
 
 
 
 <a id="4-들여쓰기indentation와-코드-블록-java-와의-차이점"></a>
 
-## **4. 들여쓰기(Indentation)와 코드 블록 (Java** **`&#123;&#125;`****와의 차이점)**
+## **4. 들여쓰기(Indentation)와 코드 블록 (Java** **`{}`****와의 차이점)**
 
-파이썬은 Java나 C 계열 언어와 달리 중괄호(`&#123;&#125;`)로 코드 블록(Block Scope)을 나누지 않는다.
+파이썬은 Java나 C 계열 언어와 달리 중괄호(`{}`)로 코드 블록(Block Scope)을 나누지 않는다.
 
 대신 **콜론(`:`)과 들여쓰기(Indentation)**를 사용하여 코드의 제어 범위와 블록 구획을 나눈다.
 
@@ -165,11 +166,11 @@ if score >= 90:
 ```python
 # 들여쓰기 작성 예시
 def process_data(data):
-if not data:
-	pass # 추후 구현 예정 (IndentationError 방지)
-else:
-	for item in data:
-		print(item)# 2단계 들여쓰기 (공백 8칸)
+    if not data:
+        pass  # 추후 구현 예정 (IndentationError 방지)
+    else:
+        for item in data:
+            print(item)  # 2단계 들여쓰기 (공백 8칸)
 ```
 
 

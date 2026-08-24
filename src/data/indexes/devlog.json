@@ -155,6 +155,25 @@
   ],
   "tech_study": [
     {
+      "id": "3c419946ca7680be8dade6370d93544f",
+      "slug": "ai-wiki-index-rag-block",
+      "sourceId": "3c419946-ca76-80be-8dad-e6370d93544f",
+      "source_id": "3c419946ca7680be8dade6370d93544f",
+      "page_id": "3c419946-ca76-80be-8dad-e6370d93544f",
+      "last_edited_time": "2026-08-24T08:43:00.000Z",
+      "title": "LLM Wiki 확장 설계 : Human Report와 Block 단위 Context 관리",
+      "date": "2026.08.22",
+      "tags": [
+        "WIKI",
+        "index",
+        "RAG"
+      ],
+      "description": "LLM Wiki를 개인 프로젝트에 도입하여 사용하면서 Session이 누적될수록 초기 Context를 구성하는 데 많은 시간이 소요되는 문제를 확인했습니다. 지속적으로 내용을 정리하더라도 프로젝트가 진행될수록 이미 생성된 파일과 연결 정보가 증가하기 때문에, 새로운 Session을 시작하거나 기존 작업을 재실행할 때 탐색해야 하는 범위가 함께 증가했습니다.\n이러한 문제를 개선하기 위해 다음 두 가지 구조를 추가로 적용했습니다.\n첫 번째는 Block 단위 Link입니다.\n\n기존처럼 파일 전체를 참조하는 대신 실제 작업에 필요한 영역을 Block 단위로 연결하도록 구성했습니다. 이를 통해 AI가 탐색하고 Context에 포함하는 범위를 제한하여 불필요한 Context 사용을 줄이고자 했습니다.\n두 번째는 Report 영역입니다.\n\n각 Session이 종료되는 시점에 해당 Session에서 수행한 작업, 주요 변경사항, 검토가 필요한 내용을 별도의 Report로 정리하도록 구성했습니다. 이를 통해 전체 Session Log를 다시 확인하지 않더라도 프로젝트의 주요 작업 흐름과 변경사항을 사람이 빠르게 파악할 수 있도록 했습니다.\n현재까지 실제 프로젝트에 적용한 결과, 정성적으로는 Thinking 및 Search 과정이 이전보다 빨라진 것으로 느껴졌으며, Report를 통해 프로젝트의 큰 흐름과 Session별 변경사항을 확인하는 것도 용이해졌습니다.\n다만 현재 결과는 실제 사용 과정에서 체감한 정성적인 평가에 가깝습니다. 공식적인 연구나 논문처럼 Token 사용량, 탐색 시간, Context 크기 등의 지표를 이용한 정량적인 비교는 아직 진행하지 않았습니다.\n따라서 앞으로 실제 사용 사례를 조금 더 축적한 뒤 Block 단위 참조 적용 전후의 Token 사용량, Context 크기, 탐색 시간, Session 초기화 시간 등을 측정하여 정량적으로 효과를 비교할 수 있는 방법도 함께 검토하고자 합니다.",
+      "subcategory": "ai",
+      "package": "ai",
+      "notionUrl": "https://app.notion.com/p/LLM-Wiki-Human-Report-Block-Context-3c419946ca7680be8dade6370d93544f"
+    },
+    {
       "id": "3b919946ca7680d9a4f3c5389ea08e85",
       "slug": "ai-llm-rag-andrej-karpathy-thesis",
       "sourceId": "3b919946-ca76-80d9-a4f3-c5389ea08e85",

@@ -26,7 +26,8 @@
       "3b019946ca768079878fed99b13e958f": "/devlog/tech_study/nginx-apache-iis-comparison",
       "3b019946ca7680849498da3bf66eaf67": "/devlog/tech_study/das-nas-san-storage-architecture",
       "3b819946ca7680439eecd5fe23528952": "/devlog/tech_study/ai-agent-basic-tech",
-      "3b919946ca7680d9a4f3c5389ea08e85": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis"
+      "3b919946ca7680d9a4f3c5389ea08e85": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
+      "3c419946ca7680be8dade6370d93544f": "/devlog/tech_study/ai-wiki-index-rag-block"
     },
     "bySlug": {
       "essential-docker-commands": {
@@ -132,6 +133,10 @@
       "ai-llm-rag-andrej-karpathy-thesis": {
         "id": "3b919946ca7680d9a4f3c5389ea08e85",
         "url": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis"
+      },
+      "ai-wiki-index-rag-block": {
+        "id": "3c419946ca7680be8dade6370d93544f",
+        "url": "/devlog/tech_study/ai-wiki-index-rag-block"
       }
     }
   },
