@@ -4882,6 +4882,47 @@ body {
   text-align: center;
 }
 
+/* 404 — not found page */
+.not-found-shell {
+  display: grid;
+  place-items: center;
+  min-height: 55vh;
+  padding: 72px 24px;
+  text-align: center;
+}
+
+.not-found-code {
+  margin: 0;
+  color: var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: clamp(4rem, 12vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.not-found-shell h1 {
+  margin: 20px 0 14px;
+  padding: 0;
+  border: 0;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+}
+
+.not-found-shell p.not-found-description {
+  max-width: 480px;
+  margin: 0 auto 30px;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
 /* About — project-centered career showcase */
 .about-work-showcase {
   margin-top: 44px;
