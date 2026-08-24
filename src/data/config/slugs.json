@@ -44,8 +44,13 @@
     "3ab19946ca768020a285dc6c49b14793": "rebuilding-from-specs-without-git"
   },
   "education": {
+    "3a319946ca7680a6b7b3f98589e30442": "spring-filter-and-interceptor",
     "3a319946ca7680f58266f72bdafd3de8": "spring-framework-for-web-applications",
     "3a319946ca76800bb0c3ea701fc098b2": "jsp-and-jstl",
+    "3a319946ca76806db9ecf8824115ebea": "requirements-definition-document",
+    "3c019946ca7680f5aa3ef175479b1dba": "python-basic",
+    "3c619946ca7680b68637f1bcfa0bf21e": "python-oop-exception",
+    "3c619946ca7680bc83caffd2cba75df7": "python-basic-data-structure",
     "35e19946ca76807b9fe4f64d17b2e1b6": "java-development-environment-and-basic-syntax",
     "35f19946ca7680aaab2de0ba2b1acd0b": "java-constants-type-casting-and-memory",
     "36d19946ca7680559155e3820742c2be": "java-composite-feature-implementation",

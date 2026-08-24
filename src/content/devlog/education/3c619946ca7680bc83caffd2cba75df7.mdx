@@ -1,0 +1,115 @@
+---
+status: "publish"
+tag: ["pythone","기초문법"]
+description: "Python의 기본 문법과 연산 방법을 이해했다면, 다음으로 살펴볼 부분은 함수(Function)와 자료구조(Data Structure)입니다. 함수와 자료구조는 프로그램의 로직을 구성하고 데이터를 효율적으로 관리하기 위한 가장 기본적인 요소입니다.\nPython에서는 def를 이용하여 함수를 정의하며, 매개변수와 반환값을 통해 필요한 기능을 하나의 단위로 구성할 수 있습니다. 특히 기본값을 가지는 매개변수, 키워드 인자, 가변 인자(*args, **kwargs), 람다(lambda) 표현식 등 함수를 유연하게 사용할 수 있는 다양한 문법을 제공합니다.\n자료구조 역시 Python을 이해하는 데 중요한 부분입니다. 대표적으로 List, Tuple, Set, Dictionary가 있으며 각각 데이터의 순서, 중복 허용 여부, 데이터 변경 가능 여부, Key-Value 구조 등의 차이를 가지고 있습니다. 따라서 단순히 데이터를 저장하는 것을 넘어 데이터의 특성과 사용 목적에 맞는 자료구조를 선택하는 것이 중요합니다.\n특히 Java와 비교하면 Python은 자료구조를 선언하고 데이터를 처리하는 문법이 비교적 간결하며, 슬라이싱(Slicing), 컴프리헨션(Comprehension), in 연산자와 같은 기능을 통해 데이터를 직관적으로 다룰 수 있다는 특징이 있습니다."
+subcategory: "2026"
+created_date: "2026-08-19"
+회차: "[교육 67일차]"
+category: "education"
+slug: "python-basic-data-structure"
+title: "파이썬 함수와 자료구조"
+page_id: "3c619946-ca76-80bc-83ca-ffd2cba75df7"
+source_id: "3c619946ca7680bc83caffd2cba75df7"
+last_edited_time: "2026-08-24T02:52:00.000Z"
+notion_url: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
+id: "3c619946ca7680bc83caffd2cba75df7"
+sourceId: "3c619946-ca76-80bc-83ca-ffd2cba75df7"
+date: "2026-08-19"
+tags: ["pythone","기초문법"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 파이썬 4대 빌트인 자료구조 비교](#1-파이썬-4대-빌트인-자료구조-비교)
+- [2. 컴프리헨션 (Comprehension)](#2-컴프리헨션-comprehension)
+- [3. 파이썬 함수 (Function) 및 1급 객체 (First-Class Citizen)](#3-파이썬-함수-function-및-1급-객체-first-class-citizen)
+  - [① 기본 정의 및 가변 인자 (args, *kwargs)](#1-기본-정의-및-가변-인자-args-kwargs)
+  - [② 1급 객체(First-Class Citizen)로서의 함수 & Lambda](#2-1급-객체first-class-citizen로서의-함수-lambda)
+
+<a id="핵심-요약"></a>
+
+## **핵심 요약**
+
+파이썬은 **4대 빌트인 자료구조(List, Tuple, Set, Dictionary)**를 기본 제공하며, **컴프리헨션(Comprehension)**을 통해 파이썬다운(Pythonic) 코드를 작성할 수 있다.
+
+또한 파이썬의 함수는 **1급 객체(First-class Citizen)**로 다루어진다.
+
+
+<NotionDivider />
+
+<a id="1-파이썬-4대-빌트인-자료구조-비교"></a>
+
+## **1. 파이썬 4대 빌트인 자료구조 비교**
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>**자료구조**</td><td>**표기법**</td><td>**가변성 (Mutable)**</td><td>**순서 (Ordered)**</td><td>**중복 허용**</td><td>**시간 복잡도 (탐색/조회)**</td><td>**주요 활용 목적**</td></tr>
+    <tr><td>**List**</td><td>`[1, 2, 3]`</td><td>**Mutable**</td><td>⭕ 유지</td><td>⭕ 허용</td><td>Index: O(1)*O*(1), Search: O(N)*O*(*N*)</td><td>가변 데이터 시퀀스 관리</td></tr>
+    <tr><td>**Tuple**</td><td>`(1, 2, 3)`</td><td>**Immutable**</td><td>⭕ 유지</td><td>⭕ 허용</td><td>Index: O(1)*O*(1), Search: O(N)*O*(*N*)</td><td>변경 불가능한 상수 데이터 묶음</td></tr>
+    <tr><td>**Set**</td><td>`&#123;1, 2, 3&#125;`</td><td>**Mutable**</td><td>❌ 없음</td><td>❌ 불허</td><td>Key Search: **O(1)*****O*****(1)**</td><td>중복 제거, 집합 연산(합/교/차)</td></tr>
+    <tr><td>**Dictionary**</td><td>`&#123;"a": 1&#125;`</td><td>**Mutable**</td><td>⭕ (3.7+)</td><td>키 중복 ❌</td><td>Key Lookup: **O(1)*****O*****(1)**</td><td>Key-Value 매핑 검색</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+
+<a id="2-컴프리헨션-comprehension"></a>
+
+## **2. 컴프리헨션 (Comprehension)**
+
+반복문과 조건문을 축약하여 새로운 리스트나 딕셔너리를 한 줄로 생성하는 기능이다.
+
+
+```python
+# 1. List Comprehension (짝수 제곱 리스트 생성)
+evens_squared=[x**2for xinrange(10)if x%2==0]
+# 결과: [0, 4, 16, 36, 64]
+# 2. Dictionary Comprehension (이름: 글자수 매핑)
+names=["Alice","Bob","Charlie"]
+name_len_map={name:len(name)for namein names}
+# 결과: {'Alice': 5, 'Bob': 3, 'Charlie': 7}
+```
+
+
+<NotionDivider />
+
+<a id="3-파이썬-함수-function-및-1급-객체-first-class-citizen"></a>
+
+## **3. 파이썬 함수 (Function) 및 1급 객체 (First-Class Citizen)**
+
+<a id="1-기본-정의-및-가변-인자-args-kwargs"></a>
+
+### **① 기본 정의 및 가변 인자 (****`args`****,** **`*kwargs`****)**
+
+
+```python
+defcalculate_total(base_price,*args,**kwargs):
+"""
+    *args: 위치 가변 인자 (Tuple 형태로 수신)
+    **kwargs: 키워드 가변 인자 (Dict 형태로 수신)
+    """
+    total= base_price+sum(args)
+    discount= kwargs.get("discount",0)
+return total- discount
+print(calculate_total(100,10,20, discount=15))# 100 + 30 - 15 = 115
+```
+
+<a id="2-1급-객체first-class-citizen로서의-함수-lambda"></a>
+
+### **② 1급 객체(First-Class Citizen)로서의 함수 & Lambda**
+
+파이썬에서 함수는 **변수에 할당할 수 있고, 다른 함수의 인자로 전달되거나 반환값으로 사용**될 수 있다.
+
+
+```python
+# Lambda 익명 함수 및 함수 인자 전달
+numbers=[5,2,8,1,9]
+sorted_numbers=sorted(numbers, key=lambda x:-x)# 내림차순 정렬
+```
+

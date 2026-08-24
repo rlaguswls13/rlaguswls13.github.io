@@ -1,0 +1,266 @@
+---
+status: "publish"
+tag: ["pythone","OOP","예외처리"]
+description: "Python 역시 Java와 마찬가지로 객체지향 프로그래밍(Object-Oriented Programming, OOP)을 지원하는 언어입니다. 클래스(Class)를 기반으로 객체를 생성하고, 객체가 가지는 데이터와 기능을 하나의 단위로 구성하여 프로그램을 설계할 수 있습니다.\nPython에서는 class를 이용하여 클래스를 정의하고, __init__()을 통해 객체가 생성될 때 필요한 초기화 작업을 수행할 수 있습니다. 또한 상속(Inheritance), 다형성(Polymorphism), 캡슐화(Encapsulation) 등 객체지향 프로그래밍의 주요 개념을 지원합니다. 다만 Java와 비교하면 접근 제어자나 인터페이스 등의 표현 방법에서 차이가 있기 때문에 Python의 문법과 특성에 맞게 객체지향 구조를 이해할 필요가 있습니다.\n프로그램을 안정적으로 구성하기 위해서는 객체지향 설계뿐만 아니라 예외처리(Exception Handling) 역시 중요합니다. 프로그램 실행 중에는 잘못된 입력이나 파일 및 네트워크 문제처럼 예상하지 못한 상황이 발생할 수 있으며, 이러한 문제를 적절하게 처리하지 않으면 프로그램이 비정상적으로 종료될 수 있습니다.\nPython에서는 try, except, else, finally를 이용하여 예외를 처리할 수 있으며, raise를 통해 필요한 상황에서 직접 예외를 발생시키는 것도 가능합니다. 또한 사용자 정의 예외를 만들어 애플리케이션의 상황에 맞는 예외 처리 구조를 구성할 수도 있습니다."
+subcategory: "2026"
+created_date: "2026-08-20"
+회차: "[교육 68일차]"
+category: "education"
+slug: "python-oop-exception"
+title: "OOP와 예외처리"
+page_id: "3c619946-ca76-80b6-8637-f1bcfa0bf21e"
+source_id: "3c619946ca7680b68637f1bcfa0bf21e"
+last_edited_time: "2026-08-24T02:54:00.000Z"
+notion_url: "https://app.notion.com/p/OOP-3c619946ca7680b68637f1bcfa0bf21e"
+id: "3c619946ca7680b68637f1bcfa0bf21e"
+sourceId: "3c619946-ca76-80b6-8637-f1bcfa0bf21e"
+date: "2026-08-20"
+tags: ["pythone","OOP","예외처리"]
+journal_category: "education"
+package: "2026"
+notionUrl: "https://app.notion.com/p/OOP-3c619946ca7680b68637f1bcfa0bf21e"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 파이썬 객체지향 프로그래밍 (OOP)](#1-파이썬-객체지향-프로그래밍-oop)
+  - [① 캡슐화 (Encapsulation) & @property](#1-캡슐화-encapsulation-property)
+  - [② 추상화 (Abstraction) & abc 모듈](#2-추상화-abstraction-abc-모듈)
+  - [③ 상속 (Inheritance), 다중 상속 & MRO](#3-상속-inheritance-다중-상속-mro)
+  - [④ 다형성 (Polymorphism) & 덕 타이핑 (Duck Typing)](#4-다형성-polymorphism-덕-타이핑-duck-typing)
+  - [⑤ 믹스인 (Mixin) 패턴](#5-믹스인-mixin-패턴)
+- [2. 매직 메서드 (Dunder Methods: Double Underscore)](#2-매직-메서드-dunder-methods-double-underscore)
+- [3. 예외 처리 (Exception Handling)](#3-예외-처리-exception-handling)
+  - [① try - except - else - finally 구문](#1-try-except-else-finally-구문)
+- [4. 컨텍스트 매니저 (Context Manager - with 구문)](#4-컨텍스트-매니저-context-manager-with-구문)
+
+<a id="핵심-요약"></a>
+
+## **핵심 요약**
+
+파이썬은 클래스(Class) 기반의 **객체지향 프로그래밍(OOP)**을 완벽히 지원하며, 언어 차원에서 매직 메서드(Dunder Methods)와 `try-except-else-finally` 예외 처리 및 `with` 구문(Context Manager)을 제공한다.
+
+
+<NotionDivider />
+
+<a id="1-파이썬-객체지향-프로그래밍-oop"></a>
+
+## **1. 파이썬 객체지향 프로그래밍 (OOP)**
+
+파이썬은 클래스 기반의 객체지향 언어로, **캡슐화, 추상화, 상속, 다형성** 4대 요소를 완벽히 지원하며, 파이썬 특유의 **덕 타이핑(Duck Typing)**과 **MRO(Method Resolution Order)** 개념을 가지고 있다.
+
+
+<NotionDivider />
+
+<a id="1-캡슐화-encapsulation-property"></a>
+
+### **① 캡슐화 (Encapsulation) &** **`@property`**
+
+파이썬은 Java의 `private`, `public` 같은 키워드가 없는 대신 **네이밍 컨벤션(Naming Convention)**으로 접근 제어를 표현한다.
+
+- `public`: 제한 없음 (`name`)
+- `protected`: 언더스코어 1개 (`_name`) — 외부 접근 가능하나 관례상 클래스 내부/자식에서만 사용 권장.
+- `private`: 언더스코어 2개 (`__name`) — **Name Mangling(이름 장식)**이 적용되어 클래스 외부 직접 접근 차단.
+
+```python
+class Account:
+    def __init__(self, owner: str, balance: int):
+        self.owner = owner
+        self.__balance = balance  # Private 변수 (Name Mangling 적용)
+    # 파이썬닉한 Getter/Setter: @property 데코레이터
+    @property
+    def balance(self) -> int:
+        return self.__balance
+    @balance.setter
+    def balance(self, amount: int):
+        if amount < 0:
+            raise ValueError("잔액은 음수가 될 수 없습니다.")
+        self.__balance = amount
+acc = Account("Alice", 1000)
+acc.balance = 1500  # Setter 동작
+print(acc.balance)  # 1500 (Getter 동작)
+# print(acc.__balance)  # AttributeError 발생!
+```
+
+
+<NotionDivider />
+
+<a id="2-추상화-abstraction-abc-모듈"></a>
+
+### **② 추상화 (Abstraction) &** **`abc`** **모듈**
+
+`abc` (Abstract Base Class) 모듈의 `ABC`와 `@abstractmethod`를 사용하여 하위 클래스가 반드시 구현해야 하는 추상 메서드를 강제한다.
+
+
+```python
+from abc import ABC, abstractmethod
+class PaymentGateway(ABC):
+    @abstractmethod
+    def process_payment(self, amount: int) -> bool:
+        """하위 클래스에서 반드시 오버라이딩해야 함"""
+        pass
+class KakaoPay(PaymentGateway):
+    def process_payment(self, amount: int) -> bool:
+        print(f"카카오페이 {amount}원 결제 완료")
+        return True
+# gateway = PaymentGateway() # TypeError: 추상 클래스는 직접 인스턴스화 불가!
+pay = KakaoPay()
+pay.process_payment(5000)
+```
+
+
+<NotionDivider />
+
+<a id="3-상속-inheritance-다중-상속-mro"></a>
+
+### **③ 상속 (Inheritance), 다중 상속 & MRO**
+
+파이썬은 **다중 상속(Multiple Inheritance)**을 지원한다. 다중 상속 시 발생하는 다이아몬드 상속 문제(Diamond Problem)는 **MRO (Method Resolution Order)**를 통해 해결된다.
+
+
+```python
+class A:
+    def hello(self):
+        print("A 안녕")
+class B(A):
+    def hello(self):
+        print("B 안녕")
+class C(A):
+    def hello(self):
+        print("C 안녕")
+# 다중 상속
+class D(B, C):
+    pass
+d = D()
+d.hello()  # "B 안녕" 출력 (B가 C보다 MRO 순서가 앞섬)
+print(D.mro())  # [<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>]
+```
+
+- **`super()`**: MRO 순서에 따라 다음 부모 클래스의 메서드를 호출한다.
+
+<NotionDivider />
+
+<a id="4-다형성-polymorphism-덕-타이핑-duck-typing"></a>
+
+### **④ 다형성 (Polymorphism) & 덕 타이핑 (Duck Typing)**
+
+파이썬의 다형성은 명시적 상속 구조 없이도 동작하는 **덕 타이핑(Duck Typing)**이 핵심이다.
+
+> *"오리처럼 걷고 오리처럼 꽥꽥거리면, 그것이 오리든 아니든 오리로 본다."*
+
+
+```python
+class Dog:
+    def sound(self):
+        return "멍멍"
+class Cat:
+    def sound(self):
+        return "야옹"
+class Robot:
+    def sound(self):
+        return "삐리삐리"
+# 상속 관계가 없어도 sound() 메서드만 존재하면 동일하게 처리 (Duck Typing)
+def make_it_sound(obj):
+    print(obj.sound())
+make_it_sound(Dog())    # 멍멍
+make_it_sound(Cat())    # 야옹
+make_it_sound(Robot())  # 삐리삐리
+```
+
+
+<NotionDivider />
+
+<a id="5-믹스인-mixin-패턴"></a>
+
+### **⑤ 믹스인 (Mixin) 패턴**
+
+다중 상속의 장점을 활용하여, **독립된 기능 단위를 클래스에 부품처럼 조합(Plug-in)**하는 파이썬 고유의 디자인 패턴이다.
+
+
+```python
+class JSONSerializableMixin:
+    def to_json(self):
+        import json
+        return json.dumps(self.__dict__)
+class User(JSONSerializableMixin):
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+user = User("Bob", "bob@example.com")
+print(user.to_json())  # {"name": "Bob", "email": "bob@example.com"}
+```
+
+
+<NotionDivider />
+
+
+<a id="2-매직-메서드-dunder-methods-double-underscore"></a>
+
+## **2. 매직 메서드 (Dunder Methods: Double Underscore)**
+
+클래스에 미리 정의된 특별한 메서드로, 파이썬 빌트인 연산자 및 함수와 커스텀 객체를 연결한다.
+
+- `__str__(self)`: `str(obj)` 또는 `print(obj)` 호출 시 사용자 친화적 문자열 반환.
+- `__repr__(self)`: `repr(obj)` 호출 시 개발자 디버깅용 공식 문자열 반환.
+- `__len__(self)`: `len(obj)` 호출 시 개수/길이 반환.
+
+```python
+class Book:
+    def __init__(self, title: str, pages: int):
+        self.title = title
+        self.pages = pages
+    def __str__(self):
+        return f"<Book: {self.title}>"
+    def __len__(self):
+        return self.pages
+book = Book("파이썬 코딩의 기술", 350)
+print(str(book)) # <Book: 파이썬 코딩의 기술>
+print(len(book)) # 350
+```
+
+
+<NotionDivider />
+
+<a id="3-예외-처리-exception-handling"></a>
+
+## **3. 예외 처리 (Exception Handling)**
+
+<a id="1-try-except-else-finally-구문"></a>
+
+### **①** **`try - except - else - finally`** **구문**
+
+
+```python
+try:
+		file = open("data.txt","r")
+    value = int(file.read())
+
+except FileNotFoundError:
+		print("파일을 찾을 수 없습니다.")
+
+except ValueError:
+		print("숫자로 변환할 수 없는 데이터입니다.")
+else:
+		print(f"읽어온 값:{value}") # 예외가 발생하지 않았을 때만 실행
+finally:
+		file.close() # 예외 발생 여부와 상관없이 항상 실행
+```
+
+
+<NotionDivider />
+
+<a id="4-컨텍스트-매니저-context-manager-with-구문"></a>
+
+## **4. 컨텍스트 매니저 (Context Manager -** **`with`** **구문)**
+
+파일 열기/닫기, DB 커넥션 해제 등 자원 관리를 위해 `with` 구문을 사용한다. (`__enter__`와 `__exit__` 메서드가 자동 호출됨).
+
+
+```python
+# 안전한 파일 읽기 (자동 close 보장)
+with open("data.txt","r", encoding="utf-8") as f:
+    content= f.read()
+# with 블록을 벗어나면 파일이 자동으로 닫힘
+```
+

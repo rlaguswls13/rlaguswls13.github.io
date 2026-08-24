@@ -205,8 +205,13 @@
   },
   "education": {
     "byPageId": {
+      "3a319946ca7680a6b7b3f98589e30442": "/devlog/education/spring-filter-and-interceptor",
       "3a319946ca7680f58266f72bdafd3de8": "/devlog/education/spring-framework-for-web-applications",
       "3a319946ca76800bb0c3ea701fc098b2": "/devlog/education/jsp-and-jstl",
+      "3a319946ca76806db9ecf8824115ebea": "/devlog/education/requirements-definition-document",
+      "3c019946ca7680f5aa3ef175479b1dba": "/devlog/education/python-basic",
+      "3c619946ca7680b68637f1bcfa0bf21e": "/devlog/education/python-oop-exception",
+      "3c619946ca7680bc83caffd2cba75df7": "/devlog/education/python-basic-data-structure",
       "35e19946ca76807b9fe4f64d17b2e1b6": "/devlog/education/java-development-environment-and-basic-syntax",
       "35f19946ca7680aaab2de0ba2b1acd0b": "/devlog/education/java-constants-type-casting-and-memory",
       "36d19946ca7680559155e3820742c2be": "/devlog/education/java-composite-feature-implementation",
@@ -245,6 +250,10 @@
       "39519946ca7680febec1c485280ca77b": "/devlog/education/mvc-pattern-fundamentals"
     },
     "bySlug": {
+      "spring-filter-and-interceptor": {
+        "id": "3a319946ca7680a6b7b3f98589e30442",
+        "url": "/devlog/education/spring-filter-and-interceptor"
+      },
       "spring-framework-for-web-applications": {
         "id": "3a319946ca7680f58266f72bdafd3de8",
         "url": "/devlog/education/spring-framework-for-web-applications"
@@ -252,6 +261,22 @@
       "jsp-and-jstl": {
         "id": "3a319946ca76800bb0c3ea701fc098b2",
         "url": "/devlog/education/jsp-and-jstl"
+      },
+      "requirements-definition-document": {
+        "id": "3a319946ca76806db9ecf8824115ebea",
+        "url": "/devlog/education/requirements-definition-document"
+      },
+      "python-basic": {
+        "id": "3c019946ca7680f5aa3ef175479b1dba",
+        "url": "/devlog/education/python-basic"
+      },
+      "python-oop-exception": {
+        "id": "3c619946ca7680b68637f1bcfa0bf21e",
+        "url": "/devlog/education/python-oop-exception"
+      },
+      "python-basic-data-structure": {
+        "id": "3c619946ca7680bc83caffd2cba75df7",
+        "url": "/devlog/education/python-basic-data-structure"
       },
       "java-development-environment-and-basic-syntax": {
         "id": "35e19946ca76807b9fe4f64d17b2e1b6",
