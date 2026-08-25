@@ -4,12 +4,12 @@ created_date: "2026-08-24"
 tag: ["참조","원시","불변","가변"]
 slug: "java-primitive-reference-object-mutable"
 subcategory: "java"
-status: "temp"
-description: "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?"
+status: "publish"
+description: "함수에 인자를 전달할 때 원본 변수의 변경 여부를 혼동하지 않기 위해서는 Primitive(원시 타입) vs Reference(참조 타입), 그리고 Immutable(불변 객체) vs **Mutable(가변 객체)**이라는 4가지 키워드 조합으로 구분해 기억하는 것이 핵심입니다. Primitive 타입과 Immutable 객체는 함수 내부에서 어떤 조작을 하더라도 원본이 절대 변경되지 않는 안전한 영역이며, 오직 **Reference 타입이면서 동시에 Mutable 객체(예: 커스텀 객체, 리스트, 맵)**인 경우에만 원본 수정 가능성이 존재합니다.\n하지만 Mutable 참조 타입이라 할지라도 **\"함수 내부에서 수행하는 액션\"**에 따라 최종 결과가 달라집니다. 매개변수 자체에 새로운 객체를 =(재할당)하면 복사된 주소 포인터만 바뀔 뿐 원본은 보호되며, 오직 기존 객체의 내부 필드나 요소를 직접 수정(p.name = \"X\", list.append())할 때만 원본 객체가 변경됩니다. 이 4가지 키워드로 메모리 저장 형태(값 vs 주소)와 객체 상태 변경 가능 여부(가변 vs 불변)를 연결해 두면, Java와 Python을 넘나들며 매개변수 전달 동작 방식을 100% 명확하게 구분할 수 있습니다."
 title: "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?"
 page_id: "3c619946-ca76-80a3-96e8-dde2dccbfac3"
 source_id: "3c619946ca7680a396e8dde2dccbfac3"
-last_edited_time: "2026-08-24T07:27:00.000Z"
+last_edited_time: "2026-08-24T09:58:00.000Z"
 notion_url: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 id: "3c619946ca7680a396e8dde2dccbfac3"
 sourceId: "3c619946-ca76-80a3-96e8-dde2dccbfac3"
@@ -19,5 +19,195 @@ package: "java"
 notionUrl: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 ---
 
+## 목차
 
+- [핵심 요약](#핵심-요약)
+- [1. 4대 핵심 키워드 개념 정의](#1-4대-핵심-키워드-개념-정의)
+- [2. Java의 매개변수 전달 방식: 100% Pass-by-Value](#2-java의-매개변수-전달-방식-100-pass-by-value)
+  - [① Primitive 타입 & Immutable 객체 전달 (원본 변경 불가)](#1-primitive-타입-immutable-객체-전달-원본-변경-불가)
+  - [② Mutable 참조 타입 전달 (내부 상태 수정 vs 재할당)](#2-mutable-참조-타입-전달-내부-상태-수정-vs-재할당)
+- [3. Python의 매개변수 전달 방식: Call-by-Sharing (Pass-by-Assignment)](#3-python의-매개변수-전달-방식-call-by-sharing-pass-by-assignment)
+  - [① Immutable 객체 전달 (int, str, tuple -> 원본 변경 불가)](#1-immutable-객체-전달-int-str-tuple-원본-변경-불가)
+  - [② Mutable 객체 전달 (list, dict, 커스텀 객체 -> 내부 수정 vs 재할당)](#2-mutable-객체-전달-list-dict-커스텀-객체-내부-수정-vs-재할당)
+- [4. Java vs Python 최종 비교 요약](#4-java-vs-python-최종-비교-요약)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+결론부터 말하면 **"함수 내부에서 객체의 내부 상태(필드/요소)를 수정하면 원본이 변경되지만, 매개변수 자체에 새로운 객체를 재할당(Reassignment)하면 원본은 변경되지 않는다."**
+
+이 동작 원리를 이해하려면 **`Primitive`** **vs** **`Reference`**, **`Immutable`** **vs** **`Mutable`** 키워드와 Java의 **Pass-by-Value**, Python의 **Call-by-Sharing(Pass-by-Assignment)** 메커니즘을 알아야 한다.
+
+
+<NotionDivider />
+
+<a id="1-4대-핵심-키워드-개념-정의"></a>
+
+## 1. 4대 핵심 키워드 개념 정의
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>키워드</td><td>개념 정의</td><td>Java 예시</td><td>Python 예시</td></tr>
+    <tr><td>**Primitive Type** (원시 타입)</td><td>데이터의 **값(Value) 자체**를 변수 메모리에 직접 저장하는 타입</td><td>`int`, `double`, `boolean`, `char` 등</td><td>(파이썬은 모든 것이 객체이지만 `int`, `float`, `bool`이 원시 타입 역할을 함)</td></tr>
+    <tr><td>**Reference Type** (참조 타입)</td><td>힙(Heap) 메모리에 있는 **객체의 주소(참조값)**를 변수에 저장하는 타입</td><td>`Object`, `String`, `List`, 배열, 커스텀 클래스</td><td>`list`, `dict`, `set`, 커스텀 클래스 인스턴스</td></tr>
+    <tr><td>**Immutable** (불변 객체)</td><td>한 번 생성되면 **내부 상태/값을 변경할 수 없는** 객체</td><td>`String`, `Integer`, `Double` 등 Wrapper 클래스</td><td>`int`, `float`, `str`, `tuple`, `frozenset`</td></tr>
+    <tr><td>**Mutable** (가변 객체)</td><td>생성 후에도 **내부 상태/요소를 변경할 수 있는** 객체</td><td>커스텀 DTO/VO, `ArrayList`, `HashMap`</td><td>`list`, `dict`, `set`, 커스텀 클래스 인스턴스</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+
+<a id="2-java의-매개변수-전달-방식-100-pass-by-value"></a>
+
+## 2. Java의 매개변수 전달 방식: 100% Pass-by-Value
+
+Java는 **오직 Pass-by-Value(값에 의한 전달)** 방식으로만 동작한다.
+
+다만, 참조 타입(Reference Type)을 넘길 때는 **"객체의 주소값(Reference Value)을 복사해서 전달"**한다.
+
+<a id="1-primitive-타입-immutable-객체-전달-원본-변경-불가"></a>
+
+### ① Primitive 타입 & Immutable 객체 전달 (원본 변경 불가)
+
+
+```java
+public class JavaPassByValue {
+    public static void main(String[] args) {
+        int a = 10;
+        String str = "Hello";
+
+        modifyPrimitive(a);
+        modifyImmutable(str);
+
+        System.out.println("a: " + a);     // 10 (원본 변경 안 됨)
+        System.out.println("str: " + str); // Hello (원본 변경 안 됨)
+    }
+
+    static void modifyPrimitive(int val) {
+        val = 999; // 복사된 값만 변경
+    }
+
+    static void modifyImmutable(String s) {
+        s = "World"; // String은 Immutable이므로 새로운 String 객체가 할당됨
+    }
+}
+```
+
+<a id="2-mutable-참조-타입-전달-내부-상태-수정-vs-재할당"></a>
+
+### ② Mutable 참조 타입 전달 (내부 상태 수정 vs 재할당)
+
+
+```java
+class Person {
+    String name;
+    Person(String name) { this.name = name; }
+}
+
+public class JavaReferenceTest {
+    public static void main(String[] args) {
+        Person p1 = new Person("Alice");
+        Person p2 = new Person("Bob");
+
+        modifyField(p1);
+        reassignObject(p2);
+
+        System.out.println("p1.name: " + p1.name); // Charlie (🔥 원본 변경됨!)
+        System.out.println("p2.name: " + p2.name); // Bob (원본 변경 안 됨!)
+    }
+
+    // 1. 객체의 내부 필드 수정 -> 원본 변경 O
+    static void modifyField(Person p) {
+        p.name = "Charlie"; // p가 가리키는 동일한 Heap 객체의 필드를 변경
+    }
+
+    // 2. 매개변수에 새 객체 재할당 -> 원본 변경 X
+    static void reassignObject(Person p) {
+        p = new Person("David"); // 복사된 참조 변수 p가 새로운 객체를 바라보게 됨
+    }
+}
+```
+
+
+<NotionDivider />
+
+<a id="3-python의-매개변수-전달-방식-call-by-sharing-pass-by-assignment"></a>
+
+## 3. Python의 매개변수 전달 방식: Call-by-Sharing (Pass-by-Assignment)
+
+Python은 **Call-by-Sharing (Pass-by-Object-Reference)** 방식을 사용한다.
+
+전달되는 객체가 **`Immutable`****인가** **`Mutable`****인가**에 따라 동작이 달라진다.
+
+<a id="1-immutable-객체-전달-int-str-tuple-원본-변경-불가"></a>
+
+### ① Immutable 객체 전달 (`int`, `str`, `tuple` -> 원본 변경 불가)
+
+Python에서 Immutable 객체의 값을 변경하려 하면, 기존 객체를 수정하는 것이 아니라 **새로운 객체를 생성하여 변수에 재바인딩**한다.
+
+
+```python
+def modify_immutable(num, text):
+    num = num + 100       # 새로운 int 객체 할당
+    text = text + " World" # 새로운 str 객체 할당
+
+a = 10
+s = "Hello"
+
+modify_immutable(a, s)
+print(f"a: {a}") # 10 (원본 변경 안 됨)
+print(f"s: {s}") # Hello (원본 변경 안 됨)
+```
+
+<a id="2-mutable-객체-전달-list-dict-커스텀-객체-내부-수정-vs-재할당"></a>
+
+### ② Mutable 객체 전달 (`list`, `dict`, 커스텀 객체 -> 내부 수정 vs 재할당)
+
+
+```python
+class User:
+    def __init__(self, name):
+        self.name = name
+
+def modify_mutable_element(lst, user):
+    lst.append(99)         # 가변 객체 내부 요소 추가 -> 원본 변경 O
+    user.name = "Updated"  # 가변 객체 내부 속성 변경 -> 원본 변경 O
+
+def reassign_mutable(lst):
+    lst = [100, 200, 300]  # 새 객체 재할당 -> 원본 변경 X
+
+my_list = [1, 2, 3]
+my_user = User("Initial")
+
+modify_mutable_element(my_list, my_user)
+print("my_list:", my_list) # [1, 2, 3, 99] (🔥 원본 변경됨!)
+print("my_user.name:", my_user.name) # Updated (🔥 원본 변경됨!)
+
+reassign_mutable(my_list)
+print("my_list after reassign:", my_list) # [1, 2, 3, 99] (원본 변경 안 됨!)
+```
+
+
+<NotionDivider />
+
+<a id="4-java-vs-python-최종-비교-요약"></a>
+
+## 4. Java vs Python 최종 비교 요약
+
+
+```text
+[함수에 인자로 전달할 때]
+
+                  가변 객체 (Mutable)           불변 객체 (Immutable) / Primitive
+               ┌───────────┴───────────┐                 │
+   내부 상태/필드 수정        새 객체 재할당(Reassign)     값 수정 시도
+        │                           │                    │
+        ▼                           ▼                    ▼
+ 🔥 원본 객체 변경됨!           원본 변경 안 됨!          원본 변경 안 됨!
+```
+
+- **원본이 변경되는 유일한 조건**: **Mutable 객체(참조 타입)**를 인자로 전달한 뒤, 함수 내부에서 **새 객체를 생성하지 않고 기존 객체의 내부 필드/메서드/요소를 직접 수정(****`set`****,** **`append`****,** **`.field =`** **)**할 때만 원본이 변경된다.
 

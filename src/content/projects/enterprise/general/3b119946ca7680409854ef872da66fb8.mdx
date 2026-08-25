@@ -1,52 +1,175 @@
 ---
-slug: "d"
+slug: "f"
 created_date: "2026-08-03"
-description: "B2B 맞춤형 권한 체계를 반영한 전용 클라우드 관리 포털을 개발하고, Jenkins 기반의 CI/CD 파이프라인을 구축하여 배포 리드타임을 단축했습니다. 로컬 캐시와 역정규화 기법을 활용해 대규모 조직 데이터 조회 성능을 최적화했습니다."
+description: "금융, 통신, 항공 등 56개 주요 대형 고객사를 대상으로 대량의 고객을 타겟으로하는 솔루션은  B2B 비즈니스 환경에서는 시스템 장애나 버그가 고객사의 비즈니스 중단 및 대외 신뢰도 실추와 직결됩니다. 이에 따른 신속한 대응 및 자체 해결을 유도하기위한 작업들에 대해서 정리해 봤습니다."
 category: "enterprise"
 start: "2021-03-01"
-end: "2023-03-01"
+end: "2026-02-01"
 subcategory: "전체"
 tags: ["DevOps","CI/CD","Optimization"]
 status: "publish"
-title: "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축"
+title: "B2B 엔터프라이즈 솔루션 : 신속한 기술 지원과 고객 엔지니어링 철학"
 page_id: "3b119946-ca76-8040-9854-ef872da66fb8"
 source_id: "3b119946ca7680409854ef872da66fb8"
-last_edited_time: "2026-08-18T03:28:00.000Z"
-notion_url: "https://app.notion.com/p/DevOps-3b119946ca7680409854ef872da66fb8"
+last_edited_time: "2026-08-25T07:50:00.000Z"
+notion_url: "https://app.notion.com/p/B2B-3b119946ca7680409854ef872da66fb8"
 id: "3b119946ca7680409854ef872da66fb8"
 sourceId: "3b119946-ca76-8040-9854-ef872da66fb8"
 date: "2026-08-03"
 package: "전체"
-notionUrl: "https://app.notion.com/p/DevOps-3b119946ca7680409854ef872da66fb8"
+notionUrl: "https://app.notion.com/p/B2B-3b119946ca7680409854ef872da66fb8"
 ---
 
 ## 목차
 
-  - [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem)
-  - [2. 기술적 구현 및 적용 (Technical Implementation)](#2-기술적-구현-및-적용-technical-implementation)
-  - [3. 개선점 및 유용성 (Result & Benefit)](#3-개선점-및-유용성-result-benefit)
+- [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem)
+  - [🎯 핵심 해결 과제](#핵심-해결-과제)
+- [2. Part 1: B2B 기술 지원 데이터 자산화 & 쉘 스크립트 툴킷 배포](#2-part-1-b2b-기술-지원-데이터-자산화-쉘-스크립트-툴킷-배포)
+  - [① Jira ↔ Notion 연동을 통한 장애 추적 데이터 자산화](#1-jira-notion-연동을-통한-장애-추적-데이터-자산화)
+  - [② 비전공 CS 인력을 위한 Linux 트러블슈팅 쉘 툴킷 배포](#2-비전공-cs-인력을-위한-linux-트러블슈팅-쉘-툴킷-배포)
+- [3. Part 2: 가상화 컨테이너(Docker/K8s) 배포 지원 및 패키징 체계화](#3-part-2-가상화-컨테이너dockerk8s-배포-지원-및-패키징-체계화)
+  - [① 사내 포털 UI 옵션 ↔ YAML 매핑 가이드라인 수립](#1-사내-포털-ui-옵션-yaml-매핑-가이드라인-수립)
+  - [② VMware VM ➔ 컨테이너 커스텀 빌드 스크립트 지원](#2-vmware-vm-컨테이너-커스텀-빌드-스크립트-지원)
+- [4. Part 3: 지속 가능한 B2B 유지보수 및 고객 엔지니어링 철학](#4-part-3-지속-가능한-b2b-유지보수-및-고객-엔지니어링-철학)
+  - [① 고객사 눈높이에 맞춘 다층 문서화 (Multi-tier Documentation)](#1-고객사-눈높이에-맞춘-다층-문서화-multi-tier-documentation)
+  - [② 정기점검 기반 고객사 환경 프로파일링 & 사전 패치 제안](#2-정기점검-기반-고객사-환경-프로파일링-사전-패치-제안)
+  - [③ 제품 기본 템플릿(Starter Template) 제공을 통한 고객 락인(Lock-in)](#3-제품-기본-템플릿starter-template-제공을-통한-고객-락인lock-in)
+- [5. 최종 성과 및 비즈니스 가치 (Result & Benefit)](#5-최종-성과-및-비즈니스-가치-result-benefit)
 
 <a id="1-도입-배경-및-과제-background-problem"></a>
 
-### 1. 도입 배경 및 과제 (Background & Problem)
+## **1. 도입 배경 및 과제 (Background & Problem)**
 
-K8s(가상화 컨테이너 시스템)와 VMware(독립 가상화 시스템)의 자체 관리 도구는 비전문가인 소비자가 일관성 있게 사용하기 어렵다는 큰 한계가 있었습니다. 이를 극복하고자 복잡하고 엄격한 B2B(기업 간 거래) 맞춤형 권한 룰을 반영할 수 있는 전용 클라우드 관리 포털(Cloud Management Portal) 개발이 요구되었습니다.
+금융, 통신, 항공 등 **56개 주요 대형 고객사**를 대상으로 대량의 고객 알림 및 청구 발송 솔루션을 제공하는 B2B 비즈니스 환경에서는 시스템 장애나 버그가 고객사의 비즈니스 중단 및 대외 신뢰도 실추와 직결됩니다.
 
-<a id="2-기술적-구현-및-적용-technical-implementation"></a>
+<a id="핵심-해결-과제"></a>
 
-### 2. 기술적 구현 및 적용 (Technical Implementation)
+### **🎯 핵심 해결 과제**
 
-하이라키(Hierarchy) 형태의 다중 계층 조직 구조, 겸직 부서, N:N 리소스 존(Resource Zone) 매핑 등의 복잡도를 해결하기 위해 효율적인 데이터베이스 모델링(Database Modeling)을 설계했습니다.
+1. **신속한 무중단 기술 지원 체계 구축**:
+- 업무 외 시간에도 발생하는 장애 및 레거시 마이그레이션 결함을 빠르게 격리/해소할 수 있는 표준화된 CS 파이프라인 부재.
 
-관계형 데이터베이스(RDBMS) 테이블 구조를 부모-자식 식별자(ParentID-ChildID) 재귀적 구조로 설계하고, 무거운 Join(조인)이 필요한 일부 권한 트리 데이터는 제이슨(JSON) 직렬화(Serialization) 문법으로 역정규화(Denormalization)하여 텍스트 형태로 저장했습니다.
+1. **비개발 대응 인력의 기술적 자생력 확보**:
+- 리눅스 서버 접속 및 로그 분석 권한이 없는 1차 CS 대응 인력의 에스컬레이션 의존도로 인해 개발팀의 유지보수 부하 급증.
 
-가장 핵심적으로 로컬 캐시(Local Cache) 기술을 사용하여 방대한 조직 접근 데이터를 서버의 메모리(Memory) 상에 미리 적재(Pre-load)하고 알고리즘 연산과 비교를 서버 단에서 직접 수행하도록 백엔드 로직(Backend Logic)을 구축했습니다.
+1. **가상화(VMware ➔ Docker/K8s) 전환에 따른 기술 격차 해소**:
+- 고객사 및 사내 비개발 부서의 YAML 설정 및 컨테이너 패키징 지식 허들로 인한 잦은 인프라 지원 요청 발생.
 
-<a id="3-개선점-및-유용성-result-benefit"></a>
 
-### 3. 개선점 및 유용성 (Result & Benefit)
+<NotionDivider />
 
-무거운 SQL 쿼리에 의존하지 않고 메모리와 직렬화 구조를 혼용하는 기술적 최적화(Optimization)를 거쳐, 대규모 조직 조회 시 발생할 수 있는 데이터베이스 I/O 병목(Bottleneck) 현상과 대기 시간(Latency) 이슈를 완전히 해결했습니다. 결과적으로 포털 사용자는 무수하게 얽힌 부서 권한 제어 속에서도 지연 현상(Delay) 없이 신속하게 프로비저닝(Provisioning) 인스턴스를 관리할 수 있는 강력한 사용자 경험(User Experience)을 얻게 되었습니다.
+<a id="2-part-1-b2b-기술-지원-데이터-자산화-쉘-스크립트-툴킷-배포"></a>
 
-📎 **Flow Diagram:** `resources/diagrams/devops-db-arch.html`
+## **2. Part 1: B2B 기술 지원 데이터 자산화 & 쉘 스크립트 툴킷 배포**
+
+<a id="1-jira-notion-연동을-통한-장애-추적-데이터-자산화"></a>
+
+### **① Jira ↔ Notion 연동을 통한 장애 추적 데이터 자산화**
+
+- 유선/이메일 기반의 휘발성 CS 대응을 탈피하고, **Jira 백로그와 Notion Wiki를 양방향 연동**.
+- 고객사별 이슈 인입부터 재현 절차, 로그 분석, 핫픽스 커밋, 고객 안내 내역까지 엔드투엔드(End-to-End) 히스토리를 데이터베이스화하여 동일 장애 재발 시 즉각 대처 가능한 지식 베이스 구축.
+
+<NotionDivider />
+
+<a id="2-비전공-cs-인력을-위한-linux-트러블슈팅-쉘-툴킷-배포"></a>
+
+### **② 비전공 CS 인력을 위한 Linux 트러블슈팅 쉘 툴킷 배포**
+
+코드를 직접 수정할 수 없는 1차 CS 인력도 터미널에서 즉시 1차 원인을 진단할 수 있도록 **원클릭 진단 쉘 스크립트(Shell Script) 세트**를 제작하여 배포했다.
+
+
+```bash
+#!/bin/bash
+# ==============================================================================
+# B2B Mail Server Health & Policy Diagnostic Script (CS 1차 대응용)
+# ==============================================================================
+
+echo "=== [1] 이메일 서버 보안 정책 및 포트 바인딩 확인 ==="
+netstat -tulpn | grep -E ':(25|465|587|8080)\b'
+
+echo "=== [2] 최근 1시간 이메일 응답 코드(SMTP Response Code) 통계 집계 ==="
+# 로그에서 4xx(일시 오류), 5xx(영구 실패) 코드를 그룹핑하여 카운트
+awk '{for(i=1;i<=NF;i++) if($i ~ /^[45][0-9]{2}$/) print $i}' /var/log/mail/delivery.log | sort | uniq -c | sort -nr
+
+echo "=== [3] 대상 메일 서버 SSL/TLS 인증서 만료일 점검 ==="
+TARGET_HOST="mail.customer-enterprise.com"
+echo | openssl s_client -servername ${TARGET_HOST} -connect ${TARGET_HOST}:465 2>/dev/null | openssl x509 -noout -dates
+
+echo "=== 진단 완료: 결과 로그를 Jira 이슈 티켓에 첨부하세요. ==="
+```
+
+
+<NotionDivider />
+
+<a id="3-part-2-가상화-컨테이너dockerk8s-배포-지원-및-패키징-체계화"></a>
+
+## **3. Part 2: 가상화 컨테이너(Docker/K8s) 배포 지원 및 패키징 체계화**
+
+<a id="1-사내-포털-ui-옵션-yaml-매핑-가이드라인-수립"></a>
+
+### **① 사내 포털 UI 옵션 ↔ YAML 매핑 가이드라인 수립**
+
+- 사내 포털의 배포 UI 설정값(메모리 리밋, 환경 변수, 포트 바인딩 등)이 백엔드에서 실제 `deployment.yaml` 및 `docker-compose.yml`의 어떤 항목으로 치환되는지 시각적 매핑 테이블 제공.
+- 비개발 직군도 설정 오류 없이 안전하게 파라미터를 조정할 수 있는 가이드라인 자산화.
+<a id="2-vmware-vm-컨테이너-커스텀-빌드-스크립트-지원"></a>
+
+### **② VMware VM ➔ 컨테이너 커스텀 빌드 스크립트 지원**
+
+- Docker Hub 공식 레지스트리에서 지원하지 않는 특수 레거시 온프레미스 환경을 위해, 기존 VMware VM 리소스를 추출하여 컨테이너화하는 `build.script` 및 커스텀 `entrypoint.sh` 제작 지원.
+- **배포 지원 성과**:
+- 고객사 빅데이터 테스트 전용 커스텀 이미지 **2종** 배포 완료
+- Web Build 전용 커스텀 이미지 **2종** 안정적 제공
+- 솔루션 기본 탑재 백엔드 컨테이너 이미지 **12종**에 대한 구동 원리 및 Compose 패키징 문서화 완성
+
+
+<NotionDivider />
+
+<a id="4-part-3-지속-가능한-b2b-유지보수-및-고객-엔지니어링-철학"></a>
+
+## **4. Part 3: 지속 가능한 B2B 유지보수 및 고객 엔지니어링 철학**
+
+
+```text
+[B2B 고객 엔지니어링 3대 핵심 프레임워크]
+1. 고객사 눈높이 맞춤 소통 (비개발자용 요약 다이어그램 vs 엔지니어용 상세 기술 명세)
+2. 정기점검 기반 실환경 프로파일링 (EOS/EOL 선제 파악 & 영업 제안 연계)
+3. 엔터프라이즈 기본 템플릿 제공 (메시징 템플릿 & DevOps 베이스 이미지 락인)
+```
+
+<a id="1-고객사-눈높이에-맞춘-다층-문서화-multi-tier-documentation"></a>
+
+### **① 고객사 눈높이에 맞춘 다층 문서화 (Multi-tier Documentation)**
+
+- **비개발 담당자용**: 복잡한 아키텍처를 추상화한 **한눈에 보는 요약 다이어그램** 및 비즈니스 영향도 중심 설명 제공 (보고 체계 편의성 지원).
+- **개발자/인프라 담당자용**: 시스템 파라미터, 네트워크 패킷 덤프, 스택 트레이스 기반의 **상세 기술 보고서** 분리 제공.
+<a id="2-정기점검-기반-고객사-환경-프로파일링-사전-패치-제안"></a>
+
+### **② 정기점검 기반 고객사 환경 프로파일링 & 사전 패치 제안**
+
+- 정기점검 시 고객사 런타임 환경(OS, JDK, WAS, DB 버전)을 체계적으로 전수 조사하여 사내 DB에 프로파일링.
+- **EOS(End of Support) / EOL(End of Life)** 임박 제품을 사전에 고객사에 안내하여 장애 위험 사전 제거.
+- 메이저/마이너 패치 가능 여부를 선제 검토하고, 영업팀에 공유하여 단순 유지보수를 넘어 **신규 사업/업그레이드 제안의 백그라운드 데이터로 활용** (보안 및 라이선스 컴플라이언스 준수).
+<a id="3-제품-기본-템플릿starter-template-제공을-통한-고객-락인lock-in"></a>
+
+### **③ 제품 기본 템플릿(Starter Template) 제공을 통한 고객 락인(Lock-in)**
+
+- **메시징 솔루션**: 즉시 적용 가능한 표준 메시지/알림 템플릿 및 가이드라인 기본 탑재.
+- **DevOps 관리 솔루션**: VM 컨테이너화 요구에 맞춰 즉시 기동 가능한 커스텀 베이스 이미지 및 `entrypoint.sh` 표준 템플릿 번들링 제공.
+
+<NotionDivider />
+
+<a id="5-최종-성과-및-비즈니스-가치-result-benefit"></a>
+
+## **5. 최종 성과 및 비즈니스 가치 (Result & Benefit)**
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>**구분**</td><td>**AS-IS (과거 운영 방식)**</td><td>**TO-BE (고객 엔지니어링 도입 후)**</td><td>**비즈니스 개선 효과**</td></tr>
+    <tr><td>**CS 장애 대응**</td><td>유선/메일 기반 비정형 처리 (개발자 직통)</td><td>Jira-Notion 연동 + 1차 쉘 스크립트 진단</td><td>**4년간 300여 건+@ 100% 매니징**, 처리 시간 60% 단축</td></tr>
+    <tr><td>**개발팀 유지보수 부하**</td><td>단순 로그 확인 및 설정 문의로 개발 병목</td><td>FAQ 가이드 및 비개발 CS 가이드 확보</td><td>개발팀 본연의 신규 기능 개발 집중</td></tr>
+    <tr><td>**인프라 환경 독립성**</td><td>컨테이너 배포 시 엔지니어 상주 필수</td><td>UI-YAML 매핑 및 12종 이미지 패키징</td><td>고객사/비개발 부서 자체 배포 시작</td></tr>
+    <tr><td>**고객사 신뢰도 & 영업 연계**</td><td>장애 발생 시 사후 수습 위주</td><td>EOS/EOL 선제 진단 및 업그레이드 제안</td><td>고객 신뢰도 극대화 및 추가 사업 수주 기반 마련</td></tr>
+  </tbody>
+</NotionTable>
 

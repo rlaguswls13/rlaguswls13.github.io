@@ -27,7 +27,10 @@
       "3b019946ca7680849498da3bf66eaf67": "/devlog/tech_study/das-nas-san-storage-architecture",
       "3b819946ca7680439eecd5fe23528952": "/devlog/tech_study/ai-agent-basic-tech",
       "3b919946ca7680d9a4f3c5389ea08e85": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
-      "3c419946ca7680be8dade6370d93544f": "/devlog/tech_study/ai-wiki-index-rag-block"
+      "3c419946ca7680be8dade6370d93544f": "/devlog/tech_study/ai-wiki-index-rag-block",
+      "3c619946ca7680a396e8dde2dccbfac3": "/devlog/tech_study/java-primitive-reference-object-mutable",
+      "3c619946ca768049bdcbd2e3b6ccbc70": "/devlog/tech_study/java-oop",
+      "3c619946ca768098af99c5bb8fb90bec": "/devlog/tech_study/java-compile-interpeter"
     },
     "bySlug": {
       "essential-docker-commands": {
@@ -137,6 +140,18 @@
       "ai-wiki-index-rag-block": {
         "id": "3c419946ca7680be8dade6370d93544f",
         "url": "/devlog/tech_study/ai-wiki-index-rag-block"
+      },
+      "java-primitive-reference-object-mutable": {
+        "id": "3c619946ca7680a396e8dde2dccbfac3",
+        "url": "/devlog/tech_study/java-primitive-reference-object-mutable"
+      },
+      "java-oop": {
+        "id": "3c619946ca768049bdcbd2e3b6ccbc70",
+        "url": "/devlog/tech_study/java-oop"
+      },
+      "java-compile-interpeter": {
+        "id": "3c619946ca768098af99c5bb8fb90bec",
+        "url": "/devlog/tech_study/java-compile-interpeter"
       }
     }
   },
@@ -214,6 +229,7 @@
       "3a319946ca7680f58266f72bdafd3de8": "/devlog/education/spring-framework-for-web-applications",
       "3a319946ca76800bb0c3ea701fc098b2": "/devlog/education/jsp-and-jstl",
       "3a319946ca76806db9ecf8824115ebea": "/devlog/education/requirements-definition-document",
+      "3a319946ca76807b8e7ac1d05c32e441": "/devlog/education/python-download-workspace-env",
       "3c019946ca7680f5aa3ef175479b1dba": "/devlog/education/python-basic",
       "3c619946ca7680b68637f1bcfa0bf21e": "/devlog/education/python-oop-exception",
       "3c619946ca7680bc83caffd2cba75df7": "/devlog/education/python-basic-data-structure",
@@ -270,6 +286,10 @@
       "requirements-definition-document": {
         "id": "3a319946ca76806db9ecf8824115ebea",
         "url": "/devlog/education/requirements-definition-document"
+      },
+      "python-download-workspace-env": {
+        "id": "3a319946ca76807b8e7ac1d05c32e441",
+        "url": "/devlog/education/python-download-workspace-env"
       },
       "python-basic": {
         "id": "3c019946ca7680f5aa3ef175479b1dba",

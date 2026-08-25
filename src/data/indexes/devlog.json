@@ -155,6 +155,61 @@
   ],
   "tech_study": [
     {
+      "id": "3c619946ca7680a396e8dde2dccbfac3",
+      "slug": "java-primitive-reference-object-mutable",
+      "sourceId": "3c619946-ca76-80a3-96e8-dde2dccbfac3",
+      "source_id": "3c619946ca7680a396e8dde2dccbfac3",
+      "page_id": "3c619946-ca76-80a3-96e8-dde2dccbfac3",
+      "last_edited_time": "2026-08-24T09:58:00.000Z",
+      "title": "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?",
+      "date": "2026.08.24",
+      "tags": [
+        "참조",
+        "원시",
+        "불변",
+        "가변"
+      ],
+      "description": "함수에 인자를 전달할 때 원본 변수의 변경 여부를 혼동하지 않기 위해서는 Primitive(원시 타입) vs Reference(참조 타입), 그리고 Immutable(불변 객체) vs **Mutable(가변 객체)**이라는 4가지 키워드 조합으로 구분해 기억하는 것이 핵심입니다. Primitive 타입과 Immutable 객체는 함수 내부에서 어떤 조작을 하더라도 원본이 절대 변경되지 않는 안전한 영역이며, 오직 **Reference 타입이면서 동시에 Mutable 객체(예: 커스텀 객체, 리스트, 맵)**인 경우에만 원본 수정 가능성이 존재합니다.\n하지만 Mutable 참조 타입이라 할지라도 **\"함수 내부에서 수행하는 액션\"**에 따라 최종 결과가 달라집니다. 매개변수 자체에 새로운 객체를 =(재할당)하면 복사된 주소 포인터만 바뀔 뿐 원본은 보호되며, 오직 기존 객체의 내부 필드나 요소를 직접 수정(p.name = \"X\", list.append())할 때만 원본 객체가 변경됩니다. 이 4가지 키워드로 메모리 저장 형태(값 vs 주소)와 객체 상태 변경 가능 여부(가변 vs 불변)를 연결해 두면, Java와 Python을 넘나들며 매개변수 전달 동작 방식을 100% 명확하게 구분할 수 있습니다.",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
+    },
+    {
+      "id": "3c619946ca768049bdcbd2e3b6ccbc70",
+      "slug": "java-oop",
+      "sourceId": "3c619946-ca76-8049-bdcb-d2e3b6ccbc70",
+      "source_id": "3c619946ca768049bdcbd2e3b6ccbc70",
+      "page_id": "3c619946-ca76-8049-bdcb-d2e3b6ccbc70",
+      "last_edited_time": "2026-08-24T10:14:00.000Z",
+      "title": "객체지향 언어(OOP)의 정의와 Java가 객체지향 언어인 이유",
+      "date": "2026.08.24",
+      "tags": [
+        "객체지향언어"
+      ],
+      "description": "객체지향 언어(OOP)의 진짜 가치는 단순히 '객체 개념을 쓸 수 있다'에 그치지 않고, 언어 구조와 프레임워크 차원에서 객체지향 메커니즘을 기본 제공하도록 목적을 두고 설계되었다는 점에 있습니다. 사실 C언어 같은 절차지향 언어로도 구조체(Struct)와 함수 포인터를 조합하면 객체지향 스타일의 캡슐화나 다형성을 기술적으로 구현해 내는 것은 얼마든지 가능합니다.\n그러나 객체지향 전용 언어(Java, C++ 등)를 사용하는 이유는, C언어처럼 개발자가 일일이 수동으로 흉내 내며 발생하는 실수나 복잡성을 없애기 위함입니다. Java 등은 클래스, 상속, 접근 제어(private), 다형성 인터페이스가 언어 문법 자체에 강력히 고정되어 있으며, Spring과 같은 거대한 프레임워크가 객체의 생성부터 소멸(IoC/DI 라이프사이클)까지 완벽히 관리해 주도록 탄생한 언어입니다. 즉, C언어로 어렵게 쌓아 올려야 했던 고도의 모듈화 아키텍처를 언어와 프레임워크의 목적성에 따라 안전하고 생산성 있게 구축할 수 있다는 것이 객체지향 언어의 본질적인 장점입니다.",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/OOP-Java-3c619946ca768049bdcbd2e3b6ccbc70"
+    },
+    {
+      "id": "3c619946ca768098af99c5bb8fb90bec",
+      "slug": "java-compile-interpeter",
+      "sourceId": "3c619946-ca76-8098-af99-c5bb8fb90bec",
+      "source_id": "3c619946ca768098af99c5bb8fb90bec",
+      "page_id": "3c619946-ca76-8098-af99-c5bb8fb90bec",
+      "last_edited_time": "2026-08-24T09:58:00.000Z",
+      "title": "Java는 컴파일 언어인가 인터프리터 언어인가 - 하이브리드 실행 구조 분석",
+      "date": "2026.08.24",
+      "tags": [
+        "컴파일",
+        "인터프리터"
+      ],
+      "description": "Java는 기본적으로 컴파일 언어로 이해하는 것이 좋습니다. Java 소스 코드는 실행 전에 javac을 통해 바이트코드로 컴파일되며, 이러한 컴파일 과정이 명확하게 존재하기 때문입니다.\n물론 JVM 내부에서는 인터프리팅과 JIT 컴파일 등의 방식을 함께 사용하기 때문에 인터프리터 언어의 특징도 있다고 볼 수 있습니다. 하지만 기본 개념을 구분할 때는 JVM 내부 동작까지 확장하기보다 “실행 전에 컴파일하는가?”, “어느 쪽의 특성이 더 강한가?” 정도를 기준으로 정리하는 것이 혼동을 줄이는 데 도움이 됩니다.",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/Java-3c619946ca768098af99c5bb8fb90bec"
+    },
+    {
       "id": "3c419946ca7680be8dade6370d93544f",
       "slug": "ai-wiki-index-rag-block",
       "sourceId": "3c419946-ca76-80be-8dad-e6370d93544f",
