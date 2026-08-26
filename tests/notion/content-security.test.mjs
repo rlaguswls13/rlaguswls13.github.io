@@ -175,6 +175,33 @@ describe("Notion content security boundaries", () => {
     await expect(compile(body)).resolves.toBeDefined();
   });
 
+  it("Given a heading containing a generic type When converted Then the table of contents escapes it", async () => {
+    // Given: two headings whose plain text includes a Java-generic-like `<...>` payload.
+    const client = {
+      async getBlockChildren() {
+        return [{
+          id: "heading-1",
+          type: "heading_2",
+          has_children: false,
+          heading_2: { rich_text: [{ plain_text: "Map<String, Object> 반환을 금지해야 하는 이유" }] },
+        }, {
+          id: "heading-2",
+          type: "heading_3",
+          has_children: false,
+          heading_3: { rich_text: [{ plain_text: "ApiResponse<T> 패턴" }] },
+        }];
+      },
+    };
+
+    // When: the production converter builds the table of contents from raw heading text.
+    const body = await pageToMdxBody(client, "page");
+
+    // Then: the ToC link labels are entity-escaped, not left as unterminated JSX tags.
+    expect(body).toContain("[Map&lt;String, Object&gt; 반환을 금지해야 하는 이유]");
+    expect(body).toContain("[ApiResponse&lt;T&gt; 패턴]");
+    await expect(compile(body)).resolves.toBeDefined();
+  });
+
   it("Given an unapproved image host When a page is converted Then no network request occurs", async () => {
     // Given: an image URL outside the explicit Notion storage allowlist.
     let requested = false;

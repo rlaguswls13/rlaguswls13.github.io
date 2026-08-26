@@ -83,7 +83,15 @@ function tableOfContents(headings) {
   const items = headings.filter(({ level }) => level === 2 || level === 3);
   if (!items.length) return "";
   const links = items.map(({ id, level, title }) => {
-    const label = title.replaceAll("[", "\\[").replaceAll("]", "\\]");
+    // Heading titles are raw plain text (no code-span protection like the heading
+    // line itself gets), so a literal `<...>` such as a Java generic (`Map<String, Object>`)
+    // would otherwise be parsed as an incomplete JSX tag and break the whole document.
+    const label = title
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll("[", "\\[")
+      .replaceAll("]", "\\]");
     return `${level === 3 ? "  " : ""}- [${label}](#${id})`;
   });
   return `## 목차\n\n${links.join("\n")}\n\n`;
