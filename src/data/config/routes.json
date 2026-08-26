@@ -30,7 +30,10 @@
       "3c419946ca7680be8dade6370d93544f": "/devlog/tech_study/ai-wiki-index-rag-block",
       "3c619946ca7680a396e8dde2dccbfac3": "/devlog/tech_study/java-primitive-reference-object-mutable",
       "3c619946ca768049bdcbd2e3b6ccbc70": "/devlog/tech_study/java-oop",
-      "3c619946ca768098af99c5bb8fb90bec": "/devlog/tech_study/java-compile-interpeter"
+      "3c619946ca768098af99c5bb8fb90bec": "/devlog/tech_study/java-compile-interpeter",
+      "3c719946ca7680bb89ccc0dfc9bf2c87": "/devlog/tech_study/ai-agent-prompt-rule-guide",
+      "3c719946ca76806daa29f22dc447a502": "/devlog/tech_study/rdb-sql-denormalization-normalization",
+      "3c819946ca7680ae8b31f2d87255a3fb": "/devlog/tech_study/ai-python-history-data-pipeline"
     },
     "bySlug": {
       "essential-docker-commands": {
@@ -152,6 +155,18 @@
       "java-compile-interpeter": {
         "id": "3c619946ca768098af99c5bb8fb90bec",
         "url": "/devlog/tech_study/java-compile-interpeter"
+      },
+      "ai-agent-prompt-rule-guide": {
+        "id": "3c719946ca7680bb89ccc0dfc9bf2c87",
+        "url": "/devlog/tech_study/ai-agent-prompt-rule-guide"
+      },
+      "rdb-sql-denormalization-normalization": {
+        "id": "3c719946ca76806daa29f22dc447a502",
+        "url": "/devlog/tech_study/rdb-sql-denormalization-normalization"
+      },
+      "ai-python-history-data-pipeline": {
+        "id": "3c819946ca7680ae8b31f2d87255a3fb",
+        "url": "/devlog/tech_study/ai-python-history-data-pipeline"
       }
     }
   },
@@ -228,6 +243,7 @@
       "3a319946ca7680a6b7b3f98589e30442": "/devlog/education/spring-filter-and-interceptor",
       "3a319946ca7680f58266f72bdafd3de8": "/devlog/education/spring-framework-for-web-applications",
       "3a319946ca76800bb0c3ea701fc098b2": "/devlog/education/jsp-and-jstl",
+      "3a319946ca76802aa2cff193b6a2456e": "/devlog/education/spring-mvc-request-response",
       "3a319946ca76806db9ecf8824115ebea": "/devlog/education/requirements-definition-document",
       "3a319946ca76807b8e7ac1d05c32e441": "/devlog/education/python-download-workspace-env",
       "3c019946ca7680f5aa3ef175479b1dba": "/devlog/education/python-basic",
@@ -282,6 +298,10 @@
       "jsp-and-jstl": {
         "id": "3a319946ca76800bb0c3ea701fc098b2",
         "url": "/devlog/education/jsp-and-jstl"
+      },
+      "spring-mvc-request-response": {
+        "id": "3a319946ca76802aa2cff193b6a2456e",
+        "url": "/devlog/education/spring-mvc-request-response"
       },
       "requirements-definition-document": {
         "id": "3a319946ca76806db9ecf8824115ebea",

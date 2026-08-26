@@ -116,9 +116,9 @@
       "sourceId": "3b119946-ca76-80aa-84fb-f90e27ecc44f",
       "source_id": "3b119946ca7680aa84fbf90e27ecc44f",
       "page_id": "3b119946-ca76-80aa-84fb-f90e27ecc44f",
-      "last_edited_time": "2026-08-25T08:16:00.000Z",
+      "last_edited_time": "2026-08-25T08:39:00.000Z",
       "sourceFile": "personal/general/3b119946ca7680aa84fbf90e27ecc44f.mdx",
-      "title": "AI agent로 관리하는 블로그/이력서",
+      "title": "개인 포트폴리오 및 기술 블로그 플랫폼 구축 프로젝트",
       "date": "2026-08-03",
       "periods": [],
       "tags": [
@@ -127,7 +127,7 @@
         "TypeScript",
         "Vanilla CSS"
       ],
-      "description": "AI의 발전과 함께 작",
+      "description": "기존의 정적이고 밋밋한 템플릿 기반 이력서에서 탈피하여, 직접 학습한 기술 스택(React, Next.js, CSS)을 직관적으로 드러내고 다양한 개발 기술 일지를 우아하게 아카이빙할 수 있는 독자적인 디지털 포트폴리오 아키텍처가 필요해서 AI agent 와 함께 작업한 내용을 정리하여 공유합니다.",
       "category": "personal",
       "subcategory": "전체",
       "type": "personal"

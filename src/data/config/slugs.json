@@ -29,7 +29,10 @@
     "3c419946ca7680be8dade6370d93544f": "ai-wiki-index-rag-block",
     "3c619946ca7680a396e8dde2dccbfac3": "java-primitive-reference-object-mutable",
     "3c619946ca768049bdcbd2e3b6ccbc70": "java-oop",
-    "3c619946ca768098af99c5bb8fb90bec": "java-compile-interpeter"
+    "3c619946ca768098af99c5bb8fb90bec": "java-compile-interpeter",
+    "3c719946ca7680bb89ccc0dfc9bf2c87": "ai-agent-prompt-rule-guide",
+    "3c719946ca76806daa29f22dc447a502": "rdb-sql-denormalization-normalization",
+    "3c819946ca7680ae8b31f2d87255a3fb": "ai-python-history-data-pipeline"
   },
   "problem_solving": {
     "3b019946ca7680b584e1c59c19e022a9": "spring-quartz-ha-optimization",
@@ -51,6 +54,7 @@
     "3a319946ca7680a6b7b3f98589e30442": "spring-filter-and-interceptor",
     "3a319946ca7680f58266f72bdafd3de8": "spring-framework-for-web-applications",
     "3a319946ca76800bb0c3ea701fc098b2": "jsp-and-jstl",
+    "3a319946ca76802aa2cff193b6a2456e": "spring-mvc-request-response",
     "3a319946ca76806db9ecf8824115ebea": "requirements-definition-document",
     "3a319946ca76807b8e7ac1d05c32e441": "python-download-workspace-env",
     "3c019946ca7680f5aa3ef175479b1dba": "python-basic",

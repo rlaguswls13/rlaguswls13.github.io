@@ -4,12 +4,12 @@ created_date: "2026-05-26"
 tag: ["SpringBoot","LoadBalance","Redis","JWT","Clustering","Session","Tomcat","WAS"]
 slug: "was-session-consistency"
 subcategory: "was"
-status: "publish"
+status: "ready"
 description: "WAS 이중화 환경에서 로드밸런서에 의해 요청이 분산될 때 발생하는 세션 불일치 문제를 인프라·WAS·애플리케이션 3개 레벨의 해결 방안으로 분석합니다."
 title: "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안"
 page_id: "3b019946-ca76-808e-9f6e-c9aec83dbaaf"
 source_id: "3b019946ca76808e9f6ec9aec83dbaaf"
-last_edited_time: "2026-08-18T03:21:00.000Z"
+last_edited_time: "2026-08-26T02:26:00.000Z"
 notion_url: "https://app.notion.com/p/WAS-3b019946ca76808e9f6ec9aec83dbaaf"
 id: "3b019946ca76808e9f6ec9aec83dbaaf"
 sourceId: "3b019946-ca76-808e-9f6e-c9aec83dbaaf"
@@ -216,7 +216,7 @@ WAS 자체의 기능을 활용하여 서버 간 세션 데이터를 **실시간�
 
 **동작 방식**
 
-Tomcat의 `&lt;Cluster>` 태그 설정을 활성화하고 `DeltaManager` 또는 `BackupManager`를 사용합니다.
+Tomcat의 `<Cluster>` 태그 설정을 활성화하고 `DeltaManager` 또는 `BackupManager`를 사용합니다.
 
 멀티캐스트(Multicast) 통신이나 정적 멤버십(Static Membership) 설정을 통해 A 서버에서 생성된 세션 데이터를 B 서버로 실시간 복제(Replication)합니다.
 

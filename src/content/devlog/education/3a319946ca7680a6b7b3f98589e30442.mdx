@@ -10,7 +10,7 @@ slug: "spring-filter-and-interceptor"
 title: "Spring에서 Filter와 Interceptor의 쓰임 +AOP"
 page_id: "3a319946-ca76-80a6-b7b3-f98589e30442"
 source_id: "3a319946ca7680a6b7b3f98589e30442"
-last_edited_time: "2026-08-24T01:36:00.000Z"
+last_edited_time: "2026-08-26T01:30:00.000Z"
 notion_url: "https://app.notion.com/p/Spring-Filter-Interceptor-AOP-3a319946ca7680a6b7b3f98589e30442"
 id: "3a319946ca7680a6b7b3f98589e30442"
 sourceId: "3a319946-ca76-80a6-b7b3-f98589e30442"
@@ -25,19 +25,19 @@ notionUrl: "https://app.notion.com/p/Spring-Filter-Interceptor-AOP-3a319946ca768
 
 - [핵심 요약](#핵심-요약)
 - [1. 횡단 관심사 처리 3대 메커니즘과 실행 흐름](#1-횡단-관심사-처리-3대-메커니즘과-실행-흐름)
-  - [① Web Container ~ Controller 전체 레이어 실행 흐름도](#1-web-container-controller-전체-레이어-실행-흐름도)
-  - [② Filter vs Interceptor vs Spring AOP 3자 비교표](#2-filter-vs-interceptor-vs-spring-aop-3자-비교표)
+  - [1) Web Container ~ Controller 전체 레이어 실행 흐름도](#1-web-container-controller-전체-레이어-실행-흐름도)
+  - [2) Filter vs Interceptor vs Spring AOP 3자 비교표](#2-filter-vs-interceptor-vs-spring-aop-3자-비교표)
 - [2. 서블릿 필터 (Filter) 아키텍처 및 실무 패턴](#2-서블릿-필터-filter-아키텍처-및-실무-패턴)
-  - [① 서블릿 필터 기본 코드 구조](#1-서블릿-필터-기본-코드-구조)
-  - [② OncePerRequestFilter와 중복 실행 방지](#2-onceperrequestfilter와-중복-실행-방지)
-  - [③ Filter 실무 트러블슈팅 포인트](#3-filter-실무-트러블슈팅-포인트)
+  - [1) 서블릿 필터 기본 코드 구조](#1-서블릿-필터-기본-코드-구조)
+  - [2) OncePerRequestFilter와 중복 실행 방지](#2-onceperrequestfilter와-중복-실행-방지)
+  - [3) Filter 실무 트러블슈팅 포인트](#3-filter-실무-트러블슈팅-포인트)
 - [3. 스프링 인터셉터 (Interceptor) 아키텍처 및 실무 패턴](#3-스프링-인터셉터-interceptor-아키텍처-및-실무-패턴)
-  - [① HandlerInterceptor 3대 Lifecycle 메서드](#1-handlerinterceptor-3대-lifecycle-메서드)
-  - [② 등록 및 설정 (WebMvcConfigurer)](#2-등록-및-설정-webmvcconfigurer)
-  - [③ Interceptor 실무 트러블슈팅 포인트](#3-interceptor-실무-트러블슈팅-포인트)
-- [4. Spring AOP (@Aspect)의 동작 특징 & 실무 트러블슈팅](#4-spring-aop-aspect의-동작-특징-실무-트러블슈팅)
-  - [① @Aspect를 통한 비즈니스 계층 공통 처리](#1-aspect를-통한-비즈니스-계층-공통-처리)
-  - [② @Aspect 구현 시 유의사항 (프록시 한계와 트러블슈팅)](#2-aspect-구현-시-유의사항-프록시-한계와-트러블슈팅)
+  - [1) HandlerInterceptor 3대 Lifecycle 메서드](#1-handlerinterceptor-3대-lifecycle-메서드)
+  - [2) 등록 및 설정 (WebMvcConfigurer)](#2-등록-및-설정-webmvcconfigurer)
+  - [3) Interceptor 실무 트러블슈팅 포인트](#3-interceptor-실무-트러블슈팅-포인트)
+- [4. Spring AOP (@Aspect)의 동작 특징 &amp; 실무 트러블슈팅](#4-spring-aop-aspect의-동작-특징-실무-트러블슈팅)
+  - [1) @Aspect를 통한 비즈니스 계층 공통 처리](#1-aspect를-통한-비즈니스-계층-공통-처리)
+  - [2) @Aspect 구현 시 유의사항 (프록시 한계와 트러블슈팅)](#2-aspect-구현-시-유의사항-프록시-한계와-트러블슈팅)
 - [5. Filter vs Interceptor 상황별 선택 기준](#5-filter-vs-interceptor-상황별-선택-기준)
 
 <a id="핵심-요약"></a>
@@ -59,7 +59,7 @@ Web Container 단에서 작동하는 **Filter**는 CORS, XSS, 전역 인코딩 
 
 <a id="1-web-container-controller-전체-레이어-실행-흐름도"></a>
 
-### **① Web Container ~ Controller 전체 레이어 실행 흐름도**
+### **1) Web Container ~ Controller 전체 레이어 실행 흐름도**
 
 
 ```text
@@ -102,7 +102,7 @@ Web Container 단에서 작동하는 **Filter**는 CORS, XSS, 전역 인코딩 
 
 <a id="2-filter-vs-interceptor-vs-spring-aop-3자-비교표"></a>
 
-### **② Filter vs Interceptor vs Spring AOP 3자 비교표**
+### **2) Filter vs Interceptor vs Spring AOP 3자 비교표**
 
 
 <NotionTable>
@@ -125,7 +125,7 @@ Web Container 단에서 작동하는 **Filter**는 CORS, XSS, 전역 인코딩 
 
 <a id="1-서블릿-필터-기본-코드-구조"></a>
 
-### **① 서블릿 필터 기본 코드 구조**
+### **1) 서블릿 필터 기본 코드 구조**
 
 `Filter`는 자바 서블릿 스펙(`jakarta.servlet.Filter`)으로, `doFilter()` 메서드 호출 시 `chain.doFilter()`를 통해 요청을 다음 단계로 넘긴다.
 
@@ -135,12 +135,12 @@ Web Container 단에서 작동하는 **Filter**는 CORS, XSS, 전역 인코딩 
 public class CustomLoggingFilter implements Filter{
 
 		@Override
-		publicvoiddoFilter(ServletRequest request,ServletResponse response,FilterChain chain)
-			throwsIOException,ServletException{
+		public void doFilter(ServletRequest request,ServletResponse response,FilterChain chain)
+			throws IOException,ServletException{
 					HttpServletRequest httpRequest=(HttpServletRequest) request;
 					System.out.println("[Filter 전단] 요청 URI: "+ httpRequest.getRequestURI());
 					// 다음 필터 또는 DispatcherServlet으로 요청 전달
-					        chain.doFilter(request, response);
+	        chain.doFilter(request, response);
 					System.out.println("[Filter 후단] 응답 완료 후 후처리");
 				}
 }
@@ -151,7 +151,7 @@ public class CustomLoggingFilter implements Filter{
 
 <a id="2-onceperrequestfilter와-중복-실행-방지"></a>
 
-### **②** **`OncePerRequestFilter`****와 중복 실행 방지**
+### **2)** **`OncePerRequestFilter`****와 중복 실행 방지**
 
 서블릿 환경에서 Forward(`RequestDispatcher.forward()`) 발생 시 동일한 요청에 대해 일반 `Filter`가 2번 이상 중복 호출될 수 있다.
 
@@ -178,7 +178,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 <a id="3-filter-실무-트러블슈팅-포인트"></a>
 
-### **③ Filter 실무 트러블슈팅 포인트**
+### **3) Filter 실무 트러블슈팅 포인트**
 
 <a id="1-controlleradvice-예외-처리-불능-문제"></a>
 
@@ -201,7 +201,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 <a id="1-handlerinterceptor-3대-lifecycle-메서드"></a>
 
-### **①** **`HandlerInterceptor`** **3대 Lifecycle 메서드**
+### **1)** **`HandlerInterceptor`** **3대 Lifecycle 메서드**
 
 
 ```java
@@ -234,7 +234,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 
 <a id="2-등록-및-설정-webmvcconfigurer"></a>
 
-### **② 등록 및 설정 (****`WebMvcConfigurer`****)**
+### **2) 등록 및 설정 (****`WebMvcConfigurer`****)**
 
 
 ```java
@@ -255,17 +255,17 @@ public class WebConfig implements WebMvcConfigurer{
 
 <a id="3-interceptor-실무-트러블슈팅-포인트"></a>
 
-### **③ Interceptor 실무 트러블슈팅 포인트**
+### **3) Interceptor 실무 트러블슈팅 포인트**
 
 <a id="1-prehandle-반환값-boolean"></a>
 
-#### **1)** **`preHandle()`** **반환값 (****`boolean`****)**
+#### **(1)** **`preHandle()`** **반환값 (****`boolean`****)**
 
 - `true`를 반환해야 컨트롤러로 진입하며, `false`를 반환하면 **실행이 즉시 중단**된다.
 - `false` 반환 시 클라이언트가 무응답(Hanging) 상태에 빠지지 않도록 반드시 `response.setStatus()`와 오류 응답 메시지를 직접 작성해야 한다.
 <a id="2-threadlocal-사용-시-데이터-섞임pollution-방지"></a>
 
-#### **2)** **`ThreadLocal`** **사용 시 데이터 섞임(Pollution) 방지**
+#### **(2)** **`ThreadLocal`** **사용 시 데이터 섞임(Pollution) 방지**
 
 - 인증 정보나 요청 맥락을 `ThreadLocal`에 보관한 경우, Tomcat 스레드 풀 재사용으로 인해 다른 사용자가 이전 요청의 인증 정보를 참조하는 **대형 정보 유출 사고**가 발생할 수 있다.
 - `postHandle()`은 컨트롤러 예외 시 호출되지 않으므로, **예외 발생 여부와 상관없이 항상 실행되는** **`afterCompletion()`****에서 반드시** **`ThreadLocal.remove()`****를 호출**해야 한다.
@@ -275,7 +275,7 @@ public class WebConfig implements WebMvcConfigurer{
 
 <a id="1-aspect를-통한-비즈니스-계층-공통-처리"></a>
 
-### **①** **`@Aspect`****를 통한 비즈니스 계층 공통 처리**
+### **1)** **`@Aspect`****를 통한 비즈니스 계층 공통 처리**
 
 Spring AOP는 서비스/리포지토리 등 Spring Bean의 **메서드 실행 시점**을 대상으로 동작한다.
 
@@ -301,7 +301,7 @@ public class PerformanceAspect{
 
 <a id="2-aspect-구현-시-유의사항-프록시-한계와-트러블슈팅"></a>
 
-### **②** **`@Aspect`** **구현 시 유의사항 (프록시 한계와 트러블슈팅)**
+### **2)** **`@Aspect`** **구현 시 유의사항 (프록시 한계와 트러블슈팅)**
 
 1. **자기 호출 문제 (Self-Invocation Limitation)**:Spring AOP는 CGLIB / JDK Dynamic Proxy 객체를 통해 동작한다. 클래스 내부에서 자기 자신의 다른 메서드를 직접 호출(`this.internalMethod()`)하는 경우, 프록시를 거치지 않으므로 **AOP Advice 및** **`@Transactional`****이 동작하지 않는다.***(해결책: 비즈니스 로직을 별도 Service 클래스로 분리)*
 1. **`private`** **메서드 적용 불가**: 프록시 상속/대행 구조상 `public` 메서드에만 AOP를 적용할 수 있다.

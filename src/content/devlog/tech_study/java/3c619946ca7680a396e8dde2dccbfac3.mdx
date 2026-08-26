@@ -9,7 +9,7 @@ description: "함수에 인자를 전달할 때 원본 변수의 변경 여부�
 title: "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?"
 page_id: "3c619946-ca76-80a3-96e8-dde2dccbfac3"
 source_id: "3c619946ca7680a396e8dde2dccbfac3"
-last_edited_time: "2026-08-24T09:58:00.000Z"
+last_edited_time: "2026-08-26T02:31:00.000Z"
 notion_url: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 id: "3c619946ca7680a396e8dde2dccbfac3"
 sourceId: "3c619946-ca76-80a3-96e8-dde2dccbfac3"
@@ -24,11 +24,11 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 - [핵심 요약](#핵심-요약)
 - [1. 4대 핵심 키워드 개념 정의](#1-4대-핵심-키워드-개념-정의)
 - [2. Java의 매개변수 전달 방식: 100% Pass-by-Value](#2-java의-매개변수-전달-방식-100-pass-by-value)
-  - [① Primitive 타입 & Immutable 객체 전달 (원본 변경 불가)](#1-primitive-타입-immutable-객체-전달-원본-변경-불가)
-  - [② Mutable 참조 타입 전달 (내부 상태 수정 vs 재할당)](#2-mutable-참조-타입-전달-내부-상태-수정-vs-재할당)
+  - [1) Primitive 타입 &amp; Immutable 객체 전달 (원본 변경 불가)](#1-primitive-타입-immutable-객체-전달-원본-변경-불가)
+  - [2) Mutable 참조 타입 전달 (내부 상태 수정 vs 재할당)](#2-mutable-참조-타입-전달-내부-상태-수정-vs-재할당)
 - [3. Python의 매개변수 전달 방식: Call-by-Sharing (Pass-by-Assignment)](#3-python의-매개변수-전달-방식-call-by-sharing-pass-by-assignment)
-  - [① Immutable 객체 전달 (int, str, tuple -> 원본 변경 불가)](#1-immutable-객체-전달-int-str-tuple-원본-변경-불가)
-  - [② Mutable 객체 전달 (list, dict, 커스텀 객체 -> 내부 수정 vs 재할당)](#2-mutable-객체-전달-list-dict-커스텀-객체-내부-수정-vs-재할당)
+  - [1) Immutable 객체 전달 (int, str, tuple -&gt; 원본 변경 불가)](#1-immutable-객체-전달-int-str-tuple-원본-변경-불가)
+  - [2) Mutable 객체 전달 (list, dict, 커스텀 객체 -&gt; 내부 수정 vs 재할당)](#2-mutable-객체-전달-list-dict-커스텀-객체-내부-수정-vs-재할당)
 - [4. Java vs Python 최종 비교 요약](#4-java-vs-python-최종-비교-요약)
 
 <a id="핵심-요약"></a>
@@ -70,7 +70,7 @@ Java는 **오직 Pass-by-Value(값에 의한 전달)** 방식으로만 동작한
 
 <a id="1-primitive-타입-immutable-객체-전달-원본-변경-불가"></a>
 
-### ① Primitive 타입 & Immutable 객체 전달 (원본 변경 불가)
+### 1) Primitive 타입 & Immutable 객체 전달 (원본 변경 불가)
 
 
 ```java
@@ -98,7 +98,7 @@ public class JavaPassByValue {
 
 <a id="2-mutable-참조-타입-전달-내부-상태-수정-vs-재할당"></a>
 
-### ② Mutable 참조 타입 전달 (내부 상태 수정 vs 재할당)
+### 2) Mutable 참조 타입 전달 (내부 상태 수정 vs 재할당)
 
 
 ```java
@@ -144,7 +144,7 @@ Python은 **Call-by-Sharing (Pass-by-Object-Reference)** 방식을 사용한다.
 
 <a id="1-immutable-객체-전달-int-str-tuple-원본-변경-불가"></a>
 
-### ① Immutable 객체 전달 (`int`, `str`, `tuple` -> 원본 변경 불가)
+### 1) Immutable 객체 전달 (`int`, `str`, `tuple` -> 원본 변경 불가)
 
 Python에서 Immutable 객체의 값을 변경하려 하면, 기존 객체를 수정하는 것이 아니라 **새로운 객체를 생성하여 변수에 재바인딩**한다.
 
@@ -164,7 +164,7 @@ print(f"s: {s}") # Hello (원본 변경 안 됨)
 
 <a id="2-mutable-객체-전달-list-dict-커스텀-객체-내부-수정-vs-재할당"></a>
 
-### ② Mutable 객체 전달 (`list`, `dict`, 커스텀 객체 -> 내부 수정 vs 재할당)
+### 2) Mutable 객체 전달 (`list`, `dict`, 커스텀 객체 -> 내부 수정 vs 재할당)
 
 
 ```python

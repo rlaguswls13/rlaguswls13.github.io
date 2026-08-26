@@ -10,7 +10,7 @@ slug: "java-composite-feature-implementation"
 title: "java 복합 기능 구현"
 page_id: "36d19946-ca76-8055-9155-e3820742c2be"
 source_id: "36d19946ca7680559155e3820742c2be"
-last_edited_time: "2026-08-18T03:22:00.000Z"
+last_edited_time: "2026-08-26T00:50:00.000Z"
 notion_url: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 id: "36d19946ca7680559155e3820742c2be"
 sourceId: "36d19946-ca76-8055-9155-e3820742c2be"
@@ -38,8 +38,10 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 ### 구성 클래스 및 역할
 
+**Student**
 
-<NotionToggle title="Student" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `name : String` — 이름
@@ -53,18 +55,20 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 - **메서드**
 - 각 필드별 **getter / setter** 직접 구현
 - `inform(): String`
-→ `"이름 : &#123;이름&#125; / 과목 : &#123;과목&#125; / 점수 : &#123;점수&#125;"` 형태의 문자열 반환
+→ `"이름 : {이름} / 과목 : {과목} / 점수 : {점수}"` 형태의 문자열 반환
 
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
+**StudentController**
 
-<NotionToggle title="StudentController" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `sArr : Student[] = new Student[5]` — 학생 정보 배열
@@ -96,13 +100,15 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
+**StudentMenu**
 
-<NotionToggle title="StudentMenu" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `ssm : StudentController = new StudentController()`
@@ -121,19 +127,21 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
+**Run**
 
-<NotionToggle title="Run" level="4">
+
+<NotionIndent>
 
 - **main(String[] args)**
 - `StudentMenu` 객체 생성 → 실행 시 자동 출력
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
@@ -174,8 +182,10 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 ### 구성 클래스 및 역할
 
+**Product**
 
-<NotionToggle title="Product" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `pName : String` — 상품명
@@ -189,18 +199,20 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 - **메서드**
 - 각 필드별 **getter / setter** 직접 구현
 - `inform(): String`
-→ `"상품명 : &#123;상품명&#125; / 가격 : &#123;가격&#125; / 브랜드 : &#123;브랜드&#125;"` 형태의 문자열 반환
+→ `"상품명 : {상품명} / 가격 : {가격} / 브랜드 : {브랜드}"` 형태의 문자열 반환
 
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
+**ProductController**
 
-<NotionToggle title="ProductController" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `pro : Product[] = new Product[10]` — 상품 정보 배열
@@ -229,13 +241,15 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
+**ProductMenu**
 
-<NotionToggle title="ProductMenu" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `pc : ProductController = new ProductController()`
@@ -261,19 +275,21 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
+**Run**
 
-<NotionToggle title="Run" level="4">
+
+<NotionIndent>
 
 - **main(String[] args)**
 - `ProductMenu` 객체 생성 후 `mainMenu()` 호출
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />

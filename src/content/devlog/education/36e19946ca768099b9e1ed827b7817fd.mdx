@@ -10,7 +10,7 @@ slug: "java-inheritance-feature-implementation"
 title: "java 상속을 활용한 기능 구현"
 page_id: "36e19946-ca76-8099-b9e1-ed827b7817fd"
 source_id: "36e19946ca768099b9e1ed827b7817fd"
-last_edited_time: "2026-08-18T03:22:00.000Z"
+last_edited_time: "2026-08-26T01:00:00.000Z"
 notion_url: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 id: "36e19946ca768099b9e1ed827b7817fd"
 sourceId: "36e19946-ca76-8099-b9e1-ed827b7817fd"
@@ -30,6 +30,8 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
   - [구성 클래스 및 역할](#구성-클래스-및-역할-2)
   - [실행 예시](#실행-예시-2)
 
+[🔗 https://github.com/rlaguswls13/java-extended-practice](https://github.com/rlaguswls13/java-extended-practice)
+
 <a id="1-도형원사각형-정보-계산-프로그램"></a>
 
 ## 1. 도형(원·사각형) 정보 계산 프로그램
@@ -38,8 +40,10 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 
 ### 구성 클래스 및 역할
 
+**Point**
 
-<NotionToggle title="Point" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `x : int` — X 좌표
@@ -54,10 +58,12 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 - `toString(): String` → `"x, y"` 형식의 문자열 반환
 
 
-</NotionToggle>
+</NotionIndent>
+
+**Circle**
 
 
-<NotionToggle title="Circle" level="4">
+<NotionIndent>
 
 - **상속**
 - **Point**
@@ -74,10 +80,12 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 - `toString(): String` → `"x, y, radius"` 형식의 문자열 반환
 
 
-</NotionToggle>
+</NotionIndent>
+
+**Rectangle**
 
 
-<NotionToggle title="Rectangle" level="4">
+<NotionIndent>
 
 - **상속**
 - **Point**
@@ -95,10 +103,12 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 - `toString(): String` → `"x, y, width, height"` 형식의 문자열 반환
 
 
-</NotionToggle>
+</NotionIndent>
+
+**CircleController**
 
 
-<NotionToggle title="CircleController" level="4">
+<NotionIndent>
 
 - **필드**
 - `c : Circle = new Circle()` — 원 객체
@@ -114,10 +124,12 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 
 
 
-</NotionToggle>
+</NotionIndent>
+
+**RectangleController**
 
 
-<NotionToggle title="RectangleController" level="4">
+<NotionIndent>
 
 - **필드**
 - `r : Rectangle = new Rectangle()` — 사각형 객체
@@ -133,10 +145,12 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 
 
 
-</NotionToggle>
+</NotionIndent>
+
+**PointMenu**
 
 
-<NotionToggle title="PointMenu" level="4">
+<NotionIndent>
 
 - **필드**
 - `sc : Scanner = new Scanner(System.in)`
@@ -167,7 +181,7 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 <a id="실행-예시"></a>
 
@@ -247,8 +261,10 @@ y 좌표 : 4
 
 ### 구성 클래스 및 역할
 
+**Person**
 
-<NotionToggle title="Person" level="4">
+
+<NotionIndent>
 
 - **필드**
 - `name : String` — 이름
@@ -265,10 +281,12 @@ y 좌표 : 4
 - `toString(): String` → `"name, age, height, weight"` 형식의 문자열 반환
 
 
-</NotionToggle>
+</NotionIndent>
+
+**Student**
 
 
-<NotionToggle title="Student" level="4">
+<NotionIndent>
 
 - **필드**
 - `grade : int` — 학년
@@ -283,10 +301,12 @@ y 좌표 : 4
 - `toString(): String` → `"name, age, height, weight, grade, major"` 형식 문자열 반환
 
 
-</NotionToggle>
+</NotionIndent>
+
+**Employee**
 
 
-<NotionToggle title="Employee" level="4">
+<NotionIndent>
 
 - **필드**
 - `salary : int` — 급여
@@ -301,10 +321,12 @@ y 좌표 : 4
 - `toString(): String` → `"name, age, height, weight, salary, dept"` 형식 문자열 반환
 
 
-</NotionToggle>
+</NotionIndent>
+
+**PersonController**
 
 
-<NotionToggle title="PersonController" level="4">
+<NotionIndent>
 
 - **필드**
 - `s : Student[] = new Student[3]` — 학생 객체 배열
@@ -328,10 +350,12 @@ y 좌표 : 4
 
 
 
-</NotionToggle>
+</NotionIndent>
+
+**PersonMenu**
 
 
-<NotionToggle title="PersonMenu" level="4">
+<NotionIndent>
 
 - **필드**
 - `sc : Scanner = new Scanner(System.in)`
@@ -362,7 +386,7 @@ y 좌표 : 4
 
 
 
-</NotionToggle>
+</NotionIndent>
 
 <a id="실행-예시-2"></a>
 

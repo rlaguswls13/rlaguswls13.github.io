@@ -9,7 +9,7 @@ description: "LLM Wiki를 개인 프로젝트에 도입하여 사용하면서 Se
 title: "LLM Wiki 확장 설계 : Human Report와 Block 단위 Context 관리"
 page_id: "3c419946-ca76-80be-8dad-e6370d93544f"
 source_id: "3c419946ca7680be8dade6370d93544f"
-last_edited_time: "2026-08-24T08:43:00.000Z"
+last_edited_time: "2026-08-26T02:31:00.000Z"
 notion_url: "https://app.notion.com/p/LLM-Wiki-Human-Report-Block-Context-3c419946ca7680be8dade6370d93544f"
 id: "3c419946ca7680be8dade6370d93544f"
 sourceId: "3c419946-ca76-80be-8dad-e6370d93544f"
@@ -22,8 +22,8 @@ notionUrl: "https://app.notion.com/p/LLM-Wiki-Human-Report-Block-Context-3c41994
 ## 목차
 
 - [1. 기존 구조를 실제 프로젝트에 적용하면서 생긴 고민](#1-기존-구조를-실제-프로젝트에-적용하면서-생긴-고민)
-  - [1.1 사람이 무엇을 검토해야 하는가?](#11-사람이-무엇을-검토해야-하는가)
-  - [1.2 Wiki가 커지면 Context도 같이 커지지 않을까?](#12-wiki가-커지면-context도-같이-커지지-않을까)
+  - [1) 사람이 무엇을 검토해야 하는가?](#1-사람이-무엇을-검토해야-하는가)
+  - [2) Wiki가 커지면 Context도 같이 커지지 않을까?](#2-wiki가-커지면-context도-같이-커지지-않을까)
 - [2. Human Supervision을 위한 Report 영역](#2-human-supervision을-위한-report-영역)
 - [3. Report를 단순한 작업 Log와 분리한 이유](#3-report를-단순한-작업-log와-분리한-이유)
 - [4. Report에서 실제 근거까지 추적하기](#4-report에서-실제-근거까지-추적하기)
@@ -72,9 +72,9 @@ LLM Wiki를 프로젝트에 적용하면 AI가 프로젝트의 지식을 지속�
 
 제가 중요하게 생각한 문제는 크게 두 가지입니다.
 
-<a id="11-사람이-무엇을-검토해야-하는가"></a>
+<a id="1-사람이-무엇을-검토해야-하는가"></a>
 
-### 1.1 사람이 무엇을 검토해야 하는가?
+### 1) 사람이 무엇을 검토해야 하는가?
 
 AI가 프로젝트의 Context를 충분히 확보하더라도 결과가 항상 올바르다고 보장할 수 없습니다.
 
@@ -92,9 +92,9 @@ AI가 프로젝트의 Context를 충분히 확보하더라도 결과가 항상 �
 
 따라서 **AI가 참고하고 관리하는 영역과 사람이 검토해야 하는 영역을 분리할 필요가 있다고 생각했습니다.**
 
-<a id="12-wiki가-커지면-context도-같이-커지지-않을까"></a>
+<a id="2-wiki가-커지면-context도-같이-커지지-않을까"></a>
 
-### 1.2 Wiki가 커지면 Context도 같이 커지지 않을까?
+### 2) Wiki가 커지면 Context도 같이 커지지 않을까?
 
 두 번째 문제는 Wiki 자체의 크기입니다.
 

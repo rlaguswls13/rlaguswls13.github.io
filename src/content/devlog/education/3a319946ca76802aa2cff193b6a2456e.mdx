@@ -1,7 +1,7 @@
 ---
-status: "temp"
+status: "publish"
 tag: ["Spring MVC","Request","Response"]
-description: "Spring MVC에서 응답(Response)와 요청(Request) 구조"
+description: "Java를 이용해 웹 애플리케이션을 개발하다 보면 MVC 패턴을 자연스럽게 접하게 됩니다.\n웹 애플리케이션은 기본적으로 클라이언트의 요청(Request)을 서버가 전달받아 필요한 비즈니스 로직을 처리하고, 그 결과를 응답(Response)으로 반환하는 구조로 동작합니다.\nSpring은 이러한 웹 애플리케이션의 처리 과정을 MVC(Model-View-Controller) 패턴을 기반으로 체계적으로 구조화하여 개발자가 보다 편리하게 구현할 수 있도록 지원합니다.\n이번 글에서는 Spring MVC가 클라이언트의 요청을 받아 처리하고 응답하기까지의 흐름을 살펴보고, 그 과정에서 사용되는 구성 요소들의 역할과 규칙, 그리고 각각이 가지는 의미에 대해 공부한 내용을 정리해 보았습니다."
 subcategory: "2026"
 created_date: "2026-07-08"
 회차: "[교육 39일차]"
@@ -10,7 +10,7 @@ slug: "spring-mvc-request-response"
 title: "Spring MVC에서 응답(Response)와 요청(Request) 구조"
 page_id: "3a319946-ca76-802a-a2cf-f193b6a2456e"
 source_id: "3a319946ca76802aa2cff193b6a2456e"
-last_edited_time: "2026-08-18T03:22:00.000Z"
+last_edited_time: "2026-08-26T01:29:00.000Z"
 notion_url: "https://app.notion.com/p/Spring-MVC-Response-Request-3a319946ca76802aa2cff193b6a2456e"
 id: "3a319946ca76802aa2cff193b6a2456e"
 sourceId: "3a319946-ca76-802a-a2cf-f193b6a2456e"
@@ -21,5 +21,266 @@ package: "2026"
 notionUrl: "https://app.notion.com/p/Spring-MVC-Response-Request-3a319946ca76802aa2cff193b6a2456e"
 ---
 
+## 목차
 
+- [핵심 요약](#핵심-요약)
+- [1. DispatcherServlet 중심의 요청/응답 전체 생명주기](#1-dispatcherservlet-중심의-요청응답-전체-생명주기)
+  - [1) 처리 흐름 아키텍처](#1-처리-흐름-아키텍처)
+  - [2) 핵심 내부 구성 요소 역할](#2-핵심-내부-구성-요소-역할)
+- [2. 요청(Request) 데이터 구조 및 처리 방식](#2-요청request-데이터-구조-및-처리-방식)
+  - [1) 컨트롤러 요청 처리 기본 코드 구조](#1-컨트롤러-요청-처리-기본-코드-구조)
+  - [2) Data Type 및 위치별 파싱 규칙 정리](#2-data-type-및-위치별-파싱-규칙-정리)
+  - [3) HTTP Method 사용 표준 및 최신 추세](#3-http-method-사용-표준-및-최신-추세)
+- [3. 응답(Response) 구조 및 반환 타입 체계](#3-응답response-구조-및-반환-타입-체계)
+  - [1) 컨트롤러 반환 타입 비교 및 가이드라인](#1-컨트롤러-반환-타입-비교-및-가이드라인)
+  - [2) Map&lt;String, Object&gt; 반환을 금지해야 하는 3가지 이유 (안티 패턴)](#2-mapstring-object-반환을-금지해야-하는-3가지-이유-안티-패턴)
+  - [3) 실무 표준: 공통 응답 Wrapper 패턴 (ApiResponse&lt;T&gt;)](#3-실무-표준-공통-응답-wrapper-패턴-apiresponset)
+- [4. 실무 개발자 체크리스트](#4-실무-개발자-체크리스트)
+
+<a id="핵심-요약"></a>
+
+## **핵심 요약**
+
+Spring MVC는 **프론트 컨트롤러 패턴(Front Controller Pattern)** 기반의 **`DispatcherServlet`**을 중심으로 작동한다.
+
+클라이언트의 HTTP 요청 수신부터 컨트롤러 파라미터 자동 파싱(`ArgumentResolver`), 비즈니스 로직 수행, 그리고 표준 HTTP 응답 생성(`HttpMessageConverter`)까지의 전 과정을 통합 관리한다.
+
+본 가이드는 DispatcherServlet의 처리 흐름, 요청 데이터 타입별 파싱 규칙과 `QUERY` 등 최신 HTTP 스펙 추세, 그리고 `ResponseEntity<T>` 및 공통 응답 Wrapper(`ApiResponse<T>`) 기반의 응답 모범 사례를 종합적으로 다룬다.
+
+
+<NotionDivider />
+
+<a id="1-dispatcherservlet-중심의-요청응답-전체-생명주기"></a>
+
+## **1. DispatcherServlet 중심의 요청/응답 전체 생명주기**
+
+Spring Web MVC 환경에서 클라이언트와 컨트롤러 사이의 모든 통신은 `DispatcherServlet`을 거친다.
+
+<a id="1-처리-흐름-아키텍처"></a>
+
+### **1) 처리 흐름 아키텍처**
+
+
+```text
+[Client Request]
+       │
+       ▼
+1. DispatcherServlet ────> 2. HandlerMapping (요청 URL 및 Method 매핑 Controller/Handler 탐색)
+       │                         │
+       │ <── (Handler Execution Chain) ──┘
+       ▼
+3. HandlerAdapter (Controller 호출 어댑터 선택)
+       │
+       ├───────> ArgumentResolver (`@RequestBody`, `@RequestParam` 등 파라미터 바인딩)
+       │                         │
+       ├───────> 4. Controller (Service/Repository 비즈니스 로직 처리)
+       │                         │
+       │ <────── (반환 객체 또는 ResponseEntity) ┘
+       ▼
+5. 응답 처리 메커니즘 선택
+       ├── A. SSR (View 기반): 6. ViewResolver ──> 7. View Render (HTML) ──> Client
+       └── B. REST API (JSON): 6. HttpMessageConverter (Jackson Write) ─────> Client
+```
+
+<a id="2-핵심-내부-구성-요소-역할"></a>
+
+### **2) 핵심 내부 구성 요소 역할**
+
+1. **`DispatcherServlet`**: HTTP 요청을 최초로 수신하고 전체 응답 흐름을 총괄하는 중앙 프론트 컨트롤러.
+1. **`HandlerMapping`**: URL, HTTP Method, Header 정보를 확인하여 해당 요청을 처리할 Controller 메서드를 찾는다. (`RequestMappingHandlerMapping` 사용)
+1. **`HandlerAdapter`**: 컨트롤러 메서드의 시그니처에 맞추어 `ArgumentResolver`를 통해 파라미터를 생성 및 변환 후 컨트롤러를 실제로 실행한다.
+1. **`HttpMessageConverter`**:
+- **요청 시 (Read)**: HTTP Request Body(JSON)를 자바 DTO 객체로 변환 (`MappingJackson2HttpMessageConverter`).
+- **응답 시 (Write)**: 컨트롤러가 반환한 자바 객체를 HTTP Response Body(JSON)로 직렬화.
+
+
+<NotionDivider />
+
+<a id="2-요청request-데이터-구조-및-처리-방식"></a>
+
+## **2. 요청(Request) 데이터 구조 및 처리 방식**
+
+<a id="1-컨트롤러-요청-처리-기본-코드-구조"></a>
+
+### **1) 컨트롤러 요청 처리 기본 코드 구조**
+
+
+```java
+@RestController
+@RequestMapping("/api/v1/users")
+public class UserController{
+	
+	// 1. PathVariable & RequestParam (경로 변수 및 쿼리 파라미터)
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserResponseDto> getUser(
+	@PathVariable("userId")Long userId, @RequestParam(name="includeDetail", defaultValue="false")boolean includeDetail) {
+	UserResponseDto dto= userService.findUser(userId, includeDetail);
+		return ResponseEntity.ok(dto);
+	}
+	
+	// 2. RequestBody (JSON 요청 본문 역직렬화)
+	@PostMapping
+	public ResponseEntity<Long>createUser(
+	@Valid @RequestBody CreateUserRequestDto requestDto){
+	Long createdId= userService.createUser(requestDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdId);
+	}
+	
+	// 3. ModelAttribute (Form Data 및 Query String 객체 바인딩)
+	@GetMapping("/search")
+	public ResponseEntity<List<UserResponseDto>>searchUsers(
+	@ModelAttribute UserSearchCondition condition){
+		return ResponseEntity.ok(userService.search(condition));
+	}
+}
+```
+
+<a id="2-data-type-및-위치별-파싱-규칙-정리"></a>
+
+### **2) Data Type 및 위치별 파싱 규칙 정리**
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>**위치 / Content-Type**</td><td>**어노테이션**</td><td>**데이터 바인딩 메커니즘**</td><td>**실무 유의점**</td></tr>
+    <tr><td>**JSON Body (****`application/json`****)**</td><td>`@RequestBody`</td><td>`HttpMessageConverter`(Jackson)를 이용한 역직렬화</td><td>**기본 생성자** 및 Getter 필수. `@Setter`는 없어도 동작</td></tr>
+    <tr><td>**Form Data (****`application/x-www-form-urlencoded`****)**</td><td>`@ModelAttribute` / `@RequestParam`</td><td>HTTP 파라미터를 DTO의 Setter나 생성자에 직접 바인딩</td><td>DTO에 `@Setter` 또는 `@ConstructorProperties` 필요</td></tr>
+    <tr><td>**파일 업로드 (****`multipart/form-data`****)**</td><td>`@RequestPart` / `MultipartFile`</td><td>파일 바이너리와 JSON 메타데이터를 개별 파싱</td><td>`MultipartFile` 파라미터 지정</td></tr>
+    <tr><td>**URL 경로 변수 (****`/users/{id}`****)**</td><td>`@PathVariable`</td><td>URL 경로 값을 추출하여 기본 타입/객체로 변환</td><td>경로 변수명과 메서드 변수명이 다르면 속성명 명시</td></tr>
+    <tr><td>**Query String (****`/users?page=1`****)**</td><td>`@RequestParam`</td><td>URL 쿼리 파라미터 추출</td><td>필수 여부(`required`) 및 기본값(`defaultValue`) 지정 권장</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+
+<a id="3-http-method-사용-표준-및-최신-추세"></a>
+
+### **3) HTTP Method 사용 표준 및 최신 추세**
+
+<a id="1-기본-http-method-규약"></a>
+
+#### **(1) 기본 HTTP Method 규약**
+
+- **`GET`**: 리소스 조회 (Safe, Idempotent). Body를 포함하지 않음.
+- **`POST`**: 리소스 생성 또는 처리 요청 (Unsafe, Non-idempotent).
+- **`PUT`**: 리소스 전체 대체 (Idempotent).
+- **`PATCH`**: 리소스 부분 수정 (Non-idempotent/Idempotent).
+- **`DELETE`**: 리소스 삭제 (Idempotent).
+<a id="2-최근-추세-query-http-search-query-method"></a>
+
+#### **(2) 최근 추세:** **`QUERY`** **(HTTP SEARCH / QUERY) Method**
+
+- **등장 배경**: 복잡한 조건의 검색 요청 시 `GET` 메서드를 쓰면 **URI 길이 제한(2048자)** 및 **보안 민감 정보의 URL 노출** 문제가 생김. 이를 피하려고 `POST`를 쓰면, RESTful 관점에서 상태 변경 요청으로 오인되어 **HTTP Caching 불가능 및 멱등성 보장 유실** 문제가 발생.
+- **`QUERY`** **(IETF Draft)**: **Request Body에 JSON 검색 조건**을 포함하면서도, **조회 전용(Safe & Idempotent) 멱등성을 보장**하는 신규 표준 HTTP Method.
+- **Spring 지원**: Spring Framework 6.1+ / Spring Boot 3.2+부터 Custom HTTP Method 및 `QUERY` 지원 확대 중.
+<a id="3-커스텀-http-method-사용-시-장애-요소-금지-사유"></a>
+
+#### **(3) 커스텀 HTTP Method 사용 시 장애 요소 (금지 사유)**
+
+임의로 `FETCH_DATA` 등 비표준 커스텀 Method를 만들면 네트워크 통신 계층에서 심각한 단점이 발생함:
+
+1. **웹 방화벽(WAF) 및 L7 스위치 차단**: 보안 장비가 비표준 메서드를 `405 Method Not Allowed` 또는 `403 Forbidden`으로 즉시 차단.
+1. **CORS Preflight (브라우저) 미지원**: 웹 브라우저가 Preflight(`OPTIONS`) 검증에 실패함.
+1. **Reverse Proxy (Nginx/Cloudflare) 릴레이 거부**: Proxy 서버 기본 설정에서 400 Bad Request 반환.
+
+<NotionDivider />
+
+<a id="3-응답response-구조-및-반환-타입-체계"></a>
+
+## **3. 응답(Response) 구조 및 반환 타입 체계**
+
+<a id="1-컨트롤러-반환-타입-비교-및-가이드라인"></a>
+
+### **1) 컨트롤러 반환 타입 비교 및 가이드라인**
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>**반환 타입**</td><td>**동작 방식 및 특성**</td><td>**실무 평가 & 가이드라인**</td></tr>
+    <tr><td>**`ResponseEntity<T>`**</td><td>HTTP Status Code, Header, Body를 모두 캡슐화</td><td>**[최우선 권장]** HTTP 규약 및 상태 코드를 명확히 제어 가능</td></tr>
+    <tr><td>**순수 DTO / VO**</td><td>`@ResponseBody`에 의해 Body 데이터만 JSON 직렬화</td><td>**[사용 가능]** 코드가 간결하지만 HTTP Status가 `200 OK`로 고정됨</td></tr>
+    <tr><td>**`Map<String, Object>`**</td><td>Map 키-값 쌍을 `{ "key": "value" }` JSON 변환</td><td>**[실무 금지]** 타입 안전성 유실, 유지보수 저하, API 문서화 불능</td></tr>
+    <tr><td>**`String`**</td><td>`@ResponseBody` 유무에 따라 동작 상이</td><td>**[주의]** 어노테이션 없으면 HTML View 이름, 있으면 Plain Text</td></tr>
+    <tr><td>**`void`**</td><td>`HttpServletResponse` 직접 출력</td><td>**[제한적 사용]** 파일 다운로드 스트림 전달 시에만 사용</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+
+<a id="2-mapstring-object-반환을-금지해야-하는-3가지-이유-안티-패턴"></a>
+
+### **2)** **`Map<String, Object>`** **반환을 금지해야 하는 3가지 이유 (안티 패턴)**
+
+1. **컴파일 시점 타입 안전성(Type Safety) 유실**:
+- Map Value가 `Object` 타입이므로, 오타가 나거나 잘못된 타입 값이 들어가도 컴파일 시점에 감지할 수 없다.
+
+1. **리팩토링 및 가독성 악화**:
+- 어떤 필드가 응답으로 반환되는지 컨트롤러 및 DTO 구조 파악이 불가능하다.
+
+1. **OpenAPI / Swagger 자동 문서화 불능**:
+- Map 객체는 키 구조를 분석할 수 없어 API 명세서에 단순 `object` 형태로 노출되어 프론트엔드와 협업 시 혼선을 초래한다.
+
+
+<NotionDivider />
+
+<a id="3-실무-표준-공통-응답-wrapper-패턴-apiresponset"></a>
+
+### **3) 실무 표준: 공통 응답 Wrapper 패턴 (****`ApiResponse<T>`****)**
+
+API 응답 구조의 일관성을 유지하기 위해 표준 Wrapper 클래스를 사용한다.
+
+
+```java
+@Getter
+@AllArgsConstructor
+public class ApiResponse<T>{
+		private final boolean success;
+		private final T data;
+		private final ErrorDetail error;
+		
+		// 성공 응답 팩토리 메서드
+		public static <T> ApiResponse <T> success(T data){
+			return newApiResponse<> (true, data,null);
+		}
+		
+		// 실패 응답 팩토리 메서드
+		public static <T> ApiResponse <T> fail(String errorCode,String message){
+			return new ApiResponse<>(false,null, new ErrorDetail(errorCode, message));
+		}
+}
+```
+
+**컨트롤러 적용 예시**
+
+
+```java
+@GetMapping("/{orderId}")
+public ResponseEntity<ApiResponse<OrderResponseDto>> getOrder(
+@PathVariable("orderId")Long orderId){
+	OrderResponseDto dto= orderService.findOrder(orderId);
+	return ResponseEntity.ok(ApiResponse.success(dto));
+}
+```
+
+
+<NotionDivider />
+
+<a id="4-실무-개발자-체크리스트"></a>
+
+## **4. 실무 개발자 체크리스트**
+
+1. **요청 파싱 시**:
+- JSON 역직렬화(`@RequestBody`) 대상 DTO에는 **기본 생성자**가 존재하는가?
+- Form-Data(`@ModelAttribute`) 대상 DTO에는 **Setter 또는 생성자 바인딩 설정**이 있는가?
+- 쿼리 파라미터(`@RequestParam`) 수신 시 `defaultValue`를 적절히 설정하였는가?
+
+1. **HTTP Method 선택 시**:
+- 조회 요청은 `GET`, 생성은 `POST`, 수정은 `PUT`/`PATCH`, 삭제는 `DELETE` 표준을 준수하는가?
+- 네트워크 통신 장애를 유발하는 비표준 커스텀 Method를 사용하지 않았는가?
+
+1. **응답 구성 시**:
+- 임의의 `Map<String, Object>` 대신 명확한 타입의 **DTO 객체**를 작성했는가?
+- 상태 코드 및 헤더를 명확히 제어할 수 있도록 **`ResponseEntity<ApiResponse<T>>`** 포맷을 사용했는가?
 

@@ -10,7 +10,7 @@ slug: "java-source-feature-implementation"
 title: "java 소스로 기능구현"
 page_id: "36819946-ca76-80ad-822e-eb9d40d24cdb"
 source_id: "36819946ca7680ad822eeb9d40d24cdb"
-last_edited_time: "2026-08-18T03:22:00.000Z"
+last_edited_time: "2026-08-26T00:49:00.000Z"
 notion_url: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 id: "36819946ca7680ad822eeb9d40d24cdb"
 sourceId: "36819946-ca76-80ad-822e-eb9d40d24cdb"
@@ -27,16 +27,20 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 - [2. 스낵 관리 프로그램](#2-스낵-관리-프로그램)
   - [예시 A — 확인하는 경우](#예시-a-확인하는-경우)
   - [예시 B — 확인하지 않는 경우](#예시-b-확인하지-않는-경우)
+  - [구현 코드](#구현-코드-2)
 
 <a id="1-도형-프로그램-구현"></a>
 
 ## 1. 도형 프로그램 구현
 
+<a id="구성-클래스-및-패키지-구조"></a>
 
-<NotionToggle title="구성 클래스 및 패키지 구조" level="4">
+#### **구성 클래스 및 패키지 구조**
+
+Shape
 
 
-<NotionToggle title="Shape">
+<NotionIndent>
 
 - **필드**
 - `type` : `int` → 도형 타입 번호 (예: 3 = 삼각형, 4 = 사각형)
@@ -53,10 +57,12 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 - `information()` : `String` → `"높이 너비 색상"` 형식의 문자열 반환
 
 
-</NotionToggle>
+</NotionIndent>
+
+**SquareController**
 
 
-<NotionToggle title="SquareController">
+<NotionIndent>
 
 - **필드**
 - `s` : `Shape` 객체 (기본 생성자로 생성)
@@ -80,10 +86,12 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 
 
 
-</NotionToggle>
+</NotionIndent>
+
+**TriangleController**
 
 
-<NotionToggle title="TriangleController">
+<NotionIndent>
 
 - **필드**
 - `s` : `Shape` 객체 (기본 생성자로 생성)
@@ -103,10 +111,12 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 
 
 
-</NotionToggle>
+</NotionIndent>
+
+**ShapeMenu**
 
 
-<NotionToggle title="ShapeMenu">
+<NotionIndent>
 
 - **필드**
 - `sc` : `Scanner` 객체
@@ -136,24 +146,24 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 
 
 
-</NotionToggle>
+</NotionIndent>
+
+**Run**
 
 
-<NotionToggle title="Run">
+<NotionIndent>
 
 - **main(String[] args)** : 프로그램 시작
 - `ShapeMenu` 객체 생성 후 `inputMenu()` 호출
 
-</NotionToggle>
-
-
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
+<a id="구현-조건"></a>
 
-<NotionToggle title="구현 조건" level="4">
+#### **구현 조건**
 
 - 클래스명·메서드명은 변경하지 않는다.
 - 모든 필드의 getter/setter 메서드는 작성한다.
@@ -161,13 +171,11 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 - 메뉴에서 잘못된 번호 입력 시 "잘못된 번호입니다. 다시 입력하세요." 출력
 - 종료 메뉴(번호 9) 선택 시 프로그램 종료
 
-</NotionToggle>
-
-
 <NotionDivider />
 
+<a id="실행-예시"></a>
 
-<NotionToggle title="실행 예시" level="4">
+#### **실행 예시**
 
 
 ```text
@@ -212,16 +220,16 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 ```
 
 
-</NotionToggle>
-
-
 <NotionDivider />
 
+<a id="구현-코드"></a>
 
-<NotionToggle title="구현 코드" level="4">
+#### 구현 코드
+
+별도의 lib 없이 손 코딩으로 작성
 
 
-<NotionToggle title="별도의 lib 없이 손 코딩으로 작성">
+<NotionIndent>
 
 
 ```java
@@ -443,16 +451,17 @@ public class Run {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
+
+코드패턴, 롬복 활용 (+ 상속, 인터페이스 개념 추가)
 
 
-</NotionToggle>
+<NotionIndent>
+
+1. 인터페이스 및 도메인 클래스 (상속 & Lombok)
 
 
-<NotionToggle title="코드패턴, 롬복 활용 (+ 상속, 인터페이스 개념 추가)">
-
-
-<NotionToggle title="1. 인터페이스 및 도메인 클래스 (상속 &amp; Lombok)">
+<NotionIndent>
 
 
 ```java
@@ -541,10 +550,12 @@ public class Square extends Shape {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
+
+2. 컨트롤러 클래스 (다형성 활용)
 
 
-<NotionToggle title="2. 컨트롤러 클래스 (다형성 활용)">
+<NotionIndent>
 
 
 ```java
@@ -584,10 +595,12 @@ public class ShapeController {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
+
+3. 메뉴 데이터 매핑 클래스 (Enum)
 
 
-<NotionToggle title="3. 메뉴 데이터 매핑 클래스 (Enum)">
+<NotionIndent>
 
 
 ```java
@@ -660,10 +673,12 @@ public class Menu {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
+
+4. 메뉴 서비스 별도 구성 (상수, lamda식 Switch)
 
 
-<NotionToggle title="4. 메뉴 서비스 별도 구성 (상수, lamda식 Switch)">
+<NotionIndent>
 
 
 ```java
@@ -763,17 +778,18 @@ public class ShapeMenu {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
 
 
-</NotionToggle>
+</NotionIndent>
 
 <a id="2-스낵-관리-프로그램"></a>
 
 ## 2. 스낵 관리 프로그램
 
+<a id="패키지클래스-구조와-역할"></a>
 
-<NotionToggle title="패키지/클래스 구조와 역할" level="4">
+#### 패키지/클래스 구조와 역할
 
 
 <NotionToggle title="Snack">
@@ -852,13 +868,11 @@ public class ShapeMenu {
 
 
 
-</NotionToggle>
-
-
 <NotionDivider />
 
+<a id="사용자-입출력-형식-예시"></a>
 
-<NotionToggle title="사용자 입·출력 형식 (예시)" level="4">
+#### 사용자 입·출력 형식 (예시)
 
 <a id="예시-a-확인하는-경우"></a>
 
@@ -894,13 +908,11 @@ public class ShapeMenu {
 ```
 
 
-</NotionToggle>
-
-
 <NotionDivider />
 
+<a id="구현-코드-2"></a>
 
-<NotionToggle title="구현 코드" level="4">
+### 구현 코드
 
 
 ```java
@@ -1024,11 +1036,10 @@ public class SnackMenu {
 ```
 
 
+기능추가 > 시스템 종료전 까지 스낵정보 CRUD 기능 추가
 
-</NotionToggle>
 
-
-<NotionToggle title="기능추가 &gt; 시스템 종료전 까지 스낵정보 CRUD 기능 추가">
+<NotionIndent>
 
 
 ```java
@@ -1278,5 +1289,5 @@ public class SnackMenuController {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
 

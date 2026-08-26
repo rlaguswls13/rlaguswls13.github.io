@@ -10,7 +10,7 @@ slug: "jsp-and-modern-template-engine"
 title: "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)"
 page_id: "38019946-ca76-8054-8aaf-f686f677ee28"
 source_id: "38019946ca7680548aaff686f677ee28"
-last_edited_time: "2026-08-18T03:22:00.000Z"
+last_edited_time: "2026-08-26T01:11:00.000Z"
 notion_url: "https://app.notion.com/p/dbLock-DDL-DML-DCL-TCL-38019946ca7680548aaff686f677ee28"
 id: "38019946ca7680548aaff686f677ee28"
 sourceId: "38019946-ca76-8054-8aaf-f686f677ee28"
@@ -29,7 +29,7 @@ notionUrl: "https://app.notion.com/p/dbLock-DDL-DML-DCL-TCL-38019946ca7680548aaf
 - [2. DB Lock의 단계(Granularity)와 성능 관계](#2-db-lock의-단계granularity와-성능-관계)
   - [1) 데이터베이스 락의 범위 단계](#1-데이터베이스-락의-범위-단계)
   - [2) DB Lock과 성능 간의 관계](#2-db-lock과-성능-간의-관계)
-- [3. 추가 개념: SQL의 분류 (DCL, DML, DDL)](#3-추가-개념-sql의-분류-dcl-dml-ddl)
+- [3. \[참고\] SQL의 분류 (DCL, DML, DDL)](#3-참고-sql의-분류-dcl-dml-ddl)
   - [1) DCL (Data Control Language - 데이터 제어어)](#1-dcl-data-control-language-데이터-제어어)
   - [2) DML (Data Manipulation Language - 데이터 조작어)](#2-dml-data-manipulation-language-데이터-조작어)
   - [3) DDL (Data Definition Language - 데이터 정의어)](#3-ddl-data-definition-language-데이터-정의어)
@@ -79,9 +79,9 @@ notionUrl: "https://app.notion.com/p/dbLock-DDL-DML-DCL-TCL-38019946ca7680548aaf
 
 여러 트랜잭션이 동시에 실행될 때, 서로의 작업에 물리적으로 간섭하지 못하도록 독립성을 보장하는 성질입니다. 격리성이 높을수록 데이터는 안전하지만, 동시 처리 성능은 떨어지는 트레이드오프 관계를 가집니다.
 
-<a id="2-1-isolation의-종류와-발생-가능한-현상"></a>
+<a id="1-isolation의-종류와-발생-가능한-현상"></a>
 
-#### 2-1) Isolation의 종류와 발생 가능한 현상
+#### (1) Isolation의 종류와 발생 가능한 현상
 
 안전성이 낮은 순서부터 높은 순서로 총 4가지 단계가 존재합니다.
 
@@ -191,9 +191,9 @@ A 트랜잭션이 수정한 데이터를 커밋하기 전에 B 트랜잭션이 �
 
 </NotionToggle>
 
-<a id="2-2-isolation에-따른-db-lock의-매커니즘-설명"></a>
+<a id="2-isolation에-따른-db-lock의-매커니즘-설명"></a>
 
-#### 2-2) Isolation에 따른 DB Lock의 매커니즘 설명
+#### (2) Isolation에 따른 DB Lock의 매커니즘 설명
 
 격리 수준을 달성하기 위해 데이터베이스는 공유락(Shared Lock, S-Lock)과 배타락(Exclusive Lock, X-Lock)을 내부적으로 제어합니다.
 
@@ -242,9 +242,9 @@ A 트랜잭션이 수정한 데이터를 커밋하기 전에 B 트랜잭션이 �
 
 </NotionIndent>
 
-<a id="3-추가-개념-sql의-분류-dcl-dml-ddl"></a>
+<a id="3-참고-sql의-분류-dcl-dml-ddl"></a>
 
-## 3. 추가 개념: SQL의 분류 (DCL, DML, DDL)
+## 3. [참고] SQL의 분류 (DCL, DML, DDL)
 
 데이터베이스 명세에서 명령어의 목적에 따라 관리, 조작, 정의 언어로 구분합니다.
 

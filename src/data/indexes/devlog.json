@@ -6,7 +6,7 @@
       "sourceId": "3b019946-ca76-80c8-836d-cb0ed7e63c69",
       "source_id": "3b019946ca7680c8836dcb0ed7e63c69",
       "page_id": "3b019946-ca76-80c8-836d-cb0ed7e63c69",
-      "last_edited_time": "2026-08-18T03:25:00.000Z",
+      "last_edited_time": "2026-08-26T02:19:00.000Z",
       "title": "2026 천하제일 입코딩 대회(with GitHub Copilot) 참가 회고",
       "date": "2026.06.22",
       "tags": [
@@ -29,7 +29,7 @@
       "sourceId": "3b019946-ca76-8008-bece-d8b682cac597",
       "source_id": "3b019946ca768008beced8b682cac597",
       "page_id": "3b019946-ca76-8008-bece-d8b682cac597",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선",
       "date": "2026.06.01",
       "tags": [
@@ -51,7 +51,7 @@
       "sourceId": "3b019946-ca76-808e-9f6e-c9aec83dbaaf",
       "source_id": "3b019946ca76808e9f6ec9aec83dbaaf",
       "page_id": "3b019946-ca76-808e-9f6e-c9aec83dbaaf",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안",
       "date": "2026.05.26",
       "tags": [
@@ -75,7 +75,7 @@
       "sourceId": "3b019946-ca76-8062-aeb4-e0e781ed366a",
       "source_id": "3b019946ca768062aeb4e0e781ed366a",
       "page_id": "3b019946-ca76-8062-aeb4-e0e781ed366a",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:19:00.000Z",
       "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
       "date": "2026.05.26",
       "tags": [
@@ -95,7 +95,7 @@
       "sourceId": "3b019946-ca76-80b5-84e1-c59c19e022a9",
       "source_id": "3b019946ca7680b584e1c59c19e022a9",
       "page_id": "3b019946-ca76-80b5-84e1-c59c19e022a9",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결",
       "date": "2026.05.15",
       "tags": [
@@ -116,7 +116,7 @@
       "sourceId": "3b019946-ca76-802d-9983-cc6f0ad5b494",
       "source_id": "3b019946ca76802d9983cc6f0ad5b494",
       "page_id": "3b019946-ca76-802d-9983-cc6f0ad5b494",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "Java 8 환경에서 10MB 거대 객체 처리와 G1GC 최적화 전략",
       "date": "2026.05.15",
       "tags": [
@@ -137,7 +137,7 @@
       "sourceId": "3b019946-ca76-8059-b91c-c1de8dbbe8f7",
       "source_id": "3b019946ca768059b91cc1de8dbbe8f7",
       "page_id": "3b019946-ca76-8059-b91c-c1de8dbbe8f7",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략",
       "date": "2026.05.15",
       "tags": [
@@ -155,12 +155,68 @@
   ],
   "tech_study": [
     {
+      "id": "3c819946ca7680ae8b31f2d87255a3fb",
+      "slug": "ai-python-history-data-pipeline",
+      "sourceId": "3c819946-ca76-80ae-8b31-f2d87255a3fb",
+      "source_id": "3c819946ca7680ae8b31f2d87255a3fb",
+      "page_id": "3c819946-ca76-80ae-8b31-f2d87255a3fb",
+      "last_edited_time": "2026-08-26T02:55:00.000Z",
+      "title": "Python이 AI 생태계의 표준이 된 이유 - 언어의 역사, 하드웨어 아키텍처 및 데이터 파이프라인",
+      "date": "2026.08.26",
+      "tags": [
+        "Python",
+        "history"
+      ],
+      "description": "모든 프로그래밍 언어는 특정한 시대적 문제의식을 해결하기 위한 '탄생 목적'을 가지며, 하드웨어와 시대적 환경의 변화에 따라 최적화된 생태계(Ecosystem)로 진화합니다.\n\nJava가 C++의 메모리 누수 위험을 극복하고 임베디드 기기를 위해 태어났다가 인터넷(WWW)의 폭발로 엔터프라이즈 웹/WAS의 표준이 되었듯이, Python은 C/C++를 손쉽게 다루기 위한 '글루 언어(Glue Language, 접착제)'로 출발하여 대규모 수치 연산(NumPy/Pandas), GPU 병렬 가속, 그리고 머신러닝·AI 생태계의 절대 표준으로 자리 잡았습니다.",
+      "subcategory": "python",
+      "package": "python",
+      "notionUrl": "https://app.notion.com/p/Python-AI-3c819946ca7680ae8b31f2d87255a3fb"
+    },
+    {
+      "id": "3c719946ca7680bb89ccc0dfc9bf2c87",
+      "slug": "ai-agent-prompt-rule-guide",
+      "sourceId": "3c719946-ca76-80bb-89cc-c0dfc9bf2c87",
+      "source_id": "3c719946ca7680bb89ccc0dfc9bf2c87",
+      "page_id": "3c719946-ca76-80bb-89cc-c0dfc9bf2c87",
+      "last_edited_time": "2026-08-26T02:29:00.000Z",
+      "title": "AI 에이전트 협업과 프롬프트 엔지니어링 - 동료 관점의 업무 지시와 하네스 파이프라인",
+      "date": "2026.08.25",
+      "tags": [
+        "prompt",
+        "AI Agent",
+        "vibe coding"
+      ],
+      "description": "AI를 대하는 가장 이상적인 관점은 전지전능한 도구가 아니라 **\"방대한 데이터를 암기하고 있으나 조직의 맥락과 인과관계를 스스로 엮지 못하는 '지치지 않는 신입 동료(Junior Worker)'\"**로 인식하는 것입니다. 우리가 회사에서 신입 사원을 온보딩하듯 **프롬프트(Prompt)**로 명확한 업무 지시서를 주고, 탈선과 실수를 방지하기 위해 **하네스(Harness)**로 규칙과 행동 반경을 좁히며, 사내 문서처럼 Wiki 기반 RAG로 과거의 히스토리와 기억을 공유해 줄 때 AI는 비로소 최상의 퍼포먼스를 발휘합니다.\n빅테크가 주입한 데이터는 도서관의 키워드 검색처럼 통계적 확률과 편중으로 엮여 있을 뿐이므로, 치밀한 도메인 관계성과 아키텍처 규칙을 세워주는 주체는 언제나 인간이어야 합니다. 결국 AI 시대의 엔지니어는 단순한 코드 타이핑 노동자에서 벗어나, **\"인간이 통제할 수 있는 범위 내에서 명확한 룰과 작업 환경을 세팅하고, 단계별 파이프라인(Workflow)을 지휘·감독하는 총괄 디렉터\"**로서 AI와 협업할 때 압도적인 생산성과 소프트웨어 품질을 달성할 수 있습니다.",
+      "subcategory": "ai",
+      "package": "ai",
+      "notionUrl": "https://app.notion.com/p/AI-3c719946ca7680bb89ccc0dfc9bf2c87"
+    },
+    {
+      "id": "3c719946ca76806daa29f22dc447a502",
+      "slug": "rdb-sql-denormalization-normalization",
+      "sourceId": "3c719946-ca76-806d-aa29-f22dc447a502",
+      "source_id": "3c719946ca76806daa29f22dc447a502",
+      "page_id": "3c719946-ca76-806d-aa29-f22dc447a502",
+      "last_edited_time": "2026-08-26T02:30:00.000Z",
+      "title": "RDB(SQL)에서 정규화란? : 정규화의 정의와 비정규화(반정규화)는 언제 쓰는지에 대한 고찰",
+      "date": "2026.08.25",
+      "tags": [
+        "sql",
+        "정규화",
+        "비정규화"
+      ],
+      "description": "필자 역시 정규화의 학술적 정의(1NF~5NF)를 무작정 달달 외우기보다는 데이터 효율, 중복 제거, 관계 중시 같은 직관적인 키워드로 기억하다 보니, 누군가에게 설명할 때도 흔히 \"데이터를 효율적으로 쓰기 위한 중복 제거 작업\" 정도로 축약해 설명할 때가 많았습니다.\n하지만 이러한 설명은 데이터베이스에 대한 충분한 배경지식이 이미 갖춰진 사람에게만 납득될 뿐, 실제 데이터 모델링의 본질을 관통하는 온전한 설명이 되기는 어렵습니다. 해당 내용에 대해서 어떻게 정의를 내려서 온전히 이해하면 좋은지와 정규화와 반정규화에 대한 고찰을 한번 작성했습니다.",
+      "subcategory": "SQL",
+      "package": "SQL",
+      "notionUrl": "https://app.notion.com/p/RDB-SQL-3c719946ca76806daa29f22dc447a502"
+    },
+    {
       "id": "3c619946ca7680a396e8dde2dccbfac3",
       "slug": "java-primitive-reference-object-mutable",
       "sourceId": "3c619946-ca76-80a3-96e8-dde2dccbfac3",
       "source_id": "3c619946ca7680a396e8dde2dccbfac3",
       "page_id": "3c619946-ca76-80a3-96e8-dde2dccbfac3",
-      "last_edited_time": "2026-08-24T09:58:00.000Z",
+      "last_edited_time": "2026-08-26T02:31:00.000Z",
       "title": "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?",
       "date": "2026.08.24",
       "tags": [
@@ -180,7 +236,7 @@
       "sourceId": "3c619946-ca76-8049-bdcb-d2e3b6ccbc70",
       "source_id": "3c619946ca768049bdcbd2e3b6ccbc70",
       "page_id": "3c619946-ca76-8049-bdcb-d2e3b6ccbc70",
-      "last_edited_time": "2026-08-24T10:14:00.000Z",
+      "last_edited_time": "2026-08-26T02:31:00.000Z",
       "title": "객체지향 언어(OOP)의 정의와 Java가 객체지향 언어인 이유",
       "date": "2026.08.24",
       "tags": [
@@ -197,7 +253,7 @@
       "sourceId": "3c619946-ca76-8098-af99-c5bb8fb90bec",
       "source_id": "3c619946ca768098af99c5bb8fb90bec",
       "page_id": "3c619946-ca76-8098-af99-c5bb8fb90bec",
-      "last_edited_time": "2026-08-24T09:58:00.000Z",
+      "last_edited_time": "2026-08-26T02:31:00.000Z",
       "title": "Java는 컴파일 언어인가 인터프리터 언어인가 - 하이브리드 실행 구조 분석",
       "date": "2026.08.24",
       "tags": [
@@ -215,7 +271,7 @@
       "sourceId": "3c419946-ca76-80be-8dad-e6370d93544f",
       "source_id": "3c419946ca7680be8dade6370d93544f",
       "page_id": "3c419946-ca76-80be-8dad-e6370d93544f",
-      "last_edited_time": "2026-08-24T08:43:00.000Z",
+      "last_edited_time": "2026-08-26T02:31:00.000Z",
       "title": "LLM Wiki 확장 설계 : Human Report와 Block 단위 Context 관리",
       "date": "2026.08.22",
       "tags": [
@@ -478,7 +534,7 @@
       "sourceId": "3b019946-ca76-80f6-9492-e6e87f7a4530",
       "source_id": "3b019946ca7680f69492e6e87f7a4530",
       "page_id": "3b019946-ca76-80f6-9492-e6e87f7a4530",
-      "last_edited_time": "2026-08-02T18:18:00.000Z",
+      "last_edited_time": "2026-08-25T11:52:00.000Z",
       "title": "Apache Tomcat 운영 표준: 설정 파일 최적화 및 최신 SSL 적용 가이드",
       "date": "2026.05.25",
       "tags": [
@@ -520,7 +576,7 @@
       "sourceId": "3b019946-ca76-809c-936c-d86896eb38db",
       "source_id": "3b019946ca76809c936cd86896eb38db",
       "page_id": "3b019946-ca76-809c-936c-d86896eb38db",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "레거시 환경(SVN/NAS) 대량 데이터 마이그레이션 및 인코딩 복원 가이드",
       "date": "2026.05.25",
       "tags": [
@@ -541,7 +597,7 @@
       "sourceId": "3b019946-ca76-8030-ad15-dcc419fe79a4",
       "source_id": "3b019946ca768030ad15dcc419fe79a4",
       "page_id": "3b019946-ca76-8030-ad15-dcc419fe79a4",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리)",
       "date": "2026.05.25",
       "tags": [
@@ -562,7 +618,7 @@
       "sourceId": "3b019946-ca76-8079-878f-ed99b13e958f",
       "source_id": "3b019946ca768079878fed99b13e958f",
       "page_id": "3b019946-ca76-8079-878f-ed99b13e958f",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-25T11:54:00.000Z",
       "title": "웹 서버엔진 비교: Nginx vs Apache HTTPD vs IIS",
       "date": "2026.05.25",
       "tags": [
@@ -722,7 +778,7 @@
       "sourceId": "3b019946-ca76-8079-be45-f5fdc2d4019f",
       "source_id": "3b019946ca768079be45f5fdc2d4019f",
       "page_id": "3b019946-ca76-8079-be45-f5fdc2d4019f",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-08-26T02:26:00.000Z",
       "title": "Docker 기본 및 Container 구동 프로세스 이해",
       "date": "2026.04.30",
       "tags": [

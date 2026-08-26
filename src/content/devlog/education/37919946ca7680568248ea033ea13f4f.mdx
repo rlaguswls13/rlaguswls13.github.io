@@ -10,7 +10,7 @@ slug: "database-and-sql"
 title: "내부함수와 프로시저"
 page_id: "37919946-ca76-8056-8248-ea033ea13f4f"
 source_id: "37919946ca7680568248ea033ea13f4f"
-last_edited_time: "2026-08-18T03:22:00.000Z"
+last_edited_time: "2026-08-26T01:03:00.000Z"
 notion_url: "https://app.notion.com/p/37919946ca7680568248ea033ea13f4f"
 id: "37919946ca7680568248ea033ea13f4f"
 sourceId: "37919946-ca76-8056-8248-ea033ea13f4f"
@@ -34,7 +34,7 @@ notionUrl: "https://app.notion.com/p/37919946ca7680568248ea033ea13f4f"
   - [1) 장점: 커스텀 비즈니스 로직 수행 및 네트워크 비용 절감](#1-장점-커스텀-비즈니스-로직-수행-및-네트워크-비용-절감)
   - [2) 단점: 코드 파악 및 유지보수의 난해함 (추적의 한계)](#2-단점-코드-파악-및-유지보수의-난해함-추적의-한계)
   - [3) 단점: 개별 트랜잭션 관리의 필요성과 락(Lock) 리스크](#3-단점-개별-트랜잭션-관리의-필요성과-락lock-리스크)
-- [4. 추가 개념: Routines, Trigger, Function, Schedule](#4-추가-개념-routines-trigger-function-schedule)
+- [4. \[참고\] Routines, Trigger, Function, Schedule](#4-참고-routines-trigger-function-schedule)
 
 <a id="1-sql에서-내부-함수와-프로시저"></a>
 
@@ -165,9 +165,9 @@ DELIMITER ;
 
 - 프로시저는 내부에서 여러 DML(Insert, Update, Delete) 작업을 연속적으로 수행하므로, 내부적인 **개별 트랜잭션 제어(COMMIT, ROLLBACK)를 정밀하게 관리**해야 합니다.
 - 로직이 길어지거나 예외 처리가 누락되면 트랜잭션이 종료되지 않고 길어져(Long Transaction), 테이블이나 행에 락(Lock)을 오래 쥐게 됩니다. 이는 실시간 트래픽을 처리하는 동시성 아키텍처에서 다른 요청들을 전부 마비시키는 데드락(Deadlock)이나 커넥션 풀 고갈을 초래할 수 있습니다.
-<a id="4-추가-개념-routines-trigger-function-schedule"></a>
+<a id="4-참고-routines-trigger-function-schedule"></a>
 
-## **4. 추가 개념: Routines, Trigger, Function, Schedule**
+## **4. [참고] Routines, Trigger, Function, Schedule**
 
 DB 내부에서 자율적으로 혹은 절차적으로 돌아가는 이 요소들은 큰 틀에서 **서로 유기적으로 연결된 DB 프로그래밍 객체들**입니다.
 

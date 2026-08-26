@@ -4,12 +4,12 @@ created_date: "2026-05-15"
 tag: ["Java8","G1GC","ZGC","JVM_Tuning","GraalVM"]
 slug: "java-large-object-g1gc-optimization"
 subcategory: "java"
-status: "publish"
+status: "ready"
 description: "대규모 메시징 서비스에서 10MB 단위 거대 객체(Humongous Object)로 인해 발생하는 빈번한 Full GC와 메모리 부족(OOM) 현상을 분석하고, 코드 레벨 최적화 및 G1GC 옵션 튜닝을 통해 성능을 개선한 사례입니다."
 title: "Java 8 환경에서 10MB 거대 객체 처리와 G1GC 최적화 전략"
 page_id: "3b019946-ca76-802d-9983-cc6f0ad5b494"
 source_id: "3b019946ca76802d9983cc6f0ad5b494"
-last_edited_time: "2026-08-18T03:21:00.000Z"
+last_edited_time: "2026-08-26T02:26:00.000Z"
 notion_url: "https://app.notion.com/p/Java-8-10MB-G1GC-3b019946ca76802d9983cc6f0ad5b494"
 id: "3b019946ca76802d9983cc6f0ad5b494"
 sourceId: "3b019946-ca76-802d-9983-cc6f0ad5b494"
@@ -21,24 +21,33 @@ notionUrl: "https://app.notion.com/p/Java-8-10MB-G1GC-3b019946ca76802d9983cc6f0a
 
 ## 목차
 
-- [1. 문제의 시작: 거대 객체(Humongous Object)와 G1GC의 한계](#1-문제의-시작-거대-객체humongous-object와-g1gc의-한계)
-- [2. 코드 레벨의 최적화: 메모리 폭탄(Memory Bomb) 방지](#2-코드-레벨의-최적화-메모리-폭탄memory-bomb-방지)
-- [3. JVM 튜닝](#3-jvm-튜닝)
-- [4. JVM 버전업의 필요성: Java 8을 넘어 최신 버전으로](#4-jvm-버전업의-필요성-java-8을-넘어-최신-버전으로)
+- [문제의 시작: 거대 객체(Humongous Object)와 G1GC의 한계](#문제의-시작-거대-객체humongous-object와-g1gc의-한계)
+  - [원인 분석: G1GC의 Region 메커니즘](#원인-분석-g1gc의-region-메커니즘)
+- [코드 레벨의 최적화: 메모리 폭탄(Memory Bomb) 방지](#코드-레벨의-최적화-메모리-폭탄memory-bomb-방지)
+  - [Scope 제한 및 Static 사용 최소화Static 제거](#scope-제한-및-static-사용-최소화static-제거)
+  - [Deep Clear 전략](#deep-clear-전략)
+- [JVM 튜닝](#jvm-튜닝)
+- [JVM 버전업의 필요성: Java 8을 넘어 최신 버전으로](#jvm-버전업의-필요성-java-8을-넘어-최신-버전으로)
+  - [Java 17+ 및 ZGC의 기대 효과
+만약 Java 17 이상의 환경에서 ZGC를 사용할 수 있었다면 상황은 훨씬 수월했을 것입니다.](#java-17-및-zgc의-기대-효과-만약-java-17-이상의-환경에서-zgc를-사용할-수-있었다면-상황은-훨씬-수월했을-것입니다)
+  - [결론](#결론)
 
 대규모 메시징 서비스에서 콘텐츠 생성 시 발생하는 10MB 단위의 거대 객체는 JVM 메모리 관리의 가장 큰 적입니다.
 
 일반적인 문자나 카카오톡 메시지가 수백 바이트 단위인 것과 달리, 이례적으로 큰 데이터를 병렬 처리하며 겪은 메모리 부족(OOM) 현상과 GC 지연 문제를 어떻게 해결했는지 그 과정을 작성했습니다.
 
-<a id="1-문제의-시작-거대-객체humongous-object와-g1gc의-한계"></a>
+<a id="문제의-시작-거대-객체humongous-object와-g1gc의-한계"></a>
 
-## 1. 문제의 시작: 거대 객체(Humongous Object)와 G1GC의 한계
+## 문제의 시작: 거대 객체(Humongous Object)와 G1GC의 한계
 
 기존 Java 1.8 환경에서 Parallel GC를 사용하던 중, 대량의 이메일 발송 시 메모리 사용량이 급증하며 시스템이 멈추는 현상이 발생했습니다.
 
 단순한 해결방법으로 G1GC로 전환했음에도 불구하고 성능 저하는 여전했습니다.
 
-**원인 분석: G1GC의 Region 메커니즘**
+<a id="원인-분석-g1gc의-region-메커니즘"></a>
+
+### **원인 분석: G1GC의 Region 메커니즘**
+
 G1GC는 전체 힙을 영역(Region)이라는 단위로 나누어 관리합니다. 이때 객체의 크기가 영역(Region) 크기의 50%를 초과하면 이를 거대객체(Humongous Object)로 간주합니다.
 
 **문제점**
@@ -53,25 +62,29 @@ G1GC는 전체 힙을 영역(Region)이라는 단위로 나누어 관리합니�
 
 &lt;G1GCMemory />
 
-<a id="2-코드-레벨의-최적화-메모리-폭탄memory-bomb-방지"></a>
+<a id="코드-레벨의-최적화-메모리-폭탄memory-bomb-방지"></a>
 
-## 2. 코드 레벨의 최적화: 메모리 폭탄(Memory Bomb) 방지
+## 코드 레벨의 최적화: 메모리 폭탄(Memory Bomb) 방지
 
 단순히 인프라를 증설하는 것은 비용 대비 효율이 낮았습니다. 우선 소스 코드 상에서 불필요한 참조를 제거하는 작업을 선행했습니다.
 
-**2-1. Scope 제한 및 Static 사용 최소화Static 제거**
+<a id="scope-제한-및-static-사용-최소화static-제거"></a>
+
+### **Scope 제한 및 Static 사용 최소화Static 제거**
 
 클래스 단위의 static 변수는 GC 대상에서 제외되어 메모리 누수의 주범이 됩니다.
 
 이를 메서드 단위 객체로 전환하여 작업 완료 후 즉시 GC 대상이 되도록 스코프를 좁혔습니다.
 
-**Deep Clear 전략**
+<a id="deep-clear-전략"></a>
 
-`List&lt;Object>`와 같은 대규모 참조 데이터 사용 시, 작업이 끝난 객체는 명시적으로 참조를 끊고(null 대입) 내부 데이터를 초기화하여 GC가 더 빠르게 메모리를 회수할 수 있도록 유도했습니다.
+### **Deep Clear 전략**
 
-<a id="3-jvm-튜닝"></a>
+`List<Object>`와 같은 대규모 참조 데이터 사용 시, 작업이 끝난 객체는 명시적으로 참조를 끊고(null 대입) 내부 데이터를 초기화하여 GC가 더 빠르게 메모리를 회수할 수 있도록 유도했습니다.
 
-## 3. JVM 튜닝
+<a id="jvm-튜닝"></a>
+
+## JVM 튜닝
 
 최적의 Region Size 도출
 
@@ -86,13 +99,15 @@ G1GC의 기본 설정만으로는 10MB 객체를 효율적으로 담을 수 없�
 
 **결과:** 기존 20~30%에 달하던 발송 실패율이 1% 미만으로 급감하였고, 90%를 상회하던 메모리 점유율이 20~30%대로 안정화되었습니다.
 
-<a id="4-jvm-버전업의-필요성-java-8을-넘어-최신-버전으로"></a>
+<a id="jvm-버전업의-필요성-java-8을-넘어-최신-버전으로"></a>
 
-## 4. JVM 버전업의 필요성: Java 8을 넘어 최신 버전으로
+## JVM 버전업의 필요성: Java 8을 넘어 최신 버전으로
 
 이번 장애 대응을 통해 JVM 버전이 가지는 리소스 처리 한계를 명확히 실감할 수 있었습니다.
 
-**Java 17+ 및 ZGC의 기대 효과**
+<a id="java-17-및-zgc의-기대-효과-만약-java-17-이상의-환경에서-zgc를-사용할-수-있었다면-상황은-훨씬-수월했을-것입니다"></a>
+
+### **Java 17+ 및 ZGC의 기대 효과**
 만약 Java 17 이상의 환경에서 ZGC를 사용할 수 있었다면 상황은 훨씬 수월했을 것입니다.
 
 **가변 페이지(ZPages):** 고정된 Region 크기에 얽매이지 않고 객체 크기에 맞는 메모리를 할당하므로 거대 객체 파편화 이슈에서 자유롭습니다.
@@ -102,7 +117,10 @@ G1GC의 기본 설정만으로는 10MB 객체를 효율적으로 담을 수 없�
 
 <NotionDivider />
 
-**결론:**
+<a id="결론"></a>
+
+### **결론**
+
 비단 로직의 효율성뿐만 아니라, 사용 중인 JVM의 버전과 옵션이 처리 가능한 리소스의 Limit을 결정한다는 점을 배울 수 있었던 작업이였습니다.
 
 특히 64비트 시스템에서 메모리를 무작정 늘릴 경우 임계점(Compressed OOPs, 약 32GB)을 넘어가며 오히려 성능이 급락할 수 있다는 점을 항상 유의해야 합니다.

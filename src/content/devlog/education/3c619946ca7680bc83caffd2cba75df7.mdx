@@ -1,6 +1,6 @@
 ---
 status: "publish"
-tag: ["pythone","기초문법"]
+tag: ["기초문법"]
 description: "Python의 기본 문법과 연산 방법을 이해했다면, 다음으로 살펴볼 부분은 함수(Function)와 자료구조(Data Structure)입니다. 함수와 자료구조는 프로그램의 로직을 구성하고 데이터를 효율적으로 관리하기 위한 가장 기본적인 요소입니다.\nPython에서는 def를 이용하여 함수를 정의하며, 매개변수와 반환값을 통해 필요한 기능을 하나의 단위로 구성할 수 있습니다. 특히 기본값을 가지는 매개변수, 키워드 인자, 가변 인자(*args, **kwargs), 람다(lambda) 표현식 등 함수를 유연하게 사용할 수 있는 다양한 문법을 제공합니다.\n자료구조 역시 Python을 이해하는 데 중요한 부분입니다. 대표적으로 List, Tuple, Set, Dictionary가 있으며 각각 데이터의 순서, 중복 허용 여부, 데이터 변경 가능 여부, Key-Value 구조 등의 차이를 가지고 있습니다. 따라서 단순히 데이터를 저장하는 것을 넘어 데이터의 특성과 사용 목적에 맞는 자료구조를 선택하는 것이 중요합니다.\n특히 Java와 비교하면 Python은 자료구조를 선언하고 데이터를 처리하는 문법이 비교적 간결하며, 슬라이싱(Slicing), 컴프리헨션(Comprehension), in 연산자와 같은 기능을 통해 데이터를 직관적으로 다룰 수 있다는 특징이 있습니다."
 subcategory: "2026"
 created_date: "2026-08-19"
@@ -10,12 +10,12 @@ slug: "python-basic-data-structure"
 title: "파이썬 함수와 자료구조"
 page_id: "3c619946-ca76-80bc-83ca-ffd2cba75df7"
 source_id: "3c619946ca7680bc83caffd2cba75df7"
-last_edited_time: "2026-08-24T09:05:00.000Z"
+last_edited_time: "2026-08-26T01:32:00.000Z"
 notion_url: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
 id: "3c619946ca7680bc83caffd2cba75df7"
 sourceId: "3c619946-ca76-80bc-83ca-ffd2cba75df7"
 date: "2026-08-19"
-tags: ["pythone","기초문법"]
+tags: ["기초문법"]
 journal_category: "education"
 package: "2026"
 notionUrl: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
@@ -27,8 +27,8 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
 - [1. 파이썬 4대 빌트인 자료구조 비교](#1-파이썬-4대-빌트인-자료구조-비교)
 - [2. 컴프리헨션 (Comprehension)](#2-컴프리헨션-comprehension)
 - [3. 파이썬 함수 (Function) 및 1급 객체 (First-Class Citizen)](#3-파이썬-함수-function-및-1급-객체-first-class-citizen)
-  - [① 기본 정의 및 가변 인자 (args, *kwargs)](#1-기본-정의-및-가변-인자-args-kwargs)
-  - [② 1급 객체(First-Class Citizen)로서의 함수 & Lambda](#2-1급-객체first-class-citizen로서의-함수-lambda)
+  - [1) 기본 정의 및 가변 인자 (args, *kwargs)](#1-기본-정의-및-가변-인자-args-kwargs)
+  - [2) 1급 객체(First-Class Citizen)로서의 함수 &amp; Lambda](#2-1급-객체first-class-citizen로서의-함수-lambda)
 
 <a id="핵심-요약"></a>
 
@@ -85,7 +85,7 @@ name_len_map={name:len(name) for name in names}
 
 <a id="1-기본-정의-및-가변-인자-args-kwargs"></a>
 
-### **① 기본 정의 및 가변 인자 (****`args`****,** **`*kwargs`****)**
+### **1) 기본 정의 및 가변 인자 (****`args`****,** **`*kwargs`****)**
 
 
 ```python
@@ -103,7 +103,7 @@ print(calculate_total(100, 10, 20, discount=15)) # 100 + 30 - 15 = 115
 
 <a id="2-1급-객체first-class-citizen로서의-함수-lambda"></a>
 
-### **② 1급 객체(First-Class Citizen)로서의 함수 & Lambda**
+### **2) 1급 객체(First-Class Citizen)로서의 함수 & Lambda**
 
 파이썬에서 함수는 **변수에 할당할 수 있고, 다른 함수의 인자로 전달되거나 반환값으로 사용**될 수 있다.
 

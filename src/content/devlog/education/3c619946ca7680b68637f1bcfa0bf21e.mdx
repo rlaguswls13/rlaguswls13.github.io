@@ -1,21 +1,21 @@
 ---
 status: "publish"
-tag: ["pythone","OOP","예외처리"]
+tag: ["OOP","예외처리"]
 description: "Python 역시 Java와 마찬가지로 객체지향 프로그래밍(Object-Oriented Programming, OOP)을 지원하는 언어입니다. 클래스(Class)를 기반으로 객체를 생성하고, 객체가 가지는 데이터와 기능을 하나의 단위로 구성하여 프로그램을 설계할 수 있습니다.\nPython에서는 class를 이용하여 클래스를 정의하고, __init__()을 통해 객체가 생성될 때 필요한 초기화 작업을 수행할 수 있습니다. 또한 상속(Inheritance), 다형성(Polymorphism), 캡슐화(Encapsulation) 등 객체지향 프로그래밍의 주요 개념을 지원합니다. 다만 Java와 비교하면 접근 제어자나 인터페이스 등의 표현 방법에서 차이가 있기 때문에 Python의 문법과 특성에 맞게 객체지향 구조를 이해할 필요가 있습니다.\n프로그램을 안정적으로 구성하기 위해서는 객체지향 설계뿐만 아니라 예외처리(Exception Handling) 역시 중요합니다. 프로그램 실행 중에는 잘못된 입력이나 파일 및 네트워크 문제처럼 예상하지 못한 상황이 발생할 수 있으며, 이러한 문제를 적절하게 처리하지 않으면 프로그램이 비정상적으로 종료될 수 있습니다.\nPython에서는 try, except, else, finally를 이용하여 예외를 처리할 수 있으며, raise를 통해 필요한 상황에서 직접 예외를 발생시키는 것도 가능합니다. 또한 사용자 정의 예외를 만들어 애플리케이션의 상황에 맞는 예외 처리 구조를 구성할 수도 있습니다."
 subcategory: "2026"
 created_date: "2026-08-20"
 회차: "[교육 68일차]"
 category: "education"
 slug: "python-oop-exception"
-title: "OOP와 예외처리"
+title: "파이썬 : OOP와 예외처리"
 page_id: "3c619946-ca76-80b6-8637-f1bcfa0bf21e"
 source_id: "3c619946ca7680b68637f1bcfa0bf21e"
-last_edited_time: "2026-08-24T02:54:00.000Z"
+last_edited_time: "2026-08-26T01:33:00.000Z"
 notion_url: "https://app.notion.com/p/OOP-3c619946ca7680b68637f1bcfa0bf21e"
 id: "3c619946ca7680b68637f1bcfa0bf21e"
 sourceId: "3c619946-ca76-80b6-8637-f1bcfa0bf21e"
 date: "2026-08-20"
-tags: ["pythone","OOP","예외처리"]
+tags: ["OOP","예외처리"]
 journal_category: "education"
 package: "2026"
 notionUrl: "https://app.notion.com/p/OOP-3c619946ca7680b68637f1bcfa0bf21e"
@@ -25,14 +25,14 @@ notionUrl: "https://app.notion.com/p/OOP-3c619946ca7680b68637f1bcfa0bf21e"
 
 - [핵심 요약](#핵심-요약)
 - [1. 파이썬 객체지향 프로그래밍 (OOP)](#1-파이썬-객체지향-프로그래밍-oop)
-  - [① 캡슐화 (Encapsulation) & @property](#1-캡슐화-encapsulation-property)
-  - [② 추상화 (Abstraction) & abc 모듈](#2-추상화-abstraction-abc-모듈)
-  - [③ 상속 (Inheritance), 다중 상속 & MRO](#3-상속-inheritance-다중-상속-mro)
-  - [④ 다형성 (Polymorphism) & 덕 타이핑 (Duck Typing)](#4-다형성-polymorphism-덕-타이핑-duck-typing)
-  - [⑤ 믹스인 (Mixin) 패턴](#5-믹스인-mixin-패턴)
+  - [1) 캡슐화 (Encapsulation) &amp; @property](#1-캡슐화-encapsulation-property)
+  - [2) 추상화 (Abstraction) &amp; abc 모듈](#2-추상화-abstraction-abc-모듈)
+  - [3) 상속 (Inheritance), 다중 상속 &amp; MRO](#3-상속-inheritance-다중-상속-mro)
+  - [4) 다형성 (Polymorphism) &amp; 덕 타이핑 (Duck Typing)](#4-다형성-polymorphism-덕-타이핑-duck-typing)
+  - [5) 믹스인 (Mixin) 패턴](#5-믹스인-mixin-패턴)
 - [2. 매직 메서드 (Dunder Methods: Double Underscore)](#2-매직-메서드-dunder-methods-double-underscore)
 - [3. 예외 처리 (Exception Handling)](#3-예외-처리-exception-handling)
-  - [① try - except - else - finally 구문](#1-try-except-else-finally-구문)
+  - [1) try - except - else - finally 구문](#1-try-except-else-finally-구문)
 - [4. 컨텍스트 매니저 (Context Manager - with 구문)](#4-컨텍스트-매니저-context-manager-with-구문)
 
 <a id="핵심-요약"></a>
@@ -55,7 +55,7 @@ notionUrl: "https://app.notion.com/p/OOP-3c619946ca7680b68637f1bcfa0bf21e"
 
 <a id="1-캡슐화-encapsulation-property"></a>
 
-### **① 캡슐화 (Encapsulation) &** **`@property`**
+### **1) 캡슐화 (Encapsulation) &** **`@property`**
 
 파이썬은 Java의 `private`, `public` 같은 키워드가 없는 대신 **네이밍 컨벤션(Naming Convention)**으로 접근 제어를 표현한다.
 
@@ -88,7 +88,7 @@ print(acc.balance)  # 1500 (Getter 동작)
 
 <a id="2-추상화-abstraction-abc-모듈"></a>
 
-### **② 추상화 (Abstraction) &** **`abc`** **모듈**
+### **2) 추상화 (Abstraction) &** **`abc`** **모듈**
 
 `abc` (Abstract Base Class) 모듈의 `ABC`와 `@abstractmethod`를 사용하여 하위 클래스가 반드시 구현해야 하는 추상 메서드를 강제한다.
 
@@ -114,7 +114,7 @@ pay.process_payment(5000)
 
 <a id="3-상속-inheritance-다중-상속-mro"></a>
 
-### **③ 상속 (Inheritance), 다중 상속 & MRO**
+### **3) 상속 (Inheritance), 다중 상속 & MRO**
 
 파이썬은 **다중 상속(Multiple Inheritance)**을 지원한다. 다중 상속 시 발생하는 다이아몬드 상속 문제(Diamond Problem)는 **MRO (Method Resolution Order)**를 통해 해결된다.
 
@@ -143,7 +143,7 @@ print(D.mro())  # [<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'o
 
 <a id="4-다형성-polymorphism-덕-타이핑-duck-typing"></a>
 
-### **④ 다형성 (Polymorphism) & 덕 타이핑 (Duck Typing)**
+### **4) 다형성 (Polymorphism) & 덕 타이핑 (Duck Typing)**
 
 파이썬의 다형성은 명시적 상속 구조 없이도 동작하는 **덕 타이핑(Duck Typing)**이 핵심이다.
 
@@ -173,7 +173,7 @@ make_it_sound(Robot())  # 삐리삐리
 
 <a id="5-믹스인-mixin-패턴"></a>
 
-### **⑤ 믹스인 (Mixin) 패턴**
+### **5) 믹스인 (Mixin) 패턴**
 
 다중 상속의 장점을 활용하여, **독립된 기능 단위를 클래스에 부품처럼 조합(Plug-in)**하는 파이썬 고유의 디자인 패턴이다.
 
@@ -228,7 +228,7 @@ print(len(book)) # 350
 
 <a id="1-try-except-else-finally-구문"></a>
 
-### **①** **`try - except - else - finally`** **구문**
+### **1)** **`try - except - else - finally`** **구문**
 
 
 ```python

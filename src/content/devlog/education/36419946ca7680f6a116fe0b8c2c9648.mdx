@@ -10,7 +10,7 @@ slug: "java-constructor-practice"
 title: "java 생성자를 활용한 문제풀이"
 page_id: "36419946-ca76-80f6-a116-fe0b8c2c9648"
 source_id: "36419946ca7680f6a116fe0b8c2c9648"
-last_edited_time: "2026-08-18T03:22:00.000Z"
+last_edited_time: "2026-08-26T00:48:00.000Z"
 notion_url: "https://app.notion.com/p/java-36419946ca7680f6a116fe0b8c2c9648"
 id: "36419946ca7680f6a116fe0b8c2c9648"
 sourceId: "36419946-ca76-80f6-a116-fe0b8c2c9648"
@@ -23,13 +23,18 @@ notionUrl: "https://app.notion.com/p/java-36419946ca7680f6a116fe0b8c2c9648"
 
 ## 목차
 
-- [1. Product 클래스](#1-product-클래스)
-- [2. Student 클래스](#2-student-클래스)
-- [3. Book 클래스](#3-book-클래스)
+- [1. 생성자](#1-생성자)
+  - [1) Product 클래스](#1-product-클래스)
+  - [2) Student 클래스](#2-student-클래스)
+  - [3) Book 클래스](#3-book-클래스)
+
+<a id="1-생성자"></a>
+
+## 1. 생성자
 
 <a id="1-product-클래스"></a>
 
-## 1. Product 클래스
+### 1) Product 클래스
 
 **실습 목표**
 
@@ -61,8 +66,10 @@ notionUrl: "https://app.notion.com/p/java-36419946ca7680f6a116fe0b8c2c9648"
 
 </NotionIndent>
 
+단순 테스트를 위해서 Inner Class로 테스트 코드 우선 작성
 
-<NotionToggle title="단순 테스트를 위해서 Inner Class로 테스트 코드 우선 작성">
+
+<NotionIndent>
 
 
 ```java
@@ -104,10 +111,12 @@ public class practice20 {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
+
+**코드**
 
 
-<NotionToggle title="코드">
+<NotionIndent>
 
 service를 해주는 class, 객체 관리용 class 별도로 생성하여 main class에서 service class만 호출하여 원하는 내용 출력
 main(실제로 사용될 영역)에서 데이터를 input 받고 싶을 때는 method의 변수로 받아서 호출하게 변경하면 됩니다
@@ -166,14 +175,14 @@ public class practice20 {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
 <a id="2-student-클래스"></a>
 
-## 2. Student 클래스
+### 2) Student 클래스
 
 **실습 목표**
 
@@ -214,8 +223,10 @@ public class practice20 {
 
 </NotionIndent>
 
+손 코딩을 작성하는 경우
 
-<NotionToggle title="손 코딩을 작성하는 경우">
+
+<NotionIndent>
 
 
 ```java
@@ -298,10 +309,12 @@ public class Student {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
+
+코드 관리 편의성을 위한 @Lombok 및 Builder 패턴 활용 
 
 
-<NotionToggle title="코드 관리 편의성을 위한 @Lombok 및 Builder 패턴 활용 ">
+<NotionIndent>
 
 
 ```java
@@ -355,14 +368,14 @@ public class Main {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
 
 <a id="3-book-클래스"></a>
 
-## 3. Book 클래스
+### 3) Book 클래스
 
 **실습 목표**
 
@@ -405,8 +418,10 @@ public class Main {
 
 </NotionIndent>
 
+**코드**
 
-<NotionToggle title="코드">
+
+<NotionIndent>
 
 
 ```java
@@ -467,7 +482,7 @@ public class Run {
 ```
 
 
-</NotionToggle>
+</NotionIndent>
 
 
 <NotionDivider />
