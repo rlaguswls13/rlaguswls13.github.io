@@ -21,6 +21,7 @@ import { NotionCallout } from "@/components/ui/notion/NotionCallout";
 import { NotionDivider } from "@/components/ui/notion/NotionDivider";
 import { NotionIndent } from "@/components/ui/notion/NotionIndent";
 import { NotionCode } from "@/components/ui/notion/NotionCode";
+import { MermaidDiagram } from "@/components/ui/notion/MermaidDiagram";
 import { GiscusComments } from "@/components/ui/GiscusComments";
 import recommendationData from "@/data/indexes/devlog-recommendations.json";
 import { RelatedDevlogs, type RelatedDevlogItem } from "@/components/ui/RelatedDevlogs";
@@ -34,6 +35,7 @@ import { buildBlogPostingJsonLd } from "@/lib/seo/metadata";
 import { buildRouteMetadata, siteAuthor } from "@/lib/seo/routes";
 import { siteConfig } from "@/lib/site";
 import { rehypeArticleToc } from "@/lib/content/rehype-article-toc";
+import { rehypeMermaid } from "@/lib/content/rehype-mermaid";
 
 type DevlogPageIndexItem = {
   category: string;
@@ -96,6 +98,7 @@ const components = {
   NotionCallout,
   NotionDivider,
   NotionIndent,
+  "mermaid-diagram": MermaidDiagram,
   figure: (props: PrettyCodeFigureProps) => {
     if (props["data-rehype-pretty-code-figure"] !== undefined) {
       const language = isValidElement<{ "data-language"?: string }>(props.children)
@@ -172,6 +175,7 @@ export default async function DevlogDetailPage({
             options={{
               mdxOptions: {
                 rehypePlugins: [
+                  rehypeMermaid,
                   rehypeArticleToc,
                   [
                     rehypePrettyCode,

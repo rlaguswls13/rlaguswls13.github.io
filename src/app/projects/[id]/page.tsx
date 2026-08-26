@@ -22,12 +22,24 @@ import { NotionToggle } from "@/components/ui/notion/NotionToggle";
 import { NotionCallout } from "@/components/ui/notion/NotionCallout";
 import { NotionDivider } from "@/components/ui/notion/NotionDivider";
 import { NotionIndent } from "@/components/ui/notion/NotionIndent";
+import { MermaidDiagram } from "@/components/ui/notion/MermaidDiagram";
 import { buildRouteMetadata } from "@/lib/seo/routes";
 import { rehypeArticleToc } from "@/lib/content/rehype-article-toc";
+import { rehypeMermaid } from "@/lib/content/rehype-mermaid";
 import { ProjectTab, ProjectTabs } from "@/components/ui/ProjectTabs";
 
 const projects = projectsMeta.projects as Project[];
-const components = { NotionImage, NotionTable, NotionToggle, NotionCallout, NotionDivider, NotionIndent, ProjectTab, ProjectTabs };
+const components = {
+  NotionImage,
+  NotionTable,
+  NotionToggle,
+  NotionCallout,
+  NotionDivider,
+  NotionIndent,
+  ProjectTab,
+  ProjectTabs,
+  "mermaid-diagram": MermaidDiagram,
+};
 
 export async function generateStaticParams() {
   return projects.map((project) => ({ id: project.slug || project.id }));
@@ -92,7 +104,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <MDXRemote
           source={content}
           components={components}
-          options={{ mdxOptions: { rehypePlugins: [rehypeArticleToc] } }}
+          options={{ mdxOptions: { rehypePlugins: [rehypeMermaid, rehypeArticleToc] } }}
         />
       </div>
     </article>
