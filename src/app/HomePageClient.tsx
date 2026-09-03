@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import devlogData from "@/data/indexes/devlog.json";
+import devlogDataRaw from "@/data/indexes/devlog.json";
 import journalData from "@/data/indexes/journal.json";
 import engagementData from "@/data/indexes/engagement.json";
 import type { DevlogCategory, DevlogEntry } from "@/types";
@@ -15,6 +15,10 @@ import { getDevlogHref } from "@/lib/devlog-slugs";
 import { devlogListQuery, journalListQuery } from "@/lib/list-query";
 import { Dialog } from "@/components/ui/Dialog";
 
+// The generated index only carries the devlog categories that currently have
+// published MDX files, so treat every known category as optionally present.
+const devlogData = devlogDataRaw as Partial<Record<DevlogCategory, DevlogEntry[]>>;
+
 type HomeContentCategory = DevlogCategory | "education";
 type HomeFilter = Exclude<DevlogCategory, "blog"> | "journal";
 type HomeEntry = DevlogEntry & { category: HomeContentCategory };
@@ -22,21 +26,24 @@ type Engagement = { comments: number };
 
 const contentCategoryInfo: Record<HomeContentCategory, { label: string; description: string }> = {
   tech_study: { label: "기술 학습", description: "새롭게 익힌 기술과 핵심 개념" },
+  tech_study_series: { label: "학습 시리즈", description: "여러 편으로 이어지는 학습 시리즈" },
   problem_solving: { label: "문제 해결", description: "실무 장애 분석과 개선 과정" },
   competition_event: { label: "대회·행사", description: "도전과 경험에서 얻은 인사이트" },
   blog: { label: "개인일지", description: "개발과 커리어에 대한 생각과 기록" },
   education: { label: "교육일지", description: "Notion에 기록한 교육과 학습 내용" },
 };
 
-const filters: HomeFilter[] = ["tech_study", "problem_solving", "competition_event", "journal"];
+const filters: HomeFilter[] = ["tech_study", "tech_study_series", "problem_solving", "competition_event", "journal"];
 const filterInfo: Record<HomeFilter, { label: string; description: string }> = {
   tech_study: contentCategoryInfo.tech_study,
+  tech_study_series: contentCategoryInfo.tech_study_series,
   problem_solving: contentCategoryInfo.problem_solving,
   competition_event: contentCategoryInfo.competition_event,
   journal: { label: "일지", description: "Notion에 기록한 교육과 개인 기록" },
 };
 const devlogCategories: Exclude<DevlogCategory, "blog">[] = [
   "tech_study",
+  "tech_study_series",
   "problem_solving",
   "competition_event",
 ];

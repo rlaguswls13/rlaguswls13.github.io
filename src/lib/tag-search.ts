@@ -1,4 +1,4 @@
-import devlogData from "@/data/indexes/devlog.json";
+import devlogDataRaw from "@/data/indexes/devlog.json";
 import journalData from "@/data/indexes/journal.json";
 import projectsData from "@/data/indexes/projects.json";
 import { getDevlogHref } from "@/lib/devlog-slugs";
@@ -19,7 +19,11 @@ export type TagSearchEntry = Readonly<{
 }>;
 
 const journalCategories = ["personal", "education"] as const;
-const devlogCategories = ["tech_study", "problem_solving", "competition_event"] as const;
+const devlogCategories = ["tech_study", "tech_study_series", "problem_solving", "competition_event"] as const;
+
+// The generated index only lists categories that currently have published MDX
+// files, so every known devlog category is treated as optionally present.
+const devlogData = devlogDataRaw as Partial<Record<(typeof devlogCategories)[number], DevlogEntry[]>>;
 
 const categoryLabels: Record<TagSearchCategory, string> = {
   project: "프로젝트",
@@ -29,6 +33,7 @@ const categoryLabels: Record<TagSearchCategory, string> = {
 
 const devlogSubcategoryLabels: Record<(typeof devlogCategories)[number], string> = {
   tech_study: "기술 학습",
+  tech_study_series: "학습 시리즈",
   problem_solving: "문제 해결",
   competition_event: "대회·행사",
 };
@@ -96,7 +101,7 @@ function compareDates(left: TagSearchEntry, right: TagSearchEntry): number {
 
 export function buildTagSearchEntries(): readonly TagSearchEntry[] {
   const devlogEntries = devlogCategories.flatMap((category) =>
-    ((devlogData[category] as DevlogEntry[] | undefined) ?? []).map((entry) => toDevlogEntry(entry, category)),
+    (devlogData[category] ?? []).map((entry) => toDevlogEntry(entry, category)),
   );
   const journalEntries = journalCategories.flatMap((category) =>
     ((journalData[category] as DevlogEntry[] | undefined) ?? []).map((entry) => toJournalEntry(entry, category)),

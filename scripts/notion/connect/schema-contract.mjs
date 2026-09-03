@@ -29,7 +29,7 @@ const COMMON_COLUMNS = Object.freeze({
 
 const GROUPS = Object.freeze({
   journal: { categories: ["personal", "education"], columns: COMMON_COLUMNS },
-  devlog: { categories: ["tech_study", "problem_solving", "competition_event"], columns: COMMON_COLUMNS },
+  devlog: { categories: ["tech_study", "tech_study_series", "problem_solving", "competition_event"], columns: COMMON_COLUMNS },
   project: { categories: ["enterprise", "personal"], columns: COMMON_COLUMNS },
 });
 

@@ -11,7 +11,7 @@ export const metadata: Metadata = buildStaticRouteMetadata("devlog").metadata;
 type CoreCategory = Exclude<DevlogCategory, "blog">;
 type DisplayEntry = DevlogEntry & { category: CoreCategory };
 
-const categories: readonly CoreCategory[] = ["tech_study", "problem_solving", "competition_event"];
+const categories: readonly CoreCategory[] = ["tech_study", "tech_study_series", "problem_solving", "competition_event"];
 const indexedEntries = devlogData as Record<CoreCategory, DevlogEntry[]>;
 const entries = sortByDateDesc<DisplayEntry>(categories.flatMap((category) =>
   (indexedEntries[category] ?? []).map((entry) => ({ ...entry, category })),

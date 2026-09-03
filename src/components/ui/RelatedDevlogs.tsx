@@ -13,6 +13,7 @@ export type RelatedDevlogItem = {
 
 const categoryLabels: Record<string, string> = {
   tech_study: "기술 학습",
+  tech_study_series: "학습 시리즈",
   problem_solving: "문제 해결",
   competition_event: "대회·행사",
   education: "교육일지",

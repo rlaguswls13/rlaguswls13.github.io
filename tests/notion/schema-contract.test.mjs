@@ -28,6 +28,22 @@ describe("Notion schema and manifest contracts", () => {
     expect(NOTION_SCHEMA.devlog.columns.category.enum).toContain("tech_study");
   });
 
+  it("Given the serialized study-series category When a page uses it Then the devlog schema accepts it", () => {
+    const result = validateNotionPage("devlog", {
+      id,
+      properties: {
+        title: { type: "title", title: [{ plain_text: "Numpy 01" }] },
+        category: { type: "select", select: { name: "tech_study_series" } },
+        subcategory: { type: "select", select: { name: "python" } },
+        tags: { type: "multi_select", multi_select: [] },
+        created_date: { type: "date", date: { start: "2026-08-30" } },
+      },
+    });
+
+    expect(result).toEqual({ valid: true, violations: [] });
+    expect(NOTION_SCHEMA.devlog.categories).toContain("tech_study_series");
+  });
+
   it("Given a journal page with a select slug When it is validated Then it is accepted", () => {
     const result = validateNotionPage("journal", {
       id,

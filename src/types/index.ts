@@ -65,4 +65,4 @@ export interface DevlogEntry {
   subcategory?: string;
 }
 
-export type DevlogCategory = "tech_study" | "problem_solving" | "competition_event" | "blog";
+export type DevlogCategory = "tech_study" | "tech_study_series" | "problem_solving" | "competition_event" | "blog";

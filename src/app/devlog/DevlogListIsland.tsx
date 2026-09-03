@@ -18,9 +18,10 @@ type CoreCategory = Exclude<DevlogCategory, "blog">;
 type TabKey = CoreCategory | "all";
 type DisplayEntry = DevlogEntry & { category: CoreCategory };
 
-const categories: CoreCategory[] = ["tech_study", "problem_solving", "competition_event"];
+const categories: CoreCategory[] = ["tech_study", "tech_study_series", "problem_solving", "competition_event"];
 const labels: Record<CoreCategory, string> = {
   tech_study: "기술 학습",
+  tech_study_series: "학습 시리즈",
   problem_solving: "문제 해결",
   competition_event: "대회·행사",
 };

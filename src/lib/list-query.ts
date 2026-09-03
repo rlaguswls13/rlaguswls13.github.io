@@ -111,7 +111,7 @@ export function createListQueryContract<
   return { parse, serialize, href, clampPage, pageHref };
 }
 
-const devlogTabs = ["all", "tech_study", "problem_solving", "competition_event"] as const;
+const devlogTabs = ["all", "tech_study", "tech_study_series", "problem_solving", "competition_event"] as const;
 const devlogSubcategories = ["전체", "architecture", "book", "container", "event", "java", "messaging", "migration", "spring", "springboot", "storage", "was"] as const;
 const journalTabs = ["all", "personal", "education"] as const;
 const journalSubcategories = ["전체", "2026"] as const;

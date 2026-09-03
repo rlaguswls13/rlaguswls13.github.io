@@ -20,6 +20,7 @@ const ROUTE_OUTPUT_PATH = path.join(
 );
 const CATEGORIES = [
   "tech_study",
+  "tech_study_series",
   "problem_solving",
   "competition_event",
   "blog",

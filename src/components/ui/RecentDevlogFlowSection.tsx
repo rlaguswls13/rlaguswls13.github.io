@@ -30,6 +30,7 @@ type FlowSection = {
 
 const DEVLOG_TAB_ORDER: { key: Exclude<DevlogCategory, "blog">; label: string }[] = [
   { key: "tech_study", label: "기술 학습 기록" },
+  { key: "tech_study_series", label: "학습 시리즈" },
   { key: "problem_solving", label: "문제 해결 기록" },
   { key: "competition_event", label: "대회/행사" },
 ];
