@@ -1,0 +1,165 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["data-preprocessing","theory","scaling","Encoding"]
+slug: "data-preprocessing-scaling-encoding"
+subcategory: "data_preprocessing"
+status: "publish"
+description: "스케일링과 인코딩은 \"데이터를 모델이 이해하는 형태로 바꾸는\" 작업입니다. 어느 것도 모델과 독립적이지 않습니다. 트리 모델과 선형 모델은 필요로 하는 것이 정반대입니다."
+title: "데이터 전처리 이론 04. 스케일링과 범주형 인코딩"
+page_id: "3cf19946-ca76-8177-b804-f1dcf7e634eb"
+source_id: "3cf19946ca768177b804f1dcf7e634eb"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/04-3cf19946ca768177b804f1dcf7e634eb"
+id: "3cf19946ca768177b804f1dcf7e634eb"
+sourceId: "3cf19946-ca76-8177-b804-f1dcf7e634eb"
+date: "2026-09-01"
+tags: ["data-preprocessing","theory","scaling","Encoding"]
+package: "data_preprocessing"
+notionUrl: "https://app.notion.com/p/04-3cf19946ca768177b804f1dcf7e634eb"
+---
+
+## 목차
+
+- [다루는 계층](#다루는-계층)
+- [1. 수치형 스케일링](#1-수치형-스케일링)
+  - [1.1 세 가지 방식과 전제](#11-세-가지-방식과-전제)
+  - [1.2 모델별 필요성](#12-모델별-필요성)
+  - [1.3 누수 방지: train fit → test transform](#13-누수-방지-train-fit-test-transform)
+- [2. 범주형 인코딩](#2-범주형-인코딩)
+  - [2.1 명목형: 원-핫과 더미변수 함정](#21-명목형-원-핫과-더미변수-함정)
+  - [2.2 순서형: ordinal 인코딩](#22-순서형-ordinal-인코딩)
+  - [2.3 고카디널리티: 타깃 인코딩과 누수](#23-고카디널리티-타깃-인코딩과-누수)
+  - [2.4 해싱 트릭과 빈도 인코딩](#24-해싱-트릭과-빈도-인코딩)
+  - [2.5 인코딩–모델 상호작용 요약](#25-인코딩모델-상호작용-요약)
+
+> 스케일링과 인코딩은 "데이터를 모델이 이해하는 형태로 바꾸는" 작업입니다. 어느 것도 모델과 독립적이지 않습니다. 트리 모델과 선형 모델은 필요로 하는 것이 정반대입니다.
+
+<a id="다루는-계층"></a>
+
+## 다루는 계층
+
+- **통계 이론**: 표준화·정규화의 정의, 다중공선성, 타깃 인코딩의 통계적 누수
+- **전처리 의사결정**: 모델별로 스케일링이 필요한지, 어떤 인코딩을 쓸지
+- **도구 구현**: `sklearn.preprocessing`의 `StandardScaler`·`MinMaxScaler`·`RobustScaler`·`OneHotEncoder`·`OrdinalEncoder`, `pandas.get_dummies`
+
+<NotionDivider />
+
+<a id="1-수치형-스케일링"></a>
+
+## 1. 수치형 스케일링
+
+<a id="11-세-가지-방식과-전제"></a>
+
+### 1.1 세 가지 방식과 전제
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>방식</td><td>식</td><td>결과</td><td>이상치 영향</td></tr>
+    <tr><td>표준화(standardization, z-score)</td><td>z = (x − μ) / σ</td><td>평균 0, 표준편차 1</td><td>큼 (μ, σ가 오염)</td></tr>
+    <tr><td>정규화(normalization, min-max)</td><td>(x − min) / (max − min)</td><td>대개 [0, 1]</td><td>매우 큼 (min·max가 극단값)</td></tr>
+    <tr><td>로버스트 스케일링</td><td>(x − median) / IQR</td><td>중앙값 0, IQR 1</td><td>작음</td></tr>
+  </tbody>
+</NotionTable>
+
+- **표준화**: 대략 정규분포에 가깝고 상·하한이 없는 변수에 적합. 다수 모델의 기본 선택입니다.
+- **min-max**: 상·하한이 분명하거나(이미지 픽셀) 고정 범위가 필요할 때. 극단값 하나가 전체 스케일을 좌우합니다.
+- **로버스트**: 이상치가 남아 있을 때. 중앙값·IQR 기반이라 극단값에 둔감합니다(데이터 전처리 이론 03. 이상치 이론).
+스케일링은 분포의 **모양을 바꾸지 않습니다**(치우침은 그대로). 모양을 바꾸려면 변환이 필요합니다(데이터 전처리 이론 05. 변수 변환·특성 공학·차원 축소).
+
+<a id="12-모델별-필요성"></a>
+
+### 1.2 모델별 필요성
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>모델 계열</td><td>스케일링 필요?</td><td>이유</td></tr>
+    <tr><td>거리 기반(KNN, k-means, SVM-RBF)</td><td>필수</td><td>큰 스케일 변수가 거리를 지배</td></tr>
+    <tr><td>경사하강 기반(선형·로지스틱·신경망)</td><td>사실상 필수</td><td>수렴 속도, 조건수 개선</td></tr>
+    <tr><td>정규화 항(L1/L2 릿지·라쏘)</td><td>필수</td><td>페널티가 계수 크기에 걸리므로 스케일 불공정</td></tr>
+    <tr><td>PCA</td><td>필수</td><td>분산 최대 방향이 단위에 좌우됨</td></tr>
+    <tr><td>트리 계열(결정트리, 랜덤포레스트, 부스팅)</td><td>불필요</td><td>단조 변환에 불변, 분기 기준이 순위만 사용</td></tr>
+  </tbody>
+</NotionTable>
+
+<a id="13-누수-방지-train-fit-test-transform"></a>
+
+### 1.3 누수 방지: train fit → test transform
+
+
+```python
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler().fit(X_train)     # μ, σ는 train에서만
+X_train_s = scaler.transform(X_train)
+X_test_s = scaler.transform(X_test)        # 같은 μ, σ 적용
+```
+
+전체 데이터로 `fit`하면 test의 평균·분산 정보가 train 전처리에 반영되어 성능이 낙관적으로 왜곡됩니다. 교차검증에서는 `Pipeline`으로 묶어 각 fold 안에서 scaler가 새로 fit되게 합니다(데이터 전처리 이론 06. 불균형·데이터 누수·재현성).
+
+
+<NotionDivider />
+
+<a id="2-범주형-인코딩"></a>
+
+## 2. 범주형 인코딩
+
+<a id="21-명목형-원-핫과-더미변수-함정"></a>
+
+### 2.1 명목형: 원-핫과 더미변수 함정
+
+원-핫 인코딩은 k개 범주를 k개의 0/1 열로 펼칩니다. 절편이 있는 **선형 모델**에서는 k개 열이 완전한 선형 종속(합이 항상 1)을 이뤄 **더미변수 함정(dummy variable trap)**, 즉 완전 다중공선성이 생깁니다. 이때 한 범주를 기준(reference)으로 빼서 k−1개만 씁니다(`drop_first=True`, `drop="first"`).
+
+
+```python
+pd.get_dummies(df["city"], prefix="city", drop_first=True)
+```
+
+- **트리 모델·정규화 모델**에서는 k개 전부 유지해도 무방하며, 오히려 해석이 균형적입니다.
+- 고카디널리티 변수에 원-핫을 쓰면 열이 폭발하고 희소성이 커집니다.
+<a id="22-순서형-ordinal-인코딩"></a>
+
+### 2.2 순서형: ordinal 인코딩
+
+순서가 있는 범주(하&lt;중&lt;상)는 정수로 매핑해 순서를 보존합니다. 단, 정수 간격이 균등하다는 보장은 없으므로(사실), 선형 모델에서는 간격 가정을 신중히 다루고 필요 시 원-핫과 병행 실험합니다.
+
+
+```python
+from sklearn.preprocessing import OrdinalEncoder
+OrdinalEncoder(categories=[["low", "mid", "high"]]).fit_transform(df[["grade"]])
+```
+
+**주의**: 명목형에 무심코 `OrdinalEncoder`나 `LabelEncoder`를 쓰면 존재하지 않는 대소 관계를 모델에 주입합니다. 선형·거리 기반 모델에서 특히 해롭습니다.
+
+<a id="23-고카디널리티-타깃-인코딩과-누수"></a>
+
+### 2.3 고카디널리티: 타깃 인코딩과 누수
+
+타깃(mean) 인코딩은 각 범주를 "그 범주에서의 타깃 평균"으로 치환합니다. 열이 하나로 유지되어 고카디널리티에 유리하지만, **타깃 누수** 위험이 큽니다.
+
+- 같은 행의 타깃으로 그 행의 인코딩을 계산하면 정보가 새어 훈련 성능만 좋아집니다.
+- 방지: out-of-fold 인코딩(교차 폴드로 분리해 계산), 스무딩(전체 평균 쪽으로 축소), 홀드아웃 분리. `sklearn`의 `TargetEncoder`는 내부 교차 적합으로 이를 완화합니다.
+<a id="24-해싱-트릭과-빈도-인코딩"></a>
+
+### 2.4 해싱 트릭과 빈도 인코딩
+
+- **해싱 인코딩**: 범주 문자열을 해시 함수로 고정된 n개 버킷에 매핑. 사전을 저장하지 않아 메모리·스트리밍에 유리하나 충돌(서로 다른 범주가 한 열에)이 발생합니다.
+- **빈도 인코딩**: 범주를 등장 빈도로 치환. 간단하고 누수가 적으나, 빈도가 비슷한 범주는 구분되지 않습니다.
+<a id="25-인코딩모델-상호작용-요약"></a>
+
+### 2.5 인코딩–모델 상호작용 요약
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>인코딩</td><td>선형/거리 모델</td><td>트리 모델</td></tr>
+    <tr><td>원-핫(k−1)</td><td>적합</td><td>가능하나 분기 비효율(희소)</td></tr>
+    <tr><td>ordinal</td><td>순서형만</td><td>명목형이라도 무난(순위만 사용)</td></tr>
+    <tr><td>타깃/빈도</td><td>적합(누수 방지 시)</td><td>적합, 고카디널리티에 강함</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+

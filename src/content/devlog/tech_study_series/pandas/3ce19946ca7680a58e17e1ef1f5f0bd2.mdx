@@ -1,0 +1,221 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","wide-long","reshaping","pivot-melt"]
+slug: "python-pandas-reshaping"
+subcategory: "pandas"
+status: "publish"
+description: "같은 데이터도 wide(넓은) 포맷과 long(긴/tidy) 포맷으로 표현할 수 있습니다.\n• long → wide: pivot, pivot_table (집계 포함), unstack\n• wide → long: melt, stack\n분석·집계에는 long, 사람이 보는 표·시각화 입력에는 wide가 유리합니다. 두 방향을 자유롭게 오가는 것이 목표입니다."
+title: "Python - pandas 09. 재구조화 (pivot·melt·stack)"
+page_id: "3ce19946-ca76-80a5-8e17-e1ef1f5f0bd2"
+source_id: "3ce19946ca7680a58e17e1ef1f5f0bd2"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-09-pivot-melt-stack-3ce19946ca7680a58e17e1ef1f5f0bd2"
+id: "3ce19946ca7680a58e17e1ef1f5f0bd2"
+sourceId: "3ce19946-ca76-80a5-8e17-e1ef1f5f0bd2"
+date: "2026-09-01"
+tags: ["Python","pandas","wide-long","reshaping","pivot-melt"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-09-pivot-melt-stack-3ce19946ca7680a58e17e1ef1f5f0bd2"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. wide vs long](#1-wide-vs-long)
+- [2. long → wide](#2-long-wide)
+  - [pivot — 집계 없음 (키가 유일해야 함)](#pivot-집계-없음-키가-유일해야-함)
+  - [pivot_table — 집계 포함](#pivottable-집계-포함)
+  - [unstack — MultiIndex 레벨을 열로](#unstack-multiindex-레벨을-열로)
+- [3. wide → long](#3-wide-long)
+  - [melt](#melt)
+  - [stack — 열을 MultiIndex 행 레벨로](#stack-열을-multiindex-행-레벨로)
+- [4. explode — 리스트 셀을 행으로](#4-explode-리스트-셀을-행으로)
+- [5. get_dummies — 원-핫 인코딩](#5-getdummies-원-핫-인코딩)
+- [6. crosstab — 빈도/비율 교차표](#6-crosstab-빈도비율-교차표)
+- [7. MultiIndex 다루기](#7-multiindex-다루기)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+같은 데이터도 **wide(넓은) 포맷**과 **long(긴/tidy) 포맷**으로 표현할 수 있습니다.
+
+- **long → wide**: `pivot`, `pivot_table` (집계 포함), `unstack`
+- **wide → long**: `melt`, `stack`
+분석·집계에는 long, 사람이 보는 표·시각화 입력에는 wide가 유리합니다. 두 방향을 자유롭게 오가는 것이 목표입니다.
+
+```python
+import pandas as pd
+```
+
+
+<NotionDivider />
+
+<a id="1-wide-vs-long"></a>
+
+## 1. wide vs long
+
+
+```text
+long (tidy)                        wide
+city   month  sales                city   2026-01  2026-02
+Seoul  01     100        ⇄         Seoul  100      120
+Seoul  02     120                  Busan  80       90
+Busan  01     80
+Busan  02     90
+```
+
+- **long**: "관측 1개 = 행 1개". `groupby`·`merge`·플로팅 라이브러리(seaborn)에 적합.
+- **wide**: "엔티티 1개 = 행 1개, 변수 = 열". 사람이 읽는 리포트·엑셀·히트맵에 적합.
+
+<NotionDivider />
+
+<a id="2-long-wide"></a>
+
+## 2. long → wide
+
+<a id="pivot-집계-없음-키가-유일해야-함"></a>
+
+### `pivot` — 집계 없음 (키가 유일해야 함)
+
+
+```python
+df.pivot(index="city", columns="month", values="sales")
+```
+
+`(index, columns)` 조합이 중복이면 `ValueError`. 중복이 있으면 `pivot_table`을 씁니다.
+
+<a id="pivottable-집계-포함"></a>
+
+### `pivot_table` — 집계 포함
+
+
+```python
+df.pivot_table(
+    index="city",
+    columns="grade",
+    values="amount",
+    aggfunc="sum",       # 중복 조합을 어떻게 합칠지
+    fill_value=0,        # 없는 조합
+    margins=True,        # 행/열 합계("All")
+    observed=True,
+)
+df.pivot_table(index="city", values=["amount", "qty"], aggfunc={"amount": "sum", "qty": "mean"})
+```
+
+> 💡 **이럴 때**: "도시 × 등급별 매출 합계표"처럼 교차 요약이 필요할 때. 엑셀 피벗테이블과 같은 사고방식입니다.
+
+<a id="unstack-multiindex-레벨을-열로"></a>
+
+### `unstack` — MultiIndex 레벨을 열로
+
+
+```python
+g = df.groupby(["city", "month"])["sales"].sum()   # MultiIndex Series
+g.unstack("month")        # month를 열로 (= wide)
+g.unstack(level=-1)
+```
+
+
+<NotionDivider />
+
+<a id="3-wide-long"></a>
+
+## 3. wide → long
+
+<a id="melt"></a>
+
+### `melt`
+
+
+```python
+wide.melt(
+    id_vars=["city"],                 # 그대로 둘 열
+    value_vars=["2026-01", "2026-02"],# 녹일 열
+    var_name="month",
+    value_name="sales",
+)
+```
+
+<a id="stack-열을-multiindex-행-레벨로"></a>
+
+### `stack` — 열을 MultiIndex 행 레벨로
+
+
+```python
+wide.set_index("city").stack().rename("sales").reset_index()
+```
+
+> 💡 **이럴 때**: 엑셀에서 받은 "연도별 열이 옆으로 퍼진" 표를 분석·시각화하려면 `melt`로 long 포맷으로 되돌립니다.
+
+
+<NotionDivider />
+
+<a id="4-explode-리스트-셀을-행으로"></a>
+
+## 4. `explode` — 리스트 셀을 행으로
+
+
+```python
+df = pd.DataFrame({"order": [1, 2], "items": [["a", "b", "c"], ["d"]]})
+df.explode("items")
+# order items
+# 1     a
+# 1     b
+# 1     c
+# 2     d
+```
+
+> 💡 **이럴 때**: 한 셀에 콤마로 묶인 태그/상품 목록이 들어 있을 때. `.str.split(",")` 후 `explode`로 정규화합니다.
+
+
+<NotionDivider />
+
+<a id="5-getdummies-원-핫-인코딩"></a>
+
+## 5. `get_dummies` — 원-핫 인코딩
+
+
+```python
+pd.get_dummies(df, columns=["city", "grade"], prefix=["city", "grade"], drop_first=True)
+pd.get_dummies(df["tags"].str.get_dummies(sep=","))   # 다중 레이블
+```
+
+- `drop_first=True`: 다중공선성 방지용으로 한 범주 제거 (선형 모델).
+- 모델링 파이프라인에서는 `sklearn.preprocessing.OneHotEncoder`가 학습/추론 범주 일관성을 보장합니다.
+
+<NotionDivider />
+
+<a id="6-crosstab-빈도비율-교차표"></a>
+
+## 6. `crosstab` — 빈도/비율 교차표
+
+
+```python
+pd.crosstab(df["city"], df["grade"])
+pd.crosstab(df["city"], df["grade"], normalize="index")   # 행 기준 비율
+pd.crosstab(df["city"], df["grade"], values=df["amount"], aggfunc="sum")
+```
+
+`pivot_table`의 특수 케이스(기본 `aggfunc="count"`)로 봐도 됩니다.
+
+
+<NotionDivider />
+
+<a id="7-multiindex-다루기"></a>
+
+## 7. MultiIndex 다루기
+
+
+```python
+p = df.pivot_table(index=["city", "grade"], columns="month", values="amount", aggfunc="sum")
+
+p.swaplevel(0, 1)                 # 인덱스 레벨 교환
+p.reorder_levels(["grade", "city"])
+p.reset_index()                  # 평평한 열로
+p.columns = ["_".join(map(str, c)) for c in p.columns]   # MultiIndex 열 평탄화
+```
+
+> 💡 **이럴 때**: pivot 결과를 CSV로 내보내거나 merge 하려면 MultiIndex를 `reset_index()`·열 평탄화로 단순화합니다.
+

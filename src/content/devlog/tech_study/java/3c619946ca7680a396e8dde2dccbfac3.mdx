@@ -5,11 +5,11 @@ tag: ["참조","원시","불변","가변"]
 slug: "java-primitive-reference-object-mutable"
 subcategory: "java"
 status: "publish"
-description: "함수에 인자를 전달할 때 원본 변수의 변경 여부를 혼동하지 않기 위해서는 Primitive(원시 타입) vs Reference(참조 타입), 그리고 Immutable(불변 객체) vs **Mutable(가변 객체)**이라는 4가지 키워드 조합으로 구분해 기억하는 것이 핵심입니다. Primitive 타입과 Immutable 객체는 함수 내부에서 어떤 조작을 하더라도 원본이 절대 변경되지 않는 안전한 영역이며, 오직 **Reference 타입이면서 동시에 Mutable 객체(예: 커스텀 객체, 리스트, 맵)**인 경우에만 원본 수정 가능성이 존재합니다.\n하지만 Mutable 참조 타입이라 할지라도 **\"함수 내부에서 수행하는 액션\"**에 따라 최종 결과가 달라집니다. 매개변수 자체에 새로운 객체를 =(재할당)하면 복사된 주소 포인터만 바뀔 뿐 원본은 보호되며, 오직 기존 객체의 내부 필드나 요소를 직접 수정(p.name = \"X\", list.append())할 때만 원본 객체가 변경됩니다. 이 4가지 키워드로 메모리 저장 형태(값 vs 주소)와 객체 상태 변경 가능 여부(가변 vs 불변)를 연결해 두면, Java와 Python을 넘나들며 매개변수 전달 동작 방식을 100% 명확하게 구분할 수 있습니다."
+description: "함수에 인자를 전달할 때 원본 변수의 변경 여부를 혼동하지 않기 위해서는 Primitive(원시 타입) vs Reference(참조 타입), 그리고 Immutable(불변 객체) vs Mutable(가변 객체)이라는 4가지 키워드 조합으로 구분해 기억하는 것이 핵심입니다. Primitive 타입과 Immutable 객체는 함수 내부에서 어떤 조작을 하더라도 원본이 절대 변경되지 않는 안전한 영역이며, 오직 Reference 타입이면서 동시에 Mutable 객체(예: 커스텀 객체, 리스트, 맵)인 경우에만 원본 수정 가능성이 존재합니다.\n하지만 Mutable 참조 타입이라 할지라도 \"함수 내부에서 수행하는 액션\"에 따라 최종 결과가 달라집니다. 매개변수 자체에 새로운 객체를 =(재할당)하면 복사된 주소 포인터만 바뀔 뿐 원본은 보호되며, 오직 기존 객체의 내부 필드나 요소를 직접 수정(p.name = \"X\", list.append())할 때만 원본 객체가 변경됩니다. 이 4가지 키워드로 메모리 저장 형태(값 vs 주소)와 객체 상태 변경 가능 여부(가변 vs 불변)를 연결해 두면, Java와 Python을 넘나들며 매개변수 전달 동작 방식을 100% 명확하게 구분할 수 있습니다."
 title: "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?"
 page_id: "3c619946-ca76-80a3-96e8-dde2dccbfac3"
 source_id: "3c619946ca7680a396e8dde2dccbfac3"
-last_edited_time: "2026-08-26T02:31:00.000Z"
+last_edited_time: "2026-09-01T00:21:00.000Z"
 notion_url: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 id: "3c619946ca7680a396e8dde2dccbfac3"
 sourceId: "3c619946-ca76-80a3-96e8-dde2dccbfac3"
@@ -37,7 +37,7 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 
 결론부터 말하면 **"함수 내부에서 객체의 내부 상태(필드/요소)를 수정하면 원본이 변경되지만, 매개변수 자체에 새로운 객체를 재할당(Reassignment)하면 원본은 변경되지 않는다."**
 
-이 동작 원리를 이해하려면 **`Primitive`** **vs** **`Reference`**, **`Immutable`** **vs** **`Mutable`** 키워드와 Java의 **Pass-by-Value**, Python의 **Call-by-Sharing(Pass-by-Assignment)** 메커니즘을 알아야 한다.
+이 동작 원리를 이해하려면 **`Primitive` vs `Reference`**, **`Immutable` vs `Mutable`** 키워드와 Java의 **Pass-by-Value**, Python의 **Call-by-Sharing(Pass-by-Assignment)** 메커니즘을 알아야 한다.
 
 
 <NotionDivider />
@@ -140,7 +140,7 @@ public class JavaReferenceTest {
 
 Python은 **Call-by-Sharing (Pass-by-Object-Reference)** 방식을 사용한다.
 
-전달되는 객체가 **`Immutable`****인가** **`Mutable`****인가**에 따라 동작이 달라진다.
+전달되는 객체가 **`Immutable`인가 `Mutable`인가**에 따라 동작이 달라진다.
 
 <a id="1-immutable-객체-전달-int-str-tuple-원본-변경-불가"></a>
 
@@ -209,5 +209,5 @@ print("my_list after reassign:", my_list) # [1, 2, 3, 99] (원본 변경 안 됨
  🔥 원본 객체 변경됨!           원본 변경 안 됨!          원본 변경 안 됨!
 ```
 
-- **원본이 변경되는 유일한 조건**: **Mutable 객체(참조 타입)**를 인자로 전달한 뒤, 함수 내부에서 **새 객체를 생성하지 않고 기존 객체의 내부 필드/메서드/요소를 직접 수정(****`set`****,** **`append`****,** **`.field =`** **)**할 때만 원본이 변경된다.
+- **원본이 변경되는 유일한 조건**: **Mutable 객체(참조 타입)**를 인자로 전달한 뒤, 함수 내부에서 **새 객체를 생성하지 않고 기존 객체의 내부 필드/메서드/요소를 직접 수정(`set`, `append`, `.field =` )**할 때만 원본이 변경된다.
 

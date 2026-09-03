@@ -1,0 +1,220 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","mssing-values","outliers","imputation"]
+slug: "python-numpy-missing-values"
+subcategory: "numpy"
+status: "publish"
+description: "실데이터는 항상 결측(np.nan), 무한대(np.inf), 이상치(outlier)를 포함합니다.\n\nNumPy에서의 처리 흐름은 ① 탐지(np.isnan, np.isfinite) → ② 집계 시 무시(np.nanmean 계열) → ③ 대체(imputation) 또는 제거/클리핑입니다."
+title: "Python - NumPy 08. 결측치와 이상치 처리"
+page_id: "3ce19946-ca76-8076-8ccf-de84c5980765"
+source_id: "3ce19946ca7680768ccfde84c5980765"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-08-3ce19946ca7680768ccfde84c5980765"
+id: "3ce19946ca7680768ccfde84c5980765"
+sourceId: "3ce19946-ca76-8076-8ccf-de84c5980765"
+date: "2026-08-30"
+tags: ["Python","numpy","mssing-values","outliers","imputation"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-08-3ce19946ca7680768ccfde84c5980765"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 탐지](#1-탐지)
+- [2. 결측을 무시한 집계 :  nan* 함수군](#2-결측을-무시한-집계-nan-함수군)
+- [3. 결측 대체 (imputation)](#3-결측-대체-imputation)
+  - [3-1. 상수 / 평균 / 중앙값 대체](#3-1-상수-평균-중앙값-대체)
+  - [3-2. 열별 평균 대체 (2차원)](#3-2-열별-평균-대체-2차원)
+- [4. 이상치 처리](#4-이상치-처리)
+  - [4-1. 분위수 기반 클리핑 (winsorizing)](#4-1-분위수-기반-클리핑-winsorizing)
+  - [4-2. IQR 규칙으로 이상치 마스킹](#4-2-iqr-규칙으로-이상치-마스킹)
+  - [4-3. z-score 기반](#4-3-z-score-기반)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+실데이터는 항상 결측(`np.nan`), 무한대(`np.inf`), 이상치(`outlier`)를 포함합니다.
+
+NumPy에서의 처리 흐름은 ① 탐지(`np.isnan`, `np.isfinite`) → ② 집계 시 무시(`np.nanmean` 계열) → ③ 대체(imputation) 또는 제거/클리핑입니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-탐지"></a>
+
+## 1. 탐지
+
+
+```python
+a = np.array([1.0, np.nan, 3.0, np.inf, 5.0])
+
+np.isnan(a)      # array([False,  True, False, False, False])
+np.isinf(a)      # array([False, False, False,  True, False])
+np.isfinite(a)   # array([ True, False,  True, False,  True])  ← nan도 inf도 아닌 정상값
+```
+
+- `== np.nan`은 **항상 False**입니다. 반드시 `np.isnan()`을 사용합니다.
+- 정상값만 걸러낼 때는 `np.isfinite()`가 가장 편합니다 (nan과 inf를 한 번에 배제).
+
+```python
+clean = a[np.isfinite(a)]        # array([1., 3., 5.])
+```
+
+> 💡 **이럴 때**: nan과 inf를 한 번에 걸러 깨끗한 값만 남길 때(집계·모델 입력 직전 정제).
+
+**2차원에서 결측이 있는 행/열 찾기**:
+
+
+```python
+X = np.array([[1., 2., np.nan],
+              [4., 5., 6.]])
+
+np.isnan(X).any(axis=1)          # array([ True, False])  - 결측 포함 행
+np.isnan(X).sum(axis=0)          # array([0, 0, 1])       - 열별 결측 개수
+```
+
+
+<NotionDivider />
+
+<a id="2-결측을-무시한-집계-nan-함수군"></a>
+
+## 2. 결측을 무시한 집계 :  `nan*` 함수군
+
+일반 집계 함수는 nan이 하나만 있어도 결과가 nan으로 전파됩니다.
+
+
+```python
+np.array([1., np.nan, 3.]).mean()      # nan   ← 전파됨
+np.nanmean(np.array([1., np.nan, 3.])) # 2.0   ← nan을 빼고 계산
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>일반</td><td>nan 무시 버전</td></tr>
+    <tr><td>`np.sum`</td><td>`np.nansum`</td></tr>
+    <tr><td>`np.mean`</td><td>`np.nanmean`</td></tr>
+    <tr><td>`np.std` / `np.var`</td><td>`np.nanstd` / `np.nanvar`</td></tr>
+    <tr><td>`np.min` / `np.max`</td><td>`np.nanmin` / `np.nanmax`</td></tr>
+    <tr><td>`np.median`</td><td>`np.nanmedian`</td></tr>
+    <tr><td>`np.percentile`</td><td>`np.nanpercentile`</td></tr>
+  </tbody>
+</NotionTable>
+
+> **주의**: `nan*` 함수는 `inf`는 무시하지 않습니다. `inf`가 섞여 있으면 `np.isfinite`로 먼저 걸러야 합니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 결측을 포함한 채로 열별 평균·표준편차 등 통계를 내야 할 때(대체값 계산, 분포 요약).
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="3-결측-대체-imputation"></a>
+
+## 3. 결측 대체 (imputation)
+
+<a id="3-1-상수-평균-중앙값-대체"></a>
+
+### 3-1. 상수 / 평균 / 중앙값 대체
+
+
+```python
+a = np.array([1.0, np.nan, 3.0, np.nan, 5.0])
+
+fill = np.nanmean(a)             # 3.0
+a_filled = np.where(np.isnan(a), fill, a)   # array([1., 3., 3., 3., 5.])
+
+# in-place로도 가능 (a가 copy여야 안전)
+a[np.isnan(a)] = fill
+```
+
+<a id="3-2-열별-평균-대체-2차원"></a>
+
+### 3-2. 열별 평균 대체 (2차원)
+
+
+```python
+X = np.array([[1.,  2.,  np.nan],
+              [4.,  np.nan, 6.],
+              [7.,  8.,  9.]])
+
+col_mean = np.nanmean(X, axis=0)          # 각 열의 nan 제외 평균
+idx = np.where(np.isnan(X))               # (행 인덱스 배열, 열 인덱스 배열)
+X[idx] = np.take(col_mean, idx[1])        # 각 결측 위치에 해당 열 평균 대입
+```
+
+> 실무에서는 이 로직을 직접 짜기보다 `sklearn.impute.SimpleImputer`를 쓰지만, 내부 동작은 위와 같습니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 결측을 평균·중앙값·상수로 채워 모델 입력의 빈칸을 없앨 때. 학습 데이터 통계를 저장해 테스트에도 같은 값을 씁니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="4-이상치-처리"></a>
+
+## 4. 이상치 처리
+
+<a id="4-1-분위수-기반-클리핑-winsorizing"></a>
+
+### 4-1. 분위수 기반 클리핑 (winsorizing)
+
+극단값을 "잘라내지 않고" 경계값으로 눌러 줍니다.
+
+
+```python
+a = np.array([1., 2., 3., 4., 5., 100.])
+
+lo, hi = np.percentile(a, [1, 99])
+a_clipped = np.clip(a, lo, hi)   # 1퍼센타일 미만/99퍼센타일 초과를 경계로 대체
+```
+
+> 💡 **이럴 때**: 이상치를 제거하면 샘플이 줄어 곤란할 때, 분위수 경계로 눌러 분포만 안정화합니다.
+
+<a id="4-2-iqr-규칙으로-이상치-마스킹"></a>
+
+### 4-2. IQR 규칙으로 이상치 마스킹
+
+
+```python
+q1, q3 = np.percentile(a, [25, 75])
+iqr = q3 - q1
+lower = q1 - 1.5 * iqr
+upper = q3 + 1.5 * iqr
+
+outlier_mask = (a < lower) | (a > upper)   # array([..., True])  - 100이 이상치
+a_no_outlier = a[~outlier_mask]            # 이상치 제거
+```
+
+> 💡 **이럴 때**: 분포 가정 없이 이상치를 탐지·제거할 때. 이상치가 많아 평균이 왜곡되는 상황에서 z-score보다 견고합니다.
+
+<a id="4-3-z-score-기반"></a>
+
+### 4-3. z-score 기반
+
+
+```python
+z = (a - a.mean()) / a.std()
+outlier_mask = np.abs(z) > 3       # 표준편차 3배 초과
+```
+
+> z-score 방식은 데이터가 정규분포에 가까울 때, IQR 방식은 분포 가정 없이 쓸 수 있습니다. 이상치 자체가 평균·표준편차를 왜곡하므로, 이상치가 많으면 IQR(중앙값·분위수 기반)이 더 견고합니다.
+

@@ -49,9 +49,9 @@ notionUrl: "https://app.notion.com/p/2-Scope-3b019946ca7680809e0fcf7c0f56c7bb"
 일반적인 스프링 싱글톤 빈은 애플리케이션 구동(Context Refresh) 시점에 생성되지만, 배치의 핵심 컴포넌트들은 배치가 실제로 구동되는 시점(런타임)에 필요한 파라미터를 받아 동적으로 빈을 생성하는 **지연 바인딩(Late Binding)** 전략을 사용합니다. 이 영역을 제한하는 것이 `@JobScope`와 `@StepScope`입니다.
 
 - **@JobScope**
-Job이 실행되는 시점에 빈이 동적으로 생성되며, 해당 스코프 내에서만 `#&#123;jobParameters&#125;`를 주입받을 수 있습니다. (Step 선언 메서드에 주로 사용)
+Job이 실행되는 시점에 빈이 동적으로 생성되며, 해당 스코프 내에서만 `#{jobParameters}`를 주입받을 수 있습니다. (Step 선언 메서드에 주로 사용)
 - **@StepScope**
-Step이 실행되는 시점에 빈이 동적으로 생성되며, `#&#123;jobParameters&#125;` 뿐만 아니라 이전 Step에서 저장한 `#&#123;stepExecutionContext&#125;` 데이터까지 스코프 내에서 안전하게 주입(late injection)받을 수 있습니다. (Reader, Processor, Writer에 필수적으로 사용)
+Step이 실행되는 시점에 빈이 동적으로 생성되며, `#{jobParameters}` 뿐만 아니라 이전 Step에서 저장한 `#{stepExecutionContext}` 데이터까지 스코프 내에서 안전하게 주입(late injection)받을 수 있습니다. (Reader, Processor, Writer에 필수적으로 사용)
 
 ```text
 +------------------------------------------------------------------------------------+
@@ -136,7 +136,7 @@ Chunk 지향 Step 내부에서는 Read -> Process -> Write 루프가 트랜잭�
 - **ItemProcessor**
 읽어온 데이터를 가공하는 컴포넌트로, Reader가 넘겨준 데이터를 1건씩 전달받아 비즈니스 가공, 유효성 검증, DTO 변환 등을 처리합니다. 만약 특정 데이터를 최종 저장소에서 제외(필터링)하고 싶다면 null을 리턴하여 해당 데이터가 Writer로 넘어가지 않도록 제어합니다.
 - **ItemWriter**
-(핵심) 가공된 데이터를 최종 저장하는 컴포넌트입니다. 앞선 컴포넌트들과 달리, 설정된 Commit Interval(Chunk Size)만큼 데이터가 쌓였을 때 데이터 유실 없이 `List&lt;T>` 형태로 한 번에 전달받습니다. 영속성 컨텍스트의 쓰기 지연 기술이나 데이터베이스의 Bulk Insert/Update를 활용하여 I/O 네트워크 비용을 최소화하고 일괄 저장을 수행한 뒤, 부모 트랜잭션을 최종 COMMIT합니다. (CursorWriter나 PageWriter 등이 사용됩니다.)
+(핵심) 가공된 데이터를 최종 저장하는 컴포넌트입니다. 앞선 컴포넌트들과 달리, 설정된 Commit Interval(Chunk Size)만큼 데이터가 쌓였을 때 데이터 유실 없이 `List<T>` 형태로 한 번에 전달받습니다. 영속성 컨텍스트의 쓰기 지연 기술이나 데이터베이스의 Bulk Insert/Update를 활용하여 I/O 네트워크 비용을 최소화하고 일괄 저장을 수행한 뒤, 부모 트랜잭션을 최종 COMMIT합니다. (CursorWriter나 PageWriter 등이 사용됩니다.)
 <a id="런타임-실행-파이프라인-예시-코드-및-추적"></a>
 
 ### 런타임 실행 파이프라인 예시 코드 및 추적
@@ -286,7 +286,7 @@ public class UserProcessingJobConfig {
 - **Step 2. 스코프 격리와 빈 지연 생성 (Late Binding)**
 - `userProcessingStep`이 시작되면서 `@JobScope`와 `@StepScope`가 활성화됩니다.
 - 애플리케이션 켜질 때는 생성되지 않던 `userReader` 메서드가 이때 비로소 호출됩니다.
-- `@Value("#&#123;jobParameters['requestDate']&#125;")`가 트리거되어 DB 메타데이터에 저장되어 있던 `2026-06-16` 문자열을 정확히 가로채 자바 변수에 바인딩한 뒤 Reader 인스턴스를 메모리에 올립니다.
+- `@Value("#{jobParameters['requestDate']}")`가 트리거되어 DB 메타데이터에 저장되어 있던 `2026-06-16` 문자열을 정확히 가로채 자바 변수에 바인딩한 뒤 Reader 인스턴스를 메모리에 올립니다.
 
 - **Step 3. Chunk 단위의 트랜잭션 루프 제어**
 - `chunk(100, transactionManager)` 설정에 의해 비즈니스 DB의 트랜잭션이 시작되고 아래 루프가 작동합니다.
@@ -298,7 +298,7 @@ public class UserProcessingJobConfig {
 - 넘겨받은 유저의 상태를 체크합니다. 블랙리스트 유저라면 null을 뱉어 파이프라인에서 탈락시키고, 정상 유저라면 `ProcessedUser` DTO로 가공하여 청크 메모리 내부 List에 누적합니다.
 
 - **Writer.write(Chunk) 호출 (100건이 쌓인 순간 1회 호출)**
-- 내부 카운터가 100에 도달하면 `List&lt;ProcessedUser>`를 컴포넌트에 통째로 던집니다.
+- 내부 카운터가 100에 도달하면 `List<ProcessedUser>`를 컴포넌트에 통째로 던집니다.
 - `JdbcBatchItemWriter`는 자바의 `addBatch()`와 `executeBatch()`를 사용하여 100건의 UPDATE 쿼리를 네트워크 파이프라인을 통해 DB로 한 번에 날립니다(Bulk 연산).
 
 

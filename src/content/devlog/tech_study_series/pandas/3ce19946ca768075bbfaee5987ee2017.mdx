@@ -1,0 +1,216 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","groupby","split-apply-combine","aggregation"]
+slug: "python-pandas-groupby"
+subcategory: "pandas"
+status: "publish"
+description: "groupby는 split(키로 쪼갬) → apply(각 조각에 함수) → combine(결과 합침) 3단계입니다.\n\n조각에 적용하는 함수는 성격에 따라 4가지로 갈립니다: agg(그룹당 스칼라), transform(원본과 같은 shape), filter(그룹 통째로 포함/제외), apply(가장 유연, 가장 느림).\ndf.groupby(...)는 즉시 계산하지 않는 지연 객체이며, 뒤에 오는 연산에서 실제로 평가됩니다."
+title: "Python - pandas 08. 그룹 연산 (groupby)"
+page_id: "3ce19946-ca76-8075-bbfa-ee5987ee2017"
+source_id: "3ce19946ca768075bbfaee5987ee2017"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-08-groupby-3ce19946ca768075bbfaee5987ee2017"
+id: "3ce19946ca768075bbfaee5987ee2017"
+sourceId: "3ce19946-ca76-8075-bbfa-ee5987ee2017"
+date: "2026-09-01"
+tags: ["Python","pandas","groupby","split-apply-combine","aggregation"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-08-groupby-3ce19946ca768075bbfaee5987ee2017"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. split-apply-combine](#1-split-apply-combine)
+- [2. agg — 그룹당 요약값](#2-agg-그룹당-요약값)
+- [3. transform — 원본과 같은 길이로 되돌림](#3-transform-원본과-같은-길이로-되돌림)
+- [4. filter — 그룹 단위 선택](#4-filter-그룹-단위-선택)
+- [5. apply — 가장 유연, 가장 느림](#5-apply-가장-유연-가장-느림)
+- [6. 자주 쓰는 옵션](#6-자주-쓰는-옵션)
+- [7. 그 밖의 축약](#7-그-밖의-축약)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+`groupby`는 **split(키로 쪼갬) → apply(각 조각에 함수) → combine(결과 합침)** 3단계입니다.
+
+조각에 적용하는 함수는 성격에 따라 4가지로 갈립니다: **`agg`(그룹당 스칼라), `transform`(원본과 같은 shape), `filter`(그룹 통째로 포함/제외), `apply`(가장 유연, 가장 느림)**.
+
+`df.groupby(...)`는 즉시 계산하지 않는 **지연 객체**이며, 뒤에 오는 연산에서 실제로 평가됩니다.
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-split-apply-combine"></a>
+
+## 1. split-apply-combine
+
+
+```python
+df.groupby("city")["amount"].sum()
+# city
+# Busan    12000
+# Seoul    45000
+```
+
+- **split**: `city` 값이 같은 행끼리 묶음.
+- **apply**: 각 묶음의 `amount`에 `sum`.
+- **combine**: 그룹 키를 인덱스로 하는 Series로 합침.
+
+```python
+gb = df.groupby("city")     # DataFrameGroupBy - 아직 계산 안 함(지연)
+gb.groups                   # {'Seoul': [행 인덱스...], ...}
+gb.get_group("Seoul")       # 특정 그룹만 DataFrame으로
+for key, sub in gb:         # 그룹 순회 (디버깅용, 실무는 지양)
+    ...
+```
+
+
+<NotionDivider />
+
+<a id="2-agg-그룹당-요약값"></a>
+
+## 2. `agg` — 그룹당 요약값
+
+
+```python
+df.groupby("city")["amount"].agg(["sum", "mean", "count"])
+df.groupby("city").agg({"amount": "sum", "qty": "mean"})   # 열별 다른 함수
+
+# named aggregation (권장) — 결과 열 이름을 명시
+df.groupby("city").agg(
+    total_amount=("amount", "sum"),
+    avg_qty=("qty", "mean"),
+    n_orders=("amount", "count"),
+)
+
+df.groupby("city")["amount"].agg(lambda s: s.max() - s.min())   # 커스텀
+```
+
+> 💡 **이럴 때**: 대시보드용 요약표(그룹별 합계·평균·건수). **named aggregation**을 쓰면 결과 열 이름이 깔끔해 이후 처리가 쉽습니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 다중 키 집계 — `groupby(["city", "category"])`. 결과는 MultiIndex이며, `reset_index()`로 평평한 표로 되돌립니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="3-transform-원본과-같은-길이로-되돌림"></a>
+
+## 3. `transform` — 원본과 같은 길이로 되돌림
+
+
+```python
+# 그룹 평균을 각 행에 브로드캐스트
+df["city_avg"] = df.groupby("city")["amount"].transform("mean")
+
+# 그룹 내 표준화 (z-score)
+df["amount_z"] = df.groupby("city")["amount"].transform(lambda s: (s - s.mean()) / s.std())
+
+# 그룹 평균으로 결측 대체
+df["amount"] = df["amount"].fillna(df.groupby("city")["amount"].transform("mean"))
+```
+
+`agg`는 그룹당 1개 값으로 줄이지만, `transform`은 **그룹 통계를 원래 행 위치에 다시 펼칩니다**. 파생 열 만들 때 필수.
+
+> 💡 **이럴 때**: "각 매장 평균 대비 이 주문이 얼마나 큰가", "그룹 내 비중(`x / group_sum`)" 같은 상대 지표 열을 만들 때.
+
+
+<NotionDivider />
+
+<a id="4-filter-그룹-단위-선택"></a>
+
+## 4. `filter` — 그룹 단위 선택
+
+
+```python
+# 주문이 10건 이상인 도시의 행만 남김
+df.groupby("city").filter(lambda g: len(g) >= 10)
+
+# 그룹 평균 금액이 임계값 넘는 그룹만
+df.groupby("city").filter(lambda g: g["amount"].mean() > 1000)
+```
+
+조건을 만족하는 **그룹의 모든 행**을 통째로 유지/제거합니다.
+
+
+<NotionDivider />
+
+<a id="5-apply-가장-유연-가장-느림"></a>
+
+## 5. `apply` — 가장 유연, 가장 느림
+
+
+```python
+# 그룹별 상위 3개 행
+df.groupby("city", group_keys=False).apply(lambda g: g.nlargest(3, "amount"))
+
+# 그룹별 여러 산출물을 한 번에
+def summary(g):
+    return pd.Series({
+        "n": len(g),
+        "revenue": g["amount"].sum(),
+        "top_customer": g.loc[g["amount"].idxmax(), "user_id"],
+    })
+df.groupby("city").apply(summary)
+```
+
+`apply`는 그룹을 통째로 받아 무엇이든 반환할 수 있지만, 파이썬 함수 호출이 그룹 수만큼 일어나 느립니다. `agg`/`transform`으로 표현 가능하면 그쪽을 씁니다.
+
+
+<NotionDivider />
+
+<a id="6-자주-쓰는-옵션"></a>
+
+## 6. 자주 쓰는 옵션
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>옵션</td><td>효과</td></tr>
+    <tr><td>`as_index=False`</td><td>그룹 키를 인덱스가 아닌 열로 (`reset_index` 생략)</td></tr>
+    <tr><td>`sort=False`</td><td>그룹 키 정렬 안 함 → 속도 개선</td></tr>
+    <tr><td>`observed=True`</td><td>`category` 키에서 **실제 등장한 조합만** (기본 False면 모든 조합 → 폭발)</td></tr>
+    <tr><td>`dropna=False`</td><td>그룹 키의 결측도 하나의 그룹으로</td></tr>
+    <tr><td>`group_keys=False`</td><td>`apply` 결과에 그룹 키를 중복으로 붙이지 않음</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+df.groupby(["city", "grade"], observed=True, as_index=False)["amount"].sum()
+```
+
+> 💡 **이럴 때**: `category` 열로 groupby 하는데 결과 행이 이상하게 많으면 `observed=True`를 빠뜨린 것입니다 (없는 조합까지 0으로 생성).
+
+
+<NotionDivider />
+
+<a id="7-그-밖의-축약"></a>
+
+## 7. 그 밖의 축약
+
+
+```python
+df.groupby("city")["amount"].describe()
+df.groupby("city").size()             # 그룹별 행 수 (결측 포함)
+df.groupby("city")["user_id"].nunique()
+df.groupby("city")["amount"].cumsum()  # 그룹 내 누적합
+df.pivot_table(index="city", columns="grade", values="amount", aggfunc="sum")
+```
+
+`pivot_table`은 groupby + `unstack`의 조합입니다
+

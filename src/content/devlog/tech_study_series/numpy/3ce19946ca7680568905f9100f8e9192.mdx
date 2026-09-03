@@ -1,0 +1,209 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","reshape","concatenate","axis"]
+slug: "python-numpy-reshape"
+subcategory: "numpy"
+status: "publish"
+description: "같은 데이터를 다른 shape로 \"다시 보는\" 작업(reshape, 축 추가/제거, 전치)과, 여러 배열을 합치거나 나누는 작업(concatenate, stack, split)을 다룹니다.\n\n브로드캐스팅(6장)과 모델 입력 shape 맞추기에서 reshape와 np.newaxis를 끊임없이 쓰게 됩니다."
+title: "Python - NumPy 05. 형태 변경과 결합·분리"
+page_id: "3ce19946-ca76-8056-8905-f9100f8e9192"
+source_id: "3ce19946ca7680568905f9100f8e9192"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-05-3ce19946ca7680568905f9100f8e9192"
+id: "3ce19946ca7680568905f9100f8e9192"
+sourceId: "3ce19946-ca76-8056-8905-f9100f8e9192"
+date: "2026-08-30"
+tags: ["Python","numpy","reshape","concatenate","axis"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-05-3ce19946ca7680568905f9100f8e9192"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. reshape : 형태 다시 보기](#1-reshape-형태-다시-보기)
+  - [평탄화 : ravel vs flatten](#평탄화-ravel-vs-flatten)
+- [2. 축 추가 / 제거](#2-축-추가-제거)
+  - [추가 : np.newaxis (= None)](#추가-npnewaxis-none)
+  - [제거 : squeeze](#제거-squeeze)
+- [3. 전치 : T / transpose / swapaxes](#3-전치-t-transpose-swapaxes)
+- [4. 결합 : concatenate / stack / vstack / hstack](#4-결합-concatenate-stack-vstack-hstack)
+  - [concatenate : 기존 축을 따라 이어붙임 (차원 유지)](#concatenate-기존-축을-따라-이어붙임-차원-유지)
+  - [stack : 새 축을 만들며 결합 (차원 +1)](#stack-새-축을-만들며-결합-차원-1)
+  - [vstack / hstack : 편의 함수](#vstack-hstack-편의-함수)
+- [5. 분리 : split / array_split](#5-분리-split-arraysplit)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+같은 데이터를 다른 shape로 "다시 보는" 작업(`reshape`, 축 추가/제거, 전치)과, 여러 배열을 합치거나 나누는 작업(`concatenate`, `stack`, `split`)을 다룹니다.
+
+브로드캐스팅(6장)과 모델 입력 shape 맞추기에서 **`reshape`와 `np.newaxis`**를 끊임없이 쓰게 됩니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-reshape-형태-다시-보기"></a>
+
+## 1. `reshape` : 형태 다시 보기
+
+원소의 총 개수(`size`)가 같아야 합니다. 데이터는 복사되지 않고 대개 **view**입니다.
+
+
+```python
+a = np.arange(12)             # shape (12,)
+
+a.reshape(3, 4)               # (3, 4)
+a.reshape(4, 3)               # (4, 3)
+a.reshape(2, 2, 3)            # (2, 2, 3) - 3차원
+a.reshape(3, -1)              # -1 자리는 자동 계산 → (3, 4)
+a.reshape(-1, 1)              # (12, 1) - "세로 벡터"로 만드는 관용구
+```
+
+> 💡 **이럴 때**: sklearn 등이 2D 입력을 요구하는데 특징이 1D 벡터일 때 `reshape(-1, 1)`로 열벡터를 만듭니다.
+
+- **`1`**: 한 축만 `1`로 두면 나머지로부터 자동 계산됩니다. 두 축을 `1`로 둘 수는 없습니다.
+- **`(12,)` vs `(12, 1)` vs `(1, 12)`**: 원소는 같지만 차원이 다릅니다. 브로드캐스팅 결과가 달라지므로 구분이 중요합니다.
+<a id="평탄화-ravel-vs-flatten"></a>
+
+### 평탄화 : `ravel` vs `flatten`
+
+
+```python
+m = a.reshape(3, 4)
+m.ravel()       # 1차원으로 - 가능하면 view (빠름, 메모리 안 씀)
+m.flatten()     # 1차원으로 - 항상 copy (안전, 원본과 분리)
+```
+
+수정할 계획이 없으면 `ravel`, 독립 배열이 필요하면 `flatten`을 씁니다.
+
+
+<NotionDivider />
+
+<a id="2-축-추가-제거"></a>
+
+## 2. 축 추가 / 제거
+
+<a id="추가-npnewaxis-none"></a>
+
+### 추가 : `np.newaxis` (= `None`)
+
+크기 1인 축을 끼워 넣습니다. 브로드캐스팅을 유도할 때 필수입니다.
+
+
+```python
+a = np.array([1, 2, 3])          # (3,)
+
+a[:, np.newaxis]                 # (3, 1) - 세로
+a[np.newaxis, :]                 # (1, 3) - 가로
+a[:, None]                       # (3, 1) - None은 np.newaxis의 별칭
+np.expand_dims(a, axis=0)        # (1, 3) - 함수형
+```
+
+> 💡 **이럴 때**: `(N,)` 벡터를 `(N, 1)` 또는 `(1, N)`으로 만들어 각 행/열에 broadcast 연산을 걸 때.
+
+<a id="제거-squeeze"></a>
+
+### 제거 : `squeeze`
+
+크기 1인 축을 모두 없앱니다.
+
+
+```python
+b = np.zeros((1, 3, 1))
+np.squeeze(b).shape              # (3,)
+np.squeeze(b, axis=0).shape      # (3, 1) - 특정 축만
+```
+
+모델 출력이 `(N, 1)`로 나올 때 `(N,)`으로 펴는 데 자주 씁니다.
+
+> 💡 **이럴 때**: 모델 예측이 `(N, 1)`로 나와 정답 레이블 `(N,)`과 shape가 안 맞을 때 `squeeze`로 맞춥니다.
+
+
+<NotionDivider />
+
+<a id="3-전치-t-transpose-swapaxes"></a>
+
+## 3. 전치 : `T` / `transpose` / `swapaxes`
+
+
+```python
+a = np.arange(6).reshape(2, 3)
+
+a.T                    # (3, 2) - 축 순서 완전 역전, view
+a.transpose(1, 0)      # (3, 2) - 축 순서를 명시적으로 지정
+a.transpose(0, 1)      # (2, 3) - 그대로
+np.swapaxes(a, 0, 1)   # (3, 2) - 두 축만 교환
+```
+
+3차원 이상에서는 `a.T`가 "모든 축 역전"이라 의도와 다를 수 있습니다. 이때는 `transpose(축 순서)`로 정확히 지정합니다. 예: `(N, H, W)` → `(N, W, H)`는 `a.transpose(0, 2, 1)`.
+
+
+<NotionDivider />
+
+<a id="4-결합-concatenate-stack-vstack-hstack"></a>
+
+## 4. 결합 : `concatenate` / `stack` / `vstack` / `hstack`
+
+<a id="concatenate-기존-축을-따라-이어붙임-차원-유지"></a>
+
+### `concatenate` : 기존 축을 따라 이어붙임 (차원 유지)
+
+
+```python
+x = np.array([[1, 2], [3, 4]])       # (2, 2)
+y = np.array([[5, 6], [7, 8]])       # (2, 2)
+
+np.concatenate([x, y], axis=0)       # (4, 2) - 행 방향으로 쌓기
+np.concatenate([x, y], axis=1)       # (2, 4) - 열 방향으로 붙이기
+```
+
+<a id="stack-새-축을-만들며-결합-차원-1"></a>
+
+### `stack` : 새 축을 만들며 결합 (차원 +1)
+
+
+```python
+np.stack([x, y], axis=0).shape       # (2, 2, 2) - 새 0번 축
+np.stack([x, y], axis=2).shape       # (2, 2, 2) - 새 마지막 축
+```
+
+<a id="vstack-hstack-편의-함수"></a>
+
+### `vstack` / `hstack` : 편의 함수
+
+
+```python
+np.vstack([x, y])      # 수직(행) 결합 = concatenate axis=0  (2차원 이상 기준)
+np.hstack([x, y])      # 수평(열) 결합 = concatenate axis=1  (2차원 이상 기준)
+```
+
+> **1차원 입력에서는 규칙이 다릅니다**: `np.vstack([[1,2],[3,4]])` → `(2, 2)`로 축을 추가하고, `np.hstack([[1,2],[3,4]])` → `(4,)`로 axis=0을 따라 이어붙입니다. 헷갈리면 `concatenate` + 명시적 `reshape`가 안전합니다.
+
+
+<NotionDivider />
+
+<a id="5-분리-split-arraysplit"></a>
+
+## 5. 분리 : `split` / `array_split`
+
+
+```python
+np.split(np.arange(9), 3)            # 3등분: [array([0,1,2]), array([3,4,5]), array([6,7,8])]
+np.split(np.arange(9), [2, 5])       # 인덱스 2, 5에서 자름 → 길이 2, 3, 4
+
+np.split(np.arange(10), 3)           # ValueError - 균등 분할 불가
+np.array_split(np.arange(10), 3)     # OK - [4, 3, 3]개로 최대한 균등하게
+```
+
+`np.split`은 정확히 나눠떨어져야 하고, `np.array_split`은 아니어도 됩니다. 데이터를 K-fold로 쪼갤 때 후자가 편합니다.
+
+> 💡 **이럴 때**: 데이터를 K개 폴드로 나누거나 배치로 쪼갤 때, 개수가 안 떨어져도 되는 `np.array_split`을 씁니다.
+

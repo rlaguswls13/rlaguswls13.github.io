@@ -1,0 +1,175 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","seaborn","heatmap","clustermap","correlation"]
+slug: "python-seaborn-heatmap"
+subcategory: "visualization"
+status: "publish"
+description: "2차원 표(행 x 열)의 값을 색 농도로 표현합니다. - heatmap: 넘겨준 2D 데이터를 그대로 색칠. annot으로 숫자 표기, cmap으로 색 체계, center/vmin/vmax로 색 스케일 통제. - 가장 흔한 용도는 상관행렬 시각화입니다: df.corr() + 위삼각 마스크가 관용구. - clustermap: 행·열을 계층적 군집으로 재배열하고 덴드로그램을 붙임. \"비슷한 것끼리 모아서\" 패턴을 드러냄."
+title: "Python - seaborn 06. 행렬·히트맵 (heatmap·clustermap)"
+page_id: "3cf19946-ca76-816e-bac2-efc477794575"
+source_id: "3cf19946ca76816ebac2efc477794575"
+last_edited_time: "2026-09-03T05:52:00.000Z"
+notion_url: "https://app.notion.com/p/Python-seaborn-06-heatmap-clustermap-3cf19946ca76816ebac2efc477794575"
+id: "3cf19946ca76816ebac2efc477794575"
+sourceId: "3cf19946-ca76-816e-bac2-efc477794575"
+date: "2026-09-01"
+tags: ["Python","seaborn","heatmap","clustermap","correlation"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-seaborn-06-heatmap-clustermap-3cf19946ca76816ebac2efc477794575"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. heatmap 기본](#1-heatmap-기본)
+- [2. 상관행렬 시각화 관용구](#2-상관행렬-시각화-관용구)
+- [3. clustermap — 군집 재배열 + 덴드로그램](#3-clustermap-군집-재배열-덴드로그램)
+- [4. heatmap이 부적합한 경우](#4-heatmap이-부적합한-경우)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+2차원 표(행 x 열)의 값을 **색 농도**로 표현합니다.
+
+- **`heatmap`**: 넘겨준 2D 데이터를 그대로 색칠. `annot`으로 숫자 표기, `cmap`으로 색 체계, `center`/`vmin`/`vmax`로 색 스케일 통제.
+- 가장 흔한 용도는 **상관행렬 시각화**입니다: `df.corr()` + 위삼각 마스크가 관용구.
+- **`clustermap`**: 행·열을 계층적 군집으로 재배열하고 덴드로그램을 붙임. "비슷한 것끼리 모아서" 패턴을 드러냄.
+`heatmap`은 axes-level, `clustermap`은 자체 Figure를 만드는 figure-level입니다.
+
+
+```python
+import seaborn as sns
+import numpy as np
+sns.set_theme()
+penguins = sns.load_dataset("penguins")
+```
+
+
+<NotionDivider />
+
+<a id="1-heatmap-기본"></a>
+
+## 1. `heatmap` 기본
+
+
+```python
+import pandas as pd
+flights = sns.load_dataset("flights").pivot(index="month", columns="year", values="passengers")
+
+sns.heatmap(flights)
+sns.heatmap(flights, annot=True, fmt="d")          # 각 칸에 정수 표기
+sns.heatmap(flights, cmap="YlGnBu", linewidths=.5) # 색 체계 + 칸 구분선
+sns.heatmap(flights, robust=True)                  # 이상치에 강한 색 범위 (2~98 분위)
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>인자</td><td>의미</td></tr>
+    <tr><td>`annot`</td><td>`True`면 값 표기. 배열을 주면 그 배열을 표기(값과 라벨 분리)</td></tr>
+    <tr><td>`fmt`</td><td>표기 형식: `"d"`(정수), `".2f"`(소수 2자리), `".0%"`(퍼센트)</td></tr>
+    <tr><td>`cmap`</td><td>컬러맵. 순차(`"viridis"`, `"YlGnBu"`) / 발산(`"coolwarm"`, `"RdBu_r"`)</td></tr>
+    <tr><td>`center`</td><td>이 값을 색 중앙(발산 컬러맵의 흰색)에 고정</td></tr>
+    <tr><td>`vmin` / `vmax`</td><td>색 스케일 하한·상한 (여러 히트맵 비교 시 통일)</td></tr>
+    <tr><td>`robust`</td><td>`vmin`/`vmax`를 분위수로 잡아 이상치 영향 축소</td></tr>
+    <tr><td>`linewidths` / `linecolor`</td><td>칸 사이 구분선</td></tr>
+    <tr><td>`cbar` / `cbar_kws`</td><td>컬러바 표시·설정</td></tr>
+    <tr><td>`square`</td><td>칸을 정사각형으로</td></tr>
+    <tr><td>`mask`</td><td>`True`인 위치는 그리지 않음 (2절)</td></tr>
+  </tbody>
+</NotionTable>
+
+**그림에서 보이는 것**: 항공 승객 수 히트맵에서 위에서 아래(월), 왼쪽에서 오른쪽(연도)으로 갈수록 색이 진해지며, 매년 7~8월 행이 특히 진해 여름 성수기와 연간 증가 추세가 동시에 보입니다.
+
+> 💡 **이럴 때**: 두 개 이상의 히트맵을 나란히 놓고 비교하려면 반드시 `vmin`/`vmax`를 같은 값으로 고정합니다. 안 그러면 각자 자동 스케일이라 색이 달라도 값이 같을 수 있습니다.
+
+
+<NotionDivider />
+
+<a id="2-상관행렬-시각화-관용구"></a>
+
+## 2. 상관행렬 시각화 관용구
+
+
+```python
+corr = penguins.corr(numeric_only=True)
+
+mask = np.triu(np.ones_like(corr, dtype=bool))   # 위삼각 마스크 (대각선 포함)
+sns.heatmap(
+    corr,
+    mask=mask,
+    cmap="coolwarm",      # 발산: 음의 상관=파랑, 양의 상관=빨강
+    center=0,             # 상관 0을 흰색에 고정
+    vmin=-1, vmax=1,
+    annot=True, fmt=".2f",
+    square=True, linewidths=.5,
+)
+```
+
+포인트:
+
+- 상관행렬은 대칭이므로 **위삼각을 마스크**해 중복을 없앱니다(`np.triu`). 대각선(항상 1.0)도 보통 가립니다.
+- **발산 컬러맵 + `center=0`**을 씁니다. 상관은 부호가 의미를 가지므로 0을 기준으로 색이 갈려야 합니다.
+- `vmin=-1, vmax=1`로 고정해 다른 데이터셋과 비교 가능하게 합니다.
+- `numeric_only=True`로 문자열 열을 자동 제외(pandas 2.0+).
+**그림에서 보이는 것**: `body_mass_g`와 `flipper_length_mm`가 진한 빨강(강한 양의 상관 ≈ 0.87), `bill_depth_mm`와 `flipper_length_mm`가 파랑(음의 상관 ≈ -0.58)으로 나타납니다.
+
+> 💡 **이럴 때**: 상관 히트맵에서 진한 칸(|r| 큰 쌍)을 찾은 뒤, 그 두 변수만 5장의 `jointplot`/`regplot`으로 다시 봅니다. 상관계수는 선형 관계만 잡으므로 곡선 관계는 산점도로 확인해야 합니다.
+
+
+<NotionDivider />
+
+<a id="3-clustermap-군집-재배열-덴드로그램"></a>
+
+## 3. `clustermap` — 군집 재배열 + 덴드로그램
+
+
+```python
+sns.clustermap(
+    penguins.select_dtypes("number").dropna(),
+    z_score=1,                 # 열 단위 표준화 (스케일 차이 제거)
+    cmap="vlag", center=0,
+    figsize=(8, 8),
+)
+sns.clustermap(corr, cmap="coolwarm", center=0, annot=True)
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>인자</td><td>의미</td></tr>
+    <tr><td>`z_score`</td><td>`0`=행, `1`=열 단위로 (x-평균)/표준편차. 스케일 다른 변수 비교 시</td></tr>
+    <tr><td>`standard_scale`</td><td>`z_score` 대신 0~1 정규화</td></tr>
+    <tr><td>`method`</td><td>연결법: `"average"`, `"complete"`, `"ward"` 등 (scipy)</td></tr>
+    <tr><td>`metric`</td><td>거리: `"euclidean"`, `"correlation"` 등</td></tr>
+    <tr><td>`row_cluster` / `col_cluster`</td><td>행/열 군집 켜고 끄기</td></tr>
+    <tr><td>`row_colors` / `col_colors`</td><td>행·열 옆에 그룹 라벨을 색 띠로</td></tr>
+  </tbody>
+</NotionTable>
+
+동작:
+
+- 행과 열을 각각 계층적 군집(hierarchical clustering)해 **비슷한 것끼리 인접**하도록 재정렬합니다.
+- 왼쪽·위에 **덴드로그램**(군집 나무)을 그려 병합 순서와 거리를 보여 줍니다.
+- 반환값은 `ClusterGrid`. `g.dendrogram_row.reordered_ind`로 재배열 순서를 얻습니다.
+**그림에서 보이는 것**: 표준화한 펭귄 측정치 clustermap에서 행(개체)들이 크게 두 덩어리로 갈리고, 한 덩어리는 `flipper_length`·`body_mass`가 높은(밝은) 열 패턴을, 다른 덩어리는 반대 패턴을 보여 사실상 Gentoo와 나머지 종의 분리에 대응합니다.
+
+> 💡 **이럴 때**: 변수 스케일이 제각각(mm, g)이면 `z_score=1`(또는 `0`) 없이 clustermap을 돌리면 큰 값 열이 색을 독점합니다. 표준화가 사실상 필수입니다.
+
+💡 **이럴 때**: `row_colors`에 알고 있는 그룹 라벨(예: 실제 종)을 넣으면, 군집 결과가 그 라벨과 얼마나 일치하는지 색 띠로 즉시 검증됩니다.
+
+
+<NotionDivider />
+
+<a id="4-heatmap이-부적합한-경우"></a>
+
+## 4. heatmap이 부적합한 경우
+
+- **셀이 아주 많을 때**(수백 x 수백): 색 차이를 눈으로 못 읽습니다. 집계하거나 `clustermap`으로 구조를 먼저 봅니다.
+- **값이 연속적으로 중요한 정밀 비교**: 색은 위치·길이보다 부정확한 채널입니다. 정확한 값 비교는 막대·표가 낫습니다.
+- **결측이 많을 때**: `mask`로 가리거나 `annot`으로 표시해 "0"과 "없음"을 구분합니다.
+
+<NotionDivider />
+

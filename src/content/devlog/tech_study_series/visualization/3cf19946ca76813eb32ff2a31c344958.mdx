@@ -1,0 +1,162 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","matplotlib","savefig","dpi-figsize","backend"]
+slug: "python-matplotlib-save-backend"
+subcategory: "visualization"
+status: "publish"
+description: "그림 저장은 fig.savefig(\"out.png\", dpi=..., bbox_inches=\"tight\", transparent=...) 한 줄이지만, 결과 품질은 figsize(인치 단위 크기)와 dpi(인치당 픽셀)의 곱으로 정해지는 최종 픽셀 수, 그리고 파일 포맷 선택에 달려 있습니다. 래스터 포맷(PNG)은 픽셀 고정, 벡터 포맷(SVG·PDF)은 무한 확대가 가능하므로 용도가 다릅니다. 창을 띄우는 인터랙티브 백엔드와 파일만 만드는 비인터랙티브(Agg) 백엔드의 차이도 저장 흐름에 영향을 줍니다."
+title: "Python - matplotlib 07. 저장·해상도·백엔드"
+page_id: "3cf19946-ca76-813e-b32f-f2a31c344958"
+source_id: "3cf19946ca76813eb32ff2a31c344958"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-matplotlib-07-3cf19946ca76813eb32ff2a31c344958"
+id: "3cf19946ca76813eb32ff2a31c344958"
+sourceId: "3cf19946-ca76-813e-b32f-f2a31c344958"
+date: "2026-09-01"
+tags: ["Python","matplotlib","savefig","dpi-figsize","backend"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-matplotlib-07-3cf19946ca76813eb32ff2a31c344958"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. figsize와 dpi의 관계](#1-figsize와-dpi의-관계)
+- [2. fig.savefig 주요 인자](#2-figsavefig-주요-인자)
+- [3. 포맷별 용도](#3-포맷별-용도)
+- [4. 백엔드 -Agg vs 인터랙티브](#4-백엔드-agg-vs-인터랙티브)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+그림 저장은 **`fig.savefig("out.png", dpi=..., bbox_inches="tight", transparent=...)`** 한 줄이지만, 결과 품질은 **`figsize`(인치 단위 크기)와 `dpi`(인치당 픽셀)의 곱**으로 정해지는 최종 픽셀 수, 그리고 **파일 포맷 선택**에 달려 있습니다.
+래스터 포맷(PNG)은 픽셀 고정, 벡터 포맷(SVG·PDF)은 무한 확대가 가능하므로 용도가 다릅니다.
+창을 띄우는 인터랙티브 백엔드와 파일만 만드는 비인터랙티브(`Agg`) 백엔드의 차이도 저장 흐름에 영향을 줍니다.
+
+
+```python
+import matplotlib
+import matplotlib.pyplot as plt
+```
+
+
+<NotionDivider />
+
+<a id="1-figsize와-dpi의-관계"></a>
+
+## 1. `figsize`와 `dpi`의 관계
+
+- `figsize=(w, h)`는 **인치** 단위 크기입니다. `plt.subplots(figsize=(6, 4))` → 6인치 × 4인치.
+- `dpi`는 **인치당 픽셀 수**입니다.
+- 최종 이미지 픽셀 = `figsize × dpi`. 예: `(6, 4)` × `150` = **900 × 600 px**.
+
+```python
+fig, ax = plt.subplots(figsize=(6, 4))     # 물리 크기
+fig.savefig("plot.png", dpi=150)           # 해상도 → 900x600 px
+fig.savefig("plot@2x.png", dpi=300)        # 같은 그림, 1800x1200 px
+```
+
+- 화면 표시용 `dpi`(`figure.dpi`)와 저장용 `dpi`(`savefig.dpi`)는 별개입니다. `savefig(dpi=...)`가 저장 시점 값을 덮어씁니다.
+- **폰트·선 굵기는 `figsize`에 상대적**입니다. `figsize`를 키우지 않고 `dpi`만 올리면 픽셀은 늘지만 글자 비율은 그대로입니다. 반대로 `figsize`를 줄이면 상대적으로 글자가 커 보입니다.
+> 💡 **이럴 때**: 논문·슬라이드에 넣을 그림은 목표 물리 크기를 `figsize`로 먼저 정하고(예: 2단 칼럼 폭 3.5인치), `dpi=300`으로 저장합니다. 나중에 이미지를 키우고 줄이지 않습니다.
+
+💡 **이럴 때**: 글자가 너무 작으면 `dpi`가 아니라 `figsize`를 줄이거나 `font.size`를 키웁니다.
+
+
+<NotionDivider />
+
+<a id="2-figsavefig-주요-인자"></a>
+
+## 2. `fig.savefig` 주요 인자
+
+
+```python
+fig.savefig(
+    "report.png",
+    dpi=300,
+    bbox_inches="tight",     # 여백을 잘라 내용에 딱 맞게 (라벨 잘림 방지)
+    pad_inches=0.05,         # tight일 때 남길 여백
+    transparent=True,        # 배경을 투명하게 (슬라이드·웹 오버레이용)
+    facecolor="white",       # 배경색 명시 (transparent=False일 때)
+)
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>인자</td><td>효과</td><td>언제</td></tr>
+    <tr><td>`bbox_inches="tight"`</td><td>그림 주변 불필요한 여백 제거, 삐져나온 범례·라벨 포함</td><td>거의 항상</td></tr>
+    <tr><td>`transparent=True`</td><td>Figure/Axes 배경 투명</td><td>슬라이드·다크 테마 위에 얹을 때</td></tr>
+    <tr><td>`dpi`</td><td>래스터 해상도</td><td>PNG/JPG 저장 시</td></tr>
+    <tr><td>`facecolor`</td><td>저장본 배경색</td><td>기본이 흰색이라 다크 스타일 저장 시 명시 필요</td></tr>
+    <tr><td>`metadata`</td><td>파일 메타데이터(작성자 등)</td><td>아카이브</td></tr>
+  </tbody>
+</NotionTable>
+
+- `plt.savefig(...)`(pyplot)는 "현재 Figure"를 저장합니다. OO에서는 `fig.savefig(...)`로 대상을 명확히 합니다.
+- 저장 후에도 그림이 필요 없으면 `plt.close(fig)`로 메모리를 해제합니다(루프에서 그림을 대량 생성할 때 특히 중요).
+
+<NotionDivider />
+
+<a id="3-포맷별-용도"></a>
+
+## 3. 포맷별 용도
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>포맷</td><td>종류</td><td>장점</td><td>단점</td><td>용도</td></tr>
+    <tr><td>**PNG**</td><td>래스터</td><td>어디서나 열림, 투명 지원, 무손실</td><td>확대 시 픽셀 깨짐, `dpi` 고정</td><td>웹, README, 슬라이드</td></tr>
+    <tr><td>**SVG**</td><td>벡터</td><td>무한 확대, 텍스트 검색·편집 가능, 작은 용량(선 위주)</td><td>점이 수만 개면 오히려 무겁고 느림</td><td>웹 문서, 편집이 필요한 도식</td></tr>
+    <tr><td>**PDF**</td><td>벡터</td><td>인쇄 품질, LaTeX 문서 삽입 표준</td><td>브라우저 기본 표시 아님</td><td>논문, 인쇄물</td></tr>
+    <tr><td>**JPG**</td><td>래스터</td><td>사진에 용량 유리</td><td>손실 압축으로 선·글자 주변 뭉개짐, 투명 불가</td><td>사진이 포함된 경우만</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+fig.savefig("fig.pdf")      # 벡터, 논문용
+fig.savefig("fig.svg")      # 벡터, 웹/편집
+fig.savefig("fig.png", dpi=200)   # 래스터, 범용
+```
+
+> 💡 **이럴 때**: 산점도에 점이 10만 개가 넘으면 SVG/PDF가 수 MB로 커지고 뷰어가 느려집니다. 이럴 때는 PNG(고 dpi)로 저장하거나, `ax.scatter(..., rasterized=True)`로 그 요소만 래스터화하고 축·텍스트는 벡터로 유지합니다.
+
+
+<NotionDivider />
+
+<a id="4-백엔드-agg-vs-인터랙티브"></a>
+
+## 4. 백엔드 -Agg vs 인터랙티브
+
+논의 계층을 나눕니다. 백엔드는 "렌더링 대상"에 따라 두 부류입니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>부류</td><td>예</td><td>창</td><td>`plt.show()`</td><td>저장</td></tr>
+    <tr><td>인터랙티브</td><td>`QtAgg`, `TkAgg`, `macosx`, `nbAgg`</td><td>뜸, 확대·이동 가능</td><td>창 표시</td><td>가능</td></tr>
+    <tr><td>비인터랙티브</td><td>`Agg`(PNG), `pdf`, `svg`, `cairo`</td><td>없음</td><td>아무 일 없음</td><td>가능</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+matplotlib.use("Agg")            # pyplot import 전에 호출해야 확실히 적용
+import matplotlib.pyplot as plt
+
+print(matplotlib.get_backend())  # 현재 백엔드
+```
+
+- 서버·CI·크론잡처럼 디스플레이가 없는 환경에서는 `Agg`가 자동 선택되며, 그림은 오직 `savefig`로만 얻습니다.
+- `Agg`는 "Anti-Grain Geometry"의 약자로, 대부분의 인터랙티브 백엔드도 실제 픽셀 렌더링은 Agg 엔진을 씁니다(그래서 `QtAgg`, `TkAgg`처럼 이름에 Agg가 붙습니다).
+- Jupyter는 `inline`(정적 PNG/SVG) 또는 `ipympl`/`widget`(인터랙티브)을 씁니다. `%matplotlib inline` / `%matplotlib widget` 매직으로 전환합니다.
+> 💡 **이럴 때**: 리눅스 서버에서 `plt.show()` 호출 시 `no display name` 류의 에러나 멈춤이 나면, 스크립트 최상단에서 `matplotlib.use("Agg")`를 지정하고 표시 대신 저장하도록 바꿉니다.
+
+💡 **이럴 때**: 배치로 그림 수백 장을 생성하면 메모리가 계속 쌓입니다. 각 그림 저장 후 `plt.close(fig)`를 반드시 호출합니다.
+
+
+<NotionDivider />
+

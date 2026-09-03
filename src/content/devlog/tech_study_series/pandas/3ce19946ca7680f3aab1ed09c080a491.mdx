@@ -1,0 +1,141 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","top-n","rank","sorting"]
+slug: "python-pandas-sorting"
+subcategory: "pandas"
+status: "publish"
+description: "정렬은 값 기준(sort_values) 과 라벨 기준(sort_index) 두 가지입니다.\n\n\"상위 N개\"만 필요하면 전체 정렬(sort_values().head())보다 nlargest/nsmallest 가 빠릅니다.\n\n값의 \"몇 등인지\"가 필요하면 rank 를 씁니다 (동점 처리 방식이 핵심 옵션)."
+title: "Python - pandas 07. 정렬과 순위"
+page_id: "3ce19946-ca76-80f3-aab1-ed09c080a491"
+source_id: "3ce19946ca7680f3aab1ed09c080a491"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-07-3ce19946ca7680f3aab1ed09c080a491"
+id: "3ce19946ca7680f3aab1ed09c080a491"
+sourceId: "3ce19946-ca76-80f3-aab1-ed09c080a491"
+date: "2026-09-01"
+tags: ["Python","pandas","top-n","rank","sorting"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-07-3ce19946ca7680f3aab1ed09c080a491"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 값 기준 정렬 — sort_values](#1-값-기준-정렬-sortvalues)
+- [2. 라벨 기준 정렬 — sort_index](#2-라벨-기준-정렬-sortindex)
+- [3. 상위/하위 N개 — nlargest, nsmallest](#3-상위하위-n개-nlargest-nsmallest)
+- [4. 순위 — rank](#4-순위-rank)
+  - [그룹 내 순위](#그룹-내-순위)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+정렬은 **값 기준(`sort_values`)** 과 **라벨 기준(`sort_index`)** 두 가지입니다.
+
+"상위 N개"만 필요하면 전체 정렬(`sort_values().head()`)보다 **`nlargest`/`nsmallest`** 가 빠릅니다.
+
+값의 "몇 등인지"가 필요하면 **`rank`** 를 씁니다 (동점 처리 방식이 핵심 옵션).
+
+
+```python
+import pandas as pd
+```
+
+
+<NotionDivider />
+
+<a id="1-값-기준-정렬-sortvalues"></a>
+
+## 1. 값 기준 정렬 — `sort_values`
+
+
+```python
+df.sort_values("amount")                              # 오름차순
+df.sort_values("amount", ascending=False)             # 내림차순
+df.sort_values(["city", "amount"], ascending=[True, False])  # 다중 키
+df.sort_values("amount", na_position="first")         # 결측 위치
+df.sort_values("amount", key=lambda s: s.abs())       # 변환 후 정렬 (절댓값)
+df.sort_values("name", key=lambda s: s.str.lower())   # 대소문자 무시
+```
+
+- 다중 키: 앞 열로 먼저 정렬하고, 동점일 때 다음 열로.
+- `key`는 Series 전체를 받아 Series를 돌려줘야 합니다 (원소별 아님).
+- `kind="stable"`(기본은 `quicksort`)로 안정 정렬 보장 — 동점의 원래 순서 유지.
+
+<NotionDivider />
+
+<a id="2-라벨-기준-정렬-sortindex"></a>
+
+## 2. 라벨 기준 정렬 — `sort_index`
+
+
+```python
+df.sort_index()                    # 행 인덱스 오름차순
+df.sort_index(axis=1)              # 열 이름 정렬
+df.sort_index(level=["city", "year"])   # MultiIndex 레벨별
+```
+
+> 💡 **이럴 때**: `merge`·`concat`·`pivot` 후 인덱스가 뒤섞이면 `sort_index()`로 정돈합니다. MultiIndex 슬라이싱 전에는 `sort_index()`가 사실상 필수입니다.
+
+
+<NotionDivider />
+
+<a id="3-상위하위-n개-nlargest-nsmallest"></a>
+
+## 3. 상위/하위 N개 — `nlargest`, `nsmallest`
+
+
+```python
+df.nlargest(5, "amount")                    # amount 상위 5행
+df.nsmallest(3, "amount")
+df.nlargest(5, ["amount", "qty"])           # 동점 시 두 번째 키
+df["amount"].nlargest(5)                    # Series 버전
+```
+
+전체를 정렬하지 않고 힙으로 상위 N개만 추리므로, 큰 데이터에서 `sort_values(...).head(5)`보다 빠릅니다.
+
+> 💡 **이럴 때**: "매출 상위 10개 지점", "지연 시간 최악 20건"처럼 꼬리만 필요할 때.
+
+
+<NotionDivider />
+
+<a id="4-순위-rank"></a>
+
+## 4. 순위 — `rank`
+
+
+```python
+s = pd.Series([40, 10, 40, 20])
+
+s.rank()                       # [3.5, 1.0, 3.5, 2.0]  - 동점은 평균 순위 (기본)
+s.rank(method="min")           # [3.0, 1.0, 3.0, 2.0]  - 동점 최소
+s.rank(method="dense")         # [3.0, 1.0, 3.0, 2.0]  - 동점 간격 없음(1,2,3)
+s.rank(method="first")         # 등장 순서로 동점 해소
+s.rank(ascending=False)        # 큰 값이 1등
+s.rank(pct=True)               # 백분위(0~1)
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>`method`</td><td>동점 처리</td><td>쓰임</td></tr>
+    <tr><td>`average` (기본)</td><td>평균 순위</td><td>통계적 순위</td></tr>
+    <tr><td>`min` / `max`</td><td>최소/최대 순위</td><td>"공동 3위" 표기</td></tr>
+    <tr><td>`dense`</td><td>순위 간 빈틈 없음</td><td>등급 부여</td></tr>
+    <tr><td>`first`</td><td>먼저 나온 값이 앞 순위</td><td>고유 순번 필요 시</td></tr>
+  </tbody>
+</NotionTable>
+
+<a id="그룹-내-순위"></a>
+
+### 그룹 내 순위
+
+
+```python
+df["rank_in_city"] = df.groupby("city")["amount"].rank(method="dense", ascending=False)
+```
+
+> 💡 **이럴 때**: "각 지점 내에서 매출 순위", "고객별 최근 주문 순번" 같은 그룹 상대 순위 : `group_by` 의`transform` 성격.
+

@@ -1,0 +1,202 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","matplotlib","basic-plots","line-scatter","bar-hist"]
+slug: "python-matplotlib-basic-plots"
+subcategory: "visualization"
+status: "publish"
+description: "matplotlib 실무의 90%는 다섯 가지 메서드로 해결됩니다. ax.plot(선), ax.scatter(점), ax.bar/ax.barh(막대), ax.hist(히스토그램), ax.fill_between(영역). 각 메서드는 데이터 값을 위치·길이·색·크기 같은 시각 채널로 매핑하며, 그린 결과를 나타내는 Artist 객체(예: Line2D, PathCollection)를 반환합니다. 반환 객체를 변수로 받아 두면 나중에 색·라벨·투명도를 바꾸거나 범례를 세밀하게 제어할 수 있습니다."
+title: "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)"
+page_id: "3cf19946-ca76-81a3-a538-cb7ae266b519"
+source_id: "3cf19946ca7681a3a538cb7ae266b519"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-matplotlib-02-line-scatter-bar-hist-3cf19946ca7681a3a538cb7ae266b519"
+id: "3cf19946ca7681a3a538cb7ae266b519"
+sourceId: "3cf19946-ca76-81a3-a538-cb7ae266b519"
+date: "2026-09-01"
+tags: ["Python","matplotlib","basic-plots","line-scatter","bar-hist"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-matplotlib-02-line-scatter-bar-hist-3cf19946ca7681a3a538cb7ae266b519"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. ax.plot -꺾은선](#1-axplot-꺾은선)
+- [2. ax.scatter -산점도](#2-axscatter-산점도)
+- [3. ax.bar / ax.barh -막대](#3-axbar-axbarh-막대)
+- [4. ax.hist -히스토그램](#4-axhist-히스토그램)
+- [5. ax.fill_between -영역과 밴드](#5-axfillbetween-영역과-밴드)
+- [6. 데이터 → 시각 매핑 요약](#6-데이터-시각-매핑-요약)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+matplotlib 실무의 90%는 다섯 가지 메서드로 해결됩니다. **`ax.plot`(선)**, **`ax.scatter`(점)**, **`ax.bar`/`ax.barh`(막대)**, **`ax.hist`(히스토그램)**, **`ax.fill_between`(영역)**.
+각 메서드는 데이터 값을 **위치·길이·색·크기** 같은 시각 채널로 매핑하며, 그린 결과를 나타내는 **Artist 객체**(예: `Line2D`, `PathCollection`)를 반환합니다.
+반환 객체를 변수로 받아 두면 나중에 색·라벨·투명도를 바꾸거나 범례를 세밀하게 제어할 수 있습니다.
+
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(0)
+```
+
+
+<NotionDivider />
+
+<a id="1-axplot-꺾은선"></a>
+
+## 1. `ax.plot` -꺾은선
+
+`plot`은 점들을 **입력 순서대로 선으로 잇습니다**. x가 시간처럼 순서를 가질 때 적합합니다.
+
+
+```python
+x = np.linspace(0, 2 * np.pi, 100)
+fig, ax = plt.subplots()
+line, = ax.plot(x, np.sin(x), label="sin", color="C0", linewidth=2, linestyle="-")
+ax.plot(x, np.cos(x), label="cos", color="C1", linestyle="--")
+ax.legend()
+```
+
+- 반환값은 `Line2D` 객체들의 **리스트**입니다. `line, = ax.plot(...)`처럼 언패킹해 하나를 꺼냅니다.
+- 매핑: x→가로 위치, y→세로 위치. 값의 크기가 **위치**로 인코딩됩니다(정량 비교에 가장 정확한 채널).
+- 주요 인자: `color`(또는 `c`), `linewidth`(`lw`), `linestyle`(`ls`), `marker`, `alpha`.
+그려지는 것: 0부터 2π 구간에서 매끄러운 사인 곡선(실선)과 코사인 곡선(파선)이 겹쳐 그려지고, 우상단 등에 범례 박스가 생깁니다.
+
+
+```python
+line.set_color("red")   # 반환 객체로 사후 수정
+```
+
+> 💡 **이럴 때**: x를 생략하고 `ax.plot(y)`만 주면 x는 `0, 1, 2, ...` 인덱스가 됩니다. 관측 순서만 볼 때 유용합니다.
+
+
+<NotionDivider />
+
+<a id="2-axscatter-산점도"></a>
+
+## 2. `ax.scatter` -산점도
+
+`scatter`는 점을 **잇지 않습니다**. 두 수치 변수의 **관계**를 볼 때 씁니다. 점마다 색(`c`)과 크기(`s`)를 따로 줄 수 있어 3~4번째 변수를 추가로 인코딩할 수 있습니다.
+
+
+```python
+n = 200
+xv = rng.normal(size=n)
+yv = xv * 0.7 + rng.normal(size=n)
+weight = rng.uniform(10, 200, size=n)
+
+fig, ax = plt.subplots()
+sc = ax.scatter(xv, yv, c=weight, s=weight / 4, cmap="viridis", alpha=0.7)
+fig.colorbar(sc, ax=ax, label="weight")
+```
+
+- 반환값은 `PathCollection` 하나입니다. `colorbar`에 넘겨 색↔값 대응표를 표시합니다. → Python - matplotlib 05. 스타일·색상·컬러맵
+- 매핑: x, y→위치, `c`→색(명도/색상), `s`→면적. 색과 면적은 위치보다 비교 정확도가 낮은 보조 채널입니다.
+- 점이 많아 겹치면(overplotting) `alpha`를 낮추거나 `ax.hexbin(...)` / 2D 밀도로 대체합니다.
+> 💡 **이럴 때**: 점이 수만 개를 넘어 뭉개지면 투명도만으로는 부족합니다. `ax.hexbin(xv, yv, gridsize=40)`으로 밀도를 육각형 격자에 집계해 그립니다.
+
+
+<NotionDivider />
+
+<a id="3-axbar-axbarh-막대"></a>
+
+## 3. `ax.bar` / `ax.barh` -막대
+
+막대는 **범주별 값의 크기 비교**에 씁니다. 값이 **길이**로 인코딩되므로 기준선은 반드시 0이어야 합니다.
+
+
+```python
+cats = ["A", "B", "C", "D"]
+vals = [23, 45, 12, 38]
+
+fig, ax = plt.subplots()
+bars = ax.bar(cats, vals, color="C0")          # 세로 막대
+# ax.barh(cats, vals)                           # 가로 막대(범주 이름이 길 때)
+ax.bar_label(bars, padding=3)                   # 막대 끝에 값 표시
+```
+
+- 반환값은 `BarContainer`이며 개별 막대(`Rectangle`)를 담습니다. `ax.bar_label(bars)`로 수치 라벨을 붙입니다.
+- 그룹/누적 막대: `ax.bar(x - w/2, v1, w)` / `ax.bar(x + w/2, v2, w)`로 나란히, `ax.bar(cats, v2, bottom=v1)`로 쌓기.
+- 범주 이름이 길거나 많으면 `barh`(가로)가 읽기 편합니다.
+> 💡 **이럴 때**: 막대그래프의 y축을 0이 아닌 값에서 시작하면 차이가 과장되어 보입니다(오해를 부르는 시각화). 막대는 항상 `ax.set_ylim(bottom=0)`을 유지합니다.
+
+
+<NotionDivider />
+
+<a id="4-axhist-히스토그램"></a>
+
+## 4. `ax.hist` -히스토그램
+
+히스토그램은 **한 수치 변수의 분포**를 봅니다. 값 범위를 구간(bin)으로 나누고 각 구간의 빈도를 막대 높이로 그립니다.
+
+
+```python
+data = rng.normal(loc=50, scale=10, size=1000)
+
+fig, ax = plt.subplots()
+counts, bin_edges, patches = ax.hist(data, bins=30, edgecolor="white")
+# ax.hist(data, bins="auto", density=True)   # 확률밀도로 정규화, 자동 bin 개수
+```
+
+- 반환값은 `(counts, bin_edges, patches)` 3-튜플입니다. `counts`는 구간별 빈도, `bin_edges`는 경계값, `patches`는 막대 Artist들입니다.
+- `bins`가 결과 해석을 좌우합니다. 너무 적으면 형태가 뭉개지고, 너무 많으면 노이즈가 보입니다. `bins="auto"`(또는 `"fd"`, `"sturges"`)로 시작해 조정합니다.
+- 여러 그룹 비교는 `ax.hist([g1, g2], bins=20, label=[...])` 또는 겹쳐 그리기(`histtype="step"`, `alpha=0.5`).
+그려지는 것: 평균 50 근처가 가장 높은 종 모양(정규분포에 가까운) 막대 무리가 그려집니다.
+
+> 💡 **이럴 때**: 분포의 봉우리 개수·치우침을 보고 싶은데 bin 선택이 불안하면, 히스토그램 위에 KDE(커널 밀도)를 겹칩니다. 이때는 seaborn `sns.histplot(data, kde=True, ax=ax)`가 편합니다. → Python - matplotlib 08. pandas·seaborn와의 연계
+
+
+<NotionDivider />
+
+<a id="5-axfillbetween-영역과-밴드"></a>
+
+## 5. `ax.fill_between` -영역과 밴드
+
+`fill_between`은 두 곡선(또는 곡선과 축) 사이를 색으로 채웁니다. **신뢰구간·오차 밴드·임계 영역** 표시에 씁니다.
+
+
+```python
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+err = 0.2
+
+fig, ax = plt.subplots()
+ax.plot(x, y, color="C0")
+ax.fill_between(x, y - err, y + err, alpha=0.3, color="C0", label="±0.2")
+ax.fill_between(x, y, where=(y > 0), alpha=0.1, color="green")   # 조건부 채움
+```
+
+- `where=` 불리언 배열로 특정 구간만 채웁니다.
+- 세로 방향은 `ax.fill_betweenx(y, x1, x2)`.
+> 💡 **이럴 때**: 예측선과 함께 불확실성을 보여줄 때, 얇은 오차선(errorbar) 대신 반투명 밴드(`fill_between`)를 쓰면 추세와 불확실성을 한눈에 읽을 수 있습니다.
+
+
+<NotionDivider />
+
+<a id="6-데이터-시각-매핑-요약"></a>
+
+## 6. 데이터 → 시각 매핑 요약
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>메서드</td><td>데이터</td><td>주 시각 채널</td><td>언제</td></tr>
+    <tr><td>`plot`</td><td>순서 있는 x, y</td><td>위치 + 연결선(추세)</td><td>시계열, 함수 곡선</td></tr>
+    <tr><td>`scatter`</td><td>수치 x, 수치 y (+색·크기)</td><td>위치(+색·면적)</td><td>두 변수의 관계</td></tr>
+    <tr><td>`bar`/`barh`</td><td>범주, 값</td><td>길이</td><td>범주 간 크기 비교</td></tr>
+    <tr><td>`hist`</td><td>수치 1변수</td><td>위치·길이(빈도)</td><td>분포의 형태</td></tr>
+    <tr><td>`fill_between`</td><td>x와 y 범위</td><td>면적(구간 강조)</td><td>오차 밴드, 임계 구간</td></tr>
+  </tbody>
+</NotionTable>
+
+> 💡 **이럴 때**: "무슨 그래프를 그릴지" 막히면 데이터 타입부터 봅니다. 1변수 수치→hist, 2변수 수치→scatter, 범주별 값→bar, 시간축→plot. → 데이터 전처리·시각화 이론 학습 로드맵 2.3
+
+
+<NotionDivider />
+

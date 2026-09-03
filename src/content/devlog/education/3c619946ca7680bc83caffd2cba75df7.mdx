@@ -10,7 +10,7 @@ slug: "python-basic-data-structure"
 title: "파이썬 함수와 자료구조"
 page_id: "3c619946-ca76-80bc-83ca-ffd2cba75df7"
 source_id: "3c619946ca7680bc83caffd2cba75df7"
-last_edited_time: "2026-08-26T01:32:00.000Z"
+last_edited_time: "2026-08-26T23:11:00.000Z"
 notion_url: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
 id: "3c619946ca7680bc83caffd2cba75df7"
 sourceId: "3c619946-ca76-80bc-83ca-ffd2cba75df7"
@@ -27,12 +27,12 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
 - [1. 파이썬 4대 빌트인 자료구조 비교](#1-파이썬-4대-빌트인-자료구조-비교)
 - [2. 컴프리헨션 (Comprehension)](#2-컴프리헨션-comprehension)
 - [3. 파이썬 함수 (Function) 및 1급 객체 (First-Class Citizen)](#3-파이썬-함수-function-및-1급-객체-first-class-citizen)
-  - [1) 기본 정의 및 가변 인자 (args, *kwargs)](#1-기본-정의-및-가변-인자-args-kwargs)
+  - [1) 기본 정의 및 가변 인자 (*args, **kwargs)](#1-기본-정의-및-가변-인자-args-kwargs)
   - [2) 1급 객체(First-Class Citizen)로서의 함수 &amp; Lambda](#2-1급-객체first-class-citizen로서의-함수-lambda)
 
 <a id="핵심-요약"></a>
 
-## **핵심 요약**
+## 핵심 요약
 
 파이썬은 **4대 빌트인 자료구조(List, Tuple, Set, Dictionary)**를 기본 제공하며, **컴프리헨션(Comprehension)**을 통해 파이썬다운(Pythonic) 코드를 작성할 수 있다.
 
@@ -43,16 +43,16 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
 
 <a id="1-파이썬-4대-빌트인-자료구조-비교"></a>
 
-## **1. 파이썬 4대 빌트인 자료구조 비교**
+## 1. 파이썬 4대 빌트인 자료구조 비교
 
 
 <NotionTable>
   <tbody>
-    <tr><td>**자료구조**</td><td>**표기법**</td><td>**가변성 (Mutable)**</td><td>**순서 (Ordered)**</td><td>**중복 허용**</td><td>**시간 복잡도 (탐색/조회)**</td><td>**주요 활용 목적**</td></tr>
-    <tr><td>**List**</td><td>`[1, 2, 3]`</td><td>**Mutable**</td><td>⭕ 유지</td><td>⭕ 허용</td><td>Index: O(1)<br />Search: O(N)</td><td>가변 데이터 시퀀스 관리</td></tr>
-    <tr><td>**Tuple**</td><td>`(1, 2, 3)`</td><td>**Immutable**</td><td>⭕ 유지</td><td>⭕ 허용</td><td>Index: O(1)<br />Search: O(N)</td><td>변경 불가능한 상수 데이터 묶음</td></tr>
-    <tr><td>**Set**</td><td>`{1, 2, 3}`</td><td>**Mutable**</td><td>❌ 없음</td><td>❌ 불허</td><td>Key Search: **O(1)**</td><td>중복 제거, 집합 연산(합/교/차)</td></tr>
-    <tr><td>**Dictionary**</td><td>`{"a": 1}`</td><td>**Mutable**</td><td>⭕ (3.7+)</td><td>키 중복 ❌</td><td>Key Lookup: **O(1)**</td><td>Key-Value 매핑 검색</td></tr>
+    <tr><td>자료구조</td><td>표기법</td><td>가변성 (Mutable)</td><td>순서 (Ordered)</td><td>중복 허용</td><td>시간 복잡도 (탐색/조회)</td><td>주요 활용 목적</td></tr>
+    <tr><td>List</td><td>`[1, 2, 3]`</td><td>Mutable</td><td>⭕ 유지</td><td>⭕ 허용</td><td>Index: O(1)<br />Search: O(N)</td><td>가변 데이터 시퀀스 관리</td></tr>
+    <tr><td>Tuple</td><td>`(1, 2, 3)`</td><td>Immutable</td><td>⭕ 유지</td><td>⭕ 허용</td><td>Index: O(1)<br />Search: O(N)</td><td>변경 불가능한 상수 데이터 묶음</td></tr>
+    <tr><td>Set</td><td>`{1, 2, 3}`</td><td>Mutable</td><td>❌ 없음</td><td>❌ 불허</td><td>Key Search: O(1)</td><td>중복 제거, 집합 연산(합/교/차)</td></tr>
+    <tr><td>Dictionary</td><td>`{"a": 1}`</td><td>Mutable</td><td>⭕ (3.7+)</td><td>키 중복 ❌</td><td>Key Lookup: O(1)</td><td>Key-Value 매핑 검색</td></tr>
   </tbody>
 </NotionTable>
 
@@ -61,7 +61,7 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680bc83caffd2cba75df7"
 
 <a id="2-컴프리헨션-comprehension"></a>
 
-## **2. 컴프리헨션 (Comprehension)**
+## 2. 컴프리헨션 (Comprehension)
 
 반복문과 조건문을 축약하여 새로운 리스트나 딕셔너리를 한 줄로 생성하는 기능이다.
 
@@ -85,7 +85,7 @@ name_len_map={name:len(name) for name in names}
 
 <a id="1-기본-정의-및-가변-인자-args-kwargs"></a>
 
-### **1) 기본 정의 및 가변 인자 (****`args`****,** **`*kwargs`****)**
+### 1) 기본 정의 및 가변 인자 (`*args`, `**kwargs`)
 
 
 ```python
@@ -103,7 +103,7 @@ print(calculate_total(100, 10, 20, discount=15)) # 100 + 30 - 15 = 115
 
 <a id="2-1급-객체first-class-citizen로서의-함수-lambda"></a>
 
-### **2) 1급 객체(First-Class Citizen)로서의 함수 & Lambda**
+### 2) 1급 객체(First-Class Citizen)로서의 함수 & Lambda
 
 파이썬에서 함수는 **변수에 할당할 수 있고, 다른 함수의 인자로 전달되거나 반환값으로 사용**될 수 있다.
 

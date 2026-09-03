@@ -143,11 +143,11 @@ public class UserController{
 <NotionTable>
   <tbody>
     <tr><td>**위치 / Content-Type**</td><td>**어노테이션**</td><td>**데이터 바인딩 메커니즘**</td><td>**실무 유의점**</td></tr>
-    <tr><td>**JSON Body (****`application/json`****)**</td><td>`@RequestBody`</td><td>`HttpMessageConverter`(Jackson)를 이용한 역직렬화</td><td>**기본 생성자** 및 Getter 필수. `@Setter`는 없어도 동작</td></tr>
-    <tr><td>**Form Data (****`application/x-www-form-urlencoded`****)**</td><td>`@ModelAttribute` / `@RequestParam`</td><td>HTTP 파라미터를 DTO의 Setter나 생성자에 직접 바인딩</td><td>DTO에 `@Setter` 또는 `@ConstructorProperties` 필요</td></tr>
-    <tr><td>**파일 업로드 (****`multipart/form-data`****)**</td><td>`@RequestPart` / `MultipartFile`</td><td>파일 바이너리와 JSON 메타데이터를 개별 파싱</td><td>`MultipartFile` 파라미터 지정</td></tr>
-    <tr><td>**URL 경로 변수 (****`/users/{id}`****)**</td><td>`@PathVariable`</td><td>URL 경로 값을 추출하여 기본 타입/객체로 변환</td><td>경로 변수명과 메서드 변수명이 다르면 속성명 명시</td></tr>
-    <tr><td>**Query String (****`/users?page=1`****)**</td><td>`@RequestParam`</td><td>URL 쿼리 파라미터 추출</td><td>필수 여부(`required`) 및 기본값(`defaultValue`) 지정 권장</td></tr>
+    <tr><td>**JSON Body (`application/json`)**</td><td>`@RequestBody`</td><td>`HttpMessageConverter`(Jackson)를 이용한 역직렬화</td><td>**기본 생성자** 및 Getter 필수. `@Setter`는 없어도 동작</td></tr>
+    <tr><td>**Form Data (`application/x-www-form-urlencoded`)**</td><td>`@ModelAttribute` / `@RequestParam`</td><td>HTTP 파라미터를 DTO의 Setter나 생성자에 직접 바인딩</td><td>DTO에 `@Setter` 또는 `@ConstructorProperties` 필요</td></tr>
+    <tr><td>**파일 업로드 (`multipart/form-data`)**</td><td>`@RequestPart` / `MultipartFile`</td><td>파일 바이너리와 JSON 메타데이터를 개별 파싱</td><td>`MultipartFile` 파라미터 지정</td></tr>
+    <tr><td>**URL 경로 변수 (`/users/{id}`)**</td><td>`@PathVariable`</td><td>URL 경로 값을 추출하여 기본 타입/객체로 변환</td><td>경로 변수명과 메서드 변수명이 다르면 속성명 명시</td></tr>
+    <tr><td>**Query String (`/users?page=1`)**</td><td>`@RequestParam`</td><td>URL 쿼리 파라미터 추출</td><td>필수 여부(`required`) 및 기본값(`defaultValue`) 지정 권장</td></tr>
   </tbody>
 </NotionTable>
 
@@ -169,10 +169,10 @@ public class UserController{
 - **`DELETE`**: 리소스 삭제 (Idempotent).
 <a id="2-최근-추세-query-http-search-query-method"></a>
 
-#### **(2) 최근 추세:** **`QUERY`** **(HTTP SEARCH / QUERY) Method**
+#### **(2) 최근 추세: `QUERY` (HTTP SEARCH / QUERY) Method**
 
 - **등장 배경**: 복잡한 조건의 검색 요청 시 `GET` 메서드를 쓰면 **URI 길이 제한(2048자)** 및 **보안 민감 정보의 URL 노출** 문제가 생김. 이를 피하려고 `POST`를 쓰면, RESTful 관점에서 상태 변경 요청으로 오인되어 **HTTP Caching 불가능 및 멱등성 보장 유실** 문제가 발생.
-- **`QUERY`** **(IETF Draft)**: **Request Body에 JSON 검색 조건**을 포함하면서도, **조회 전용(Safe & Idempotent) 멱등성을 보장**하는 신규 표준 HTTP Method.
+- **`QUERY` (IETF Draft)**: **Request Body에 JSON 검색 조건**을 포함하면서도, **조회 전용(Safe & Idempotent) 멱등성을 보장**하는 신규 표준 HTTP Method.
 - **Spring 지원**: Spring Framework 6.1+ / Spring Boot 3.2+부터 Custom HTTP Method 및 `QUERY` 지원 확대 중.
 <a id="3-커스텀-http-method-사용-시-장애-요소-금지-사유"></a>
 
@@ -211,7 +211,7 @@ public class UserController{
 
 <a id="2-mapstring-object-반환을-금지해야-하는-3가지-이유-안티-패턴"></a>
 
-### **2)** **`Map<String, Object>`** **반환을 금지해야 하는 3가지 이유 (안티 패턴)**
+### **2) `Map<String, Object>` 반환을 금지해야 하는 3가지 이유 (안티 패턴)**
 
 1. **컴파일 시점 타입 안전성(Type Safety) 유실**:
 - Map Value가 `Object` 타입이므로, 오타가 나거나 잘못된 타입 값이 들어가도 컴파일 시점에 감지할 수 없다.
@@ -227,7 +227,7 @@ public class UserController{
 
 <a id="3-실무-표준-공통-응답-wrapper-패턴-apiresponset"></a>
 
-### **3) 실무 표준: 공통 응답 Wrapper 패턴 (****`ApiResponse<T>`****)**
+### **3) 실무 표준: 공통 응답 Wrapper 패턴 (`ApiResponse<T>`)**
 
 API 응답 구조의 일관성을 유지하기 위해 표준 Wrapper 클래스를 사용한다.
 

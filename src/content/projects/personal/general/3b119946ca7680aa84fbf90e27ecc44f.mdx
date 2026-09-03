@@ -23,7 +23,7 @@ notionUrl: "https://app.notion.com/p/3b119946ca7680aa84fbf90e27ecc44f"
 ## 목차
 
 - [프로젝트 개요 (Overview)](#프로젝트-개요-overview)
-- [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem)
+- [1. 도입 배경 및 과제 (Background &amp; Problem)](#1-도입-배경-및-과제-background-problem)
 - [2. 기술적 구현 및 적용 (Technical Implementation)](#2-기술적-구현-및-적용-technical-implementation)
   - [① Next.js 15 App Router 기반의 고성능 스트리밍 구조 설계](#1-nextjs-15-app-router-기반의-고성능-스트리밍-구조-설계)
   - [② React 19 Suspense를 연동한 렌더링 성능 최적화](#2-react-19-suspense를-연동한-렌더링-성능-최적화)
@@ -34,7 +34,7 @@ notionUrl: "https://app.notion.com/p/3b119946ca7680aa84fbf90e27ecc44f"
   - [② 2단계: json.data + Vanilla JS + HTML](#2-2단계-jsondata-vanilla-js-html)
   - [③ 3단계: json.data + React TSX (Next.js)](#3-3단계-jsondata-react-tsx-nextjs)
   - [④ 4단계: MDX + React TSX (최종 최적화 아키텍처)](#4-4단계-mdx-react-tsx-최종-최적화-아키텍처)
-- [4. 성과 및 유용성 (Result & Benefit)](#4-성과-및-유용성-result-benefit)
+- [4. 성과 및 유용성 (Result &amp; Benefit)](#4-성과-및-유용성-result-benefit)
 - [5. 블로그 글 작성에 포커싱할 수 있는 3대 장점](#5-블로그-글-작성에-포커싱할-수-있는-3대-장점)
   - [1) AI를 통한 테마 및 UI/UX 구성 ➔ 블로그 글 작성 몰입](#1-ai를-통한-테마-및-uiux-구성-블로그-글-작성-몰입)
   - [2) 백링크 형성 및 지식 Wiki 자동 생성 ➔ 중복 글 관리와 개념 재검토](#2-백링크-형성-및-지식-wiki-자동-생성-중복-글-관리와-개념-재검토)
@@ -122,19 +122,19 @@ text
 - **배경 및 한계**: 초기 작성할 글의 개수가 적을 때는 별도 빌드나 데이터 파싱 없이 가장 직관적이고 편리하게 관리할 수 있었으나, 글이 점차 늘어남에 따라 헤더·푸터·공통 레이아웃이 중복되고 유지보수 비용이 급증함.
 <a id="2-2단계-jsondata-vanilla-js-html"></a>
 
-### **② 2단계:** **`json.data`** **+ Vanilla JS + HTML**
+### **② 2단계: `json.data` + Vanilla JS + HTML**
 
 - **방식**: 글 내용과 메타데이터를 별도의 `json` 데이터로 분리 저장하고, 바닐라 JavaScript를 통해 HTML 템플릿에 동적으로 데이터를 바인딩하여 렌더링.
 - **배경 및 한계**: 데이터와 화면 뷰(View)가 분리되어 레이아웃 재사용성은 확보했으나, 글이 많아질수록 DOM 조작 코드가 비대해지고 데이터 스키마 변경 시 런타임 에러 추적이 어려워짐.
 <a id="3-3단계-jsondata-react-tsx-nextjs"></a>
 
-### **③ 3단계:** **`json.data`** **+ React TSX (Next.js)**
+### **③ 3단계: `json.data` + React TSX (Next.js)**
 
 - **방식**: TypeScript와 React 컴포넌트 기반 아키텍처를 도입하여, JSON 데이터를 받아 TSX 컴포넌트 단위로 화면을 렌더링.
 - **배경 및 한계**: 정적 타입 안정성과 컴포넌트 모듈화는 성공했으나, 글의 편수가 계속 늘어나고 본문 내에 코드 블록, 다이어그램, 알림창 등 복잡한 서식이 포함되면서 JSON 파일 내에 긴 텍스트와 서식을 이스케이프 문자열 형태로 관리하는 데 구조적 한계 봉착.
 <a id="4-4단계-mdx-react-tsx-최종-최적화-아키텍처"></a>
 
-### **④ 4단계:** **`MDX`** **+ React TSX (최종 최적화 아키텍처)**
+### **④ 4단계: `MDX` + React TSX (최종 최적화 아키텍처)**
 
 - **방식**: 마크다운(`.mdx`) 파일 자체를 독립된 문서로 관리하고, 필요에 따라 TSX 리액트 컴포넌트를 문서 내에 직접 주입·활용하는 방식으로 전면 개편.
 - **핵심 장점**:

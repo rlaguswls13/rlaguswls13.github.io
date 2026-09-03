@@ -1,0 +1,246 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","performance","pitfalls","method-chaining"]
+slug: "python-pandas-performance"
+subcategory: "pandas"
+status: "publish"
+description: "1~11장을 한 번 본 뒤 다시 읽는 챕터입니다. pandas에서 반복적으로 사람을 잡는 것들: ① apply/iterrows 남용, ② 연쇄 인덱싱과 SettingWithCopyWarning, ③ dtype·메모리 낭비, ④ inplace 오해, ⑤ 자동 정렬로 생기는 결측. 마지막에 method chaining과 pandas를 벗어날 시점을 정리합니다."
+title: "Python - pandas 12. 성능과 함정"
+page_id: "3ce19946-ca76-80f7-bac7-ec38787111f8"
+source_id: "3ce19946ca7680f7bac7ec38787111f8"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-12-3ce19946ca7680f7bac7ec38787111f8"
+id: "3ce19946ca7680f7bac7ec38787111f8"
+sourceId: "3ce19946-ca76-80f7-bac7-ec38787111f8"
+date: "2026-09-01"
+tags: ["Python","pandas","performance","pitfalls","method-chaining"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-12-3ce19946ca7680f7bac7ec38787111f8"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 벡터화 &gt; apply &gt; iterrows](#1-벡터화-apply-iterrows)
+- [2. 연쇄 인덱싱 / SettingWithCopyWarning](#2-연쇄-인덱싱-settingwithcopywarning)
+- [3. dtype와 메모리 최적화](#3-dtype와-메모리-최적화)
+- [4. inplace 논쟁](#4-inplace-논쟁)
+- [5. 자동 정렬로 생기는 결측](#5-자동-정렬로-생기는-결측)
+- [6. Method chaining + .pipe()](#6-method-chaining-pipe)
+- [7. eval / query — 대용량에서 중간 배열 절감](#7-eval-query-대용량에서-중간-배열-절감)
+- [8. 청크 처리와 pandas를 벗어날 시점](#8-청크-처리와-pandas를-벗어날-시점)
+- [9. 성능 점검 체크리스트](#9-성능-점검-체크리스트)
+
+목차
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+1~11장을 한 번 본 뒤 다시 읽는 챕터입니다. pandas에서 반복적으로 사람을 잡는 것들: **① `apply`/`iterrows` 남용**, **② 연쇄 인덱싱과 SettingWithCopyWarning**, **③ dtype·메모리 낭비**, **④ `inplace` 오해**, **⑤ 자동 정렬로 생기는 결측**. 마지막에 method chaining과 pandas를 벗어날 시점을 정리합니다.
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-벡터화-apply-iterrows"></a>
+
+## 1. 벡터화 > `apply` > `iterrows`
+
+속도 순서는 대체로 **벡터 연산 ≫ `.str`/`.dt` ≫ `apply` ≫ `itertuples` ≫ `iterrows`** 입니다.
+
+
+```python
+# 최악: iterrows (행마다 Series 생성)
+totals = []
+for _, row in df.iterrows():
+    totals.append(row["price"] * row["qty"])
+
+# 나쁨: apply(axis=1)
+df["total"] = df.apply(lambda r: r["price"] * r["qty"], axis=1)
+
+# 좋음: 벡터 연산
+df["total"] = df["price"] * df["qty"]
+```
+
+루프를 못 없앨 때의 대안:
+
+- 조건 분기 → `np.where`, `np.select`, `.mask()`/`.where()`
+- 매핑 → `.map(dict)`, `.replace(dict)`
+- 그룹 집계 → `groupby().agg/transform` ([Python - pandas 08. 그룹 연산 (groupby)](https://app.notion.com/p/Python%20-%20pandas%2008.%20%EA%B7%B8%EB%A3%B9%20%EC%97%B0%EC%82%B0%20%28groupby%29))
+- 그래도 필요하면 → `itertuples()` (iterrows보다 훨씬 빠름), Numba, Cython
+> 💡 **이럴 때**: `apply`/`iterrows`가 보이면 벡터 연산·접근자·`groupby`로 바꿀 수 있는지부터 확인합니다. 큰 데이터에서 10~100배 차이.
+
+
+<NotionDivider />
+
+<a id="2-연쇄-인덱싱-settingwithcopywarning"></a>
+
+## 2. 연쇄 인덱싱 / SettingWithCopyWarning
+
+
+```python
+# 문제
+df[df["age"] > 30]["bonus"] = 100     # copy에 쓸 수 있음 → 원본 미반영 + 경고
+
+# 해결: .loc 한 번에
+df.loc[df["age"] > 30, "bonus"] = 100
+```
+
+부분집합을 따로 오래 쓸 거면 `.copy()`:
+
+
+```python
+sub = df.loc[df["region"] == "KR"].copy()
+sub["x"] = sub["x"] * 2               # 원본 df 영향 없음
+```
+
+- 원인: `df[...]`가 view인지 copy인지 pandas가 보장하지 못함.
+- **pandas 3.0의 Copy-on-Write(CoW)**: 모든 인덱싱이 논리적으로 복사처럼 동작하고 실제 복사는 쓰기 시점에만. 경고는 사라지지만, "원본을 바꾸려면 `df.loc[...] = ...`" 규칙은 그대로입니다. 미리 `pd.set_option("mode.copy_on_write", True)`로 켜서 테스트할 수 있습니다.
+
+<NotionDivider />
+
+<a id="3-dtype와-메모리-최적화"></a>
+
+## 3. dtype와 메모리 최적화
+
+
+```python
+df.memory_usage(deep=True).sum() / 1e6
+
+# 범주형 전환
+for c in df.select_dtypes("object"):
+    if df[c].nunique() / len(df) < 0.5:
+        df[c] = df[c].astype("category")
+
+# 수치 다운캐스트
+df["qty"] = pd.to_numeric(df["qty"], downcast="integer")     # int64 → int8/16/32
+df["ratio"] = pd.to_numeric(df["ratio"], downcast="float")   # float64 → float32
+
+# 문자열: pyarrow 백엔드
+df["name"] = df["name"].astype("string[pyarrow]")
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>전환</td><td>효과</td></tr>
+    <tr><td>`object` → `category` (저카디널리티)</td><td>메모리 수 배~수십 배 절감, groupby 가속</td></tr>
+    <tr><td>`int64` → `int32`/`int16`</td><td>메모리 절반~1/4</td></tr>
+    <tr><td>`float64` → `float32`</td><td>메모리 절반</td></tr>
+    <tr><td>`object` 문자열 → `string[pyarrow]`</td><td>메모리 절감 + 벡터화된 문자열 연산</td></tr>
+  </tbody>
+</NotionTable>
+
+> 💡 **이럴 때**: 데이터가 메모리에 겨우 들어가거나 groupby가 느릴 때. 로드 직후 한 번 최적화하면 이후 모든 연산이 가벼워집니다.
+
+
+<NotionDivider />
+
+<a id="4-inplace-논쟁"></a>
+
+## 4. `inplace` 논쟁
+
+
+```python
+df.dropna(inplace=True)          # 권장하지 않음
+df = df.dropna()                 # 권장 (재대입)
+```
+
+- `inplace=True`가 메모리를 아낀다는 것은 대체로 **오해**입니다. 내부적으로 복사가 일어나는 경우가 많고, method chaining을 끊으며, CoW 도입으로 의미가 더 모호해졌습니다.
+- 일관되게 **재대입** 스타일을 씁니다.
+
+<NotionDivider />
+
+<a id="5-자동-정렬로-생기는-결측"></a>
+
+## 5. 자동 정렬로 생기는 결측
+
+
+```python
+a = pd.Series([1, 2, 3], index=["x", "y", "z"])
+b = pd.Series([10, 20], index=["y", "z"])
+a + b            # x=NaN, y=12, z=23   ← 라벨 불일치 → 조용히 NaN
+
+a.add(b, fill_value=0)   # x=1, y=12, z=23
+```
+
+`reindex`, `shift`, `merge`, `concat(axis=1)` 모두 라벨 정렬로 `NaN`을 만들 수 있습니다. 연산 후 `isna().sum()`을 습관적으로 확인합니다 → [Python - pandas 05. 결측치 처리](https://app.notion.com/p/Python%20-%20pandas%2005.%20%EA%B2%B0%EC%B8%A1%EC%B9%98%20%EC%B2%98%EB%A6%AC).
+
+
+<NotionDivider />
+
+<a id="6-method-chaining-pipe"></a>
+
+## 6. Method chaining + `.pipe()`
+
+
+```python
+result = (
+    df
+    .query("amount > 0")
+    .assign(month=lambda d: d["order_date"].dt.to_period("M"))
+    .groupby(["month", "city"], observed=True, as_index=False)
+    .agg(revenue=("amount", "sum"))
+    .sort_values("revenue", ascending=False)
+    .pipe(add_share)          # 사용자 정의 함수를 체인에 끼움
+)
+
+def add_share(d):
+    d["share"] = d["revenue"] / d["revenue"].sum()
+    return d
+```
+
+- 중간 변수(`df1`, `df2`...)를 없애 "무엇을 하는 파이프라인인지" 한눈에 보입니다.
+- `.pipe(func)`는 `func(df)`를 호출하되 체인 안에 자연스럽게 들어가게 합니다.
+- 디버깅 시 `.pipe(lambda d: (print(d.shape), d)[1])`로 중간 상태를 찍을 수 있습니다.
+> 💡 **이럴 때**: 전처리 단계가 5개 이상이면 chaining으로 묶어 재현성과 가독성을 높입니다.
+
+
+<NotionDivider />
+
+<a id="7-eval-query-대용량에서-중간-배열-절감"></a>
+
+## 7. `eval` / `query` — 대용량에서 중간 배열 절감
+
+
+```python
+df.eval("total = price * qty - discount", inplace=False)
+df.query("total > 1000 and city == 'Seoul'")
+```
+
+`numexpr` 엔진이 있으면 큰 DataFrame에서 임시 배열을 덜 만들어 메모리·속도 이득. 작은 데이터에서는 파싱 오버헤드로 오히려 느릴 수 있습니다.
+
+
+<NotionDivider />
+
+<a id="8-청크-처리와-pandas를-벗어날-시점"></a>
+
+## 8. 청크 처리와 pandas를 벗어날 시점
+
+- **청크**: `read_csv(chunksize=...)`로 나눠 집계.
+- **Polars**: 멀티코어·지연 실행·Arrow 기반. 단일 머신에서 pandas가 느리거나 메모리 한계에 자주 부딪히면 검토.
+- **Dask / Spark**: 데이터가 한 머신 메모리를 초과하거나 분산 처리가 필요할 때. API가 pandas와 유사(Dask)합니다.
+- **DuckDB**: 파일(Parquet/CSV)에 SQL로 바로 집계. pandas와 상호 변환이 매끄럽습니다.
+> 💡 **이럴 때**: 데이터가 수 GB를 넘고 groupby/join이 분 단위로 걸리면 Polars 또는 DuckDB로 무거운 집계만 넘기고, 결과를 pandas로 받아 마무리하는 하이브리드가 실용적입니다.
+
+
+<NotionDivider />
+
+<a id="9-성능-점검-체크리스트"></a>
+
+## 9. 성능 점검 체크리스트
+
+- [ ] `apply(axis=1)` / `iterrows`가 남아 있지 않은가?
+- [ ] 선택+대입을 `.loc` 한 번으로 하고 있는가? (연쇄 인덱싱 제거)
+- [ ] `object` 열 중 범주형으로 바꿀 것이 있는가?
+- [ ] dtype이 필요 이상으로 큰가? (`int64`→`int32`, `float64`→`float32`)
+- [ ] `merge` 후 행 수가 예상대로인가? (`validate`, `indicator`)
+- [ ] 연산 후 예상치 못한 `NaN`이 생기지 않았는가? (자동 정렬)
+

@@ -1,0 +1,182 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","matplotlib","pandas-plot","seaborn","axes-level"]
+slug: "python-matplotlib-pandas-seaborn"
+subcategory: "visualization"
+status: "publish"
+description: "pandas의 df.plot(...)과 seaborn의 대부분 함수는 내부적으로 matplotlib Axes에 그립니다. 즉 1~7장에서 배운 ax 조작이 그대로 통합니다. df.plot(ax=ax)는 그린 Axes를 반환하므로 이후 ax.set_title(...) 등으로 다듬을 수 있습니다. seaborn 함수는 axes-level(histplot, scatterplot)ax= 인자를 받아 한 Axes에 그림)과 figure-level(displot, relplot -자체적으로 Figure와 격자를 생성)로 갈리며, 이 구분이 커스터마이징 방법을 결정합니다."
+title: "Python - matplotlib 08. pandas·seaborn와의 연계"
+page_id: "3cf19946-ca76-8196-a258-cce5fac24945"
+source_id: "3cf19946ca768196a258cce5fac24945"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-matplotlib-08-pandas-seaborn-3cf19946ca768196a258cce5fac24945"
+id: "3cf19946ca768196a258cce5fac24945"
+sourceId: "3cf19946-ca76-8196-a258-cce5fac24945"
+date: "2026-09-01"
+tags: ["Python","matplotlib","pandas-plot","seaborn","axes-level"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-matplotlib-08-pandas-seaborn-3cf19946ca768196a258cce5fac24945"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. df.plot -pandas의 matplotlib 래퍼](#1-dfplot-pandas의-matplotlib-래퍼)
+- [2. seaborn은 matplotlib 위에 있다](#2-seaborn은-matplotlib-위에-있다)
+- [3. axes-level 함수 -ax= 인자](#3-axes-level-함수-ax-인자)
+- [4. figure-level 함수 -자체 Figure 생성](#4-figure-level-함수-자체-figure-생성)
+- [5. 정리 -계층 관계](#5-정리-계층-관계)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+pandas의 `df.plot(...)`과 seaborn의 대부분 함수는 **내부적으로 matplotlib Axes에 그립니다**. 즉 1~7장에서 배운 `ax` 조작이 그대로 통합니다.
+`df.plot(ax=ax)`는 **그린 Axes를 반환**하므로 이후 `ax.set_title(...)` 등으로 다듬을 수 있습니다.
+seaborn 함수는 **axes-level**(`histplot`, `scatterplot` -`ax=` 인자를 받아 한 Axes에 그림)과 **figure-level**(`displot`, `relplot` -자체적으로 Figure와 격자를 생성)로 갈리며, 이 구분이 커스터마이징 방법을 결정합니다.
+
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-dfplot-pandas의-matplotlib-래퍼"></a>
+
+## 1. `df.plot` -pandas의 matplotlib 래퍼
+
+
+```python
+df = pd.DataFrame({
+    "month": pd.date_range("2026-01", periods=12, freq="MS"),
+    "sales": np.random.default_rng(0).integers(80, 200, 12),
+    "cost": np.random.default_rng(1).integers(40, 120, 12),
+}).set_index("month")
+
+fig, ax = plt.subplots(figsize=(8, 4))
+df.plot(ax=ax, marker="o")          # DataFrame의 각 열이 한 선
+ax.set_ylabel("KRW (백만)")
+ax.set_title("월별 매출과 비용")
+```
+
+- `df.plot(ax=ax)`에 **`ax`를 넘기면** 그 Axes에 그립니다. 넘기지 않으면 새 Figure/Axes를 만들고 그 Axes를 반환합니다.
+- `kind=` 인자로 종류를 바꿉니다: `"line"`(기본), `"bar"`, `"barh"`, `"hist"`, `"box"`, `"scatter"`, `"area"`, `"kde"`.
+- `df.plot(subplots=True, layout=(2, 2))`는 열마다 별도 Axes를 자동 생성하고 **Axes 배열을 반환**합니다.
+
+```python
+axes = df.plot(subplots=True, layout=(1, 2), figsize=(10, 4))
+axes[0, 0].set_title("sales")
+```
+
+- pandas가 만든 Axes도 결국 matplotlib Axes이므로, 4~7장의 `set_xscale`, `legend`, `annotate`, `savefig`가 모두 적용됩니다.
+> 💡 **이럴 때**: 탐색 단계에서는 `df.plot()`으로 빠르게 확인하고, 발표용으로 다듬을 때 `fig, ax = plt.subplots()` → `df.plot(ax=ax)` → `ax.` 메서드로 제목·축·주석을 정리합니다. → Python - pandas 13. 다음 단계 연결
+
+
+<NotionDivider />
+
+<a id="2-seaborn은-matplotlib-위에-있다"></a>
+
+## 2. seaborn은 matplotlib 위에 있다
+
+seaborn은 "통계 그래프를 적은 코드로" 그리는 고수준 라이브러리이며, **렌더링은 matplotlib이 합니다**. 따라서:
+
+- seaborn 그림도 `fig.savefig(...)`로 저장합니다.
+- 색·폰트는 `sns.set_theme(...)`가 matplotlib `rcParams`를 조정하는 방식입니다.
+- seaborn이 그린 Axes에 matplotlib 메서드를 이어서 호출할 수 있습니다.
+
+```python
+tips = sns.load_dataset("tips")
+sns.set_theme(style="whitegrid")
+```
+
+
+<NotionDivider />
+
+<a id="3-axes-level-함수-ax-인자"></a>
+
+## 3. axes-level 함수 -`ax=` 인자
+
+`histplot`, `kdeplot`, `scatterplot`, `lineplot`, `boxplot`, `barplot`, `countplot` 등은 **하나의 Axes에 그리며 `ax=`를 받습니다**.
+
+
+```python
+fig, axes = plt.subplots(1, 2, figsize=(11, 4), constrained_layout=True)
+
+sns.histplot(data=tips, x="total_bill", hue="sex", kde=True, ax=axes[0])
+axes[0].set_title("계산서 분포")
+
+sns.scatterplot(data=tips, x="total_bill", y="tip", hue="time", size="size", ax=axes[1])
+axes[1].set_title("계산서 대 팁")
+axes[1].axline((0, 0), slope=0.15, color="gray", linestyle="--")   # matplotlib 메서드 이어 쓰기
+```
+
+- 내가 만든 `subplots` 격자에 원하는 위치를 골라 그릴 수 있습니다(3장과 그대로 결합).
+- 반환값은 그린 `Axes`입니다.
+> 💡 **이럴 때**: 여러 seaborn 그래프를 한 Figure에 배치하려면 axes-level 함수 + 직접 만든 `plt.subplots` 격자를 씁니다. figure-level 함수는 이 조합이 불가능합니다.
+
+
+<NotionDivider />
+
+<a id="4-figure-level-함수-자체-figure-생성"></a>
+
+## 4. figure-level 함수 -자체 Figure 생성
+
+`displot`, `relplot`, `catplot`, `lmplot`, `jointplot`, `pairplot`은 **스스로 Figure를 만들고, 필요하면 격자(FacetGrid)를 구성**합니다. `ax=` 인자를 **받지 않습니다**.
+
+
+```python
+g = sns.displot(data=tips, x="total_bill", col="time", row="sex", kde=True, height=3)
+g.figure.suptitle("계산서 분포 (시간 × 성별)", y=1.02)
+g.set_axis_labels("계산서 금액", "빈도")
+g.savefig("dist.png", dpi=150)
+```
+
+- 반환값은 `FacetGrid`(또는 `JointGrid`) 객체입니다. `g.figure`로 Figure에, `g.axes`(2D 배열)로 개별 Axes에 접근합니다.
+- `col=`/`row=`에 범주형 변수를 주면 small multiples가 자동 생성됩니다. → Python - matplotlib 03. 여러 서브플롯 배치, 데이터 전처리·시각화 이론 학습 로드맵 2.7
+- 크기는 `figsize`가 아니라 `height`(칸 하나의 높이)와 `aspect`(가로/세로 비)로 조정합니다.
+
+<NotionTable>
+  <tbody>
+    <tr><td>구분</td><td>axes-level</td><td>figure-level</td></tr>
+    <tr><td>예</td><td>`histplot`, `scatterplot`, `boxplot`</td><td>`displot`, `relplot`, `catplot`, `pairplot`</td></tr>
+    <tr><td>`ax=` 인자</td><td>받음</td><td>안 받음</td></tr>
+    <tr><td>Figure 생성</td><td>안 함(주어진 Axes 사용)</td><td>스스로 생성</td></tr>
+    <tr><td>격자(facet)</td><td>불가</td><td>`col=`/`row=`로 자동</td></tr>
+    <tr><td>내 `subplots`에 끼워 넣기</td><td>가능</td><td>불가</td></tr>
+    <tr><td>반환</td><td>`Axes`</td><td>`FacetGrid` / `JointGrid`</td></tr>
+  </tbody>
+</NotionTable>
+
+> 💡 **이럴 때**: 같은 그래프의 axes-level과 figure-level이 헷갈리면 이름으로 구분합니다. `-plot`으로 끝나면(예: `histplot`, `boxplot`) axes-level, `displot`/`relplot`/`catplot`은 figure-level입니다.
+
+💡 **이럴 때**: figure-level 함수로 그린 뒤 특정 칸만 손보려면 `g.axes.flat`을 순회하거나 `g.axes_dict`(facet 이름 → Axes)를 씁니다.
+
+
+<NotionDivider />
+
+<a id="5-정리-계층-관계"></a>
+
+## 5. 정리 -계층 관계
+
+
+```text
+seaborn (통계 그래프 고수준 API)
+  ├─ axes-level 함수  → 주어진 matplotlib Axes에 그림
+  └─ figure-level 함수 → matplotlib Figure/FacetGrid를 스스로 생성
+        ↓ 모두
+matplotlib (Figure / Axes / Artist, 렌더링·저장)
+        ↑
+pandas .plot  → matplotlib Axes 래퍼 (ax= 전달·반환)
+```
+
+어느 도구로 그리든 최종 객체는 matplotlib의 Figure/Axes이므로, 1~7장의 조작(축, 스케일, 범례, 주석, 저장)이 공통 기반이 됩니다.
+
+
+<NotionDivider />
+

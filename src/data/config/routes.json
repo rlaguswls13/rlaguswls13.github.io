@@ -33,7 +33,10 @@
       "3c619946ca768098af99c5bb8fb90bec": "/devlog/tech_study/java-compile-interpeter",
       "3c719946ca7680bb89ccc0dfc9bf2c87": "/devlog/tech_study/ai-agent-prompt-rule-guide",
       "3c719946ca76806daa29f22dc447a502": "/devlog/tech_study/rdb-sql-denormalization-normalization",
-      "3c819946ca7680ae8b31f2d87255a3fb": "/devlog/tech_study/ai-python-history-data-pipeline"
+      "3c819946ca7680ae8b31f2d87255a3fb": "/devlog/tech_study/ai-python-history-data-pipeline",
+      "3c819946ca768094bfebe1e7bea97aa6": "/devlog/tech_study/java-jre-jdk-jvm-diff",
+      "3ce19946ca7680c3bf5ada32fda9842c": "/devlog/tech_study/java-gc-guide",
+      "3ce19946ca7680c19677fb9fa7f3dea7": "/devlog/tech_study/java-oop-override-overload"
     },
     "bySlug": {
       "essential-docker-commands": {
@@ -167,6 +170,284 @@
       "ai-python-history-data-pipeline": {
         "id": "3c819946ca7680ae8b31f2d87255a3fb",
         "url": "/devlog/tech_study/ai-python-history-data-pipeline"
+      },
+      "java-jre-jdk-jvm-diff": {
+        "id": "3c819946ca768094bfebe1e7bea97aa6",
+        "url": "/devlog/tech_study/java-jre-jdk-jvm-diff"
+      },
+      "java-gc-guide": {
+        "id": "3ce19946ca7680c3bf5ada32fda9842c",
+        "url": "/devlog/tech_study/java-gc-guide"
+      },
+      "java-oop-override-overload": {
+        "id": "3ce19946ca7680c19677fb9fa7f3dea7",
+        "url": "/devlog/tech_study/java-oop-override-overload"
+      }
+    }
+  },
+  "tech_study_series": {
+    "byPageId": {
+      "3ce19946ca7680a58e17e1ef1f5f0bd2": "/devlog/tech_study_series/python-pandas-reshaping",
+      "3ce19946ca7680b5bd53de660571e6d2": "/devlog/tech_study_series/python-numpy-dtype",
+      "3ce19946ca7680b39ad3e58bb37e15b5": "/devlog/tech_study_series/python-pandas-missing-data",
+      "3ce19946ca7680b48c90fb97102be10c": "/devlog/tech_study_series/numpy-01-initial-concept",
+      "3ce19946ca7680e78c9acb8da7f20f38": "/devlog/tech_study_series/python-numpy-linear-algebra",
+      "3ce19946ca7680f3aab1ed09c080a491": "/devlog/tech_study_series/python-pandas-sorting",
+      "3ce19946ca7680f4ad12e64aef10f34c": "/devlog/tech_study_series/python-pandas-timeseries",
+      "3ce19946ca7680f7bac7ec38787111f8": "/devlog/tech_study_series/python-pandas-performance",
+      "3ce19946ca7680f09aade69d51fc4014": "/devlog/tech_study_series/python-pandas-io",
+      "3ce19946ca7680feb4a3f6dd8439c4b2": "/devlog/tech_study_series/python-pandas-indexing",
+      "3ce19946ca76800cb869e94167204db4": "/devlog/tech_study_series/python-pandas-inspection",
+      "3ce19946ca76801ab1cdf359ecdcf07e": "/devlog/tech_study_series/python-numpy-indexing",
+      "3ce19946ca76801d914ce5d0c1a9f881": "/devlog/tech_study_series/python-pandas-series-dataframe",
+      "3ce19946ca76803b86fbf536ae878dba": "/devlog/tech_study_series/python-pandas-merge-join",
+      "3ce19946ca76807faa9def831b4cb504": "/devlog/tech_study_series/python-numpy-preprocessing-patterns",
+      "3ce19946ca768005bc5cc7383a963f96": "/devlog/tech_study_series/python-numpy-ufunc-aggregation",
+      "3ce19946ca768008b586d2599f340817": "/devlog/tech_study_series/python-pandas-cleaning-transform",
+      "3ce19946ca768063b0e1e8a297019e1e": "/devlog/tech_study_series/python-numpy-array-creation",
+      "3ce19946ca768071aabfd696b871a6f8": "/devlog/tech_study_series/python-numpy-io",
+      "3ce19946ca768075bbfaee5987ee2017": "/devlog/tech_study_series/python-pandas-groupby",
+      "3ce19946ca768086abc3f701bae8b934": "/devlog/tech_study_series/python-pandas-next-steps",
+      "3ce19946ca7680689d24d8fc50c66587": "/devlog/tech_study_series/python-numpy-performance",
+      "3ce19946ca7680768ccfde84c5980765": "/devlog/tech_study_series/python-numpy-missing-values",
+      "3ce19946ca7680568905f9100f8e9192": "/devlog/tech_study_series/python-numpy-reshape",
+      "3ce19946ca7680649261f238b2bc8181": "/devlog/tech_study_series/python-numpy-broadcasting",
+      "3cf19946ca7681a3a538cb7ae266b519": "/devlog/tech_study_series/python-matplotlib-basic-plots",
+      "3cf19946ca7681af988bc22a6d4e44f5": "/devlog/tech_study_series/python-seaborn-categorical",
+      "3cf19946ca7681b78d22d1d4fc08a2a2": "/devlog/tech_study_series/visualization-chart-selection",
+      "3cf19946ca7681b49734d816abd8255d": "/devlog/tech_study_series/python-matplotlib-axes-scale",
+      "3cf19946ca7681b89728e6ec505da82c": "/devlog/tech_study_series/python-matplotlib-figure-axes",
+      "3cf19946ca7681caaf36cee1e0816907": "/devlog/tech_study_series/data-preprocessing-missing-mechanisms",
+      "3cf19946ca7681cbbe26ed818aac5650": "/devlog/tech_study_series/python-matplotlib-style-color",
+      "3cf19946ca7681e2a209d4dd550c41bf": "/devlog/tech_study_series/data-preprocessing-visualization-theory",
+      "3cf19946ca7681fcbe3ec8e5f91e745a": "/devlog/tech_study_series/python-seaborn-distribution",
+      "3cf19946ca76811a9d6de5fbd9f1bb91": "/devlog/tech_study_series/visualization-color-scale",
+      "3cf19946ca76811dae3ede3a7c8f12db": "/devlog/tech_study_series/visualization-perception",
+      "3cf19946ca76813eb32ff2a31c344958": "/devlog/tech_study_series/python-matplotlib-save-backend",
+      "3cf19946ca76815aa820cecd0954af15": "/devlog/tech_study_series/visualization-multivariate-storytelling",
+      "3cf19946ca76815babb4da01c6777de4": "/devlog/tech_study_series/python-matplotlib-annotation",
+      "3cf19946ca76816ebac2efc477794575": "/devlog/tech_study_series/python-seaborn-heatmap",
+      "3cf19946ca76817ebabec10460e7a57f": "/devlog/tech_study_series/python-seaborn-relational",
+      "3cf19946ca76818eadf6ef7898eac0da": "/devlog/tech_study_series/data-preprocessing-leakage-reproducibility",
+      "3cf19946ca768109b3a7ffc0316e422b": "/devlog/tech_study_series/python-matplotlib-subplots",
+      "3cf19946ca768177b804f1dcf7e634eb": "/devlog/tech_study_series/data-preprocessing-scaling-encoding",
+      "3cf19946ca768181b844db7274f690fe": "/devlog/tech_study_series/data-preprocessing-feature-engineering",
+      "3cf19946ca768182b731f659c1d1b08c": "/devlog/tech_study_series/python-seaborn-regression-joint",
+      "3cf19946ca768194b117f421e79a1e9c": "/devlog/tech_study_series/python-seaborn-theme-palette",
+      "3cf19946ca768196a258cce5fac24945": "/devlog/tech_study_series/python-matplotlib-pandas-seaborn",
+      "3cf19946ca7681068c0fc2596847fee1": "/devlog/tech_study_series/data-preprocessing-scales-eda",
+      "3cf19946ca7681169a32f945ea578aa5": "/devlog/tech_study_series/visualization-purpose-grammar",
+      "3cf19946ca7681718f2cc89aaf11e7b8": "/devlog/tech_study_series/python-seaborn-overview",
+      "3cf19946ca7681979971cbf70e13c58b": "/devlog/tech_study_series/data-preprocessing-outlier-theory"
+    },
+    "bySlug": {
+      "python-pandas-reshaping": {
+        "id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
+        "url": "/devlog/tech_study_series/python-pandas-reshaping"
+      },
+      "python-numpy-dtype": {
+        "id": "3ce19946ca7680b5bd53de660571e6d2",
+        "url": "/devlog/tech_study_series/python-numpy-dtype"
+      },
+      "python-pandas-missing-data": {
+        "id": "3ce19946ca7680b39ad3e58bb37e15b5",
+        "url": "/devlog/tech_study_series/python-pandas-missing-data"
+      },
+      "numpy-01-initial-concept": {
+        "id": "3ce19946ca7680b48c90fb97102be10c",
+        "url": "/devlog/tech_study_series/numpy-01-initial-concept"
+      },
+      "python-numpy-linear-algebra": {
+        "id": "3ce19946ca7680e78c9acb8da7f20f38",
+        "url": "/devlog/tech_study_series/python-numpy-linear-algebra"
+      },
+      "python-pandas-sorting": {
+        "id": "3ce19946ca7680f3aab1ed09c080a491",
+        "url": "/devlog/tech_study_series/python-pandas-sorting"
+      },
+      "python-pandas-timeseries": {
+        "id": "3ce19946ca7680f4ad12e64aef10f34c",
+        "url": "/devlog/tech_study_series/python-pandas-timeseries"
+      },
+      "python-pandas-performance": {
+        "id": "3ce19946ca7680f7bac7ec38787111f8",
+        "url": "/devlog/tech_study_series/python-pandas-performance"
+      },
+      "python-pandas-io": {
+        "id": "3ce19946ca7680f09aade69d51fc4014",
+        "url": "/devlog/tech_study_series/python-pandas-io"
+      },
+      "python-pandas-indexing": {
+        "id": "3ce19946ca7680feb4a3f6dd8439c4b2",
+        "url": "/devlog/tech_study_series/python-pandas-indexing"
+      },
+      "python-pandas-inspection": {
+        "id": "3ce19946ca76800cb869e94167204db4",
+        "url": "/devlog/tech_study_series/python-pandas-inspection"
+      },
+      "python-numpy-indexing": {
+        "id": "3ce19946ca76801ab1cdf359ecdcf07e",
+        "url": "/devlog/tech_study_series/python-numpy-indexing"
+      },
+      "python-pandas-series-dataframe": {
+        "id": "3ce19946ca76801d914ce5d0c1a9f881",
+        "url": "/devlog/tech_study_series/python-pandas-series-dataframe"
+      },
+      "python-pandas-merge-join": {
+        "id": "3ce19946ca76803b86fbf536ae878dba",
+        "url": "/devlog/tech_study_series/python-pandas-merge-join"
+      },
+      "python-numpy-preprocessing-patterns": {
+        "id": "3ce19946ca76807faa9def831b4cb504",
+        "url": "/devlog/tech_study_series/python-numpy-preprocessing-patterns"
+      },
+      "python-numpy-ufunc-aggregation": {
+        "id": "3ce19946ca768005bc5cc7383a963f96",
+        "url": "/devlog/tech_study_series/python-numpy-ufunc-aggregation"
+      },
+      "python-pandas-cleaning-transform": {
+        "id": "3ce19946ca768008b586d2599f340817",
+        "url": "/devlog/tech_study_series/python-pandas-cleaning-transform"
+      },
+      "python-numpy-array-creation": {
+        "id": "3ce19946ca768063b0e1e8a297019e1e",
+        "url": "/devlog/tech_study_series/python-numpy-array-creation"
+      },
+      "python-numpy-io": {
+        "id": "3ce19946ca768071aabfd696b871a6f8",
+        "url": "/devlog/tech_study_series/python-numpy-io"
+      },
+      "python-pandas-groupby": {
+        "id": "3ce19946ca768075bbfaee5987ee2017",
+        "url": "/devlog/tech_study_series/python-pandas-groupby"
+      },
+      "python-pandas-next-steps": {
+        "id": "3ce19946ca768086abc3f701bae8b934",
+        "url": "/devlog/tech_study_series/python-pandas-next-steps"
+      },
+      "python-numpy-performance": {
+        "id": "3ce19946ca7680689d24d8fc50c66587",
+        "url": "/devlog/tech_study_series/python-numpy-performance"
+      },
+      "python-numpy-missing-values": {
+        "id": "3ce19946ca7680768ccfde84c5980765",
+        "url": "/devlog/tech_study_series/python-numpy-missing-values"
+      },
+      "python-numpy-reshape": {
+        "id": "3ce19946ca7680568905f9100f8e9192",
+        "url": "/devlog/tech_study_series/python-numpy-reshape"
+      },
+      "python-numpy-broadcasting": {
+        "id": "3ce19946ca7680649261f238b2bc8181",
+        "url": "/devlog/tech_study_series/python-numpy-broadcasting"
+      },
+      "python-matplotlib-basic-plots": {
+        "id": "3cf19946ca7681a3a538cb7ae266b519",
+        "url": "/devlog/tech_study_series/python-matplotlib-basic-plots"
+      },
+      "python-seaborn-categorical": {
+        "id": "3cf19946ca7681af988bc22a6d4e44f5",
+        "url": "/devlog/tech_study_series/python-seaborn-categorical"
+      },
+      "visualization-chart-selection": {
+        "id": "3cf19946ca7681b78d22d1d4fc08a2a2",
+        "url": "/devlog/tech_study_series/visualization-chart-selection"
+      },
+      "python-matplotlib-axes-scale": {
+        "id": "3cf19946ca7681b49734d816abd8255d",
+        "url": "/devlog/tech_study_series/python-matplotlib-axes-scale"
+      },
+      "python-matplotlib-figure-axes": {
+        "id": "3cf19946ca7681b89728e6ec505da82c",
+        "url": "/devlog/tech_study_series/python-matplotlib-figure-axes"
+      },
+      "data-preprocessing-missing-mechanisms": {
+        "id": "3cf19946ca7681caaf36cee1e0816907",
+        "url": "/devlog/tech_study_series/data-preprocessing-missing-mechanisms"
+      },
+      "python-matplotlib-style-color": {
+        "id": "3cf19946ca7681cbbe26ed818aac5650",
+        "url": "/devlog/tech_study_series/python-matplotlib-style-color"
+      },
+      "data-preprocessing-visualization-theory": {
+        "id": "3cf19946ca7681e2a209d4dd550c41bf",
+        "url": "/devlog/tech_study_series/data-preprocessing-visualization-theory"
+      },
+      "python-seaborn-distribution": {
+        "id": "3cf19946ca7681fcbe3ec8e5f91e745a",
+        "url": "/devlog/tech_study_series/python-seaborn-distribution"
+      },
+      "visualization-color-scale": {
+        "id": "3cf19946ca76811a9d6de5fbd9f1bb91",
+        "url": "/devlog/tech_study_series/visualization-color-scale"
+      },
+      "visualization-perception": {
+        "id": "3cf19946ca76811dae3ede3a7c8f12db",
+        "url": "/devlog/tech_study_series/visualization-perception"
+      },
+      "python-matplotlib-save-backend": {
+        "id": "3cf19946ca76813eb32ff2a31c344958",
+        "url": "/devlog/tech_study_series/python-matplotlib-save-backend"
+      },
+      "visualization-multivariate-storytelling": {
+        "id": "3cf19946ca76815aa820cecd0954af15",
+        "url": "/devlog/tech_study_series/visualization-multivariate-storytelling"
+      },
+      "python-matplotlib-annotation": {
+        "id": "3cf19946ca76815babb4da01c6777de4",
+        "url": "/devlog/tech_study_series/python-matplotlib-annotation"
+      },
+      "python-seaborn-heatmap": {
+        "id": "3cf19946ca76816ebac2efc477794575",
+        "url": "/devlog/tech_study_series/python-seaborn-heatmap"
+      },
+      "python-seaborn-relational": {
+        "id": "3cf19946ca76817ebabec10460e7a57f",
+        "url": "/devlog/tech_study_series/python-seaborn-relational"
+      },
+      "data-preprocessing-leakage-reproducibility": {
+        "id": "3cf19946ca76818eadf6ef7898eac0da",
+        "url": "/devlog/tech_study_series/data-preprocessing-leakage-reproducibility"
+      },
+      "python-matplotlib-subplots": {
+        "id": "3cf19946ca768109b3a7ffc0316e422b",
+        "url": "/devlog/tech_study_series/python-matplotlib-subplots"
+      },
+      "data-preprocessing-scaling-encoding": {
+        "id": "3cf19946ca768177b804f1dcf7e634eb",
+        "url": "/devlog/tech_study_series/data-preprocessing-scaling-encoding"
+      },
+      "data-preprocessing-feature-engineering": {
+        "id": "3cf19946ca768181b844db7274f690fe",
+        "url": "/devlog/tech_study_series/data-preprocessing-feature-engineering"
+      },
+      "python-seaborn-regression-joint": {
+        "id": "3cf19946ca768182b731f659c1d1b08c",
+        "url": "/devlog/tech_study_series/python-seaborn-regression-joint"
+      },
+      "python-seaborn-theme-palette": {
+        "id": "3cf19946ca768194b117f421e79a1e9c",
+        "url": "/devlog/tech_study_series/python-seaborn-theme-palette"
+      },
+      "python-matplotlib-pandas-seaborn": {
+        "id": "3cf19946ca768196a258cce5fac24945",
+        "url": "/devlog/tech_study_series/python-matplotlib-pandas-seaborn"
+      },
+      "data-preprocessing-scales-eda": {
+        "id": "3cf19946ca7681068c0fc2596847fee1",
+        "url": "/devlog/tech_study_series/data-preprocessing-scales-eda"
+      },
+      "visualization-purpose-grammar": {
+        "id": "3cf19946ca7681169a32f945ea578aa5",
+        "url": "/devlog/tech_study_series/visualization-purpose-grammar"
+      },
+      "python-seaborn-overview": {
+        "id": "3cf19946ca7681718f2cc89aaf11e7b8",
+        "url": "/devlog/tech_study_series/python-seaborn-overview"
+      },
+      "data-preprocessing-outlier-theory": {
+        "id": "3cf19946ca7681979971cbf70e13c58b",
+        "url": "/devlog/tech_study_series/data-preprocessing-outlier-theory"
       }
     }
   },
@@ -221,7 +502,10 @@
     "byPageId": {
       "3a319946ca768078b891d2ebf14c4741": "/devlog/blog/2026-first-half-interview-retrospective",
       "3a619946ca7680288a44ef2065a0c130": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
-      "3ab19946ca768020a285dc6c49b14793": "/devlog/blog/rebuilding-from-specs-without-git"
+      "3ab19946ca768020a285dc6c49b14793": "/devlog/blog/rebuilding-from-specs-without-git",
+      "3c119946ca7680b3ba08d943827ce08d": "/devlog/blog/toy-rip",
+      "3c819946ca76800686abe41d9548e8b9": "/devlog/blog/ai-agent-linked-wiki",
+      "3cf19946ca7680bd9d9ac8cc8bd6b148": "/devlog/blog/software-engineering-junior-dev-habits"
     },
     "bySlug": {
       "2026-first-half-interview-retrospective": {
@@ -235,6 +519,18 @@
       "rebuilding-from-specs-without-git": {
         "id": "3ab19946ca768020a285dc6c49b14793",
         "url": "/devlog/blog/rebuilding-from-specs-without-git"
+      },
+      "toy-rip": {
+        "id": "3c119946ca7680b3ba08d943827ce08d",
+        "url": "/devlog/blog/toy-rip"
+      },
+      "ai-agent-linked-wiki": {
+        "id": "3c819946ca76800686abe41d9548e8b9",
+        "url": "/devlog/blog/ai-agent-linked-wiki"
+      },
+      "software-engineering-junior-dev-habits": {
+        "id": "3cf19946ca7680bd9d9ac8cc8bd6b148",
+        "url": "/devlog/blog/software-engineering-junior-dev-habits"
       }
     }
   },

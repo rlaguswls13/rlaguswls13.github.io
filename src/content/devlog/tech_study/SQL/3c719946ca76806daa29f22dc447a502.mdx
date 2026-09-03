@@ -238,7 +238,7 @@ JOIN product p
     ON oi.product_id = p.product_id;
 ```
 
-> 🎯 **실무 포인트**: 2NF는 복합 PK를 사용하는 **N:M 상세/매핑 테이블(****`ORDER_ITEM`****,** **`USER_ROLE`****,** **`STUDENT_COURSE`****)** 설계 시 필수적으로 점검하는 단계이다.
+> 🎯 **실무 포인트**: 2NF는 복합 PK를 사용하는 **N:M 상세/매핑 테이블(`ORDER_ITEM`, `USER_ROLE`, `STUDENT_COURSE`)** 설계 시 필수적으로 점검하는 단계이다.
 
 
 <NotionDivider />
@@ -318,7 +318,7 @@ JOIN user u
     ON o.user_id = u.user_id;
 ```
 
-> 🎯 **실무 효과**: 회원의 전화번호나 이름이 변경되어도 수천 건의 주문 데이터를 수정할 필요 없이 **`USER`** **테이블 단 1곳만** **`UPDATE`**하면 되므로 데이터 갱신 이상을 완벽히 차단한다.
+> 🎯 **실무 효과**: 회원의 전화번호나 이름이 변경되어도 수천 건의 주문 데이터를 수정할 필요 없이 **`USER` 테이블 단 1곳만 `UPDATE`**하면 되므로 데이터 갱신 이상을 완벽히 차단한다.
 
 
 <NotionDivider />
@@ -391,7 +391,7 @@ JOIN product p
 
 <NotionIndent>
 
-**"정규화할수록 데이터를 저장하는 테이블은 책임 단위로 분리되고, 화면/API에서 조회할 때는** **`JOIN`****으로 다시 합친다."**
+**"정규화할수록 데이터를 저장하는 테이블은 책임 단위로 분리되고, 화면/API에서 조회할 때는 `JOIN`으로 다시 합친다."**
 
 
 </NotionIndent>

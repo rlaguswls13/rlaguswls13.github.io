@@ -1,0 +1,141 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","nullable-dtype","missing-data","fillna"]
+slug: "python-pandas-missing-data"
+subcategory: "pandas"
+status: "publish"
+description: "처리 흐름은 ① 탐지(isna/notna) → ② 제거(dropna) 또는 대체(fillna/interpolate) 입니다.\n\npandas의 결측 표기는 dtype에 따라 갈립니다: float은 NaN, object는 None/NaN, 확장 dtype은 pd.NA, datetime은 NaT.\n\n\"결측을 담을 수 있는 정수/불리언 열\"이 필요하면 nullable dtype(Int64, boolean)을 씁니다."
+title: "Python - pandas 05. 결측치 처리"
+page_id: "3ce19946-ca76-80b3-9ad3-e58bb37e15b5"
+source_id: "3ce19946ca7680b39ad3e58bb37e15b5"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-05-3ce19946ca7680b39ad3e58bb37e15b5"
+id: "3ce19946ca7680b39ad3e58bb37e15b5"
+sourceId: "3ce19946-ca76-80b3-9ad3-e58bb37e15b5"
+date: "2026-09-01"
+tags: ["Python","pandas","nullable-dtype","missing-data","fillna"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-05-3ce19946ca7680b39ad3e58bb37e15b5"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 탐지](#1-탐지)
+- [2. NaN vs None vs pd.NA vs NaT — 계층 구분](#2-nan-vs-none-vs-pdna-vs-nat-계층-구분)
+- [3. 제거 — dropna](#3-제거-dropna)
+- [4. 대체 — fillna](#4-대체-fillna)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+처리 흐름은 ① **탐지**(`isna`/`notna`) → ② **제거**(`dropna`) 또는 **대체**(`fillna`/`interpolate`) 입니다.
+
+pandas의 결측 표기는 dtype에 따라 갈립니다: float은 `NaN`, `object`는 `None`/`NaN`, 확장 dtype은 `pd.NA`, datetime은 `NaT`.
+
+"결측을 담을 수 있는 정수/불리언 열"이 필요하면 **nullable dtype**(`Int64`, `boolean`)을 씁니다.
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-탐지"></a>
+
+## 1. 탐지
+
+
+```python
+df.isna()                  # 원소별 True/False DataFrame
+df["user_id"].isna().sum() # 열의 결측 개수
+df.notna()                 # isna의 반대
+df[df["user_id"].isna()]   # 결측 행만
+df.isna().mean()           # 열별 결측 비율
+```
+
+- `== np.nan`은 **항상 False**입니다. 반드시 `isna()`를 씁니다.
+- `isnull`/`notnull`은 `isna`/`notna`의 별칭(완전히 동일).
+
+<NotionDivider />
+
+<a id="2-nan-vs-none-vs-pdna-vs-nat-계층-구분"></a>
+
+## 2. NaN vs None vs pd.NA vs NaT — 계층 구분
+
+논의 계층: "어떤 dtype이 어떤 결측 센티넬을 쓰는가".
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>결측 값</td><td>쓰이는 dtype</td><td>비고</td></tr>
+    <tr><td>`np.nan` (float)</td><td>`float64`, `object`</td><td>IEEE 754 NaN. 정수 열에 결측이 생기면 열이 `float64`로 승격</td></tr>
+    <tr><td>`None`</td><td>`object`</td><td>파이썬 `None`. `object` 열에서 `isna()`가 True로 잡음</td></tr>
+    <tr><td>`pd.NA`</td><td>`Int64`, `boolean`, `string` 등 **확장(nullable) dtype**</td><td>타입 불문 통일된 결측. 연산 시 전파(`pd.NA + 1 → pd.NA`)</td></tr>
+    <tr><td>`NaT` (Not a Time)</td><td>`datetime64[ns]`, `timedelta64[ns]`</td><td>날짜/시간용 결측</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+pd.Series([1, 2, None])                    # dtype: float64, 값 [1.0, 2.0, NaN]
+pd.Series([1, 2, None], dtype="Int64")     # dtype: Int64,   값 [1, 2, <NA>]
+pd.Series(["a", None])                     # dtype: object,  값 ['a', None]
+pd.to_datetime(["2026-01-01", None])       # dtype: datetime64, 값 [..., NaT]
+```
+
+> 💡 **이럴 때**: ID·수량처럼 정수 의미를 유지해야 하는 열에 결측이 있으면 `astype("Int64")`로 nullable 전환. `1.0`, `2.0` 표기와 `float` 비교 오류를 피합니다.
+
+
+<NotionDivider />
+
+<a id="3-제거-dropna"></a>
+
+## 3. 제거 — `dropna`
+
+
+```python
+df.dropna()                          # 결측이 하나라도 있는 행 제거
+df.dropna(subset=["user_id", "amount"])  # 특정 열 기준으로만
+df.dropna(how="all")                 # 모든 열이 결측인 행만 제거
+df.dropna(thresh=3)                   # 비결측이 3개 미만인 행 제거
+df.dropna(axis=1)                     # 결측 있는 "열" 제거
+```
+
+> 💡 **이럴 때**: 결측 비율이 낮고(예: &lt;5%) 무작위로 보이면 `dropna`. 특정 열에 결측이 몰려 있으면 그 열을 `axis=1`로 버리는 편이 나을 수 있습니다.
+
+
+<NotionDivider />
+
+<a id="4-대체-fillna"></a>
+
+## 4. 대체 — `fillna`
+
+
+```python
+df["amount"].fillna(0)
+df["city"].fillna("Unknown")
+df.fillna({"amount": 0, "city": "Unknown"})       # 열별 다른 값
+df["amount"].fillna(df["amount"].median())        # 중앙값 대체
+df.ffill()                                        # 앞의 값으로 채움 (forward fill)
+df.bfill()                                        # 뒤의 값으로 채움
+df["amount"].fillna(df.groupby("category")["amount"].transform("mean"))  # 그룹 평균 대체
+```
+
+- `method="ffill"/"bfill"` 인자는 최신 pandas에서 별도 메서드 `ffill()`/`bfill()`로 분리 권장.
+- `inplace=True`는 되도록 피하고 재대입(`df["x"] = df["x"].fillna(...)`)합니다.
+> 💡 **이럴 때**: 시계열에서 센서 값이 잠깐 빠졌다면 `ffill`(직전 값 유지). 범주형 결측은 `"Unknown"` 같은 명시적 범주로. 수치형은 평균보다 **중앙값**이 이상치에 견고합니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 대체값은 **학습 데이터 통계로 계산해 저장**하고 테스트/운영에도 같은 값을 씁니다 (누수 방지). scikit-learn `SimpleImputer`가 이 패턴을 캡슐화합니다
+
+
+</NotionIndent>
+

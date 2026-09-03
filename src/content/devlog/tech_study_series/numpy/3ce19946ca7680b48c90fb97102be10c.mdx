@@ -1,0 +1,178 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","ndarray","vector","vectorization","view-copy"]
+slug: "numpy-01-initial-concept"
+subcategory: "numpy"
+status: "publish"
+description: "NumPy의 모든 것은 ndarray(N-dimensional array) 라는 단일 자료구조 위에 세워집니다.\nndarray는 같은 자료형(dtype)의 값들을 연속된 메모리 블록에 저장하고, 그 위에서 반복문 없는 연산(벡터화)을 제공합니다.\n이 챕터에서는 \"왜 list 대신 ndarray인가\", \"ndarray를 읽는 법(속성)\", \"view와 copy의 차이\"를 잡습니다. 이후 모든 챕터가 이 세 가지를 전제합니다."
+title: "Python - Numpy 01. 기초개념"
+page_id: "3ce19946-ca76-80b4-8c90-fb97102be10c"
+source_id: "3ce19946ca7680b48c90fb97102be10c"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-Numpy-01-3ce19946ca7680b48c90fb97102be10c"
+id: "3ce19946ca7680b48c90fb97102be10c"
+sourceId: "3ce19946-ca76-80b4-8c90-fb97102be10c"
+date: "2026-08-30"
+tags: ["Python","numpy","ndarray","vector","vectorization","view-copy"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-Numpy-01-3ce19946ca7680b48c90fb97102be10c"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 왜 파이썬 list 대신 NumPy ndarray인가](#1-왜-파이썬-list-대신-numpy-ndarray인가)
+- [2. ndarray 핵심 속성 — 배열을 "읽는" 법](#2-ndarray-핵심-속성-배열을-읽는-법)
+- [3. 벡터화(vectorization)와 브로드캐스팅 — 개념만 먼저](#3-벡터화vectorization와-브로드캐스팅-개념만-먼저)
+- [4. view vs copy — NumPy 최대의 함정](#4-view-vs-copy-numpy-최대의-함정)
+- [5. 메모리 레이아웃 (C-order vs F-order)](#5-메모리-레이아웃-c-order-vs-f-order)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+NumPy의 모든 것은 **`ndarray`(N-dimensional array)** 라는 단일 자료구조 위에 세워집니다.
+
+`ndarray`는 **같은 자료형(dtype)의 값들을 연속된 메모리 블록에 저장**하고, 그 위에서 **반복문 없는 연산(벡터화)**을 제공합니다.
+
+이 챕터에서는 "왜 list 대신 ndarray인가", "ndarray를 읽는 법(속성)", "view와 copy의 차이"를 잡습니다. 이후 모든 챕터가 이 세 가지를 전제합니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-왜-파이썬-list-대신-numpy-ndarray인가"></a>
+
+## 1. 왜 파이썬 `list` 대신 NumPy `ndarray`인가
+
+파이썬 `list`는 **서로 다른 타입의 객체를 담을 수 있는 유연한 컨테이너**입니다. 그 유연성의 대가로, list는 내부적으로 "값"이 아니라 "값을 가리키는 포인터"를 나열해서 저장합니다. 정수 하나를 더하려 해도 파이썬은 매번 객체를 해석하고(type check), 박싱/언박싱을 거칩니다.
+
+NumPy는 반대 선택을 합니다. **배열 전체를 하나의 dtype으로 고정**하는 대가로 유연성을 포기하고, 값 자체를 C 배열처럼 연속으로 쌓습니다. 그 결과는 다음과 같습니다.
+
+- **속도**: 원소별 반복 연산이 최적화된 C 루프에서 실행됩니다. 데이터 크기에 따라 순수 파이썬 루프보다 10~100배 빠릅니다.
+- **메모리**: 포인터 배열 + 개별 객체 헤더가 사라지고, 값만 촘촘히 저장됩니다. CPU 캐시 적중률도 올라갑니다.
+- **표현력**: `for` 문 없이 `a + b`, `a > 0`, `a.mean(axis=0)` 처럼 배열 전체를 한 줄로 다룹니다.
+
+<NotionTable>
+  <tbody>
+    <tr><td>구분</td><td>Python `list`</td><td>NumPy `ndarray`</td></tr>
+    <tr><td>원소 타입</td><td>혼합 가능 (`[1, "x", 3.0]`)</td><td>단일 dtype 고정</td></tr>
+    <tr><td>메모리 구조</td><td>객체 포인터의 배열</td><td>연속된 원시 값 블록</td></tr>
+    <tr><td>원소별 연산</td><td>직접 반복문 작성 필요</td><td>벡터화 연산 내장</td></tr>
+    <tr><td>크기 변경</td><td>자유로움 (`append`)</td><td>사실상 고정 (변경 시 새 배열 생성)</td></tr>
+    <tr><td>적합한 상황</td><td>이질적 데이터, 잦은 삽입/삭제</td><td>수치 계산, 대량 동일 타입 데이터</td></tr>
+  </tbody>
+</NotionTable>
+
+> **정리**: list는 "여러 종류의 물건을 넣는 서랍", ndarray는 "같은 규격 부품을 채운 트레이"입니다. 데이터 전처리는 후자입니다.
+
+
+<NotionDivider />
+
+<a id="2-ndarray-핵심-속성-배열을-읽는-법"></a>
+
+## 2. ndarray 핵심 속성 — 배열을 "읽는" 법
+
+디버깅의 90%는 "이 배열의 shape가 무엇인가"를 확인하는 것에서 시작합니다. 아래 속성은 반드시 눈에 익혀 둡니다.
+
+
+```python
+a = np.array([[1, 2, 3], [4, 5, 6]])
+
+a.dtype     # dtype('int64')  - 원소 자료형 (Windows + NumPy 1.x는 int32)
+a.shape     # (2, 3)          - 차원별 크기 (행 2, 열 3)
+a.ndim      # 2               - 차원 수 = 축(axis) 개수 = len(a.shape)
+a.size      # 6               - 전체 원소 수 = shape의 곱
+a.itemsize  # 8               - 원소 1개의 바이트 크기 (int32면 4)
+a.nbytes    # 48              - 전체 데이터 바이트 = size * itemsize
+```
+
+- **`shape`**: 가장 자주 봅니다. `(2, 3)`은 "2행 3열"입니다. 1차원은 `(3,)`처럼 콤마가 붙습니다 (`(3)`은 그냥 정수 3).
+- **`ndim`**: 스칼라 0, 벡터 1, 행렬 2, 그 이상은 텐서입니다. `axis` 인자를 쓸 때 이 값이 상한입니다.
+- **`dtype`**: 3장에서 자세히 다룹니다. 기본 정수 dtype은 플랫폼·버전에 따라 다르므로, 재현이 중요하면 `np.array([...], dtype=np.int64)`로 못 박습니다.
+
+<NotionDivider />
+
+<a id="3-벡터화vectorization와-브로드캐스팅-개념만-먼저"></a>
+
+## 3. 벡터화(vectorization)와 브로드캐스팅 — 개념만 먼저
+
+두 용어는 앞으로 계속 나오므로 여기서 정의만 잡습니다.
+
+- **벡터화**: "원소마다 파이썬 `for`를 도는" 대신 "배열 단위 연산 한 방"으로 표현하는 것입니다. 루프가 사라지는 게 아니라, 루프가 C 계층으로 내려가서 빨라집니다.
+
+```python
+# 벡터화 이전
+result = []
+for x in data:
+    result.append(x * 2 + 1)
+
+# 벡터화 이후
+result = data * 2 + 1
+```
+
+
+- **브로드캐스팅**: shape가 다른 두 배열을 연산할 때, 작은 쪽을 "복제한 것처럼" 자동 확장해 맞춰 주는 규칙입니다. 예: `(2, 3)` 배열 + 스칼라, `(2, 3)` 배열 + `(3,)` 배열. → 자세한 규칙은 [Python - NumPy 06. 브로드캐스팅](https://app.notion.com/p/Python%20-%20NumPy%2006.%20%EB%B8%8C%EB%A1%9C%EB%93%9C%EC%BA%90%EC%8A%A4%ED%8C%85).
+
+<NotionDivider />
+
+<a id="4-view-vs-copy-numpy-최대의-함정"></a>
+
+## 4. view vs copy — NumPy 최대의 함정
+
+NumPy 연산 결과는 두 종류입니다.
+
+- **view(뷰)**: 원본과 **같은 메모리를 공유**하는 새 배열 객체입니다. 슬라이싱(`a[1:4]`), 전치(`a.T`), `reshape`(대개)이 view를 만듭니다.
+- **copy(복사본)**: **독립된 메모리**를 가진 배열입니다. 불리언 인덱싱(`a[a > 0]`), 팬시 인덱싱(`a[[0, 2]]`), `astype`, `flatten`이 copy를 만듭니다.
+view를 수정하면 **원본도 함께 바뀝니다.**
+
+
+```python
+a = np.arange(5)          # array([0, 1, 2, 3, 4])
+b = a[1:4]                # view (메모리 공유)
+b[0] = 99
+a                         # array([ 0, 99,  2,  3,  4])  ← 원본이 변했다!
+
+c = a[1:4].copy()         # 명시적 복사본
+c[0] = -1
+a                         # array([ 0, 99,  2,  3,  4])  ← 원본 그대로
+```
+
+**메모리 공유 여부 확인**:
+
+
+```python
+np.shares_memory(a, b)    # True  - 정확한 검사
+np.shares_memory(a, c)    # False
+# a.base 는 공개 속성이지만 메모리 공유 판정에는 부정확 → shares_memory를 쓸 것
+```
+
+> **실무 규칙**: 함수 인자로 받은 배열을 수정할 때는 먼저 `.copy()` 합니다. 그렇지 않으면 호출자의 데이터를 조용히 오염시킵니다.
+
+
+<NotionDivider />
+
+<a id="5-메모리-레이아웃-c-order-vs-f-order"></a>
+
+## 5. 메모리 레이아웃 (C-order vs F-order)
+
+`ndarray`는 1차원 메모리 블록 + "그 블록을 어떻게 다차원으로 해석할지"를 나타내는 **stride** 정보로 이루어집니다.
+
+- **C-order** (기본, row-major): 행을 먼저 채웁니다. `[[1,2,3],[4,5,6]]` → 메모리에 `1 2 3 4 5 6`.
+- **F-order** (`order='F'`, column-major): 열을 먼저 채웁니다. 메모리에 `1 4 2 5 3 6`. Fortran·MATLAB 호환.
+전치 `a.T`는 데이터를 한 바이트도 복사하지 않습니다. 단지 stride를 뒤집어 "읽는 순서"만 바꾼 **view**입니다. 그래서 매우 쌉니다.
+
+
+```python
+a = np.arange(6).reshape(2, 3)
+a.T.shape                 # (3, 2)
+np.shares_memory(a, a.T)  # True
+```
+
+대부분의 전처리에서는 order를 신경 쓸 필요가 없지만, "전치 후 reshape가 갑자기 느려지거나 copy가 발생"하는 현상의 배경이 이것입니다.
+

@@ -22,7 +22,7 @@ notionUrl: "https://app.notion.com/p/B2B-SSO-RBAC-3b119946ca768062b293f88117516d
 
 ## 목차
 
-- [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem)
+- [1. 도입 배경 및 과제 (Background &amp; Problem)](#1-도입-배경-및-과제-background-problem)
   - [🎯 핵심 해결 과제](#핵심-해결-과제)
 - [2. Part 1: 커스텀 서블릿 필터와 다중 IdP 인터페이스 추상화](#2-part-1-커스텀-서블릿-필터와-다중-idp-인터페이스-추상화)
   - [① DispatcherServlet 진입 전 조기 인증 (Custom Filter)](#1-dispatcherservlet-진입-전-조기-인증-custom-filter)
@@ -33,7 +33,7 @@ notionUrl: "https://app.notion.com/p/B2B-SSO-RBAC-3b119946ca768062b293f88117516d
 - [4. Part 3: 다계층 인가 제어의 진화 (@Aspect ➔ URL Interceptor)](#4-part-3-다계층-인가-제어의-진화-aspect-url-interceptor)
   - [① 레거시 과도기: Spring AOP (@Aspect) 기반 메서드 단위 통제](#1-레거시-과도기-spring-aop-aspect-기반-메서드-단위-통제)
   - [② 표준화 완성: HandlerInterceptor 기반 단일 진입점 통합 제어](#2-표준화-완성-handlerinterceptor-기반-단일-진입점-통합-제어)
-- [5. 최종 성과 및 비즈니스 가치 (Result & Benefit)](#5-최종-성과-및-비즈니스-가치-result-benefit)
+- [5. 최종 성과 및 비즈니스 가치 (Result &amp; Benefit)](#5-최종-성과-및-비즈니스-가치-result-benefit)
 
 <a id="1-도입-배경-및-과제-background-problem"></a>
 
@@ -222,7 +222,7 @@ public class AuthorizationAspect {
 
 ### ② 표준화 완성: `HandlerInterceptor` 기반 단일 진입점 통합 제어
 
-URL 체계를 표준화/패턴화한 이후에는 유지보수성과 성능을 위해 **`HandlerInterceptor`****로 인가 통제 레이어를 통합**했다.
+URL 체계를 표준화/패턴화한 이후에는 유지보수성과 성능을 위해 **`HandlerInterceptor`로 인가 통제 레이어를 통합**했다.
 
 - **메뉴-URL 캐싱 기반 실시간 조회**: DB의 메뉴 테이블에 매핑된 URL 패턴 목록을 메모리에 캐싱하여 초고속 인가 검증 수행.
 - **방어적 라우팅(Defensive Routing)**:

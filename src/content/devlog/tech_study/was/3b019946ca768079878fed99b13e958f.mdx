@@ -62,11 +62,11 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 <NotionTable>
   <tbody>
     <tr><td>비교 항목</td><td>Nginx</td><td>Apache HTTPD</td><td>IIS (Internet Information Services)</td></tr>
-    <tr><td>**핵심 강점**</td><td>**초고속 정적 파일 처리**, 극도의 경량화, **리버스 프록시 및 로드 밸런싱 가속**</td><td>**수백 개의 풍부한 서드파티 모듈**, **디렉터리별 개별 제어(****`.htaccess`****)**</td><td>**Windows Server / Active Directory(AD) 및 .NET 생태계 완벽 통합**</td></tr>
-    <tr><td>**핵심 아키텍처**</td><td>**비동기 이벤트 기반 (Event-Driven / Non-Blocking)**</td><td>**프로세스 / 스레드 기반 (MPM - Prefork, Worker, Event)**</td><td>**Windows OS 커널 모드 드라이버 (****`HTTP.sys`****) 밀착형**</td></tr>
+    <tr><td>**핵심 강점**</td><td>**초고속 정적 파일 처리**, 극도의 경량화, **리버스 프록시 및 로드 밸런싱 가속**</td><td>**수백 개의 풍부한 서드파티 모듈**, **디렉터리별 개별 제어(`.htaccess`)**</td><td>**Windows Server / Active Directory(AD) 및 .NET 생태계 완벽 통합**</td></tr>
+    <tr><td>**핵심 아키텍처**</td><td>**비동기 이벤트 기반 (Event-Driven / Non-Blocking)**</td><td>**프로세스 / 스레드 기반 (MPM - Prefork, Worker, Event)**</td><td>**Windows OS 커널 모드 드라이버 (`HTTP.sys`) 밀착형**</td></tr>
     <tr><td>**동시 접속 처리 (C10K)**</td><td>**매우 뛰어남** (소수 작업 스레드로 수만 커넥션 처리)</td><td>보통 (스레드/프로세스 생성 오버헤드로 고트래픽 시 리소스 증가)</td><td>뛰어남 (Windows 커널 레벨 캐싱 가속 지원)</td></tr>
     <tr><td>**모듈 확장성**</td><td>정적 컴파일 위주 (동적 모듈 설정이 상대적으로 복잡)</td><td>**매우 뛰어남** (모듈 동적 로딩 및 플러그인 생태계 방대)</td><td>Windows 컴포넌트 및 IIS 확장 모듈 기반</td></tr>
-    <tr><td>**개별 디렉터리 제어**</td><td>미지원 (메인 설정 파일 수정 후 reload 필수)</td><td>**지원 (****`.htaccess`****로 서버 재시작 없이 즉시 반영)**</td><td>지원 (`web.config` 기반 분리 제어)</td></tr>
+    <tr><td>**개별 디렉터리 제어**</td><td>미지원 (메인 설정 파일 수정 후 reload 필수)</td><td>**지원 (`.htaccess`로 서버 재시작 없이 즉시 반영)**</td><td>지원 (`web.config` 기반 분리 제어)</td></tr>
     <tr><td>**관리 인터페이스**</td><td>CLI (텍스트 설정 파일: `nginx.conf`)</td><td>CLI (텍스트 설정 파일: `httpd.conf`)</td><td>**직관적인 GUI 관리자 콘솔 (IIS Manager)** + PowerShell</td></tr>
     <tr><td>**지원 운영체제**</td><td>Linux, Unix, macOS, Windows (Linux 최적화)</td><td>Linux, Unix, Windows (크로스 플랫폼)</td><td>**Windows Server 전용** (OS 종속적)</td></tr>
     <tr><td>**추천 인프라 환경**</td><td>**고트래픽 분산 서비스, MSA 리버스 프록시 대문, Linux/Container**</td><td>**전통적인 웹 호스팅 환경, 다기능 보안 커스텀 서버, Linux**</td><td>**Microsoft 인프라 표준화 기업, C#/.NET 프레임워크 기반 서비스**</td></tr>
@@ -116,7 +116,7 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 - **장점**:
 1. **방대한 모듈 생태계**: 인증, 보안 필터링, URL 재작성(`mod_rewrite`), 프록시 등 수백 개의 서드파티 모듈이 성숙해 있으며 동적 로딩이 용이.
-1. **디렉터리별 유연한 제어 (****`.htaccess`****)**: 메인 서버를 재시작하지 않고도 개별 디렉터리 내에 `.htaccess` 파일을 두어 접근 제어 및 리다이렉트를 실시간 독립 적용 가능.
+1. **디렉터리별 유연한 제어 (`.htaccess`)**: 메인 서버를 재시작하지 않고도 개별 디렉터리 내에 `.htaccess` 파일을 두어 접근 제어 및 리다이렉트를 실시간 독립 적용 가능.
 1. **수십 년간 검증된 호환성**: 다양한 레거시 시스템, 이기종 OS, PHP/CGI 모듈(`mod_php` 등)과의 호환성이 탁월함.
 
 - **단점**:
@@ -134,7 +134,7 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 - **장점**:
 1. **Windows & .NET 생태계 완벽 결합**: Active Directory(AD) 통합 인증 및 Windows Server 인프라와 완벽하게 융합.
-1. **커널 모드 드라이버 (****`HTTP.sys`****) 가속**: Windows OS 커널 레벨에서 HTTP 요청을 직접 가로채어 정적 콘텐츠를 서빙하므로 윈도우 환경에서 매우 빠른 속도 보장.
+1. **커널 모드 드라이버 (`HTTP.sys`) 가속**: Windows OS 커널 레벨에서 HTTP 요청을 직접 가로채어 정적 콘텐츠를 서빙하므로 윈도우 환경에서 매우 빠른 속도 보장.
 1. **직관적인 GUI 관리 도구 (IIS Manager)**: GUI 환경에서 마우스 클릭 몇 번으로 가상 호스트, SSL 바인딩, 애플리케이션 풀(AppPool) 격리를 손쉽게 설정.
 
 - **단점**:

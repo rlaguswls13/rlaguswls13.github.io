@@ -1,0 +1,172 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","matplotlib","subplots","gridspec","layout"]
+slug: "python-matplotlib-subplots"
+subcategory: "visualization"
+status: "publish"
+description: "한 Figure에 여러 Axes를 놓는 표준 방법은 fig, axes = plt.subplots(nrows, ncols)입니다. 반환된 axes는 (행, 열) 모양의 ndarray이므로 인덱싱 또는 axes.flatten() 순회로 각 칸을 채웁니다. 축 범위를 공유하려면 sharex/sharey, 불규칙한 격자(칸마다 크기가 다른 배치)가 필요하면 fig.addgridspec을 씁니다. 칸끼리 라벨·제목이 겹치는 문제는 constrainedlayout=True(권장) 또는 fig.tight_layout()으로 자동 조정합니다."
+title: "Python - matplotlib 03. 여러 서브플롯 배치"
+page_id: "3cf19946-ca76-8109-b3a7-ffc0316e422b"
+source_id: "3cf19946ca768109b3a7ffc0316e422b"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-matplotlib-03-3cf19946ca768109b3a7ffc0316e422b"
+id: "3cf19946ca768109b3a7ffc0316e422b"
+sourceId: "3cf19946-ca76-8109-b3a7-ffc0316e422b"
+date: "2026-09-01"
+tags: ["Python","matplotlib","subplots","gridspec","layout"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-matplotlib-03-3cf19946ca768109b3a7ffc0316e422b"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. plt.subplots(nrows, ncols)](#1-pltsubplotsnrows-ncols)
+- [2. axes.flatten()으로 순회](#2-axesflatten으로-순회)
+- [3. sharex / sharey -축 공유](#3-sharex-sharey-축-공유)
+- [4. fig.add_gridspec -불규칙 배치](#4-figaddgridspec-불규칙-배치)
+- [5. 레이아웃 자동 조정 -constrained_layout vs tight_layout](#5-레이아웃-자동-조정-constrainedlayout-vs-tightlayout)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+한 Figure에 여러 Axes를 놓는 표준 방법은 **`fig, axes = plt.subplots(nrows, ncols)`**입니다. 반환된 `axes`는 (행, 열) 모양의 `ndarray`이므로 인덱싱 또는 `axes.flatten()` 순회로 각 칸을 채웁니다.
+축 범위를 공유하려면 **`sharex`/`sharey`**, 불규칙한 격자(칸마다 크기가 다른 배치)가 필요하면 **`fig.add_gridspec`**을 씁니다.
+칸끼리 라벨·제목이 겹치는 문제는 **`constrained_layout=True`**(권장) 또는 `fig.tight_layout()`으로 자동 조정합니다.
+
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(0)
+```
+
+
+<NotionDivider />
+
+<a id="1-pltsubplotsnrows-ncols"></a>
+
+## 1. `plt.subplots(nrows, ncols)`
+
+
+```python
+fig, axes = plt.subplots(2, 3, figsize=(10, 6), constrained_layout=True)
+
+axes[0, 0].plot(np.arange(10))
+axes[1, 2].hist(rng.normal(size=200), bins=20)
+axes[0, 1].set_title("(0, 1)")
+```
+
+- `axes`의 모양: `subplots(2, 3)` → `(2, 3)` 배열, `subplots(1, 3)` → `(3,)` 배열, `subplots(1, 1)` → 배열이 아닌 Axes 하나.
+- 모양이 상황마다 달라 헷갈리면 `squeeze=False`를 주면 **항상 2차원 배열**로 옵니다(`axes[0, 0]`으로 일관 접근).
+> 💡 **이럴 때**: 칸 개수가 코드 실행 중에 정해지면 `squeeze=False`로 고정해 인덱싱 코드를 단순하게 유지합니다.
+
+
+<NotionDivider />
+
+<a id="2-axesflatten으로-순회"></a>
+
+## 2. `axes.flatten()`으로 순회
+
+칸마다 같은 종류의 그래프를 그릴 때는 1차원으로 펴서 반복합니다.
+
+
+```python
+groups = {"A": rng.normal(0, 1, 100), "B": rng.normal(1, 2, 100),
+          "C": rng.normal(-1, 0.5, 100), "D": rng.exponential(1, 100)}
+
+fig, axes = plt.subplots(2, 2, figsize=(8, 6), constrained_layout=True)
+for ax, (name, data) in zip(axes.flatten(), groups.items()):
+    ax.hist(data, bins=20)
+    ax.set_title(name)
+```
+
+- `axes.flat`(반복자)도 같은 용도로 쓸 수 있습니다.
+- 칸이 데이터보다 많으면 남는 칸은 `ax.set_visible(False)` 또는 `fig.delaxes(ax)`로 숨깁니다.
+그려지는 것: 2×2 격자에 네 그룹의 히스토그램이 각각 제목과 함께 그려집니다. D 칸은 오른쪽으로 긴 꼬리(지수분포) 형태입니다.
+
+
+<NotionDivider />
+
+<a id="3-sharex-sharey-축-공유"></a>
+
+## 3. `sharex` / `sharey` -축 공유
+
+같은 척도로 비교해야 할 때 축 범위를 묶습니다.
+
+
+```python
+fig, axes = plt.subplots(3, 1, figsize=(6, 8), sharex=True, constrained_layout=True)
+for i, ax in enumerate(axes):
+    ax.plot(np.cumsum(rng.normal(size=100)))
+    ax.set_ylabel(f"series {i}")
+axes[-1].set_xlabel("step")
+```
+
+- `sharex=True`면 한 칸을 확대·이동하면 나머지도 같이 움직이고, 안쪽 칸의 x 눈금 라벨은 자동으로 숨겨집니다.
+- 부분 공유: `sharey="row"`, `sharex="col"`.
+> 💡 **이럴 때**: 여러 시계열의 높낮이를 공정하게 비교하려면 `sharey=True`가 필수입니다. 축이 칸마다 다르면 눈으로는 비슷해 보여도 실제 스케일이 다를 수 있습니다.
+
+
+<NotionDivider />
+
+<a id="4-figaddgridspec-불규칙-배치"></a>
+
+## 4. `fig.add_gridspec` -불규칙 배치
+
+칸 크기를 다르게(예: 위는 넓은 그래프 하나, 아래는 작은 그래프 둘) 하려면 GridSpec으로 격자를 정의하고 슬라이스로 칸을 묶습니다.
+
+
+```python
+fig = plt.figure(figsize=(8, 6), constrained_layout=True)
+gs = fig.add_gridspec(2, 2)
+
+ax_top = fig.add_subplot(gs[0, :])     # 첫 행 전체
+ax_bl = fig.add_subplot(gs[1, 0])      # 둘째 행 왼쪽
+ax_br = fig.add_subplot(gs[1, 1])      # 둘째 행 오른쪽
+
+ax_top.plot(np.cumsum(rng.normal(size=200)))
+ax_bl.scatter(rng.normal(size=50), rng.normal(size=50))
+ax_br.hist(rng.normal(size=200), bins=20)
+```
+
+- `gs[0, :]`는 "0행의 모든 열", `gs[:, 0]`은 "모든 행의 0열"처럼 NumPy 슬라이스 문법을 그대로 씁니다.
+- `width_ratios`/`height_ratios`로 칸 비율을 조정합니다: `fig.add_gridspec(2, 2, height_ratios=[2, 1])`.
+- 간단한 경우엔 `plt.subplot_mosaic([["top", "top"], ["bl", "br"]])`가 더 읽기 쉽습니다(문자열 이름으로 Axes 딕셔너리 반환).
+
+<NotionDivider />
+
+<a id="5-레이아웃-자동-조정-constrainedlayout-vs-tightlayout"></a>
+
+## 5. 레이아웃 자동 조정 -`constrained_layout` vs `tight_layout`
+
+칸이 많아지면 축 라벨·제목·범례가 서로 겹치거나 잘립니다. 두 가지 자동 조정기가 있습니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>방식</td><td>지정 위치</td><td>특징</td></tr>
+    <tr><td>`constrained_layout=True`</td><td>`plt.subplots(..., constrained_layout=True)` 또는 `plt.figure(layout="constrained")`</td><td>그림을 그리는 동안 지속적으로 간격을 계산. `colorbar`·`suptitle`·범례까지 고려. **현재 권장**</td></tr>
+    <tr><td>`fig.tight_layout()`</td><td>그림을 다 그린 뒤 한 번 호출</td><td>간단하지만 이후에 요소를 추가하면 다시 호출해야 함. 일부 배치에서 부정확</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+fig, axes = plt.subplots(2, 2, layout="constrained")   # 최신 표기
+# 또는
+fig.tight_layout()                                      # 그린 뒤 호출
+```
+
+- 둘을 동시에 쓰면 안 됩니다. 하나만 선택합니다.
+- 칸 사이 간격을 수동으로 주려면 `fig.subplots_adjust(wspace=0.3, hspace=0.4)`.
+> 💡 **이럴 때**: `savefig`에서 라벨이 잘리면 레이아웃 조정기를 켜거나 `fig.savefig(..., bbox_inches="tight")`를 함께 씁니다. → Python - matplotlib 07. 저장·해상도·백엔드
+
+💡 **이럴 때**: 범례를 그림 밖에 두어 겹침을 피하고 싶으면 `ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1))` 후 `constrained_layout`이 여백을 잡게 합니다. → Python - matplotlib 04. 축·스케일·틱·범례
+
+
+<NotionDivider />
+

@@ -1,0 +1,187 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","matplotlib","style-color","colormap","rcparams"]
+slug: "python-matplotlib-style-color"
+subcategory: "visualization"
+status: "publish"
+description: "그림의 일관된 외형은 세 계층으로 관리합니다. 스타일시트(plt.style.use(...))로 전체 톤을 한 번에 바꾸고, rcParams로 개별 기본값(폰트 크기, 선 굵기 등)을 조정하며, 각 플롯 호출에서 색을 직접 지정합니다. 색을 값에 매핑할 때는 컬러맵(colormap)을 쓰며, 데이터 성격에 따라 순차형(viridis)·발산형(coolwarm)·범주형(tab10)을 구분해 골라야 합니다. 연속값→색 변환은 Normalize가 담당하고, 그 대응표를 colorbar로 보여줍니다."
+title: "Python - matplotlib 05. 스타일·색상·컬러맵"
+page_id: "3cf19946-ca76-81cb-be26-ed818aac5650"
+source_id: "3cf19946ca7681cbbe26ed818aac5650"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-matplotlib-05-3cf19946ca7681cbbe26ed818aac5650"
+id: "3cf19946ca7681cbbe26ed818aac5650"
+sourceId: "3cf19946-ca76-81cb-be26-ed818aac5650"
+date: "2026-09-01"
+tags: ["Python","matplotlib","style-color","colormap","rcparams"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-matplotlib-05-3cf19946ca7681cbbe26ed818aac5650"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 스타일시트 -plt.style.use](#1-스타일시트-pltstyleuse)
+- [2. rcParams -개별 기본값](#2-rcparams-개별-기본값)
+- [3. 색 지정 방법](#3-색-지정-방법)
+- [4. 컬러맵 -값을 색으로](#4-컬러맵-값을-색으로)
+- [5. Normalize와 colorbar](#5-normalize와-colorbar)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+그림의 일관된 외형은 세 계층으로 관리합니다. **스타일시트(`plt.style.use(...)`)**로 전체 톤을 한 번에 바꾸고, **`rcParams`**로 개별 기본값(폰트 크기, 선 굵기 등)을 조정하며, 각 플롯 호출에서 **색을 직접 지정**합니다.
+색을 값에 매핑할 때는 **컬러맵(colormap)**을 쓰며, 데이터 성격에 따라 **순차형(`viridis`)·발산형(`coolwarm`)·범주형(`tab10`)**을 구분해 골라야 합니다.
+연속값→색 변환은 **`Normalize`**가 담당하고, 그 대응표를 **`colorbar`**로 보여줍니다.
+
+
+```python
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-스타일시트-pltstyleuse"></a>
+
+## 1. 스타일시트 -`plt.style.use`
+
+
+```python
+print(plt.style.available)          # 사용 가능한 스타일 목록
+plt.style.use("seaborn-v0_8")       # 예: seaborn 계열 톤 (버전에 따라 이름 다름)
+plt.style.use("ggplot")
+plt.style.use("default")            # 초기화
+
+with plt.style.context("dark_background"):   # 이 블록에서만 적용
+    fig, ax = plt.subplots()
+    ax.plot(np.arange(10))
+```
+
+- 스타일시트는 배경색·격자·색 순환(cycle)·폰트 등을 묶어 놓은 설정 세트입니다.
+- 여러 개를 리스트로 겹쳐 적용할 수 있습니다: `plt.style.use(["seaborn-v0_8", {"figure.dpi": 120}])`.
+- 최신 matplotlib에서 seaborn 스타일 이름은 `seaborn-v0_8-*` 형태입니다(구버전 `seaborn-*`은 제거됨).
+> 💡 **이럴 때**: 발표용·논문용·다크모드용 설정을 각각 `.mplstyle` 파일로 저장해 두고 `plt.style.use("mystyle.mplstyle")`로 전환하면 그림마다 손볼 필요가 없습니다.
+
+
+<NotionDivider />
+
+<a id="2-rcparams-개별-기본값"></a>
+
+## 2. `rcParams` -개별 기본값
+
+
+```python
+mpl.rcParams["figure.figsize"] = (7, 4.5)
+mpl.rcParams["font.size"] = 11
+mpl.rcParams["axes.grid"] = True
+mpl.rcParams["axes.prop_cycle"] = mpl.cycler(color=["#4C72B0", "#DD8452", "#55A868"])
+
+with mpl.rc_context({"lines.linewidth": 3}):   # 임시 변경
+    ...
+
+mpl.rcdefaults()   # 전체 초기화
+```
+
+- `rcParams`는 딕셔너리처럼 동작하는 전역 설정입니다. 스타일시트도 결국 `rcParams`를 바꾸는 것입니다.
+- `axes.prop_cycle`은 `color=` 없이 여러 번 `plot`했을 때 자동으로 도는 색 목록입니다. `"C0"`, `"C1"`은 이 순환의 0번, 1번 색을 뜻합니다.
+
+<NotionDivider />
+
+<a id="3-색-지정-방법"></a>
+
+## 3. 색 지정 방법
+
+matplotlib이 받아들이는 색 표현은 여러 가지입니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>표기</td><td>예</td><td>비고</td></tr>
+    <tr><td>이름</td><td>`"red"`, `"tab:blue"`, `"forestgreen"`</td><td>CSS 색 이름 + `tab:` 계열</td></tr>
+    <tr><td>순환 참조</td><td>`"C0"` ~ `"C9"`</td><td>현재 `prop_cycle`의 n번째 색</td></tr>
+    <tr><td>HEX</td><td>`"#4C72B0"`, `"#4C72B080"`(알파 포함)</td><td>웹 색상 코드</td></tr>
+    <tr><td>RGB(A) 튜플</td><td>`(0.3, 0.45, 0.69)`, `(0.3, 0.45, 0.69, 0.5)`</td><td>0~1 범위</td></tr>
+    <tr><td>회색조</td><td>`"0.4"`</td><td>문자열 숫자 0(검정)~1(흰색)</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+ax.plot(x, y, color="#4C72B0")
+ax.plot(x, y2, color="C1", alpha=0.6)
+```
+
+
+<NotionDivider />
+
+<a id="4-컬러맵-값을-색으로"></a>
+
+## 4. 컬러맵 -값을 색으로
+
+컬러맵은 **스칼라 값 → 색**의 함수입니다. 데이터 성격에 맞춰 골라야 오해가 없습니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>유형</td><td>대표 컬러맵</td><td>언제</td><td>특징</td></tr>
+    <tr><td>순차형(sequential)</td><td>`viridis`, `magma`, `Blues`</td><td>0→최대처럼 **한 방향 크기**</td><td>명도가 단조 증가, 색맹·흑백 안전(`viridis` 계열)</td></tr>
+    <tr><td>발산형(diverging)</td><td>`coolwarm`, `RdBu`, `PiYG`</td><td>**기준값(0) 중심**의 +/- (상관계수, 편차)</td><td>가운데가 중립색, 양끝이 대비색</td></tr>
+    <tr><td>범주형(qualitative)</td><td>`tab10`, `tab20`, `Set2`</td><td>**순서 없는 분류** (그룹 이름)</td><td>서로 구분되는 색, 개수 제한적</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+# 순차형: 산점도의 세 번째 변수
+sc = ax.scatter(x, y, c=z, cmap="viridis")
+fig.colorbar(sc, ax=ax, label="z")
+
+# 발산형: 상관 행렬 히트맵
+im = ax.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
+fig.colorbar(im, ax=ax)
+
+# 범주형: 그룹별 색을 직접 뽑아 쓰기
+cmap = plt.get_cmap("tab10")
+for i, (name, g) in enumerate(groups.items()):
+    ax.plot(g["x"], g["y"], color=cmap(i), label=name)
+```
+
+> 💡 **이럴 때**: 무지개(`jet`) 컬러맵은 명도가 들쭉날쭉해 실제 없는 경계를 만들고 흑백 인쇄·색맹에서 무너집니다. 크기 데이터는 `viridis` 계열을 기본으로 씁니다.
+
+💡 **이럴 때**: 상관계수·증감률처럼 0을 기준으로 부호가 갈리는 값은 발산형(`coolwarm`)에 `vmin=-max, vmax=+max`로 중심을 0에 맞춥니다. 안 그러면 0이 중립색에 오지 않아 왜곡됩니다.
+
+
+<NotionDivider />
+
+<a id="5-normalize와-colorbar"></a>
+
+## 5. `Normalize`와 `colorbar`
+
+연속값을 컬러맵에 넘기기 전, **어떤 값 범위를 [0, 1]로 볼지** 정하는 것이 `Normalize`입니다.
+
+
+```python
+import matplotlib.colors as mcolors
+
+norm = mcolors.Normalize(vmin=0, vmax=100)          # 선형
+# norm = mcolors.LogNorm(vmin=1, vmax=1e4)          # 로그(값이 여러 자릿수)
+# norm = mcolors.TwoSlopeNorm(vcenter=0, vmin=-5, vmax=20)  # 0을 중심으로 비대칭 발산
+
+sc = ax.scatter(x, y, c=z, cmap="viridis", norm=norm)
+cbar = fig.colorbar(sc, ax=ax, label="score")
+cbar.set_ticks([0, 25, 50, 75, 100])
+```
+
+- `vmin`/`vmax`를 고정하면 여러 그림의 색 기준이 통일되어 비교가 가능합니다(고정 안 하면 그림마다 자동 범위가 달라짐).
+- `colorbar`는 `scatter`/`imshow`가 반환한 매핑 객체(`ScalarMappable`)를 받아 색↔값 눈금자를 그립니다.
+- 여러 subplot이 색 기준을 공유하면 `fig.colorbar(sc, ax=axes.ravel().tolist())`로 하나만 그립니다.
+> 💡 **이럴 때**: 시점별로 여러 히트맵을 나열해 변화를 보여줄 때는 모든 그림에 같은 `vmin`/`vmax`를 줘야 색이 같은 값을 뜻합니다.
+
+
+<NotionDivider />
+

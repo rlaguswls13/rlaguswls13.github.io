@@ -1,0 +1,208 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","linear-algebra","matmul","svd"]
+slug: "python-numpy-linear-algebra"
+subcategory: "numpy"
+status: "publish"
+description: "전처리·머신러닝에 필요한 만큼의 선형대수만 다룹니다. 핵심은 @(행렬곱)와 *(원소별 곱)의 구분, 그리고 np.linalg의 inv/norm/eig/svd입니다.\n\nPCA·차원축소·정규방정식이 전부 이 함수들 위에 있습니다."
+title: "Python - NumPy 10. 선형대수 기초"
+page_id: "3ce19946-ca76-80e7-8c9a-cb8da7f20f38"
+source_id: "3ce19946ca7680e78c9acb8da7f20f38"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-10-3ce19946ca7680e78c9acb8da7f20f38"
+id: "3ce19946ca7680e78c9acb8da7f20f38"
+sourceId: "3ce19946-ca76-80e7-8c9a-cb8da7f20f38"
+date: "2026-08-30"
+tags: ["Python","numpy","linear-algebra","matmul","svd"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-10-3ce19946ca7680e78c9acb8da7f20f38"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. @ vs *  반드시 구분](#1-vs-반드시-구분)
+- [2. 행렬-벡터 연산](#2-행렬-벡터-연산)
+- [3. np.linalg 주요 함수](#3-nplinalg-주요-함수)
+- [4. 고유값 분해 / 특이값 분해 :  차원축소의 기반](#4-고유값-분해-특이값-분해-차원축소의-기반)
+  - [고유값 (eigendecomposition)](#고유값-eigendecomposition)
+  - [특이값 분해 (SVD) — PCA의 실제 구현](#특이값-분해-svd-pca의-실제-구현)
+- [5. 전처리에서 실제로 자주 쓰는 것](#5-전처리에서-실제로-자주-쓰는-것)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+전처리·머신러닝에 필요한 만큼의 선형대수만 다룹니다.
+핵심은 **`@`(행렬곱)와 `*`(원소별 곱)의 구분**, 그리고 `np.linalg`의 `inv`/`norm`/`eig`/`svd`입니다.
+
+PCA·차원축소·정규방정식이 전부 이 함수들 위에 있습니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-vs-반드시-구분"></a>
+
+## 1. `@` vs `*`  반드시 구분
+
+
+```python
+A = np.array([[1, 2],
+              [3, 4]])
+B = np.array([[5, 6],
+              [7, 8]])
+
+A * B      # 원소별 곱 (Hadamard)
+# [[ 5 12]
+#  [21 32]]
+
+A @ B      # 행렬곱
+# [[19 22]
+#  [43 50]]
+```
+
+- `*`는 **원소별**입니다. shape가 같거나 브로드캐스팅 가능해야 합니다.
+- `@`는 **행렬곱**입니다. `(m, k) @ (k, n) → (m, n)`. 안쪽 차원 `k`가 일치해야 합니다.
+- `np.dot(A, B)`는 `A @ B`와 (2차원에서) 동일합니다. `np.matmul`도 마찬가지입니다.
+> **조용한 버그 1순위**: 행렬곱을 하려다 `*`를 써도 shape가 우연히 맞으면 에러 없이 틀린 값이 나옵니다.
+
+
+<NotionDivider />
+
+<a id="2-행렬-벡터-연산"></a>
+
+## 2. 행렬-벡터 연산
+
+
+```python
+A = np.array([[1., 2.],
+              [3., 4.]])
+v = np.array([1., 1.])          # (2,)
+
+A @ v          # array([3., 7.])   - (2,2) @ (2,) → (2,)
+v @ A          # array([4., 6.])   - (2,) @ (2,2) → (2,)  (왼쪽 곱)
+
+A.T @ A        # (2,2) - "그람 행렬", 공분산·정규방정식에서 등장
+```
+
+> 💡 **이럴 때**: 공분산 행렬이나 선형회귀 정규방정식의 그람 행렬이 필요할 때.
+
+
+<NotionDivider />
+
+<a id="3-nplinalg-주요-함수"></a>
+
+## 3. `np.linalg` 주요 함수
+
+
+```python
+A = np.array([[4., 2.],
+              [1., 3.]])
+
+np.linalg.inv(A)            # 역행렬 (정칙행렬일 때만; 아니면 LinAlgError)
+np.linalg.det(A)            # 행렬식
+np.linalg.matrix_rank(A)    # 계수(rank)
+
+np.linalg.norm(v)           # L2 노름 (벡터 길이) = sqrt(sum(v**2))
+np.linalg.norm(A, ord='fro')   # 프로베니우스 노름
+
+# 선형 연립방정식 Ax = b  →  x
+b = np.array([1., 2.])
+x = np.linalg.solve(A, b)   # inv(A) @ b 보다 빠르고 수치적으로 안정
+```
+
+> **`solve` vs `inv`**: `x = inv(A) @ b`보다 `x = np.linalg.solve(A, b)`가 더 정확하고 빠릅니다. 역행렬을 명시적으로 구할 이유는 거의 없습니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 선형회귀 정규방정식 등 `Ax = b`를 풀 때 `inv` 대신 `solve`를 씁니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="4-고유값-분해-특이값-분해-차원축소의-기반"></a>
+
+## 4. 고유값 분해 / 특이값 분해 :  차원축소의 기반
+
+<a id="고유값-eigendecomposition"></a>
+
+### 고유값 (eigendecomposition)
+
+
+```python
+A = np.array([[2., 0.],
+              [0., 3.]])
+
+eigvals, eigvecs = np.linalg.eig(A)
+# eigvals: array([2., 3.])
+# eigvecs: 각 열이 고유벡터
+
+# 대칭행렬(공분산 등)이면 eigh가 더 빠르고 안정적
+eigvals, eigvecs = np.linalg.eigh(A)
+```
+
+> 💡 **이럴 때**: 공분산처럼 대칭행렬의 고윳값이 필요할 때는 `eig`가 아니라 `eigh`를 씁니다.
+
+<a id="특이값-분해-svd-pca의-실제-구현"></a>
+
+### 특이값 분해 (SVD) — PCA의 실제 구현
+
+
+```python
+X = np.array([[2., 1., 0.],
+              [0., 3., 1.],
+              [4., 0., 2.],
+              [1., 2., 5.]])       # 각 축으로 실제 분산이 있는 데이터
+
+# 보통 중심화(평균 제거) 후 SVD
+Xc = X - X.mean(axis=0)
+U, S, Vt = np.linalg.svd(Xc, full_matrices=False)
+# S: 특이값 (큰 값 = 분산이 큰 방향)
+# Vt: 주성분 방향 (각 행이 하나의 주성분)
+
+# 0에 가까운 특이값은 버린다 (S <= tol인 성분은 노이즈)
+k = int(np.sum(S > 1e-10))       # 유효 성분 개수
+X_reduced = Xc @ Vt[:k].T        # (4, k)로 투영
+```
+
+> 주의: `Xc`의 계수(rank)보다 큰 `k`를 쓰면 그 성분의 방향은 수치적으로 무의미한 노이즈입니다. `k`는 반드시 `S > tol`인 개수 이하로 잡습니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 차원축소(PCA)를 직접 구현하거나 노이즈 성분을 잘라낼 때. 중심화 후 SVD가 표준 절차입니다.
+
+
+</NotionIndent>
+
+PCA를 직접 구현할 일은 드물지만(`sklearn.decomposition.PCA`), "PCA = 공분산행렬의 고유분해 = 중심화 데이터의 SVD"라는 연결은 알아두면 좋습니다.
+
+
+<NotionDivider />
+
+<a id="5-전처리에서-실제로-자주-쓰는-것"></a>
+
+## 5. 전처리에서 실제로 자주 쓰는 것
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>작업</td><td>코드</td></tr>
+    <tr><td>벡터 정규화 (단위벡터)</td><td>`v / np.linalg.norm(v)`</td></tr>
+    <tr><td>행별 L2 정규화</td><td>`X / np.linalg.norm(X, axis=1, keepdims=True)`</td></tr>
+    <tr><td>공분산 행렬</td><td>`np.cov(X, rowvar=False)` 또는 `Xc.T @ Xc / (n-1)`</td></tr>
+    <tr><td>상관계수 행렬</td><td>`np.corrcoef(X, rowvar=False)`</td></tr>
+    <tr><td>두 벡터 코사인 유사도</td><td>`a @ b / (np.linalg.norm(a) * np.linalg.norm(b))`</td></tr>
+  </tbody>
+</NotionTable>
+

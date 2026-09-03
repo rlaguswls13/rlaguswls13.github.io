@@ -1,0 +1,229 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas"]
+slug: "python-pandas-series-dataframe"
+subcategory: "pandas"
+status: "publish"
+description: "pandas의 모든 것은 Series(1차원) 와 DataFrame(2차원), 그리고 두 구조의 행·열에 붙는 Index(라벨) 위에 세워집니다.\nDataFrame은 \"같은 길이의 Series 여러 개를 열로 묶고, 공통 행 라벨(Index)을 공유\"하는 구조입니다.\n\nNumPy ndarray가 \"위치(0,1,2)로만 접근하는 균일 dtype 블록\"이라면, pandas는 그 위에 의미 있는 라벨과 열별 dtype, 결측 표현을 얹은 계층입니다."
+title: "Python - pandas 01. 기초 개념과 자료구조"
+page_id: "3ce19946-ca76-801d-914c-e5d0c1a9f881"
+source_id: "3ce19946ca76801d914ce5d0c1a9f881"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-01-3ce19946ca76801d914ce5d0c1a9f881"
+id: "3ce19946ca76801d914ce5d0c1a9f881"
+sourceId: "3ce19946-ca76-801d-914c-e5d0c1a9f881"
+date: "2026-09-01"
+tags: ["Python","pandas"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-01-3ce19946ca76801d914ce5d0c1a9f881"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. pandas와 NumPy의 관계 — 라벨 계층](#1-pandas와-numpy의-관계-라벨-계층)
+- [2. Series — 라벨이 붙은 1차원 배열](#2-series-라벨이-붙은-1차원-배열)
+- [3. DataFrame — 열의 모음](#3-dataframe-열의-모음)
+- [4. Index — 데이터가 아니라 "주소"](#4-index-데이터가-아니라-주소)
+  - [MultiIndex (계층 인덱스) — 개념만](#multiindex-계층-인덱스-개념만)
+- [5. dtype 체계 — pandas가 NumPy에 더한 것](#5-dtype-체계-pandas가-numpy에-더한-것)
+- [6. view vs copy와 SettingWithCopyWarning](#6-view-vs-copy와-settingwithcopywarning)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+pandas의 모든 것은 **`Series`(1차원)** 와 **`DataFrame`(2차원)**, 그리고 두 구조의 행·열에 붙는 **`Index`(라벨)** 위에 세워집니다.
+
+`DataFrame`은 "같은 길이의 `Series` 여러 개를 열로 묶고, 공통 행 라벨(Index)을 공유"하는 구조입니다.
+
+NumPy `ndarray`가 "위치(0,1,2)로만 접근하는 균일 dtype 블록"이라면, pandas는 그 위에 **의미 있는 라벨**과 **열별 dtype**, **결측 표현**을 얹은 계층입니다.
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-pandas와-numpy의-관계-라벨-계층"></a>
+
+## 1. pandas와 NumPy의 관계 — 라벨 계층
+
+논의의 계층을 먼저 획정합니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>계층</td><td>자료구조</td><td>접근 방식</td><td>결측</td></tr>
+    <tr><td>NumPy</td><td>`ndarray`</td><td>위치(정수 인덱스)만</td><td>`np.nan`(float 전용)</td></tr>
+    <tr><td>pandas</td><td>`Series` / `DataFrame`</td><td>위치 + **라벨(Index)**</td><td>`NaN` / `None` / `pd.NA` / `NaT`</td></tr>
+  </tbody>
+</NotionTable>
+
+pandas는 내부적으로 열 데이터를 NumPy 배열(또는 pandas 확장 배열)로 보관합니다. 그래서 벡터화·브로드캐스팅은 그대로 쓰되, 추가로 **Index 기반 자동 정렬(alignment)**이 붙습니다.
+
+
+```python
+a = pd.Series([1, 2, 3], index=["x", "y", "z"])
+b = pd.Series([10, 20, 30], index=["y", "z", "w"])
+a + b
+# w     NaN
+# x     NaN
+# y    12.0
+# z    23.0   ← 라벨이 일치하는 것끼리만 더하고, 없는 라벨은 NaN
+```
+
+> 💡 **이럴 때**: 서로 다른 소스에서 온 두 시계열/표를 합칠 때. 위치가 아니라 라벨로 맞춰지므로 순서가 달라도 안전하지만, 라벨이 어긋나면 조용히 `NaN`이 생깁니다.
+
+
+<NotionDivider />
+
+<a id="2-series-라벨이-붙은-1차원-배열"></a>
+
+## 2. Series — 라벨이 붙은 1차원 배열
+
+
+```python
+s = pd.Series([10, 20, 30], index=["a", "b", "c"], name="score")
+
+s.values      # array([10, 20, 30])   - 내부 NumPy 배열
+s.index       # Index(['a', 'b', 'c'], dtype='object')
+s.dtype       # dtype('int64')
+s["b"]        # 20      - 라벨 접근
+s.iloc[1]     # 20      - 위치 접근
+```
+
+- `Series`는 "정렬된 `dict`"로 봐도 됩니다: 키(Index) → 값.
+- `name` 속성은 `DataFrame`의 열로 들어갈 때 열 이름이 됩니다.
+
+<NotionDivider />
+
+<a id="3-dataframe-열의-모음"></a>
+
+## 3. DataFrame — 열의 모음
+
+
+```python
+df = pd.DataFrame({
+    "name": ["Kim", "Lee", "Park"],
+    "age": [25, 30, 35],
+    "city": ["Seoul", "Busan", "Seoul"],
+})
+
+df.shape        # (3, 3)
+df.columns      # Index(['name', 'age', 'city'], dtype='object')
+df.index        # RangeIndex(start=0, stop=3, step=1)
+df.dtypes       # name: object, age: int64, city: object
+df["age"]       # 열 하나 → Series
+df[["name", "age"]]   # 열 여러 개 → DataFrame
+```
+
+- 각 열은 독립된 dtype을 가집니다 (열 내부는 균일, 열 간에는 자유).
+- 행 방향(같은 행의 여러 열)은 서로 다른 타입이 섞이므로, 행을 뽑으면 dtype이 `object`로 승격되는 경우가 많습니다.
+
+<NotionDivider />
+
+<a id="4-index-데이터가-아니라-주소"></a>
+
+## 4. Index — 데이터가 아니라 "주소"
+
+`Index`는 값이 아니라 **행·열의 이름표**입니다. 다음 기능의 핵심입니다.
+
+- **정렬(alignment)**: 연산·결합 시 라벨 기준으로 맞춤 (2절).
+- **조회 속도**: 해시 기반 조회(`.loc`)를 O(1)로 만듦.
+- **재구조화**: `set_index`/`reset_index`로 열↔인덱스 전환, `MultiIndex`로 계층 구성.
+
+```python
+df2 = df.set_index("name")      # name 열을 행 인덱스로
+df2.loc["Lee"]                  # 라벨로 행 조회
+df2.reset_index()               # 다시 기본 RangeIndex로
+```
+
+<a id="multiindex-계층-인덱스-개념만"></a>
+
+### MultiIndex (계층 인덱스) — 개념만
+
+
+```python
+mi = pd.MultiIndex.from_tuples([("Seoul", 2025), ("Seoul", 2026), ("Busan", 2026)],
+                               names=["city", "year"])
+```
+
+"city별 year별 값"처럼 2개 이상의 키로 행을 식별할 때 씁니다. → 자세히는 [Python - pandas 09. 재구조화 (pivot·melt·stack)](https://app.notion.com/p/Python%20-%20pandas%2009.%20%EC%9E%AC%EA%B5%AC%EC%A1%B0%ED%99%94%20%28pivot%C2%B7melt%C2%B7stack%29).
+
+
+<NotionDivider />
+
+<a id="5-dtype-체계-pandas가-numpy에-더한-것"></a>
+
+## 5. dtype 체계 — pandas가 NumPy에 더한 것
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>dtype</td><td>용도</td><td>결측 표현</td><td>비고</td></tr>
+    <tr><td>`int64` / `float64`</td><td>기본 수치</td><td>정수는 결측 불가 → 결측 생기면 `float64`로 승격</td><td>NumPy와 동일</td></tr>
+    <tr><td>`object`</td><td>문자열, 혼합 타입</td><td>`None` / `np.nan`</td><td>느리고 메모리 많이 씀</td></tr>
+    <tr><td>`string`</td><td>문자열 전용 (확장 dtype)</td><td>`pd.NA`</td><td>`astype("string")`, 텍스트 작업에 권장</td></tr>
+    <tr><td>`category`</td><td>범주형 (성별, 등급)</td><td>`NaN`</td><td>카디널리티 낮은 열에서 메모리 급감</td></tr>
+    <tr><td>`datetime64[ns]`</td><td>타임스탬프</td><td>`NaT`</td><td>`to_datetime`으로 변환</td></tr>
+    <tr><td>`timedelta64[ns]`</td><td>시간 간격</td><td>`NaT`</td><td>날짜 차이</td></tr>
+    <tr><td>`Int64` / `boolean`</td><td>nullable 정수/불리언 (확장 dtype)</td><td>`pd.NA`</td><td>대문자 `I` 주의. 결측 있는 정수 열 유지</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+s = pd.Series([1, 2, None])
+s.dtype                       # float64   ← None 때문에 정수가 float로 승격됨
+
+s2 = pd.Series([1, 2, None], dtype="Int64")
+s2.dtype                      # Int64     ← 결측을 담고도 정수 유지
+s2 + 1                        # [2, 3, <NA>]
+```
+
+> 💡 **이럴 때**: ID·개수처럼 정수여야 하는 열에 결측이 섞여 있을 때 `Int64`(nullable)로 지정하면 `1.0`, `2.0` 같은 float 표기를 피할 수 있습니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 도시·등급·상태값처럼 값의 종류가 적은 문자열 열은 `astype("category")`로 바꾸면 메모리와 `groupby` 속도가 크게 개선됩니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="6-view-vs-copy와-settingwithcopywarning"></a>
+
+## 6. view vs copy와 SettingWithCopyWarning
+
+NumPy처럼 pandas도 인덱싱 결과가 **view일 수도, copy일 수도** 있습니다. 게다가 어느 쪽인지 **버전·연산에 따라 달라져** 예측이 어렵습니다. 그래서 pandas는 **연쇄 인덱싱(chained indexing) 대입**에 경고를 띄웁니다.
+
+
+```python
+# 위험: 연쇄 인덱싱 대입 → SettingWithCopyWarning
+df[df["age"] > 28]["city"] = "Unknown"
+#   df[df["age"] > 28]가 copy일 수 있어, 원본에 반영이 안 될 수 있음
+
+# 안전: .loc 한 번으로 "행 선택 + 열 지정 + 대입"을 한 연산에서
+df.loc[df["age"] > 28, "city"] = "Unknown"
+```
+
+**규칙**:
+
+- 선택과 대입을 **한 개의 `.loc`/`.iloc`** 로 끝냅니다 (`[]` 를 두 번 겹치지 않음).
+- 원본에서 파생한 부분집합을 이후에 독립적으로 수정할 거라면 명시적으로 `.copy()` 합니다.
+
+```python
+sub = df[df["city"] == "Seoul"].copy()   # 명시적 복사본
+sub["age"] += 1                           # 원본 df는 그대로
+```
+
+> **참고**: pandas 3.0부터는 **Copy-on-Write(CoW)**가 기본이 되어, 모든 인덱싱이 "복사처럼" 동작하고 실제 복사는 수정 시점에만 일어납니다. 이때 `SettingWithCopyWarning`은 사라지고, 대신 "원본을 바꾸려면 반드시 `.loc` 대입"이라는 규칙이 더 명확해집니다.
+

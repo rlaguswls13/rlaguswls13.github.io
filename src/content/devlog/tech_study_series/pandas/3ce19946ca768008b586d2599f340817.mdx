@@ -1,0 +1,221 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","dt-accessor","str-accessor","cleaning"]
+slug: "python-pandas-cleaning-transform"
+subcategory: "pandas"
+status: "publish"
+description: "정제는 크게 형 변환(astype/to_numeric/to_datetime), 값 매핑(replace/map/rename), 파생 열 생성(assign/apply), 문자열·날짜 처리(.str/.dt), 범주화(cut/qcut/category), 중복 제거(drop_duplicates)로 나뉩니다.\n\n핵심 습관은 벡터화된 접근자(.str, .dt)를 먼저 찾고, apply는 최후에 쓰는 것입니다."
+title: "Python - pandas 06. 정제와 변환"
+page_id: "3ce19946-ca76-8008-b586-d2599f340817"
+source_id: "3ce19946ca768008b586d2599f340817"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-06-3ce19946ca768008b586d2599f340817"
+id: "3ce19946ca768008b586d2599f340817"
+sourceId: "3ce19946-ca76-8008-b586-d2599f340817"
+date: "2026-09-01"
+tags: ["Python","pandas","dt-accessor","str-accessor","cleaning"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-06-3ce19946ca768008b586d2599f340817"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 형 변환](#1-형-변환)
+- [2. 값 매핑 — replace, map, rename](#2-값-매핑-replace-map-rename)
+- [3. 파생 열 — assign, apply, 벡터 연산](#3-파생-열-assign-apply-벡터-연산)
+- [4. 문자열 — .str 접근자](#4-문자열-str-접근자)
+- [5. 날짜 — .dt 접근자](#5-날짜-dt-접근자)
+- [6. 범주화 — cut, qcut](#6-범주화-cut-qcut)
+- [7. category dtype 활용](#7-category-dtype-활용)
+- [8. 중복 — duplicated, drop_duplicates](#8-중복-duplicated-dropduplicates)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+정제는 크게 **형 변환**(`astype`/`to_numeric`/`to_datetime`), **값 매핑**(`replace`/`map`/`rename`), **파생 열 생성**(`assign`/`apply`), **문자열·날짜 처리**(`.str`/`.dt`), **범주화**(`cut`/`qcut`/`category`), **중복 제거**(`drop_duplicates`)로 나뉩니다.
+
+핵심 습관은 **벡터화된 접근자(`.str`, `.dt`)를 먼저 찾고, `apply`는 최후에** 쓰는 것입니다.
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-형-변환"></a>
+
+## 1. 형 변환
+
+
+```python
+df["qty"] = df["qty"].astype("int64")
+df["price"] = pd.to_numeric(df["price"], errors="coerce")   # 변환 실패 → NaN
+df["order_date"] = pd.to_datetime(df["order_date"], errors="coerce", format="%Y-%m-%d")
+df["grade"] = df["grade"].astype("category")
+df["user_id"] = df["user_id"].astype("Int64")              # nullable 정수
+```
+
+- `errors="coerce"`: 실패한 값을 결측으로 (안전). `errors="raise"`(기본)는 예외.
+- `to_datetime`은 `format`을 명시하면 훨씬 빠르고 예측 가능합니다.
+> 💡 **이럴 때**: 숫자여야 하는 열이 `object`면 `to_numeric(errors="coerce")` 후 `isna()`로 몇 개가 실패했는지 확인합니다.
+
+
+<NotionDivider />
+
+<a id="2-값-매핑-replace-map-rename"></a>
+
+## 2. 값 매핑 — `replace`, `map`, `rename`
+
+
+```python
+df["city"] = df["city"].replace({"서울": "Seoul", "SEOUL": "Seoul"})
+df["gender"] = df["gender"].map({"M": "남", "F": "여"})      # 매핑에 없는 값 → NaN
+df = df.rename(columns={"amt": "amount", "dt": "order_date"})
+df = df.rename(columns=str.lower)                             # 열 이름 일괄 소문자
+df.index = df.index.map(str)
+```
+
+- `map`은 **Series 전용**이고 매핑 딕셔너리에 없는 키는 `NaN`이 됩니다 (누락 주의).
+- `replace`는 부분 매핑도 되고 원래 값을 유지합니다.
+
+<NotionDivider />
+
+<a id="3-파생-열-assign-apply-벡터-연산"></a>
+
+## 3. 파생 열 — `assign`, `apply`, 벡터 연산
+
+
+```python
+df = df.assign(
+    total=df["price"] * df["qty"],
+    is_big=lambda d: d["total"] > 1000,       # 같은 assign 안에서 앞 열 참조
+)
+
+# 행 단위 apply는 느림 — 벡터 연산이 가능하면 우선
+df["total"] = df["price"] * df["qty"]         # 좋음
+df["total"] = df.apply(lambda r: r["price"] * r["qty"], axis=1)  # 나쁨(느림)
+
+# np.where / np.select 로 조건 분기
+df["tier"] = np.where(df["total"] > 1000, "A", "B")
+df["tier"] = np.select(
+    [df["total"] > 1000, df["total"] > 100],
+    ["A", "B"],
+    default="C",
+)
+```
+
+> 💡 **이럴 때**: `apply(axis=1)`이 보이면 벡터 연산·`np.where`·`np.select`·`.str`/`.dt`로 대체 가능한지 먼저 확인합니다. 큰 데이터에서 수십 배 차이.
+
+
+<NotionDivider />
+
+<a id="4-문자열-str-접근자"></a>
+
+## 4. 문자열 — `.str` 접근자
+
+
+```python
+s = df["name"].str
+
+s.strip()                    # 앞뒤 공백 제거
+s.lower()                    # 소문자
+s.replace(r"\s+", " ", regex=True)   # 연속 공백 정규화
+s.contains("kim", case=False)        # 불리언
+s.startswith("K")
+s.extract(r"(\d{4})-(\d{2})")        # 정규식 그룹 → DataFrame
+s.split("@", expand=True)            # 분리 → 여러 열
+s.len()
+s.cat(sep=", ")                      # 결합
+```
+
+> 💡 **이럴 때**: `value_counts`에서 `"Seoul"`, `"seoul "`, `" Seoul"`이 따로 잡히면 `.str.strip().str.title()`으로 표준화합니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 이메일·전화번호·주소에서 일부만 뽑을 때 `.str.extract`(정규식)로 한 번에.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="5-날짜-dt-접근자"></a>
+
+## 5. 날짜 — `.dt` 접근자
+
+
+```python
+d = df["order_date"].dt
+
+d.year, d.month, d.day, d.hour
+d.dayofweek                  # 월=0 ... 일=6
+d.day_name()                 # 'Monday'
+d.quarter
+d.is_month_end
+d.to_period("M")             # 2026-01 (월 단위 Period)
+d.normalize()                # 시각을 00:00:00으로
+(df["ship_date"] - df["order_date"]).dt.days   # 일수 차이
+```
+
+> 💡 **이럴 때**: 요일·월·분기별 집계를 하려면 먼저 `.dt`로 파생 열을 만든 뒤 `groupby`.
+
+
+<NotionDivider />
+
+<a id="6-범주화-cut-qcut"></a>
+
+## 6. 범주화 — `cut`, `qcut`
+
+
+```python
+df["age_band"] = pd.cut(df["age"], bins=[0, 20, 40, 60, 100],
+                        labels=["10대이하", "20-30대", "40-50대", "60대이상"])
+df["income_q"] = pd.qcut(df["income"], q=4, labels=["Q1", "Q2", "Q3", "Q4"])
+```
+
+- `cut`: **경계값을 직접 지정** (동일 폭 구간).
+- `qcut`: **분위수 기준** (구간마다 원소 수 비슷).
+- 결과는 `category` dtype입니다.
+> 💡 **이럴 때**: 연속형 변수를 구간으로 묶어 집계·시각화하거나, 트리 기반이 아닌 모델에 넣기 전에.
+
+
+<NotionDivider />
+
+<a id="7-category-dtype-활용"></a>
+
+## 7. `category` dtype 활용
+
+
+```python
+df["grade"] = df["grade"].astype("category")
+df["grade"].cat.categories
+df["grade"].cat.set_categories(["C", "B", "A"], ordered=True)  # 순서 있는 범주
+df[df["grade"] > "B"]        # 순서형이면 비교 가능
+```
+
+메모리 절감 + `groupby`/정렬 가속. 순서형(등급, 만족도)은 `ordered=True`로 비교 연산을 얻습니다.
+
+
+<NotionDivider />
+
+<a id="8-중복-duplicated-dropduplicates"></a>
+
+## 8. 중복 — `duplicated`, `drop_duplicates`
+
+
+```python
+df.duplicated().sum()                          # 완전 중복 행 개수
+df.duplicated(subset=["user_id", "order_date"]).sum()
+df = df.drop_duplicates(subset=["user_id", "order_date"], keep="last")
+```
+
+> 💡 **이럴 때**: 로그를 여러 번 적재해 중복이 생겼을 때. `subset`으로 "같은 주문"의 기준 키를 지정하고, `keep="last"`로 최신 레코드를 남깁니다.
+

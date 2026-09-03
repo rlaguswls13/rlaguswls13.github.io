@@ -1,0 +1,182 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","seaborn","relational","scatterplot","lineplot"]
+slug: "python-seaborn-relational"
+subcategory: "visualization"
+status: "publish"
+description: "두 수치 변수의 관계를 보는 도구입니다. - scatterplot: 점 하나 = 관측 하나. hue(색)/size(크기)/style(마커)로 최대 3개 변수를 추가로 인코딩. - lineplot: x값마다 y를 자동 집계(기본 평균)하고 그 주위에 오차 밴드를 그림. 시계열·추세에 적합. - figure-level relplot: 위 둘을 kind=\"scatter\"|\"line\"으로 통합, col/row 격자."
+title: "Python - seaborn 04. 관계 시각화 (scatterplot·lineplot·relplot)"
+page_id: "3cf19946-ca76-817e-babe-c10460e7a57f"
+source_id: "3cf19946ca76817ebabec10460e7a57f"
+last_edited_time: "2026-09-03T05:52:00.000Z"
+notion_url: "https://app.notion.com/p/Python-seaborn-04-scatterplot-lineplot-relplot-3cf19946ca76817ebabec10460e7a57f"
+id: "3cf19946ca76817ebabec10460e7a57f"
+sourceId: "3cf19946-ca76-817e-babe-c10460e7a57f"
+date: "2026-09-01"
+tags: ["Python","seaborn","relational","scatterplot","lineplot"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-seaborn-04-scatterplot-lineplot-relplot-3cf19946ca76817ebabec10460e7a57f"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. scatterplot — 점과 의미 매핑](#1-scatterplot-점과-의미-매핑)
+- [2. lineplot — 자동 집계 + 오차 밴드](#2-lineplot-자동-집계-오차-밴드)
+- [3. 시계열에 쓸 때](#3-시계열에-쓸-때)
+- [4. relplot — figure-level 통합](#4-relplot-figure-level-통합)
+- [5. scatter vs line 선택](#5-scatter-vs-line-선택)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+두 **수치 변수의 관계**를 보는 도구입니다.
+
+- **`scatterplot`**: 점 하나 = 관측 하나. `hue`(색)/`size`(크기)/`style`(마커)로 최대 3개 변수를 추가로 인코딩.
+- **`lineplot`**: x값마다 y를 **자동 집계**(기본 평균)하고 그 주위에 **오차 밴드**를 그림. 시계열·추세에 적합.
+- figure-level **`relplot`**: 위 둘을 `kind="scatter"|"line"`으로 통합, `col`/`row` 격자.
+`lineplot`이 "그냥 선을 잇는" 게 아니라 "집계 후 선을 잇는다"는 점을 이해하는 것이 핵심입니다.
+
+
+```python
+import seaborn as sns
+sns.set_theme()
+tips = sns.load_dataset("tips")
+fmri = sns.load_dataset("fmri")
+```
+
+
+<NotionDivider />
+
+<a id="1-scatterplot-점과-의미-매핑"></a>
+
+## 1. `scatterplot` — 점과 의미 매핑
+
+
+```python
+sns.scatterplot(data=tips, x="total_bill", y="tip",
+                hue="smoker", size="size", style="time")
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>인자</td><td>인코딩 채널</td><td>변수 유형</td></tr>
+    <tr><td>`hue`</td><td>색상</td><td>범주(팔레트) 또는 수치(연속 컬러맵)</td></tr>
+    <tr><td>`size`</td><td>점 크기</td><td>범주 또는 수치 (`sizes=(20, 200)`로 범위 지정)</td></tr>
+    <tr><td>`style`</td><td>마커 모양</td><td>범주만</td></tr>
+  </tbody>
+</NotionTable>
+
+- `hue`가 수치형이면 자동으로 연속 컬러바가 생깁니다. 범주형이면 이산 팔레트+범례.
+- 채널을 3개까지 겹칠 수 있지만, 실제로 판독 가능한 것은 보통 색 1개 + 크기 1개 정도입니다.
+- 겹치는 점이 많으면 `alpha=0.5`, 또는 2절의 밀도 계열 플롯을 검토합니다.
+**그림에서 보이는 것**: `total_bill`이 커질수록 `tip`도 대체로 커지는 우상향 관계가 보이고, 점 색으로 흡연 그룹이 특별히 분리되지는 않으며, 큰 점(인원수 많은 테이블)이 오른쪽 위(고액·고팁)에 몰립니다.
+
+> 💡 **이럴 때**: 색(`hue`)에 연속 변수를 넣으면 값 차이를 정밀하게 읽기 어렵습니다. 정확한 비교가 목적이면 그 변수를 y축이나 `col`(구간화 후)로 옮기고, 색은 범주형에만 씁니다.
+
+
+<NotionDivider />
+
+<a id="2-lineplot-자동-집계-오차-밴드"></a>
+
+## 2. `lineplot` — 자동 집계 + 오차 밴드
+
+
+```python
+sns.lineplot(data=fmri, x="timepoint", y="signal")
+sns.lineplot(data=fmri, x="timepoint", y="signal", hue="region", style="event")
+sns.lineplot(data=fmri, x="timepoint", y="signal",
+             estimator="mean", errorbar=("ci", 95))
+sns.lineplot(data=fmri, x="timepoint", y="signal", estimator=None, units="subject",
+             hue="region")     # 집계 없이 피험자별 원선
+```
+
+동작:
+
+- 같은 x에 y가 여러 개이면 `estimator`(기본 `mean`)로 요약해 선을 그립니다.
+- 요약값 주위에 `errorbar` 밴드를 칠합니다. 기본은 부트스트랩 95% 신뢰구간.
+- `estimator=None`이면 집계를 끄고 데이터 순서대로 잇습니다. 이때 `units=`로 개체별 선을 나눕니다.
+- `sort=True`(기본)면 x 기준으로 정렬 후 연결합니다. 순환 데이터(리사주 곡선 등)는 `sort=False`.
+
+<NotionTable>
+  <tbody>
+    <tr><td>인자</td><td>의미</td></tr>
+    <tr><td>`estimator`</td><td>`"mean"`/`"median"`/함수/`None`</td></tr>
+    <tr><td>`errorbar`</td><td>`("ci", 95)`/`"sd"`/`("se", n)`/`("pi", 95)`/`None`</td></tr>
+    <tr><td>`units`</td><td>반복 측정에서 개체 식별 (집계 끌 때)</td></tr>
+    <tr><td>`n_boot`</td><td>부트스트랩 반복 횟수</td></tr>
+    <tr><td>`orient`</td><td>집계 방향</td></tr>
+  </tbody>
+</NotionTable>
+
+**그림에서 보이는 것**: `hue="region"`으로 parietal과 frontal 두 선이 그려지고, 각 선을 감싼 반투명 밴드의 폭이 곧 그 시점의 불확실성입니다. 자극(event) 직후 신호가 솟았다가 감소하는 곡선이 보입니다.
+
+> 💡 **이럴 때**: `lineplot`이 예상보다 느리면 `errorbar` 부트스트랩 때문입니다. 탐색 단계에서는 `errorbar=None`이나 `errorbar="sd"`(부트스트랩 없음)로 두고, 발표용에서만 `("ci", 95)`로 되돌립니다.
+
+💡 **이럴 때**: "선이 왜 위아래로 진동하지?" 싶으면 x에 중복이 있어 집계가 일어난 것입니다. 개별 궤적을 원하면 `estimator=None, units="개체열"`을 씁니다.
+
+
+<NotionDivider />
+
+<a id="3-시계열에-쓸-때"></a>
+
+## 3. 시계열에 쓸 때
+
+
+```python
+import pandas as pd
+df = pd.DataFrame({
+    "date": pd.date_range("2026-01-01", periods=90, freq="D").repeat(3),
+    "store": ["A", "B", "C"] * 90,
+    "sales": ...,
+})
+sns.lineplot(data=df, x="date", y="sales", hue="store")
+```
+
+- `datetime64` x축은 자동으로 날짜 눈금이 붙습니다.
+- 매장별 한 시점 한 값이면 집계는 일어나지 않고 그냥 선입니다.
+- 전체 합계/평균 추세만 보려면 `hue` 없이 두면 매장들이 자동 평균됩니다(의도한 것인지 확인).
+
+<NotionDivider />
+
+<a id="4-relplot-figure-level-통합"></a>
+
+## 4. `relplot` — figure-level 통합
+
+
+```python
+sns.relplot(data=tips, x="total_bill", y="tip", kind="scatter",
+            hue="smoker", col="time", row="sex")
+sns.relplot(data=fmri, x="timepoint", y="signal", kind="line",
+            hue="event", col="region", height=4, aspect=1.2)
+```
+
+- `kind="scatter"`(기본) 또는 `"line"`.
+- `col`/`row`로 격자, 축 범위 자동 공유(`facet_kws={"sharey": False}`로 해제).
+- 대응 axes-level 함수의 인자(`estimator`, `errorbar`, `size` 등)를 그대로 전달.
+- `ax=`는 받지 못합니다.
+**그림에서 보이는 것**: `col="time", row="sex"`로 만든 2x2 격자에서 네 조합 모두 `total_bill`–`tip` 우상향 관계가 유지되며, Dinner 열의 점들이 오른쪽으로(고액) 더 퍼져 있습니다.
+
+> 💡 **이럴 때**: 관계가 하위 그룹마다 유지되는지(심슨의 역설 점검)를 볼 때 `relplot(col="그룹")`로 쪼개 봅니다. 전체에서는 양의 관계인데 그룹별로는 음의 관계일 수 있습니다.
+
+
+<NotionDivider />
+
+<a id="5-scatter-vs-line-선택"></a>
+
+## 5. scatter vs line 선택
+
+
+```text
+x가 연속이고 관측이 독립적 → scatterplot
+x가 순서/시간이고 "추세"가 관심사 → lineplot
+x값마다 y가 여러 개이고 대표값+불확실성을 보고 싶다 → lineplot (자동 집계 활용)
+관측이 너무 많아 점이 겹친다 → histplot(2D) / kdeplot(2D) (2장) 또는 alpha 조절
+```
+
+
+<NotionDivider />
+

@@ -1,0 +1,184 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","io","read-csv","parquet"]
+slug: "python-pandas-io"
+subcategory: "pandas"
+status: "publish"
+description: "pandas 전처리는 대부분 read_csv로 시작해 to_parquet/to_csv로 끝납니다.\nread_csv는 옵션이 수십 개지만, 실무에서 반복적으로 쓰는 것은 dtype, parse_dates, na_values, usecols, nrows/chunksize, encoding 정도입니다.\n\n\"읽을 때 형을 제대로 지정\"하는 것이 이후 모든 정제 비용을 줄입니다."
+title: "Python - pandas 02. 데이터 입출력 (IO)"
+page_id: "3ce19946-ca76-80f0-9aad-e69d51fc4014"
+source_id: "3ce19946ca7680f09aade69d51fc4014"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-02-IO-3ce19946ca7680f09aade69d51fc4014"
+id: "3ce19946ca7680f09aade69d51fc4014"
+sourceId: "3ce19946-ca76-80f0-9aad-e69d51fc4014"
+date: "2026-09-01"
+tags: ["Python","pandas","io","read-csv","parquet"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-02-IO-3ce19946ca7680f09aade69d51fc4014"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. read_csv 핵심 옵션](#1-readcsv-핵심-옵션)
+- [2. 다른 포맷](#2-다른-포맷)
+- [3. 쓰기 (to_*)](#3-쓰기-to)
+- [4. 대용량 데이터](#4-대용량-데이터)
+  - [4-1. chunksize — 분할 처리](#4-1-chunksize-분할-처리)
+  - [4-2. dtype 축소 + pyarrow 백엔드](#4-2-dtype-축소-pyarrow-백엔드)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+pandas 전처리는 대부분 `read_csv`로 시작해 `to_parquet`/`to_csv`로 끝납니다.
+
+`read_csv`는 옵션이 수십 개지만, 실무에서 반복적으로 쓰는 것은 **`dtype`, `parse_dates`, `na_values`, `usecols`, `nrows`/`chunksize`, `encoding`** 정도입니다.
+
+"읽을 때 형을 제대로 지정"하는 것이 이후 모든 정제 비용을 줄입니다.
+
+
+```python
+import pandas as pd
+```
+
+
+<NotionDivider />
+
+<a id="1-readcsv-핵심-옵션"></a>
+
+## 1. `read_csv` 핵심 옵션
+
+
+```python
+df = pd.read_csv(
+    "sales.csv",
+    dtype={"user_id": "Int64", "category": "category"},  # 열별 형 지정
+    parse_dates=["order_date"],        # 날짜 파싱 (datetime64로)
+    na_values=["", "N/A", "-", "null"],# 결측으로 취급할 문자열
+    usecols=["order_date", "user_id", "amount", "category"],  # 필요한 열만
+    encoding="utf-8",                  # 한글 깨지면 "cp949" 시도
+    thousands=",",                     # "1,234" → 1234
+    dtype_backend="numpy_nullable",    # 결측 안전한 확장 dtype로 (pandas 2.0+)
+)
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>옵션</td><td>목적</td><td>비고</td></tr>
+    <tr><td>`dtype`</td><td>열별 형 강제</td><td>지정 안 하면 pandas가 추론(느리고 불안정)</td></tr>
+    <tr><td>`parse_dates`</td><td>날짜 문자열 → `datetime64`</td><td>`date_format="%Y-%m-%d"`로 형식 명시 시 훨씬 빠름</td></tr>
+    <tr><td>`na_values`</td><td>추가 결측 토큰</td><td>기본 결측 토큰(`NaN`, `NA` 등)에 더해짐</td></tr>
+    <tr><td>`usecols`</td><td>열 선별</td><td>메모리·속도 직접 절감</td></tr>
+    <tr><td>`nrows`</td><td>앞 N행만</td><td>스키마 탐색용</td></tr>
+    <tr><td>`skiprows` / `header`</td><td>머리말 행 처리</td><td>잡음 행 건너뛰기</td></tr>
+    <tr><td>`index_col`</td><td>특정 열을 인덱스로</td><td></td></tr>
+    <tr><td>`chunksize`</td><td>N행씩 나눠 읽는 반복자</td><td>대용량 (4절)</td></tr>
+    <tr><td>`sep` / `delimiter`</td><td>구분자</td><td>탭은 `sep="\t"` 또는 `read_table`</td></tr>
+  </tbody>
+</NotionTable>
+
+> 💡 **이럴 때**: 파일이 크면 먼저 `nrows=1000`으로 읽어 `dtypes`·`isna()`를 확인하고, 확정한 `dtype`·`usecols`를 전체 로드에 적용합니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 한글 CSV가 깨지면 `encoding="cp949"`(엑셀 저장본) 또는 `encoding="utf-8-sig"`(BOM 포함)를 시도합니다.
+
+💡 **이럴 때**: 숫자가 `object`로 읽히면 `thousands=","`, 통화기호·공백, `na_values` 누락을 의심합니다. `pd.to_numeric(s, errors="coerce")`로 사후 변환도 가능합니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="2-다른-포맷"></a>
+
+## 2. 다른 포맷
+
+
+```python
+pd.read_excel("book.xlsx", sheet_name="2026")   # 엔진: openpyxl 필요
+pd.read_parquet("data.parquet")                 # 컬럼형·압축·형 보존, 대용량 권장
+pd.read_json("records.json")                    # orient 옵션 주의
+pd.read_sql("SELECT * FROM orders WHERE dt >= %s", con, params=["2026-01-01"])
+pd.read_html("https://example.com/table")       # 페이지 내 <table> 리스트 반환
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>포맷</td><td>장점</td><td>단점</td></tr>
+    <tr><td>CSV</td><td>범용, 사람이 읽음</td><td>형 정보 없음, 느림, 용량 큼</td></tr>
+    <tr><td>Parquet</td><td>형·압축 보존, 열 단위 로드, 빠름</td><td>사람이 직접 못 봄, 엔진(`pyarrow`) 필요</td></tr>
+    <tr><td>Excel</td><td>업무 친화</td><td>느림, 자동 형 변환 사고 잦음</td></tr>
+    <tr><td>JSON</td><td>중첩 구조</td><td>표로 펴려면 `json_normalize` 필요</td></tr>
+    <tr><td>SQL</td><td>원천에서 필터링</td><td>커넥션·드라이버 설정</td></tr>
+  </tbody>
+</NotionTable>
+
+> 💡 **이럴 때**: 중간 산출물을 저장할 때는 CSV 대신 **Parquet**을 씁니다. dtype(범주·날짜·nullable)이 그대로 보존되어 다시 읽을 때 정제가 필요 없습니다.
+
+
+```python
+pd.json_normalize(records, record_path="items", meta=["order_id", "user"])
+```
+
+
+<NotionDivider />
+
+<a id="3-쓰기-to"></a>
+
+## 3. 쓰기 (`to_*`)
+
+
+```python
+df.to_csv("out.csv", index=False)          # index=False 습관화 (불필요한 첫 열 방지)
+df.to_parquet("out.parquet")               # 압축 기본(snappy)
+df.to_excel("out.xlsx", sheet_name="결과", index=False)
+df.to_json("out.json", orient="records", force_ascii=False)  # 한글 그대로
+```
+
+- `to_csv`에서 `index=False`를 빼먹으면 다시 읽을 때 `Unnamed: 0` 열이 생깁니다.
+- 소수 자리수 고정: `float_format="%.2f"`.
+
+<NotionDivider />
+
+<a id="4-대용량-데이터"></a>
+
+## 4. 대용량 데이터
+
+<a id="4-1-chunksize-분할-처리"></a>
+
+### 4-1. `chunksize` — 분할 처리
+
+
+```python
+total = 0
+for chunk in pd.read_csv("huge.csv", chunksize=100_000, usecols=["amount"]):
+    total += chunk["amount"].sum()
+```
+
+각 `chunk`는 DataFrame입니다. 집계·필터 후 결과만 모으면 전체를 메모리에 올리지 않습니다.
+
+<a id="4-2-dtype-축소-pyarrow-백엔드"></a>
+
+### 4-2. dtype 축소 + pyarrow 백엔드
+
+
+```python
+df = pd.read_csv(
+    "huge.csv",
+    dtype_backend="pyarrow",      # 문자열·결측을 Arrow 배열로 → 메모리 절감
+    engine="pyarrow",             # 파서 자체도 멀티스레드
+)
+```
+
+- `category`·`float32`·`Int32` 지정으로 메모리를 절반 이하로.
+- `engine="pyarrow"`는 CSV 파싱을 병렬화합니다 (`pyarrow` 설치 필요).
+> 💡 **이럴 때**: 메모리 부족(`MemoryError`)이 나면 ① `usecols`로 열 축소 → ② `dtype`으로 형 축소(`category`, `float32`) → ③ `chunksize` 분할 → ④ Parquet 전환 순으로 시도합니다.
+

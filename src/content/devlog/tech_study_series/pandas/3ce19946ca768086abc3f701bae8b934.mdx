@@ -1,0 +1,180 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","visualization","next-steps","scikit-learn"]
+slug: "python-pandas-next-steps"
+subcategory: "pandas"
+status: "publish"
+description: "pandas로 정제·집계한 DataFrame은 그 자체가 목적이 아니라 시각화와 모델링의 입력입니다."
+title: "Python - pandas 13. 다음 단계 연결"
+page_id: "3ce19946-ca76-8086-abc3-f701bae8b934"
+source_id: "3ce19946ca768086abc3f701bae8b934"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-13-3ce19946ca768086abc3f701bae8b934"
+id: "3ce19946ca768086abc3f701bae8b934"
+sourceId: "3ce19946-ca76-8086-abc3-f701bae8b934"
+date: "2026-09-01"
+tags: ["Python","pandas","visualization","next-steps","scikit-learn"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-13-3ce19946ca768086abc3f701bae8b934"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. pandas → matplotlib / seaborn](#1-pandas-matplotlib-seaborn)
+- [2. pandas → scikit-learn](#2-pandas-scikit-learn)
+  - [나이브한 방법의 문제](#나이브한-방법의-문제)
+  - [Pipeline + ColumnTransformer](#pipeline-columntransformer)
+- [3. NumPy ↔ pandas 상호 변환](#3-numpy-pandas-상호-변환)
+- [4. 전체 파이프라인 그림](#4-전체-파이프라인-그림)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+pandas로 정제·집계한 `DataFrame`은 그 자체가 목적이 아니라 **시각화**와 **모델링**의 입력입니다.
+
+- **시각화**: `df.plot`(빠른 확인) → matplotlib(세밀 제어) → seaborn(통계 플롯, long 포맷 선호)
+- **모델링**: pandas로 피처를 만들되, **학습/추론 일관성**이 필요한 변환은 scikit-learn `Pipeline`/`ColumnTransformer`로 옮김
+- **NumPy 왕복**: 모델은 결국 `ndarray`를 받고, 결과를 다시 `DataFrame`으로 되돌림
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-pandas-matplotlib-seaborn"></a>
+
+## 1. pandas → matplotlib / seaborn
+
+
+```python
+df["amount"].plot(kind="hist", bins=50)          # 빠른 분포 확인
+df.groupby("month")["amount"].sum().plot()        # 선그래프
+df.plot.scatter(x="price", y="qty", alpha=0.3)
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(8, 4))
+df.groupby("city")["amount"].sum().plot.bar(ax=ax)
+ax.set_title("도시별 매출")
+
+import seaborn as sns
+long_df = df.melt(id_vars="city", value_vars=["q1", "q2"], var_name="quarter", value_name="sales")
+sns.boxplot(data=long_df, x="quarter", y="sales", hue="city")
+```
+
+- `df.plot`은 **탐색**용(한 줄로 확인). 발표 자료는 matplotlib으로 축·라벨·크기 제어.
+- seaborn은 **long(tidy) 포맷**을 전제로 설계 → [Python - pandas 09. 재구조화 (pivot·melt·stack)](https://app.notion.com/p/Python%20-%20pandas%2009.%20%EC%9E%AC%EA%B5%AC%EC%A1%B0%ED%99%94%20%28pivot%C2%B7melt%C2%B7stack%29)의 `melt`가 사실상 필수 전 단계.
+> 💡 **이럴 때**: 정제 중간중간 `df.plot`/`hist`로 분포를 눈으로 확인하면 잘못된 형 변환·이상치를 빨리 잡습니다.
+
+
+<NotionDivider />
+
+<a id="2-pandas-scikit-learn"></a>
+
+## 2. pandas → scikit-learn
+
+<a id="나이브한-방법의-문제"></a>
+
+### 나이브한 방법의 문제
+
+
+```python
+df["amount_scaled"] = (df["amount"] - df["amount"].mean()) / df["amount"].std()
+```
+
+전체 데이터로 평균·표준편차를 계산하면 **테스트 정보가 학습에 새어 듭니다(누수)**. 결측 대체·인코딩도 마찬가지입니다.
+
+<a id="pipeline-columntransformer"></a>
+
+### `Pipeline` + `ColumnTransformer`
+
+
+```python
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+
+num_cols = ["amount", "qty"]
+cat_cols = ["city", "grade"]
+
+pre = ColumnTransformer([
+    ("num", Pipeline([("impute", SimpleImputer(strategy="median")),
+                      ("scale", StandardScaler())]), num_cols),
+    ("cat", Pipeline([("impute", SimpleImputer(strategy="most_frequent")),
+                      ("ohe", OneHotEncoder(handle_unknown="ignore"))]), cat_cols),
+])
+
+X_train_t = pre.fit_transform(X_train)   # 학습 통계 계산 + 변환
+X_test_t = pre.transform(X_test)         # 저장된 학습 통계로 변환만
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>변환</td><td>pandas</td><td>scikit-learn (누수 방지)</td></tr>
+    <tr><td>결측 대체</td><td>`fillna(median)`</td><td>`SimpleImputer`</td></tr>
+    <tr><td>표준화</td><td>`(x - mean) / std`</td><td>`StandardScaler`</td></tr>
+    <tr><td>원-핫</td><td>`get_dummies`</td><td>`OneHotEncoder(handle_unknown="ignore")`</td></tr>
+    <tr><td>구간화</td><td>`cut` / `qcut`</td><td>`KBinsDiscretizer`</td></tr>
+  </tbody>
+</NotionTable>
+
+> 💡 **이럴 때**: 탐색·EDA·피처 아이디어 검증은 pandas로 빠르게. 모델에 실제로 들어갈 변환은 `fit`/`transform`이 분리되는 scikit-learn으로 옮겨 학습/추론 일관성과 재현성을 확보합니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: "그룹 통계"류 피처(도시별 평균 등)는 `groupby().transform`으로 만들되, 시간 분할 검증에서는 과거 데이터만으로 계산해 누수를 막습니다 → [Python - pandas 08. 그룹 연산 (groupby)](https://app.notion.com/p/Python%20-%20pandas%2008.%20%EA%B7%B8%EB%A3%B9%20%EC%97%B0%EC%82%B0%20%28groupby%29).
+
+
+</NotionIndent>
+
+- scikit-learn 1.2+는 `set_output(transform="pandas")`로 변환 결과를 `DataFrame`(열 이름 유지)으로 받을 수 있습니다.
+
+<NotionDivider />
+
+<a id="3-numpy-pandas-상호-변환"></a>
+
+## 3. NumPy ↔ pandas 상호 변환
+
+
+```python
+# pandas → NumPy
+arr = df[num_cols].to_numpy()          # 권장 (values보다 명시적)
+arr = df["amount"].to_numpy(dtype="float32", na_value=np.nan)
+
+# NumPy → pandas
+pd.DataFrame(arr, columns=num_cols, index=df.index)
+pd.Series(arr, name="pred")
+
+# 모델 예측 결과를 원본에 다시 붙이기
+df["pred"] = model.predict(X_t)         # 인덱스 정렬 주의: 길이/순서 일치해야 함
+```
+
+- `to_numpy()`는 열 dtype이 섞여 있으면 `object`로 승격됩니다. 수치 열만 골라서 변환합니다.
+- 확장 dtype(`Int64`, `string`)은 `to_numpy()` 시 결측 처리(`na_value`)를 명시합니다.
+> 💡 **이럴 때**: 모델 입력 직전에 `to_numpy()`로 넘기고, 예측값은 원본 인덱스에 맞춰 `df["pred"] = ...`로 되돌립니다. 중간에 정렬·필터가 있었다면 인덱스가 어긋나지 않았는지 확인합니다.
+
+
+<NotionDivider />
+
+<a id="4-전체-파이프라인-그림"></a>
+
+## 4. 전체 파이프라인 그림
+
+
+```text
+[원천: CSV/DB/Parquet]
+   → pandas: 로드·탐색·결측/이상치·정제·파생·집계·결합   (02~11장)
+   → (EDA) df.plot / seaborn 으로 분포 확인
+   → 학습/추론 분리 변환: sklearn Pipeline + ColumnTransformer
+   → model.fit(X, y) / model.predict
+   → 결과를 DataFrame으로 되돌려 리포트·시각화
+```
+

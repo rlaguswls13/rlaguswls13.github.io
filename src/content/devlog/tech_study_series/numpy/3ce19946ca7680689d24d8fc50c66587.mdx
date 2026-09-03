@@ -1,0 +1,221 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","performance","pitfalls","debugging"]
+slug: "python-numpy-performance"
+subcategory: "numpy"
+status: "publish"
+description: "1~9장을 한 번 본 뒤 다시 읽는 챕터입니다. NumPy에서 반복적으로 사람을 잡는 5가지: ① 파이썬 루프, ② view/copy 혼동, ③ 부동소수점 비교, ④ 정수 오버플로 / NaN 전파, ⑤ dtype·메모리 낭비. 마지막에 자주 보는 에러 메시지 사전을 붙였습니다."
+title: "Python - NumPy 12. 성능과 함정"
+page_id: "3ce19946-ca76-8068-9d24-d8fc50c66587"
+source_id: "3ce19946ca7680689d24d8fc50c66587"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-12-3ce19946ca7680689d24d8fc50c66587"
+id: "3ce19946ca7680689d24d8fc50c66587"
+sourceId: "3ce19946-ca76-8068-9d24-d8fc50c66587"
+date: "2026-08-30"
+tags: ["Python","numpy","performance","pitfalls","debugging"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-12-3ce19946ca7680689d24d8fc50c66587"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 파이썬 루프 대신 벡터화](#1-파이썬-루프-대신-벡터화)
+- [2. view / copy 혼동](#2-view-copy-혼동)
+- [3. 부동소수점 비교](#3-부동소수점-비교)
+- [4. 정수 오버플로 / NaN 전파](#4-정수-오버플로-nan-전파)
+  - [NaN 전파](#nan-전파)
+  - [정수 오버플로 — 두 가지 다른 동작](#정수-오버플로-두-가지-다른-동작)
+- [5. dtype 선택과 메모리](#5-dtype-선택과-메모리)
+- [6. 자주 겪는 에러 메시지 사전](#6-자주-겪는-에러-메시지-사전)
+- [7. 성능 점검 체크리스트](#7-성능-점검-체크리스트)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+1~9장을 한 번 본 뒤 다시 읽는 챕터입니다. NumPy에서 반복적으로 사람을 잡는 5가지
+① 파이썬 루프, ② view/copy 혼동, ③ 부동소수점 비교, ④ 정수 오버플로 / NaN 전파, ⑤ dtype·메모리 낭비
+마지막에 자주 보는 에러 메시지 사전을 붙였습니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-파이썬-루프-대신-벡터화"></a>
+
+## 1. 파이썬 루프 대신 벡터화
+
+NumPy의 존재 이유입니다. 원소별 `for`는 거의 항상 배열 연산으로 바꿀 수 있습니다.
+
+
+```python
+a = np.arange(1_000_000, dtype=np.float64)
+
+# 나쁨: 파이썬 루프 (수백 ms)
+out = np.empty_like(a)
+for i in range(len(a)):
+    out[i] = a[i] ** 2 + 1
+
+# 좋음: 벡터화 (수 ms, 수십~수백 배 빠름)
+out = a ** 2 + 1
+```
+
+루프를 못 없앨 때의 차선책은 다음과 같습니다.
+
+- 조건 분기 → `np.where`, `np.select`, 불리언 마스킹
+- 누적 → `np.cumsum`, `np.add.at`, `np.bincount`
+- 슬라이딩 윈도우 → `np.lib.stride_tricks.sliding_window_view`
+> 💡 **이럴 때**: 원소별 `for`가 보이면, 배열 연산으로 교체 가능한지부터 확인합니다. 큰 데이터에서 수십~수백 배 차이가 납니다.
+
+
+<NotionDivider />
+
+<a id="2-view-copy-혼동"></a>
+
+## 2. view / copy 혼동
+
+
+```python
+a = np.arange(10)
+sub = a[2:5]           # 슬라이싱 → view
+sub[:] = 0             # a[2:5]도 0이 됨!
+a                      # array([0, 1, 0, 0, 0, 5, 6, 7, 8, 9])
+```
+
+반대로, copy인 줄 모르고 원본이 바뀌길 기대하는 경우도 있습니다:
+
+
+```python
+b = a[a > 3]           # 불리언 인덱싱 → copy
+b[:] = -1              # a는 그대로
+```
+
+**규칙**:
+
+- 원본을 지키고 싶으면 명시적으로 `.copy()` 합니다.
+- 함수 인자로 받은 배열은 수정 전에 `.copy()` 합니다 (호출자 데이터 오염 방지).
+- 공유 여부는 `np.shares_memory(a, b)`로 확인합니다.
+
+<NotionDivider />
+
+<a id="3-부동소수점-비교"></a>
+
+## 3. 부동소수점 비교
+
+
+```python
+0.1 + 0.2 == 0.3               # False  ← 부동소수점은 == 로 비교하지 말 것
+0.1 + 0.2                       # 0.30000000000000004
+
+np.isclose(0.1 + 0.2, 0.3)     # True   - 허용 오차 내 비교
+np.allclose(arr1, arr2)        # 배열 전체가 근사적으로 같은지 (bool 하나)
+
+# 테스트에서
+np.testing.assert_allclose(result, expected, rtol=1e-6)
+```
+
+`np.isclose`는 `atol`(절대 오차)과 `rtol`(상대 오차)을 받습니다. 값이 0 근처면 `atol`이, 크면 `rtol`이 지배적입니다.
+
+> 💡 **이럴 때**: 부동소수점 연산 결과를 검증하거나 단위 테스트에서 기대값과 비교할 때 `==` 대신 씁니다.
+
+
+<NotionDivider />
+
+<a id="4-정수-오버플로-nan-전파"></a>
+
+## 4. 정수 오버플로 / NaN 전파
+
+<a id="nan-전파"></a>
+
+### NaN 전파
+
+
+```python
+np.array([1., np.nan, 3.]).sum()      # nan  - 하나만 있어도 전체가 nan
+np.nansum(np.array([1., np.nan, 3.])) # 4.0  - nan 무시
+```
+
+<a id="정수-오버플로-두-가지-다른-동작"></a>
+
+### 정수 오버플로 — 두 가지 다른 동작
+
+
+```python
+# (1) 배열 "생성" 시 범위 밖 파이썬 int → OverflowError (에러가 남)
+# np.array([2**31], dtype=np.int32)
+#   → OverflowError: Python integer 2147483648 out of bounds for int32
+
+# (2) 정수 배열끼리의 "연산" → 경고 없이 조용히 순환(wrap-around)
+np.array([2**31 - 1], dtype=np.int32) + np.int32(1)
+# array([-2147483648], dtype=int32)   - 최댓값 + 1 → 최솟값
+```
+
+카운트 누적, 팩토리얼, 해시 등에서 `int32`가 부족하면 조용히 음수가 나옵니다. 의심되면 `dtype=np.int64` 또는 `float64`를 씁니다.
+
+
+<NotionDivider />
+
+<a id="5-dtype-선택과-메모리"></a>
+
+## 5. dtype 선택과 메모리
+
+
+```python
+a = np.ones((10_000, 10_000))         # float64 → 약 800MB
+a = np.ones((10_000, 10_000), dtype=np.float32)   # → 약 400MB
+```
+
+- **`float64` → `float32`**: 메모리 절반입니다. 대부분의 전처리·추론에서 정밀도가 충분합니다.
+- **불필요한 `astype` / 슬라이스 후 `.copy()` 남발**: 매번 전체 배열이 복제됩니다.
+- **in-place 연산 활용**: `a += 1`은 기존 버퍼를 재사용하고, `a = a + 1`은 새 배열을 생성합니다.
+
+```python
+a += 1          # 메모리 추가 없음
+a *= 2
+np.clip(a, 0, 1, out=a)   # out= 로 결과를 기존 배열에 씀
+```
+
+> 💡 **이럴 때**: 큰 배열을 반복 변형할 때. `a += 1`, `out=` 인자로 매 단계 새 배열 생성을 막아 메모리 피크를 낮춥니다.
+
+
+<NotionDivider />
+
+<a id="6-자주-겪는-에러-메시지-사전"></a>
+
+## 6. 자주 겪는 에러 메시지 사전
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>에러 메시지</td><td>원인</td><td>해결</td></tr>
+    <tr><td>`operands could not be broadcast together with shapes (a) (b)`</td><td>shape 불일치</td><td>뒤에서부터 정렬해 비교. `reshape` 또는 `[:, None]`으로 축 추가</td></tr>
+    <tr><td>`setting an array element with a sequence`</td><td>행 길이가 다른 중첩 리스트</td><td>길이를 맞추거나 `dtype=object` (권장 안 함)</td></tr>
+    <tr><td>`index N is out of bounds for axis M with size K`</td><td>인덱스 범위 초과</td><td>`a.shape` 확인, 음수 인덱스/오프바이원 점검</td></tr>
+    <tr><td>`The truth value of an array with more than one element is ambiguous`</td><td>`if a == b:` 처럼 배열을 bool로 씀</td><td>`.any()` / `.all()` 명시</td></tr>
+    <tr><td>`could not convert string to float`</td><td>텍스트 IO에서 비수치 값</td><td>`genfromtxt` + `dtype=None` 또는 pandas 사용</td></tr>
+    <tr><td>`LinAlgError: Singular matrix`</td><td>역행렬이 없는 행렬에 `inv`</td><td>`np.linalg.solve` 사용, 또는 유사역행렬 `np.linalg.pinv`</td></tr>
+    <tr><td>`RuntimeWarning: invalid value encountered`</td><td>0/0, log(음수) 등으로 nan 발생</td><td>입력 도메인 검증, `np.errstate`로 경고 제어</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+
+<a id="7-성능-점검-체크리스트"></a>
+
+## 7. 성능 점검 체크리스트
+
+- [ ] 원소 단위 `for` 문이 남아 있지 않은가?
+- [ ] 큰 배열을 반복적으로 `astype`/`copy` 하고 있지 않은가?
+- [ ] 조건 분기를 `np.where`/마스킹으로 바꿀 수 있는가?
+- [ ] dtype이 필요 이상으로 큰가? (`float64` → `float32`)
+- [ ] 브로드캐스팅 결과가 예상보다 큰 배열을 만들지 않는가?
+- [ ] 결과를 `out=` 인자로 기존 배열에 쓸 수 있는가?
+

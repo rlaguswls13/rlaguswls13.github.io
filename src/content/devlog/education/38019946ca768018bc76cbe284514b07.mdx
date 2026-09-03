@@ -146,13 +146,13 @@ ORDER BY f.last_failed_at DESC NULLS LAST, rc.customer_id ASC;
 
 #### (2) 포인트
 
-- **`IN (SELECT campaign_id FROM ...)`****를 통한 인덱스 프루닝**
+- **`IN (SELECT campaign_id FROM ...)`를 통한 인덱스 프루닝**
 `target_campaigns`를 통해 필요한 구간의 데이터만 집어서 읽게 되므로 수천만 건의 데이터를 풀 스캔(Full Scan)하는 방지 예상
-- **`COUNT(CASE WHEN ...)`****을 활용한 피벗 집계**
+- **`COUNT(CASE WHEN ...)`을 활용한 피벗 집계**
 오픈한 로그가 **단 한 건도 없는** 사람을 찾기 위해 발송 로그와 오픈 로그를 각각 따로 `JOIN`하는 것이 아니라, 하나의 로그 테이블을 한 번만 읽으면서 발송 횟수와 오픈 횟수를 동시에 집계하여 I/O 비용을 감소
-- **`ROW_NUMBER()`** **기반 최신 실패 이력만 추출**
+- **`ROW_NUMBER()` 기반 최신 실패 이력만 추출**
 실패한 이력들 중 '가장 최근 1건'을 가져오기 위해 `GROUP BY customer_id` 후 `MAX(updated_at)`를 쓰고 또 한 번 로그 테이블을 조인하는 서브쿼리 지옥 대신, 윈도우 함수를 통해 단 한 번에 `campaign_id`와 `updated_at` 
-- **`LEFT JOIN ... AND f.rn = 1`** **구조**
+- **`LEFT JOIN ... AND f.rn = 1` 구조**
 위험 고객 중에는 이메일이 단순히 '전송 완료(DELIVERED)'만 되고 실패는 안 한 상태에서 안 열어본 고객도 존재합니다. 이들이 결과에서 누락되지 않도록 `LEFT JOIN` 처리를 하되, 윈도우 순위가 1등인 데이터만 연결되도록 조건을 결합
 
 <a id="2-파티셔닝암묵적-fk-1차-개선"></a>

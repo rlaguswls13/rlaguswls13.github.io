@@ -1,0 +1,181 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","array-creation","random"]
+slug: "python-numpy-io"
+subcategory: "numpy"
+status: "publish"
+description: "배열을 만드는 방법은 크게 4가지입니다: ① 기존 데이터로부터(np.array), ② 상수로 초기화(zeros/ones/full), ③ 수열 생성(arange/linspace), ④ 난수 생성(default_rng).\n\n전처리에서는 \"결과를 담을 빈 버퍼를 만들고 채우는\" 패턴과 \"실험 데이터를 재현 가능하게 뽑는\" 패턴이 자주 나옵니다."
+title: "Python - NumPy 02. 배열 생성"
+page_id: "3ce19946-ca76-8071-aabf-d696b871a6f8"
+source_id: "3ce19946ca768071aabfd696b871a6f8"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-02-3ce19946ca768071aabfd696b871a6f8"
+id: "3ce19946ca768071aabfd696b871a6f8"
+sourceId: "3ce19946-ca76-8071-aabf-d696b871a6f8"
+date: "2026-08-30"
+tags: ["Python","numpy","array-creation","random"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-02-3ce19946ca768071aabfd696b871a6f8"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 리스트/튜플로부터 생성 — np.array](#1-리스트튜플로부터-생성-nparray)
+- [2. 상수로 초기화 — zeros / ones / full / empty](#2-상수로-초기화-zeros-ones-full-empty)
+- [3. 수열 생성 — arange vs linspace](#3-수열-생성-arange-vs-linspace)
+- [4. 난수 생성 — 최신 Generator API 권장](#4-난수-생성-최신-generator-api-권장)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+배열을 만드는 방법은 크게 4가지입니다: **① 기존 데이터로부터**(`np.array`), **② 상수로 초기화**(`zeros`/`ones`/`full`), **③ 수열 생성**(`arange`/`linspace`), **④ 난수 생성**(`default_rng`).
+
+전처리에서는 "결과를 담을 빈 버퍼를 만들고 채우는" 패턴과 "실험 데이터를 재현 가능하게 뽑는" 패턴이 자주 나옵니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-리스트튜플로부터-생성-nparray"></a>
+
+## 1. 리스트/튜플로부터 생성 — `np.array`
+
+가장 기본입니다. 중첩 리스트의 깊이가 곧 차원이 됩니다.
+
+
+```python
+np.array([1, 2, 3])                     # shape (3,)     - 1차원
+np.array([[1, 2], [3, 4]])              # shape (2, 2)   - 2차원
+np.array([1, 2, 3], dtype=np.float64)   # dtype 명시
+```
+
+주의할 점은 다음과 같습니다.
+
+- **dtype은 자동 추론됩니다.** `[1, 2, 3]` → 정수, `[1, 2, 3.0]` → 실수(전체가 승격됨).
+- **행 길이가 다르면** 최신 NumPy에서는 에러(`setting an array element with a sequence`)입니다. `dtype=object`를 줘야 억지로 만들어지지만, 이러면 벡터화의 이점이 사라지니 피합니다.
+
+```python
+np.array([[1, 2, 3], [4, 5]])   # ValueError (길이 불일치)
+```
+
+
+<NotionDivider />
+
+<a id="2-상수로-초기화-zeros-ones-full-empty"></a>
+
+## 2. 상수로 초기화 — `zeros` / `ones` / `full` / `empty`
+
+"먼저 크기를 정해 두고 나중에 값을 채우는" 용도입니다. shape는 **튜플**로 넘깁니다.
+
+
+```python
+np.zeros((2, 3))       # 0.0으로 채운 2x3 (기본 dtype float64)
+np.ones((2, 3))        # 1.0으로 채운 2x3
+np.full((2, 3), 7)     # 임의 상수 7로 채움
+np.empty((2, 3))       # 초기화하지 않음 → 쓰레기값이 들어있음
+np.eye(3)              # 3x3 단위행렬 (대각선 1, 나머지 0)
+```
+
+**`_like` 계열**은 "기존 배열과 같은 shape·dtype"으로 만듭니다. 결과 버퍼를 만들 때 유용합니다.
+
+
+```python
+a = np.array([[1, 2, 3], [4, 5, 6]])
+np.zeros_like(a)       # a와 동일한 shape (2,3), dtype(int)의 0 배열
+np.ones_like(a)
+np.full_like(a, -1)
+```
+
+> **`np.empty` 주의**: 속도는 가장 빠르지만 값이 무작위입니다. 만든 직후 배열 **전체**를 대입할 것이 확실할 때만 씁니다. 조금이라도 일부만 채운다면 `zeros`를 써서 초기값을 보장합니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 루프 결과를 누적할 큰 버퍼를 만들고 전체를 즉시 덮어쓸 때 `np.empty`를 씁니다. 일부만 채운다면 `np.zeros`로 초기값을 보장합니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="3-수열-생성-arange-vs-linspace"></a>
+
+## 3. 수열 생성 — `arange` vs `linspace`
+
+둘 다 등간격 수열을 만들지만, **끝값 처리와 인자 의미가 다릅니다.**
+
+
+```python
+np.arange(0, 10, 2)    # array([0, 2, 4, 6, 8])   - (시작, 끝, 간격), 끝값 미포함
+np.linspace(0, 1, 5)   # array([0. , 0.25, 0.5 , 0.75, 1. ])  - (시작, 끝, 개수), 끝값 포함
+np.logspace(0, 3, 4)   # array([   1.,   10.,  100., 1000.])  - 10^0 ~ 10^3
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>함수</td><td>3번째 인자</td><td>끝값</td><td>주 용도</td></tr>
+    <tr><td>`arange`</td><td>간격(step)</td><td>미포함</td><td>정수 인덱스 수열</td></tr>
+    <tr><td>`linspace`</td><td>원소 개수(num)</td><td>포함 (기본)</td><td>실수 구간을 N등분</td></tr>
+    <tr><td>`logspace`</td><td>원소 개수(num)</td><td>포함</td><td>로그 스케일 (학습률 탐색 등)</td></tr>
+  </tbody>
+</NotionTable>
+
+> **함정**: `np.arange(0, 1, 0.1)`처럼 실수 간격을 쓰면 부동소수점 오차로 끝값이 포함되어 원소가 11개가 될 수도 있습니다. **실수 구간 분할은 항상 `linspace`**를 씁니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 그래프 x축 좌표, 하이퍼파라미터 탐색 구간처럼 "개수"가 정해진 실수 구간이 필요할 때 `linspace`를 씁니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="4-난수-생성-최신-generator-api-권장"></a>
+
+## 4. 난수 생성 — 최신 Generator API 권장
+
+NumPy 1.17부터 난수 API가 새로 설계됐습니다. **`np.random.default_rng()`로 Generator 객체를 만들어 쓰는 방식**이 권장입니다.
+
+
+```python
+rng = np.random.default_rng(seed=42)   # 시드 고정 → 재현 가능
+
+rng.random((2, 3))                # [0, 1) 균등분포
+rng.standard_normal((2, 3))       # 표준정규분포 N(0, 1)
+rng.normal(loc=10, scale=2, size=5)   # 평균 10, 표준편차 2인 정규분포
+rng.integers(0, 10, size=5)       # 0 이상 10 미만 정수 5개
+rng.choice([10, 20, 30], size=4, replace=True)   # 복원 추출
+rng.permutation(5)                # 0~4를 섞은 새 배열
+rng.shuffle(a)                    # a를 제자리(in-place)에서 섞음
+```
+
+> 💡 **이럴 때**: 데이터 셔플, train/test 분할, 부트스트랩 샘플링 등 재현 가능한 난수가 필요한 모든 곳에서 씁니다.
+
+**왜 레거시(`np.random.seed()` + `np.random.rand()`)보다 나은가?**
+
+- 전역 상태를 건드리지 않습니다. 여러 곳에서 난수를 써도 서로 간섭하지 않습니다.
+- Generator마다 독립적인 시드를 줄 수 있어, 병렬 처리·재현성 관리가 쉽습니다.
+- 알고리즘이 개선됐습니다 (PCG64).
+레거시 코드도 여전히 동작하므로 남의 코드에서 보게 되지만, **새로 쓸 때는 `default_rng`**를 씁니다.
+
+
+```python
+# 레거시 (튜토리얼·구코드에서 자주 보임)
+np.random.seed(42)
+np.random.rand(2, 3)
+np.random.randn(2, 3)
+np.random.randint(0, 10, 5)
+```
+

@@ -1,0 +1,198 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","seaborn","regression","jointplot","pairplot"]
+slug: "python-seaborn-regression-joint"
+subcategory: "visualization"
+status: "publish"
+description: "산점도에 모델·요약을 겹쳐 관계를 더 읽는 도구입니다. - regplot(axes) / lmplot(figure): 산점도 + 회귀선 + 신뢰구간. order(다항), logistic, lowess로 모델 종류를 바꿈. - residplot: 잔차 산점도. 회귀 가정(선형성·등분산) 위반을 눈으로 확인. - jointplot: 가운데 이변량 플롯 + 위·오른쪽에 주변(marginal) 분포. kind로 종류 선택. - pairplot: 여러 변수의 산점도 행렬(scatter matrix) + 대각선 분포. hue로 그룹, corner로 절반만."
+title: "Python - seaborn 05. 회귀와 결합분포 (lmplot·jointplot·pairplot)"
+page_id: "3cf19946-ca76-8182-b731-f659c1d1b08c"
+source_id: "3cf19946ca768182b731f659c1d1b08c"
+last_edited_time: "2026-09-03T05:52:00.000Z"
+notion_url: "https://app.notion.com/p/Python-seaborn-05-lmplot-jointplot-pairplot-3cf19946ca768182b731f659c1d1b08c"
+id: "3cf19946ca768182b731f659c1d1b08c"
+sourceId: "3cf19946-ca76-8182-b731-f659c1d1b08c"
+date: "2026-09-01"
+tags: ["Python","seaborn","regression","jointplot","pairplot"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-seaborn-05-lmplot-jointplot-pairplot-3cf19946ca768182b731f659c1d1b08c"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. regplot / lmplot — 회귀선 겹치기](#1-regplot-lmplot-회귀선-겹치기)
+- [2. residplot — 잔차 진단](#2-residplot-잔차-진단)
+- [3. jointplot — 이변량 + 주변 분포](#3-jointplot-이변량-주변-분포)
+- [4. pairplot — 변수쌍 행렬](#4-pairplot-변수쌍-행렬)
+- [5. figure-level / 격자 객체 정리](#5-figure-level-격자-객체-정리)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+산점도에 **모델·요약을 겹쳐** 관계를 더 읽는 도구입니다.
+
+- **`regplot`(axes) / `lmplot`(figure)**: 산점도 + 회귀선 + 신뢰구간. `order`(다항), `logistic`, `lowess`로 모델 종류를 바꿈.
+- **`residplot`**: 잔차 산점도. 회귀 가정(선형성·등분산) 위반을 눈으로 확인.
+- **`jointplot`**: 가운데 이변량 플롯 + 위·오른쪽에 주변(marginal) 분포. `kind`로 종류 선택.
+- **`pairplot`**: 여러 변수의 산점도 행렬(scatter matrix) + 대각선 분포. `hue`로 그룹, `corner`로 절반만.
+`jointplot`/`pairplot`은 각각 `JointGrid`/`PairGrid`라는 전용 격자 객체를 반환하는 figure-level 함수입니다.
+
+
+```python
+import seaborn as sns
+sns.set_theme()
+tips = sns.load_dataset("tips")
+penguins = sns.load_dataset("penguins")
+```
+
+
+<NotionDivider />
+
+<a id="1-regplot-lmplot-회귀선-겹치기"></a>
+
+## 1. `regplot` / `lmplot` — 회귀선 겹치기
+
+
+```python
+sns.regplot(data=tips, x="total_bill", y="tip")                 # axes-level
+sns.lmplot(data=tips, x="total_bill", y="tip", hue="smoker",    # figure-level
+           col="time")
+sns.lmplot(data=tips, x="total_bill", y="tip", order=2)         # 2차 다항 회귀
+sns.regplot(data=tips, x="total_bill", y="tip", lowess=True)    # 비모수 평활
+sns.regplot(data=df, x="dose", y="cured", logistic=True)        # 로지스틱 (y가 0/1)
+sns.regplot(data=tips, x="size", y="tip", x_estimator=np.mean)  # x값별 평균 + CI
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>인자</td><td>효과</td></tr>
+    <tr><td>`order`</td><td>n차 다항 회귀 (`order=2`면 곡선)</td></tr>
+    <tr><td>`logistic`</td><td>y가 이진일 때 로지스틱 회귀 곡선</td></tr>
+    <tr><td>`lowess`</td><td>국소 가중 회귀(비모수). 신뢰구간 없음</td></tr>
+    <tr><td>`robust`</td><td>이상치에 덜 민감한 로버스트 회귀</td></tr>
+    <tr><td>`ci`</td><td>회귀선 신뢰구간 폭(기본 95), `None`이면 숨김</td></tr>
+    <tr><td>`x_jitter` / `x_estimator`</td><td>이산 x의 겹침 완화 / x별 요약점</td></tr>
+  </tbody>
+</NotionTable>
+
+- `lmplot`은 `regplot`을 `FacetGrid`로 감싼 것입니다. `hue`/`col`/`row`가 필요하면 `lmplot`, 서브플롯 합성이 필요하면 `regplot`.
+- 회귀선은 **탐색용 참고선**입니다. 계수·유의성이 필요하면 `statsmodels`/`scikit-learn`으로 별도 적합합니다.
+**그림에서 보이는 것**: `total_bill`–`tip` 산점도에 우상향 직선과 그를 감싼 반투명 신뢰구간 띠가 그려집니다. 띠는 데이터가 적은 양 끝에서 넓어집니다. `order=2`로 바꾸면 직선이 완만한 곡선이 되지만 형태는 크게 다르지 않습니다.
+
+> 💡 **이럴 때**: 관계가 곡선처럼 보이면 `order=2`나 `lowess=True`로 먼저 확인합니다. lowess 곡선이 직선과 크게 다르면 선형 회귀 가정이 약하다는 신호입니다.
+
+
+<NotionDivider />
+
+<a id="2-residplot-잔차-진단"></a>
+
+## 2. `residplot` — 잔차 진단
+
+
+```python
+sns.residplot(data=tips, x="total_bill", y="tip", lowess=True)
+```
+
+회귀선을 뺀 **잔차(residual)**를 y축에, x를 그대로 x축에 그립니다.
+
+- 잔차가 0 주위에 **무작위로** 흩어지면: 선형 모델이 적절.
+- 잔차에 **곡선 패턴**(U자, 역U자)이 보이면: 비선형 항 필요.
+- x가 커질수록 잔차 **퍼짐이 커지면**(깔때기 모양): 등분산 가정 위반(이분산).
+> 💡 **이럴 때**: `regplot`으로 직선을 그었는데 적합이 애매하면 `residplot`을 같이 봅니다. 원래 산점도에서는 안 보이던 곡률·이분산이 잔차 평면에서는 뚜렷하게 드러납니다.
+
+
+<NotionDivider />
+
+<a id="3-jointplot-이변량-주변-분포"></a>
+
+## 3. `jointplot` — 이변량 + 주변 분포
+
+
+```python
+sns.jointplot(data=penguins, x="bill_length_mm", y="flipper_length_mm", kind="scatter")
+sns.jointplot(data=penguins, x="bill_length_mm", y="flipper_length_mm",
+              kind="hex")                                  # 육각 비닝 (겹침 대응)
+sns.jointplot(data=penguins, x="bill_length_mm", y="flipper_length_mm",
+              kind="kde", fill=True)                       # 2D 밀도 등고선
+sns.jointplot(data=penguins, x="bill_length_mm", y="flipper_length_mm",
+              hue="species")                               # 그룹별 색 + 주변 KDE
+sns.jointplot(data=tips, x="total_bill", y="tip", kind="reg")   # 산점도 + 회귀선
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>`kind`</td><td>가운데 플롯</td><td>겹침이 많을 때</td></tr>
+    <tr><td>`"scatter"`</td><td>산점도</td><td>부적합</td></tr>
+    <tr><td>`"hex"`</td><td>육각형 비닝 히트맵</td><td>적합 (`hue` 불가)</td></tr>
+    <tr><td>`"kde"`</td><td>2D 커널 밀도 등고선</td><td>적합</td></tr>
+    <tr><td>`"hist"`</td><td>2D 히스토그램</td><td>적합</td></tr>
+    <tr><td>`"reg"`</td><td>산점도 + 회귀선 + 주변 히스토그램</td><td>부적합</td></tr>
+  </tbody>
+</NotionTable>
+
+- 반환값은 `JointGrid`. `g.plot_joint(...)`, `g.plot_marginals(...)`로 세부 조정.
+- 주변 분포 덕에 "각 변수 단독 분포"와 "둘의 결합"을 한 그림에서 봅니다.
+**그림에서 보이는 것**: 가운데 산점도에 세 종이 별개 덩어리로 갈라지고, 위쪽 주변 히스토그램에서 `bill_length_mm`가 이봉, 오른쪽 주변에서 `flipper_length_mm`도 이봉이라 두 변수 모두 종을 가른다는 것이 보입니다.
+
+> 💡 **이럴 때**: 점이 수천 개라 산점도가 새까매지면 `kind="hex"`나 `kind="kde"`로 바꿉니다. 밀집 구조가 색 농도/등고선으로 드러납니다.
+
+
+<NotionDivider />
+
+<a id="4-pairplot-변수쌍-행렬"></a>
+
+## 4. `pairplot` — 변수쌍 행렬
+
+
+```python
+sns.pairplot(penguins)
+sns.pairplot(penguins, hue="species", corner=True)
+sns.pairplot(penguins, hue="species", diag_kind="kde",
+             vars=["bill_length_mm", "flipper_length_mm", "body_mass_g"])
+sns.pairplot(penguins, kind="reg")            # 비대각 칸에 회귀선
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>인자</td><td>의미</td></tr>
+    <tr><td>`hue`</td><td>그룹별 색 + 대각선 분포 분리</td></tr>
+    <tr><td>`vars` / `x_vars` / `y_vars`</td><td>포함할 변수 선택 (비정방 행렬 가능)</td></tr>
+    <tr><td>`diag_kind`</td><td>대각선: `"hist"` / `"kde"` / `"auto"`</td></tr>
+    <tr><td>`kind`</td><td>비대각선: `"scatter"` / `"kde"` / `"hist"` / `"reg"`</td></tr>
+    <tr><td>`corner`</td><td>위쪽 삼각형 생략 (중복 제거, 공간 절약)</td></tr>
+  </tbody>
+</NotionTable>
+
+- 반환값은 `PairGrid`. `g.map_upper` / `g.map_lower` / `g.map_diag`로 칸별 커스텀.
+- 수치 열이 많으면(10개 이상) 행렬이 너무 커집니다. `vars=`로 3~6개만 고릅니다.
+**그림에서 보이는 것**: 4x4 격자의 비대각 칸마다 종별로 색이 갈린 산점도가 나타나며, `bill_length` vs `bill_depth` 칸에서 전체로는 음의 관계로 보이지만 종별로 쪼개 보면 각 종 안에서는 양의 관계인 심슨의 역설 패턴이 드러납니다.
+
+> 💡 **이럴 때**: 모델링 전 특징(feature) 간 상관·분리도를 빠르게 훑을 때 `pairplot(hue="타깃")`이 가장 빠릅니다. 상관이 강한 변수쌍은 6장의 `heatmap`으로 수치까지 확인합니다.
+
+
+<NotionDivider />
+
+<a id="5-figure-level-격자-객체-정리"></a>
+
+## 5. figure-level / 격자 객체 정리
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>함수</td><td>반환 격자</td><td>`col`/`row`</td><td>`ax=`</td></tr>
+    <tr><td>`regplot`</td><td>없음 (axes-level)</td><td>불가</td><td>가능</td></tr>
+    <tr><td>`lmplot`</td><td>`FacetGrid`</td><td>가능</td><td>불가</td></tr>
+    <tr><td>`jointplot`</td><td>`JointGrid`</td><td>불가 (구조 고정)</td><td>불가</td></tr>
+    <tr><td>`pairplot`</td><td>`PairGrid`</td><td>불가 (변수쌍이 격자)</td><td>불가</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+

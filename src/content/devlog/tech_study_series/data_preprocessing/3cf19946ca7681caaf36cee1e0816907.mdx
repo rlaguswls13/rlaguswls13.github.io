@@ -1,0 +1,157 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["data-preprocessing","theory","missing-data","imputation"]
+slug: "data-preprocessing-missing-mechanisms"
+subcategory: "data_preprocessing"
+status: "publish"
+description: "\"결측치를 어떻게 채울까\"보다 먼저 \"왜 비어 있는가\"를 물어야 합니다. 결측 메커니즘에 대한 가정이 틀리면, 아무리 정교한 대치도 편향을 만듭니다."
+title: "데이터 전처리 이론 02. 결측치 이론 (MCAR·MAR·MNAR)"
+page_id: "3cf19946-ca76-81ca-af36-cee1e0816907"
+source_id: "3cf19946ca7681caaf36cee1e0816907"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/02-MCAR-MAR-MNAR-3cf19946ca7681caaf36cee1e0816907"
+id: "3cf19946ca7681caaf36cee1e0816907"
+sourceId: "3cf19946-ca76-81ca-af36-cee1e0816907"
+date: "2026-09-01"
+tags: ["data-preprocessing","theory","missing-data","imputation"]
+package: "data_preprocessing"
+notionUrl: "https://app.notion.com/p/02-MCAR-MAR-MNAR-3cf19946ca7681caaf36cee1e0816907"
+---
+
+## 목차
+
+- [다루는 계층](#다루는-계층)
+- [1. 세 가지 결측 메커니즘 (Rubin, 1976)](#1-세-가지-결측-메커니즘-rubin-1976)
+  - [MCAR (Missing Completely At Random)](#mcar-missing-completely-at-random)
+  - [MAR (Missing At Random)](#mar-missing-at-random)
+  - [MNAR (Missing Not At Random)](#mnar-missing-not-at-random)
+- [2. 단순 대치의 문제](#2-단순-대치의-문제)
+  - [평균/중앙값/최빈값 대치](#평균중앙값최빈값-대치)
+  - [상수 대치와 결측 표시자](#상수-대치와-결측-표시자)
+- [3. 다중 대치와 모델 기반 대치](#3-다중-대치와-모델-기반-대치)
+  - [다중 대치(multiple imputation)](#다중-대치multiple-imputation)
+  - [KNN·모델 기반 대치](#knn모델-기반-대치)
+- [4. 삭제 vs 대치의 판단 기준](#4-삭제-vs-대치의-판단-기준)
+
+> "결측치를 어떻게 채울까"보다 먼저 "왜 비어 있는가"를 물어야 합니다. 결측 메커니즘에 대한 가정이 틀리면, 아무리 정교한 대치도 편향을 만듭니다.
+
+<a id="다루는-계층"></a>
+
+## 다루는 계층
+
+- **통계 이론**: 결측 메커니즘(MCAR·MAR·MNAR), 단순 대치의 분산 축소·편향
+- **전처리 의사결정**: 삭제 vs 대치, 어떤 대치법을 쓸지, 결측 표시자(indicator)를 남길지
+- **도구 구현**: `pandas`의 `isna`·`dropna`·`fillna`, `sklearn.impute`의 `SimpleImputer`·`KNNImputer`·`IterativeImputer`
+
+<NotionDivider />
+
+<a id="1-세-가지-결측-메커니즘-rubin-1976"></a>
+
+## 1. 세 가지 결측 메커니즘 (Rubin, 1976)
+
+핵심 질문: **결측이 발생할 확률이 무엇에 의존하는가.**
+
+<a id="mcar-missing-completely-at-random"></a>
+
+### MCAR (Missing Completely At Random)
+
+결측 확률이 관측값·미관측값 어느 것과도 무관합니다. 예: 설문지 일부가 인쇄 오류로 누락. 이때 결측 행은 전체의 무작위 부분집합이므로, **완전 케이스 분석(행 삭제)이 편향을 만들지 않습니다**(표본 크기만 줄어듦). 실제로 순수 MCAR는 드뭅니다.
+
+<a id="mar-missing-at-random"></a>
+
+### MAR (Missing At Random)
+
+결측 확률이 **관측된 다른 변수**에는 의존하지만, 결측된 값 자체에는 의존하지 않습니다. 예: 고소득 응답자일수록 나이를 적게 기입 → 소득(관측됨)으로 결측 여부를 설명 가능. MAR 하에서는 관측 변수를 조건으로 하는 대치(회귀·KNN·다중 대치)가 유효합니다.
+
+<a id="mnar-missing-not-at-random"></a>
+
+### MNAR (Missing Not At Random)
+
+결측 확률이 **결측된 값 그 자체**에 의존합니다. 예: 소득이 매우 높은 사람이 소득 항목을 비움. 관측 변수만으로는 보정할 수 없으며, 결측 원인을 모델링하거나 추가 데이터를 확보하지 않으면 어떤 대치도 편향됩니다.
+
+**주의(사실)**: 데이터만으로 MAR과 MNAR을 확정적으로 구분하는 검정은 존재하지 않습니다. 도메인 지식과 결측 패턴 분석(다른 변수와의 관계, 결측 행의 특성 비교)으로 "어느 가정이 그럴듯한가"를 판단합니다. Little's MCAR 검정은 MCAR 여부만 반증적으로 검토합니다.
+
+
+<NotionDivider />
+
+<a id="2-단순-대치의-문제"></a>
+
+## 2. 단순 대치의 문제
+
+<a id="평균중앙값최빈값-대치"></a>
+
+### 평균/중앙값/최빈값 대치
+
+
+```python
+df["age"] = df["age"].fillna(df["age"].median())
+```
+
+- **분산 축소**: 모든 결측을 한 값으로 채우면 그 변수의 분산이 실제보다 작아지고, 상관계수가 0 쪽으로 눌립니다(감쇠).
+- **불확실성 무시**: 대치값은 추정치인데 관측값처럼 취급되어, 이후 모델의 표준오차가 과소평가됩니다.
+- **평균 대치는 왜도가 큰 변수에서 특히 위험**합니다. 중앙값이 상대적으로 안전합니다.
+<a id="상수-대치와-결측-표시자"></a>
+
+### 상수 대치와 결측 표시자
+
+범주형은 `"Unknown"` 같은 별도 범주로, 수치형은 `-1`이나 `0` 같은 센티널로 채우는 방법이 있습니다. 이때 **결측 여부를 나타내는 이진 표시자 열을 추가**하면(사실), 결측 자체가 정보를 가진 경우(MNAR 근처)에 모델이 그것을 학습할 수 있습니다.
+
+
+```python
+df["income_missing"] = df["income"].isna().astype("int8")
+```
+
+
+<NotionDivider />
+
+<a id="3-다중-대치와-모델-기반-대치"></a>
+
+## 3. 다중 대치와 모델 기반 대치
+
+<a id="다중-대치multiple-imputation"></a>
+
+### 다중 대치(multiple imputation)
+
+한 번이 아니라 여러 벌(예: m=5~20)의 완성 데이터셋을 만들고, 각각 분석한 뒤 결과를 규칙(Rubin's rules)으로 합칩니다. 대치의 불확실성이 최종 추정치의 분산에 반영된다는 것이 핵심 장점입니다. `IterativeImputer`(MICE 계열)가 이 아이디어의 구현입니다.
+
+<a id="knn모델-기반-대치"></a>
+
+### KNN·모델 기반 대치
+
+- **KNN 대치**: 다른 변수 기준으로 가장 가까운 k개 이웃의 값으로 채웁니다. 거리 계산이므로 스케일링이 선행돼야 합니다.
+- **회귀/트리 대치**: 결측 변수를 타깃, 나머지를 특징으로 하는 모델을 학습해 예측값으로 채웁니다.
+
+```python
+from sklearn.impute import KNNImputer
+imputer = KNNImputer(n_neighbors=5)
+X_train_imp = imputer.fit_transform(X_train)   # train에서 fit
+X_test_imp = imputer.transform(X_test)         # test에는 transform만
+```
+
+**실무 강조점(권고)**: 대치기의 통계(평균, 이웃, 회귀계수)는 반드시 **train에서만 fit**하고 test에는 transform만 적용합니다. 전체 데이터로 fit하면 test 정보가 train 파이프라인으로 새어 성능이 낙관적으로 왜곡됩니다(데이터 전처리 이론 06. 불균형·데이터 누수·재현성).
+
+
+<NotionDivider />
+
+<a id="4-삭제-vs-대치의-판단-기준"></a>
+
+## 4. 삭제 vs 대치의 판단 기준
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>상황</td><td>권고</td></tr>
+    <tr><td>결측 비율이 매우 낮음(대략 5% 미만), MCAR로 추정</td><td>행 삭제 허용</td></tr>
+    <tr><td>특정 열의 결측이 40~50%를 넘음</td><td>열 자체 제거 또는 결측 표시자만 유지 검토</td></tr>
+    <tr><td>MAR로 추정, 표본이 아깝다</td><td>모델 기반·다중 대치</td></tr>
+    <tr><td>MNAR로 의심</td><td>결측 표시자 추가 + 도메인 모델링, 결과를 조심스럽게 해석</td></tr>
+    <tr><td>시계열</td><td>앞/뒤 채움(`ffill`), 보간(`interpolate`) -단, 미래 값으로 과거를 채우지 않도록 방향 주의</td></tr>
+  </tbody>
+</NotionTable>
+
+행 삭제(listwise deletion)는 여러 열에 결측이 흩어져 있으면 표본이 급격히 줄고, MCAR가 아니면 표본이 편향됩니다(사실).
+
+
+<NotionDivider />
+

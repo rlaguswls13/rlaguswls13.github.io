@@ -96,17 +96,17 @@ Scaling    : Multi-thread step, Partitioning (Master-Worker), Parallel step
 
 스프링 배치는 배치 프로세스의 모든 상태와 이력을 데이터베이스에 저장합니다. 이를 통해 "어떤 배치가, 어떤 조건으로, 언제 실행되어, 어디까지 성공했는가"를 완벽하게 추적할 수 있으며, 시스템 장애 발생 시 안정적인 복구를 보장합니다.
 
-- **JobInstance (****`BATCH_JOB_INSTANCE`****)**
+- **JobInstance (`BATCH_JOB_INSTANCE`)**
 Job과 JobParameters가 결합하여 생성되는 논리적인 작업 정의입니다. Job 이름과 최초 생성 시 부여된 고유 식별 키 등 **인스턴스 고유 정보**가 저장됩니다. 동일한 식별 키(파라미터)로 성공한 이력이 있다면 중복 실행을 원천 방지합니다.
-- **JobParameters (****`BATCH_JOB_EXECUTION_PARAMS`****)**
+- **JobParameters (`BATCH_JOB_EXECUTION_PARAMS`)**
 배치를 구동할 때 외부에서 던져주는 파라미터 컬렉션입니다. 배치를 돌릴 때 던진 **인자값들과 데이터 타입** 등의 **파라미터 이력**이 저장되며, 동일한 Job을 서로 다르게 식별하는 고유 키 역할을 합니다.
-- **JobExecution (****`BATCH_JOB_EXECUTION`****)**
+- **JobExecution (`BATCH_JOB_EXECUTION`)**
 JobInstance가 실제로 실행된 물리적인 시도 기록입니다. Job의 **시작/종료 시간, 실행 상태(COMPLETED/FAILED), 종료 코드** 등 **Job 실행 기록**이 남습니다. 실패 시 동일한 인스턴스로 다시 실행하면 새로운 Execution이 생성됩니다.
-- **JobExecutionContext (****`BATCH_JOB_EXECUTION_CONTEXT`****)**
+- **JobExecutionContext (`BATCH_JOB_EXECUTION_CONTEXT`)**
 Job 실행 도중 상태를 저장하는 **Job 상태 저장소**입니다. Job 범위(Scope)에서 여러 Step 간에 공유되어야 하는 **자바 객체 및 상태 값(공유 데이터)** 이 직렬화되어 저장됩니다.
-- **StepExecution (****`BATCH_STEP_EXECUTION`****)**
+- **StepExecution (`BATCH_STEP_EXECUTION`)**
 Job 내부의 개별 Step이 실행된 기록입니다. 배치가 어디서 실패했는지 추적하는 가장 정밀한 단위이며, Step별 **Read/Write/Commit/Filter/Rollback 횟수 및 상태** 등 메트릭 정보가 **Step 실행 기록**으로 실시간 저장됩니다.
-- **StepExecutionContext (****`BATCH_STEP_EXECUTION_CONTEXT`****)**
+- **StepExecutionContext (`BATCH_STEP_EXECUTION_CONTEXT`)**
 개별 Step 단위로 상태를 저장하는 **Step 상태 저장소**입니다. 대용량 처리 중 에러가 발생했을 때, **Reader가 마지막으로 읽은 위치(Cursor 등)와 같은 실패 복구용 상태 값**이 저장되어 재시작 시 해당 지점부터 이어서 처리할 수 있게 해줍니다.
 <a id="상세-설정-코드-및-실무-포인트-보기"></a>
 
@@ -227,7 +227,7 @@ public class BatchDataSourceConfig {
 
 ### 3. 설정 시 실무 관점 핵심 포인트
 
-- **`spring.batch.job.enabled: false`** **설정의 중요성:** 이 옵션을 지정하지 않으면 톰캣이나 내부 서버가 구동될 때 스프링 컨텍스트에 등록된 모든 배치가 즉시 한 번씩 실행되어 버립니다. 운영 장애로 이어질 수 있으므로 반드시 `false`로 끄고 내부 스케줄러를 통해 실행하는 구성을 취해야 합니다.
+- **`spring.batch.job.enabled: false` 설정의 중요성:** 이 옵션을 지정하지 않으면 톰캣이나 내부 서버가 구동될 때 스프링 컨텍스트에 등록된 모든 배치가 즉시 한 번씩 실행되어 버립니다. 운영 장애로 이어질 수 있으므로 반드시 `false`로 끄고 내부 스케줄러를 통해 실행하는 구성을 취해야 합니다.
 - **트랜잭션 매니저 분리:** 배치 프로세스 도중 비즈니스 예외로 인해 비즈니스 데이터가 롤백되더라도, 배치 메타데이터 테이블의 실행 기록(`FAILED` 상태 등)은 롤백되지 않고 정상적으로 DB에 저장되어야 사후 추적이 가능합니다. 이를 위해 배치 인프라용 트랜잭션 매니저를 물리적으로 분리하는 것입니다.
 이렇게 인프라 설정을 마치고 나면, 실제 Job을 개발할 때 해당 `JobRepository`와 `batchTransactionManager`를 주입받아 Step을 빌드하게 됩니다.
 

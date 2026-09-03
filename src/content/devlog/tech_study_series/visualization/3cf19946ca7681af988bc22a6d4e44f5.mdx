@@ -1,0 +1,179 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","seaborn","categorical","boxplot","barplot"]
+slug: "python-seaborn-categorical"
+subcategory: "visualization"
+status: "publish"
+description: "한 축이 범주(카테고리), 다른 축이 수치일 때 쓰는 함수 묶음입니다. 세 계열로 나뉩니다. - 분포 요약: boxplot(사분위·수염), violinplot(KDE 대칭), boxenplot(꼬리까지 세분화) - 개별 관측: stripplot(지터 산점), swarmplot(겹침 없이 배치) - 추정치: barplot(평균+오차막대), pointplot(평균 점+연결선), countplot(빈도)"
+title: "Python - seaborn 03. 범주형 시각화 (box·violin·bar·strip)"
+page_id: "3cf19946-ca76-81af-988b-c22a6d4e44f5"
+source_id: "3cf19946ca7681af988bc22a6d4e44f5"
+last_edited_time: "2026-09-03T05:52:00.000Z"
+notion_url: "https://app.notion.com/p/Python-seaborn-03-box-violin-bar-strip-3cf19946ca7681af988bc22a6d4e44f5"
+id: "3cf19946ca7681af988bc22a6d4e44f5"
+sourceId: "3cf19946-ca76-81af-988b-c22a6d4e44f5"
+date: "2026-09-01"
+tags: ["Python","seaborn","categorical","boxplot","barplot"]
+package: "visualization"
+notionUrl: "https://app.notion.com/p/Python-seaborn-03-box-violin-bar-strip-3cf19946ca7681af988bc22a6d4e44f5"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 분포 요약 — box / violin / boxen](#1-분포-요약-box-violin-boxen)
+- [2. 개별 관측 — strip / swarm](#2-개별-관측-strip-swarm)
+- [3. 추정치 — bar / point / count](#3-추정치-bar-point-count)
+- [4. order와 hue 조합](#4-order와-hue-조합)
+- [5. catplot — figure-level 통합](#5-catplot-figure-level-통합)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+한 축이 **범주(카테고리)**, 다른 축이 수치일 때 쓰는 함수 묶음입니다. 세 계열로 나뉩니다.
+
+- **분포 요약**: `boxplot`(사분위·수염), `violinplot`(KDE 대칭), `boxenplot`(꼬리까지 세분화)
+- **개별 관측**: `stripplot`(지터 산점), `swarmplot`(겹침 없이 배치)
+- **추정치**: `barplot`(평균+오차막대), `pointplot`(평균 점+연결선), `countplot`(빈도)
+figure-level **`catplot`**이 `kind=`로 위 전부를 통합하며 `col`/`row` 격자를 만듭니다. 표시 순서는 `order=`, 그룹 분할은 `hue=`로 통제합니다.
+
+
+```python
+import seaborn as sns
+sns.set_theme()
+tips = sns.load_dataset("tips")
+```
+
+
+<NotionDivider />
+
+<a id="1-분포-요약-box-violin-boxen"></a>
+
+## 1. 분포 요약 — box / violin / boxen
+
+
+```python
+sns.boxplot(data=tips, x="day", y="total_bill", hue="smoker")
+sns.violinplot(data=tips, x="day", y="total_bill", hue="smoker", split=True, inner="quart")
+sns.boxenplot(data=tips, x="day", y="total_bill")
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>함수</td><td>보여주는 것</td><td>적합한 상황</td></tr>
+    <tr><td>`boxplot`</td><td>중앙값, IQR(25~75%), 수염(1.5·IQR), 그 밖의 점=이상치 후보</td><td>그룹 수가 많고 빠르게 위치·산포·치우침 비교</td></tr>
+    <tr><td>`violinplot`</td><td>양쪽으로 대칭인 KDE + 내부에 상자/사분위(`inner`)</td><td>분포 **모양**(이봉 여부)이 중요할 때. 표본이 충분해야 함</td></tr>
+    <tr><td>`boxenplot`</td><td>상자를 여러 분위 단계로 확장 (letter-value plot)</td><td>표본이 크고 **꼬리**(극단값 구조)를 보고 싶을 때</td></tr>
+  </tbody>
+</NotionTable>
+
+- `violinplot`의 `split=True`는 `hue`가 2범주일 때 좌우로 반쪽씩 붙여 비교를 압축합니다.
+- `violinplot`의 `inner`: `"box"`, `"quart"`, `"point"`, `"stick"`, `None`.
+- `boxplot`의 이상치 점은 "정의상 수염 밖"일 뿐 통계적 이상치 판정이 아닙니다.
+**그림에서 보이는 것**: 요일별 `total_bill` 상자그림에서 토·일요일 상자가 목·금요일보다 위쪽에 있고 수염도 길어, 주말 결제 금액이 더 높고 편차도 크다는 것이 보입니다.
+
+> 💡 **이럴 때**: 그룹당 표본이 20개 미만이면 `violinplot`의 KDE는 신뢰하기 어렵습니다. 이때는 `boxplot` 또는 `stripplot`/`swarmplot`으로 실제 점을 보여 주는 편이 정직합니다.
+
+
+<NotionDivider />
+
+<a id="2-개별-관측-strip-swarm"></a>
+
+## 2. 개별 관측 — strip / swarm
+
+
+```python
+sns.stripplot(data=tips, x="day", y="total_bill", hue="smoker", dodge=True, jitter=0.2)
+sns.swarmplot(data=tips, x="day", y="total_bill", size=3)
+```
+
+- `stripplot`: 점을 범주 축 방향으로 무작위로 흩뿌려(`jitter`) 겹침을 줄입니다. 표본이 많아도 동작하지만 밀집 구간은 뭉칩니다.
+- `swarmplot`: 점이 서로 겹치지 않도록 알고리즘으로 밀어 배치합니다. 밀도가 눈에 잘 보이지만 표본이 많으면(수백 이상) 느리고 경고가 뜹니다.
+- `dodge=True`: `hue` 그룹을 나란히 분리합니다.
+> 💡 **이럴 때**: 상자그림 위에 실제 점을 얹어 "요약이 데이터를 왜곡하지 않는지" 보여 주고 싶으면 `boxplot` 다음에 같은 `ax`로 `stripplot(..., color=".25", alpha=.5)`을 겹칩니다.
+
+
+<NotionDivider />
+
+<a id="3-추정치-bar-point-count"></a>
+
+## 3. 추정치 — bar / point / count
+
+
+```python
+sns.barplot(data=tips, x="day", y="total_bill", hue="sex",
+            estimator="mean", errorbar=("ci", 95))
+sns.pointplot(data=tips, x="day", y="total_bill", hue="sex", dodge=True)
+sns.countplot(data=tips, x="day", hue="smoker")
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>함수</td><td>계산</td><td>오차 표현</td></tr>
+    <tr><td>`barplot`</td><td>`estimator`(기본 `mean`)로 그룹 요약값을 막대 높이로</td><td>`errorbar`로 신뢰구간/표준편차 (검은 선)</td></tr>
+    <tr><td>`pointplot`</td><td>같은 요약값을 점으로, 그룹 간을 선으로 연결</td><td>같은 `errorbar`</td></tr>
+    <tr><td>`countplot`</td><td>단순 빈도(=`histplot`의 범주판)</td><td>없음</td></tr>
+  </tbody>
+</NotionTable>
+
+- `estimator`에는 `"mean"`, `"median"`, `"sum"`, 또는 임의 함수(`np.median`)를 넘길 수 있습니다.
+- `errorbar` 옵션: `("ci", 95)`(부트스트랩 신뢰구간), `"sd"`(표준편차), `("se", 1)`(표준오차), `("pi", 95)`(백분위 구간), `None`.
+- `pointplot`의 연결선은 "범주 간 추세"를 강조합니다. 범주가 **순서가 없는** 경우(요일은 순서 있음, 색상은 없음) 오해를 부를 수 있으니 주의합니다.
+**그림에서 보이는 것**: `barplot`에서 각 막대 위에 그려진 짧은 검은 수직선이 95% 신뢰구간입니다. 토요일 남성 막대의 구간이 넓다면 표본이 적거나 편차가 크다는 뜻입니다.
+
+> 💡 **이럴 때**: 막대그래프는 0부터 시작하는 길이 인코딩이라 "평균"에 적합하고 "중앙값"에는 어색합니다. 분포가 치우쳐 중앙값을 보고 싶으면 `pointplot(estimator="median")`이나 `boxplot`이 낫습니다.
+
+💡 **이럴 때**: `barplot`의 오차막대가 무엇인지 모른 채 쓰면 안 됩니다. 기본은 부트스트랩 95% 신뢰구간이며, 표준편차를 원하면 명시적으로 `errorbar="sd"`로 바꿉니다.
+
+
+<NotionDivider />
+
+<a id="4-order와-hue-조합"></a>
+
+## 4. `order`와 `hue` 조합
+
+
+```python
+day_order = ["Thur", "Fri", "Sat", "Sun"]
+sns.boxplot(data=tips, x="day", y="total_bill",
+            order=day_order,
+            hue="time", hue_order=["Lunch", "Dinner"])
+```
+
+- `order`: x축(또는 범주 축) 표시 순서. 지정 안 하면 데이터 등장 순 또는 `category` dtype의 순서를 따릅니다.
+- `hue_order`: 색 그룹의 순서와 범례 순서.
+- 순서 있는 범주(요일, 등급, 분기)는 반드시 `order`를 주거나 pandas에서 `pd.Categorical(..., ordered=True)`로 만들어 둡니다. 안 그러면 알파벳 순으로 뒤섞입니다.
+> 💡 **이럴 때**: 막대·상자를 값 크기순으로 정렬해 보여 주고 싶으면, pandas에서 `groupby().mean().sort_values()`로 순서를 뽑아 그 인덱스를 `order=`에 넣습니다. seaborn은 자동 정렬을 하지 않습니다.
+
+
+<NotionDivider />
+
+<a id="5-catplot-figure-level-통합"></a>
+
+## 5. `catplot` — figure-level 통합
+
+
+```python
+sns.catplot(data=tips, x="day", y="total_bill", kind="box", col="time")
+sns.catplot(data=tips, x="day", y="total_bill", hue="sex", kind="violin",
+            split=True, col="smoker")
+sns.catplot(data=tips, x="day", kind="count", col="sex")
+sns.catplot(data=tips, x="day", y="total_bill", kind="bar",
+            col="sex", row="smoker", errorbar="se")
+```
+
+- `kind`: `"strip"`(기본), `"swarm"`, `"box"`, `"violin"`, `"boxen"`, `"bar"`, `"point"`, `"count"`.
+- `col`/`row`로 격자, `height`/`aspect`로 크기.
+- 각 `kind`에 대응하는 axes-level 함수의 인자를 그대로 전달합니다.
+- `ax=`는 받지 못합니다.
+**그림에서 보이는 것**: `col="time"`으로 Lunch/Dinner를 나눈 두 패널에서, Dinner 패널의 상자들이 전반적으로 더 높이 위치해 저녁 결제 금액이 크다는 것이 한눈에 보입니다.
+
+> 💡 **이럴 때**: 범주형 비교를 여러 조건(시간대 x 흡연 여부)으로 쪼개야 하면 `catplot(col=..., row=...)`가 정답입니다. axes-level로 직접 `subplots` 격자를 만들고 반복문을 도는 것보다 짧고 축 범위도 자동으로 공유됩니다.
+
+
+<NotionDivider />
+

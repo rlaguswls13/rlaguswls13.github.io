@@ -1,0 +1,194 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","ufunc","aggregation","axis"]
+slug: "python-numpy-ufunc-aggregation"
+subcategory: "numpy"
+status: "publish"
+description: "NumPy 연산은 3층입니다: ① 원소별 연산(+, *, >), ② 유니버설 함수(ufunc)(np.sqrt, np.exp — 배열 전체에 함수 적용), ③ 집계 함수(sum, mean, std — 축을 따라 값을 요약).\n\n가장 헷갈리는 건 집계 함수의 axis 인자입니다. \"axis로 지정한 축이 사라진다\"만 기억하면 됩니다."
+title: "Python - NumPy 07. 연산 (ufunc·집계·axis)"
+page_id: "3ce19946-ca76-8005-bc5c-c7383a963f96"
+source_id: "3ce19946ca768005bc5cc7383a963f96"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-07-ufunc-axis-3ce19946ca768005bc5cc7383a963f96"
+id: "3ce19946ca768005bc5cc7383a963f96"
+sourceId: "3ce19946-ca76-8005-bc5c-c7383a963f96"
+date: "2026-08-30"
+tags: ["Python","numpy","ufunc","aggregation","axis"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-07-ufunc-axis-3ce19946ca768005bc5cc7383a963f96"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 원소별 연산](#1-원소별-연산)
+- [2. 유니버설 함수 (ufunc)](#2-유니버설-함수-ufunc)
+- [3. 집계 함수와 axis — 이 챕터의 핵심](#3-집계-함수와-axis-이-챕터의-핵심)
+  - [axis 직관: "지정한 축이 결과에서 사라진다"](#axis-직관-지정한-축이-결과에서-사라진다)
+  - [주요 집계 함수](#주요-집계-함수)
+- [4. 누적 / 위치 함수](#4-누적-위치-함수)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+NumPy 연산은 3층입니다
+**① 원소별 연산**(`+`, `*`, `>`), **② 유니버설 함수(ufunc)**(`np.sqrt`, `np.exp` — 배열 전체에 함수 적용), **③ 집계 함수**(`sum`, `mean`, `std` — 축을 따라 값을 요약).
+
+가장 헷갈리는 건 집계 함수의 `axis` 인자입니다. "`axis`로 지정한 축이 사라진다"만 기억하면 됩니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-원소별-연산"></a>
+
+## 1. 원소별 연산
+
+같은 위치의 원소끼리 연산합니다. `*`는 **원소별 곱**이지 행렬곱이 아닙니다 (행렬곱은 `@`, → [Python - NumPy 10. 선형대수 기초](https://app.notion.com/p/Python%20-%20NumPy%2010.%20%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98%20%EA%B8%B0%EC%B4%88)).
+
+
+```python
+a = np.array([1, 2, 3])
+b = np.array([10, 20, 30])
+
+a + b        # array([11, 22, 33])
+a * b        # array([10, 40, 90])   ← 원소별
+a ** 2       # array([1, 4, 9])
+b / a        # array([10., 10., 10.])
+b % a        # array([0, 0, 0])
+
+a > 2        # array([False, False,  True])   ← 불리언 배열
+a == b       # array([False, False, False])
+```
+
+shape가 다르면 브로드캐스팅(6장)이 적용됩니다.
+
+
+<NotionDivider />
+
+<a id="2-유니버설-함수-ufunc"></a>
+
+## 2. 유니버설 함수 (ufunc)
+
+배열의 모든 원소에 같은 수학 함수를 벡터화로 적용합니다.
+
+
+```python
+a = np.array([1., 4., 9., 16.])
+
+np.sqrt(a)          # array([1., 2., 3., 4.])
+np.exp(a)           # e^a
+np.log(a)           # 자연로그 (a>0 이어야; 0이면 -inf, 음수면 nan)
+np.log1p(a)         # log(1 + a)  - a가 아주 작을 때 정밀도 유지
+np.abs(a), np.sign(a)
+np.floor([1.7, -1.2])   # array([ 1., -2.])
+np.ceil([1.2, -1.7])    # array([ 2., -1.])
+np.round([1.24, 1.36], 1)   # array([1.2, 1.4])  - 자리수 반올림
+# 정확히 0.5인 값은 "짝수 쪽"으로 붙는다(banker's rounding):
+# np.round(0.5) → 0.0,  np.round(1.5) → 2.0,  np.round(2.5) → 2.0
+```
+
+**`np.maximum` vs `np.max` 구분** (자주 틀림):
+
+
+```python
+np.maximum(a, b)    # 두 배열의 "원소별" 최댓값 → 배열 반환
+np.max(a)           # 한 배열 "안에서" 최댓값 → 스칼라 반환
+```
+
+> 💡 **이럴 때**: 두 배열을 원소별로 비교해 큰 값을 취할 때(하한 적용)는 `np.maximum`, 한 배열의 최댓값 하나가 필요하면 `np.max`.
+
+
+<NotionDivider />
+
+<a id="3-집계-함수와-axis-이-챕터의-핵심"></a>
+
+## 3. 집계 함수와 `axis` — 이 챕터의 핵심
+
+
+```python
+a = np.arange(1, 7).reshape(2, 3)
+# [[1 2 3]
+#  [4 5 6]]
+
+a.sum()             # 21           - 전체 합 (axis 미지정 = 모든 축)
+a.sum(axis=0)       # [5 7 9]      - 0번 축(행)을 따라 합침 → 열별 합
+a.sum(axis=1)       # [6 15]       - 1번 축(열)을 따라 합침 → 행별 합
+```
+
+<a id="axis-직관-지정한-축이-결과에서-사라진다"></a>
+
+### `axis` 직관: "지정한 축이 결과에서 사라진다"
+
+- `a`의 shape는 `(2, 3)`입니다.
+- `a.sum(axis=0)` → 0번 축(크기 2)이 사라져 결과 shape는 `(3,)`입니다. "행 방향으로 훑으며 더한다" = 열별 합계입니다.
+- `a.sum(axis=1)` → 1번 축(크기 3)이 사라져 결과 shape는 `(2,)`입니다. 행별 합계입니다.
+
+```python
+a.sum(axis=0).shape   # (3,)
+a.sum(axis=1).shape   # (2,)
+a.sum(axis=0, keepdims=True).shape   # (1, 3)  - 축을 없애지 않고 1로 유지 (브로드캐스팅용)
+```
+
+> 💡 **이럴 때**: 집계 결과를 원본에 broadcast로 되돌려 뺄 때 씁니다(`x - x.mean(axis=0, keepdims=True)` 정규화).
+
+> **전처리 관용구**: "열별(feature별) 통계"는 거의 항상 `axis=0`입니다. 데이터가 `(샘플 수, 특징 수)`로 놓이기 때문입니다.
+
+<a id="주요-집계-함수"></a>
+
+### 주요 집계 함수
+
+
+```python
+a.mean(axis=0)              # 평균
+a.std(axis=0)               # 표준편차 (기본 ddof=0, 모표준편차)
+a.var(axis=0)               # 분산
+a.min(axis=0), a.max(axis=0)
+np.median(a, axis=0)        # 중앙값
+np.percentile(a, 75, axis=0)   # 75 백분위수
+np.quantile(a, 0.75, axis=0)   # 동일 (0~1 스케일)
+```
+
+> `std`/`var`는 기본이 `ddof=0`(N으로 나눔)입니다. 표본표준편차(N-1)가 필요하면 `a.std(ddof=1)`을 씁니다. pandas는 기본이 `ddof=1`이라 값이 미세하게 다를 수 있습니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 표본 통계로 보고하거나 pandas 계산 결과와 값을 맞춰야 하면 `ddof=1`을 명시합니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="4-누적-위치-함수"></a>
+
+## 4. 누적 / 위치 함수
+
+
+```python
+a = np.array([3, 1, 4, 1, 5])
+
+np.cumsum(a)        # array([ 3,  4,  8,  9, 14])   - 누적 합
+np.cumprod(a)       # 누적 곱
+
+np.argmin(a)        # 1    - 최솟값의 "인덱스"
+np.argmax(a)        # 4    - 최댓값의 인덱스
+np.argsort(a)       # array([1, 3, 0, 2, 4])   - 정렬했을 때의 원본 인덱스 순서
+                   #   기본 정렬(quicksort)은 불안정 → 동점(1이 둘) 순서는 보장 안 됨.
+                   #   동점 순서까지 고정하려면 np.argsort(a, kind='stable')
+
+a[np.argsort(a)]    # array([1, 1, 3, 4, 5])   - argsort로 실제 정렬
+```
+
+`argmax`는 분류 모델의 예측 클래스를 뽑을 때(`probs.argmax(axis=1)`) 필수입니다.
+
+> 💡 **이럴 때**: 분류 모델의 확률 출력에서 예측 클래스 인덱스를 뽑을 때 `probs.argmax(axis=1)`.
+

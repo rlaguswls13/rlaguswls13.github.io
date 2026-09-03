@@ -1,0 +1,174 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","merge-join","concatenate","sql-join"]
+slug: "python-pandas-merge-join"
+subcategory: "pandas"
+status: "publish"
+description: "표를 합치는 방법은 3가지입니다.\n• concat: 위/아래(또는 옆) 로 쌓기 (같은 스키마 이어 붙이기).\n• merge: 공통 키(열) 기준 관계형 조인 (SQL JOIN).\n• join: merge의 편의 버전으로 인덱스 기준 결합에 최적.merge에서 사고를 예방하는 핵심 옵션은 how, validate, indicator, suffixes 입니다."
+title: "Python - pandas 10. 결합 (concat·merge·join)"
+page_id: "3ce19946-ca76-803b-86fb-f536ae878dba"
+source_id: "3ce19946ca76803b86fbf536ae878dba"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-10-concat-merge-join-3ce19946ca76803b86fbf536ae878dba"
+id: "3ce19946ca76803b86fbf536ae878dba"
+sourceId: "3ce19946-ca76-803b-86fb-f536ae878dba"
+date: "2026-09-01"
+tags: ["Python","pandas","merge-join","concatenate","sql-join"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-10-concat-merge-join-3ce19946ca76803b86fbf536ae878dba"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. concat — 쌓기](#1-concat-쌓기)
+- [2. merge — 키 기준 조인](#2-merge-키-기준-조인)
+  - [how — SQL JOIN 대응](#how-sql-join-대응)
+  - [사고 예방 옵션](#사고-예방-옵션)
+- [3. join — 인덱스 기준 편의 메서드](#3-join-인덱스-기준-편의-메서드)
+- [4. merge_asof — 시계열 근접 조인](#4-mergeasof-시계열-근접-조인)
+- [5. combine_first / update — 보충 병합](#5-combinefirst-update-보충-병합)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+표를 합치는 방법은 3가지입니다.
+
+- **`concat`**: 위/아래(또는 옆) 로 **쌓기** (같은 스키마 이어 붙이기).
+- **`merge`**: 공통 **키(열)** 기준 관계형 조인 (SQL JOIN).
+- **`join`**: `merge`의 편의 버전으로 **인덱스** 기준 결합에 최적.`merge`에서 사고를 예방하는 핵심 옵션은 **`how`, `validate`, `indicator`, `suffixes`** 입니다.
+
+```python
+import pandas as pd
+```
+
+
+<NotionDivider />
+
+<a id="1-concat-쌓기"></a>
+
+## 1. `concat` — 쌓기
+
+
+```python
+pd.concat([df_jan, df_feb, df_mar], ignore_index=True)     # 세로로 이어 붙이기
+pd.concat([df_a, df_b], axis=1)                            # 가로로 (인덱스 정렬)
+pd.concat([df1, df2], keys=["2025", "2026"])               # 출처 레이블 → MultiIndex
+pd.concat([df_a, df_b], join="inner")                      # 공통 열만
+```
+
+- 기본은 `axis=0`(세로), `join="outer"`(합집합 열, 없는 값 `NaN`).
+- `ignore_index=True`로 인덱스를 0부터 재부여 (안 하면 인덱스 중복).
+> 💡 **이럴 때**: 월별/일별로 나뉜 같은 형식의 파일을 하나로 합칠 때. `keys`로 원본 구분자를 남기면 나중에 출처별 집계가 쉽습니다.
+
+
+<NotionDivider />
+
+<a id="2-merge-키-기준-조인"></a>
+
+## 2. `merge` — 키 기준 조인
+
+
+```python
+pd.merge(orders, customers, on="customer_id", how="left")
+pd.merge(orders, customers, left_on="cust_id", right_on="id", how="left")
+pd.merge(a, b, left_index=True, right_index=True)          # 인덱스끼리
+```
+
+<a id="how-sql-join-대응"></a>
+
+### `how` — SQL JOIN 대응
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>`how`</td><td>의미</td><td>SQL</td></tr>
+    <tr><td>`inner` (기본)</td><td>양쪽에 다 있는 키만</td><td>`INNER JOIN`</td></tr>
+    <tr><td>`left`</td><td>왼쪽 전부 + 매칭되는 오른쪽</td><td>`LEFT JOIN`</td></tr>
+    <tr><td>`right`</td><td>오른쪽 전부</td><td>`RIGHT JOIN`</td></tr>
+    <tr><td>`outer`</td><td>양쪽 합집합</td><td>`FULL OUTER JOIN`</td></tr>
+    <tr><td>`cross`</td><td>데카르트 곱</td><td>`CROSS JOIN`</td></tr>
+  </tbody>
+</NotionTable>
+
+<a id="사고-예방-옵션"></a>
+
+### 사고 예방 옵션
+
+
+```python
+pd.merge(
+    orders, customers,
+    on="customer_id",
+    how="left",
+    validate="many_to_one",   # 관계 검증: 아니면 MergeError
+    indicator=True,           # _merge 열: 'both'/'left_only'/'right_only'
+    suffixes=("_ord", "_cust"),  # 겹치는 열 이름 접미사
+)
+```
+
+- **`validate`**: `"one_to_one"`, `"one_to_many"`, `"many_to_one"`, `"many_to_many"`. 키가 예상과 달리 중복이면 **행이 폭증**하는데, 이걸 조기에 잡아 줍니다.
+- **`indicator`**: 조인 후 매칭 안 된 행이 얼마나 되는지 `_merge.value_counts()`로 점검.
+> 💡 **이럴 때**: `merge` 후 행 수가 갑자기 늘었다면 오른쪽 키에 중복이 있는 것입니다. `validate="many_to_one"`을 걸어 원인을 명확히 합니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: `left` 조인 후 `indicator`로 `left_only` 비율을 확인해 "매칭 실패(마스터에 없는 코드)"를 조기에 발견합니다.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="3-join-인덱스-기준-편의-메서드"></a>
+
+## 3. `join` — 인덱스 기준 편의 메서드
+
+
+```python
+orders.set_index("customer_id").join(customers.set_index("customer_id"), how="left")
+df.join([df2, df3])          # 여러 개를 인덱스로 한 번에
+```
+
+`df.join(other)`는 기본적으로 `df`의 인덱스와 `other`의 인덱스를 맞춥니다. 열 기준이면 `merge`가 더 명확합니다.
+
+
+<NotionDivider />
+
+<a id="4-mergeasof-시계열-근접-조인"></a>
+
+## 4. `merge_asof` — 시계열 근접 조인
+
+
+```python
+pd.merge_asof(
+    trades.sort_values("time"),
+    quotes.sort_values("time"),
+    on="time",
+    by="symbol",
+    direction="backward",       # 각 trade 시각 이전의 가장 가까운 quote
+    tolerance=pd.Timedelta("2s"),
+)
+```
+
+정확히 일치하는 키가 아니라 **"가장 가까운 이전/이후 시각"**으로 붙입니다. 거래 체결가에 직전 호가 붙이기, 로그에 직전 배포 버전 붙이기 등.
+
+> 💡 **이럴 때**: 두 시계열의 타임스탬프가 정확히 일치하지 않을 때(센서 A는 1초, 센서 B는 1.3초). 양쪽 모두 정렬돼 있어야 합니다.
+
+
+<NotionDivider />
+
+<a id="5-combinefirst-update-보충-병합"></a>
+
+## 5. `combine_first` / `update` — 보충 병합
+
+
+```python
+primary.combine_first(backup)     # primary의 결측을 backup 값으로 메움
+primary.update(patch)             # patch의 non-NaN 값으로 primary를 덮어씀(in-place)
+```
+

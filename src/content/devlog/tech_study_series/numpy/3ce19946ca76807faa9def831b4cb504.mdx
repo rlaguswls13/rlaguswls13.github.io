@@ -1,0 +1,244 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","preprocessing","normalization","one-hot","binning"]
+slug: "python-numpy-preprocessing-patterns"
+subcategory: "numpy"
+status: "publish"
+description: "앞 챕터들(브로드캐스팅, 집계, 인덱싱)을 조합해 실제 전처리 작업을 수행하는 관용구 모음입니다.\n정규화/표준화, 원-핫 인코딩, 구간화(binning), 중복 제거, 정렬, 그룹 집계를 다룹니다. scikit-learn이 내부적으로 하는 일이기도 합니다."
+title: "Python - NumPy 09. 데이터 전처리 핵심 패턴"
+page_id: "3ce19946-ca76-807f-aa9d-ef831b4cb504"
+source_id: "3ce19946ca76807faa9def831b4cb504"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-09-3ce19946ca76807faa9def831b4cb504"
+id: "3ce19946ca76807faa9def831b4cb504"
+sourceId: "3ce19946-ca76-807f-aa9d-ef831b4cb504"
+date: "2026-08-30"
+tags: ["Python","numpy","preprocessing","normalization","one-hot","binning"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-09-3ce19946ca76807faa9def831b4cb504"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 정규화 / 표준화](#1-정규화-표준화)
+  - [Min-Max 스케일링 → \[0, 1\]](#min-max-스케일링-0-1)
+  - [Z-score 표준화 → 평균 0, 표준편차 1](#z-score-표준화-평균-0-표준편차-1)
+- [2. 원-핫 인코딩](#2-원-핫-인코딩)
+- [3. 구간화 (binning)](#3-구간화-binning)
+- [4. 고유값 / 중복 제거 — np.unique](#4-고유값-중복-제거-npunique)
+- [5. 정렬 — sort / argsort / lexsort](#5-정렬-sort-argsort-lexsort)
+- [6. 그룹 집계 흉내 (pandas groupby 없이)](#6-그룹-집계-흉내-pandas-groupby-없이)
+  - [np.bincount — 정수 그룹별 합계](#npbincount-정수-그룹별-합계)
+  - [np.add.at — 중복 인덱스 누적](#npaddat-중복-인덱스-누적)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+앞 챕터들(브로드캐스팅, 집계, 인덱싱)을 조합해 실제 전처리 작업을 수행하는 관용구 모음입니다.
+
+**정규화/표준화**, **원-핫 인코딩**, **구간화(binning)**, **중복 제거**, **정렬**, **그룹 집계**를 다룹니다. scikit-learn이 내부적으로 하는 일이기도 합니다.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-정규화-표준화"></a>
+
+## 1. 정규화 / 표준화
+
+데이터가 `(샘플 수, 특징 수)` 형태이므로 **열별(`axis=0`) 통계**를 씁니다.
+
+<a id="min-max-스케일링-0-1"></a>
+
+### Min-Max 스케일링 → `[0, 1]`
+
+
+```python
+x = np.array([[10., 1.,  100.],
+              [20., 2.,  100.],
+              [30., 3.,  100.]])
+
+denom = x.max(axis=0) - x.min(axis=0)
+denom[denom == 0] = 1               # 상수 열(3번째)은 0 나눗셈 → nan 방지
+x_norm = (x - x.min(axis=0)) / denom
+```
+
+> 💡 **이럴 때**: 이미지 픽셀을 `[0, 1]`로, 또는 상·하한이 분명한 특징을 고정 범위로 정규화할 때.
+
+<a id="z-score-표준화-평균-0-표준편차-1"></a>
+
+### Z-score 표준화 → 평균 0, 표준편차 1
+
+
+```python
+mean = x.mean(axis=0)
+std = x.std(axis=0)
+std[std == 0] = 1                   # 상수 열 보호
+x_std = (x - mean) / std
+```
+
+> 💡 **이럴 때**: 선형모델·신경망·거리 기반 알고리즘처럼 스케일에 민감한 모델의 입력을 준비할 때.
+
+> **중요**: 학습 데이터에서 계산한 `mean`/`std`(또는 `min`/`max`)를 **저장**해 두고, 테스트 데이터에도 **같은 값**을 적용해야 합니다. 테스트 데이터로 새로 통계를 내면 데이터 누수(leakage)입니다.
+
+
+<NotionDivider />
+
+<a id="2-원-핫-인코딩"></a>
+
+## 2. 원-핫 인코딩
+
+정수 레이블 → 각 클래스가 한 열인 0/1 행렬.
+
+
+```python
+labels = np.array([0, 2, 1, 2, 0])
+n_class = labels.max() + 1          # 3
+
+onehot = np.eye(n_class, dtype=np.int8)[labels]   # np.eye 기본 dtype은 float64
+# [[1 0 0]
+#  [0 0 1]
+#  [0 1 0]
+#  [0 0 1]
+#  [1 0 0]]
+```
+
+원리: `np.eye(3)`은 3x3 단위행렬이고, `[labels]`(팬시 인덱싱)로 각 레이블에 해당하는 행을 뽑습니다. 레이블 `0` → 0행 `[1,0,0]`, 레이블 `2` → 2행 `[0,0,1]`.
+
+> 💡 **이럴 때**: 순서 없는 범주형 변수를 더미변수로 펼칠 때. 트리 기반 모델에는 불필요할 수 있습니다.
+
+
+<NotionDivider />
+
+<a id="3-구간화-binning"></a>
+
+## 3. 구간화 (binning)
+
+연속값을 구간 인덱스로 변환합니다.
+
+
+```python
+x = np.array([0.1, 1.5, 2.7, 4.2, 9.9])
+bins = np.array([0, 1, 3, 5, 10])
+
+np.digitize(x, bins)
+# array([1, 2, 2, 3, 4])
+#   - "1-based": x가 bins[i-1] 이상 bins[i] 미만이면 i
+#   - 범위를 벗어나면 0 또는 len(bins)
+
+counts, edges = np.histogram(x, bins=bins)
+# counts = array([1, 2, 1, 1])
+#   - "0-based" 구간별 개수, 마지막 구간만 우측 끝 포함
+```
+
+> `digitize`와 `histogram`은 **인덱스 기준과 경계 포함 규칙이 다릅니다.** 둘을 섞어 쓰면 off-by-one 버그가 생기므로, 한 작업에서는 하나만 씁니다.
+
+
+<NotionIndent>
+
+💡 **이럴 때**: 연속 변수를 구간 범주로 바꾸거나(연령 → 연령대), 분포를 히스토그램으로 볼 때.
+
+
+</NotionIndent>
+
+
+<NotionDivider />
+
+<a id="4-고유값-중복-제거-npunique"></a>
+
+## 4. 고유값 / 중복 제거 — `np.unique`
+
+
+```python
+a = np.array([3, 1, 2, 3, 1, 1])
+
+np.unique(a)                                  # array([1, 2, 3])  - 정렬된 고유값
+vals, counts = np.unique(a, return_counts=True)
+# vals   = array([1, 2, 3])
+# counts = array([3, 1, 2])   - 각 값의 등장 횟수
+
+vals, idx = np.unique(a, return_index=True)   # 각 고유값이 "처음" 나온 위치
+_, inverse = np.unique(a, return_inverse=True) # 원본을 고유값 인덱스로 재구성
+```
+
+`return_counts`는 클래스 불균형 확인에, `return_inverse`는 범주형 인코딩에 씁니다.
+
+> 💡 **이럴 때**: 클래스 불균형을 확인하거나 범주별 빈도표를 만들 때 `return_counts=True`.
+
+
+<NotionDivider />
+
+<a id="5-정렬-sort-argsort-lexsort"></a>
+
+## 5. 정렬 — `sort` / `argsort` / `lexsort`
+
+
+```python
+a = np.array([3, 1, 2])
+
+np.sort(a)              # array([1, 2, 3])   - 값 정렬 (copy 반환, a는 그대로)
+np.argsort(a)           # array([1, 2, 0])   - 정렬 순서의 원본 인덱스
+a[np.argsort(a)]        # array([1, 2, 3])   - argsort로 실제 정렬 (다른 배열도 같은 순서로 재배열 가능)
+a.sort()               # a 자체를 제자리 정렬 (반환값 None) - 마지막에 호출
+```
+
+**다중 키 정렬 — `np.lexsort`**:
+
+
+```python
+name = np.array(['B', 'A', 'B', 'A'])
+age  = np.array([30,  25,  20,  40])
+
+order = np.lexsort((age, name))   # ★ 마지막 인자(name)가 1순위 키, age가 2순위
+# name으로 먼저 정렬 → 같은 name 안에서 age로 정렬
+list(zip(name[order], age[order]))
+# [('A', 25), ('A', 40), ('B', 20), ('B', 30)]
+```
+
+> `lexsort`는 **키 순서가 거꾸로**입니다 (마지막 인자가 primary). 가장 자주 틀리는 부분입니다.
+
+
+<NotionDivider />
+
+<a id="6-그룹-집계-흉내-pandas-groupby-없이"></a>
+
+## 6. 그룹 집계 흉내 (pandas groupby 없이)
+
+<a id="npbincount-정수-그룹별-합계"></a>
+
+### `np.bincount` — 정수 그룹별 합계
+
+
+```python
+groups = np.array([0, 1, 0, 1, 2])
+values = np.array([10, 20, 30, 40, 50])
+
+np.bincount(groups, weights=values)     # array([40., 60., 50.])
+#   그룹 0: 10+30=40,  그룹 1: 20+40=60,  그룹 2: 50
+np.bincount(groups)                     # array([2, 2, 1])  - 그룹별 개수
+```
+
+<a id="npaddat-중복-인덱스-누적"></a>
+
+### `np.add.at` — 중복 인덱스 누적
+
+일반 팬시 인덱싱 대입은 **중복 인덱스에서 마지막 값만** 남깁니다. 누적하려면 `np.add.at`을 씁니다.
+
+
+```python
+out = np.zeros(3)
+out[groups] += values          # ✗ 기대와 다름 (중복 인덱스에서 마지막만 반영)
+
+out = np.zeros(3)
+np.add.at(out, groups, values) # ✓ array([40., 60., 50.])  - 제대로 누적
+```
+
+> 💡 **이럴 때**: 정수 그룹 키로 그룹별 합계·개수를 pandas 없이 빠르게 구할 때(대용량 집계, 히스토그램 누적).
+

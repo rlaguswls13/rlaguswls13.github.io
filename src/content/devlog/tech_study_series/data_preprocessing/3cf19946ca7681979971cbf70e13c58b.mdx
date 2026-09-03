@@ -1,0 +1,147 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["data-preprocessing","theory","outliers","robust-statistics"]
+slug: "data-preprocessing-outlier-theory"
+subcategory: "data_preprocessing"
+status: "publish"
+description: "이상치는 \"지워야 할 오류\"일 수도, \"가장 흥미로운 진짜 신호\"일 수도 있습니다. 탐지 기법마다 깔린 가정이 다르므로, 가정을 먼저 확인하고 처리 방법을 고릅니다."
+title: "데이터 전처리 이론 03. 이상치 이론"
+page_id: "3cf19946-ca76-8197-9971-cbf70e13c58b"
+source_id: "3cf19946ca7681979971cbf70e13c58b"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/03-3cf19946ca7681979971cbf70e13c58b"
+id: "3cf19946ca7681979971cbf70e13c58b"
+sourceId: "3cf19946-ca76-8197-9971-cbf70e13c58b"
+date: "2026-09-01"
+tags: ["data-preprocessing","theory","outliers","robust-statistics"]
+package: "data_preprocessing"
+notionUrl: "https://app.notion.com/p/03-3cf19946ca7681979971cbf70e13c58b"
+---
+
+## 목차
+
+- [다루는 계층](#다루는-계층)
+- [1. 이상치란 무엇인가](#1-이상치란-무엇인가)
+- [2. 탐지 기법과 그 가정](#2-탐지-기법과-그-가정)
+  - [2.1 IQR 규칙 (Tukey)](#21-iqr-규칙-tukey)
+  - [2.2 z-score](#22-z-score)
+  - [2.3 MAD 기반 (강건 z-score)](#23-mad-기반-강건-z-score)
+  - [2.4 Isolation Forest / LOF (다변량, 개념)](#24-isolation-forest-lof-다변량-개념)
+- [3. 처리 방법의 선택](#3-처리-방법의-선택)
+
+> 이상치는 "지워야 할 오류"일 수도, "가장 흥미로운 진짜 신호"일 수도 있습니다. 탐지 기법마다 깔린 가정이 다르므로, 가정을 먼저 확인하고 처리 방법을 고릅니다.
+
+<a id="다루는-계층"></a>
+
+## 다루는 계층
+
+- **통계 이론**: 이상치의 정의, 탐지 규칙의 분포 가정(정규성·강건성), 붕괴점(breakdown point)
+- **전처리 의사결정**: 제거·클리핑·변환·별도 모델 중 무엇을, 왜
+- **도구 구현**: `numpy` 분위수, `scipy.stats`의 z-score, `sklearn`의 `IsolationForest`·`LocalOutlierFactor`
+
+<NotionDivider />
+
+<a id="1-이상치란-무엇인가"></a>
+
+## 1. 이상치란 무엇인가
+
+이상치(outlier)는 "다른 관측값들과 뚜렷하게 떨어진 값"입니다. 성격을 셋으로 나눕니다.
+
+1. **오류(error)**: 측정·입력·단위 실수(키 1.75m를 175로 기록). 수정하거나 제거합니다.
+1. **드문 진짜 값(rare true value)**: 실제로 존재하는 극단값(초고소득자, 이상 거래). 함부로 지우면 정보 손실입니다.
+1. **다른 분포에서 온 값(contamination)**: 대상 모집단과 무관한 개체가 섞임.
+**핵심(권고)**: 통계 규칙은 "얼마나 떨어졌는가"만 알려주지 "오류인가"는 알려주지 않습니다. 도메인 확인 없이 자동 제거하지 않습니다.
+
+
+<NotionDivider />
+
+<a id="2-탐지-기법과-그-가정"></a>
+
+## 2. 탐지 기법과 그 가정
+
+<a id="21-iqr-규칙-tukey"></a>
+
+### 2.1 IQR 규칙 (Tukey)
+
+Q1 − 1.5·IQR 미만, Q3 + 1.5·IQR 초과를 이상치 후보로 봅니다. 3·IQR은 "극단 이상치".
+
+
+```python
+q1, q3 = np.quantile(x, [0.25, 0.75])
+iqr = q3 - q1
+lower, upper = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+mask = (x < lower) | (x > upper)
+```
+
+- **가정**: 특정 분포를 강하게 가정하지 않고 순위에 기반해 강건합니다.
+- **한계**: 대칭 분포를 암묵적으로 가정하므로, 심하게 치우친 분포에서는 한쪽 꼬리를 과도하게 이상치로 표시합니다. 이때는 변환 후 적용하거나 조정된 상자그림(medcouple 기반)을 씁니다.
+<a id="22-z-score"></a>
+
+### 2.2 z-score
+
+z = (x − μ) / σ. 보통 |z| > 3을 기준으로 합니다.
+
+- **가정**: 근사적 **정규성**. 데이터가 정규분포에 가까울 때 |z|>3은 약 0.27%에 해당합니다.
+- **치명적 약점(사실)**: 평균 μ와 표준편차 σ 자체가 이상치에 크게 오염됩니다. 이상치가 σ를 부풀리면, 정작 그 이상치의 z가 3을 넘지 못해 탐지에 실패하는 **마스킹(masking)**이 발생합니다. 붕괴점이 0에 가깝습니다.
+<a id="23-mad-기반-강건-z-score"></a>
+
+### 2.3 MAD 기반 (강건 z-score)
+
+수정된 z-score = 0.6745·(x − median) / MAD, 여기서 MAD = median(|x − median(x)|).
+
+
+```python
+med = np.median(x)
+mad = np.median(np.abs(x - med))
+robust_z = 0.6745 * (x - med) / mad
+mask = np.abs(robust_z) > 3.5
+```
+
+- **가정**: 중심·산포 추정에 중앙값을 써서 붕괴점이 50%에 이릅니다. 절반 이하가 오염돼도 버팁니다.
+- 0.6745는 정규분포에서 MAD를 σ와 같은 척도로 만드는 상수입니다.
+<a id="24-isolation-forest-lof-다변량-개념"></a>
+
+### 2.4 Isolation Forest / LOF (다변량, 개념)
+
+- **Isolation Forest**: 무작위 분할로 트리를 만들 때, 이상치는 몇 번의 분할만으로 고립됩니다. 평균 경로 길이가 짧을수록 이상 점수가 높습니다. 고차원·대용량에 강하고 분포 가정이 약합니다. `contamination` 비율을 지정해야 합니다.
+- **LOF(Local Outlier Factor)**: 주변 이웃 대비 국소 밀도가 낮은 점을 이상치로 봅니다. 밀도가 지역마다 다른 데이터에 적합하나 이웃 수 선택에 민감합니다.
+
+```python
+from sklearn.ensemble import IsolationForest
+iso = IsolationForest(contamination=0.01, random_state=42).fit(X_train)
+is_inlier = iso.predict(X_test) == 1   # -1이면 이상치
+```
+
+이 다변량 기법들도 train에서 fit, test에 predict/transform 원칙을 지킵니다.
+
+
+<NotionDivider />
+
+<a id="3-처리-방법의-선택"></a>
+
+## 3. 처리 방법의 선택
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>방법</td><td>언제</td><td>유의점</td></tr>
+    <tr><td>**제거(removal)**</td><td>명백한 오류, MCAR성 소수</td><td>진짜 값을 지우면 편향, 표본 감소</td></tr>
+    <tr><td>**윈저라이징/클리핑(winsorizing)**</td><td>극단값의 영향은 줄이되 표본은 유지</td><td>상·하한(예: 1·99 백분위)으로 값을 눌러 저장</td></tr>
+    <tr><td>**변환(transformation)**</td><td>오른쪽 꼬리로 인한 겉보기 이상치</td><td>로그·Box-Cox로 분포를 눌러 이상치 자체가 사라짐</td></tr>
+    <tr><td>**강건 모델/손실**</td><td>이상치를 남겨야 하지만 영향은 제한</td><td>Huber 손실, 트리 기반, 분위수 회귀</td></tr>
+    <tr><td>**별도 취급**</td><td>이상치가 관심 대상(사기 탐지)</td><td>이상 여부를 타깃 또는 특징으로</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+lo, hi = np.percentile(x, [1, 99])
+x_clipped = np.clip(x, lo, hi)   # 윈저라이징
+```
+
+**실무 강조점(사실)**: 이상치는 평균과 표준편차를 왜곡하므로, 이상치를 정리하기 전에 계산한 스케일링 통계(μ, σ)는 신뢰할 수 없습니다. 순서는 보통 결측 처리 → 이상치 판단 → (필요 시) 변환 → 스케일링이며, 스케일러는 `RobustScaler`처럼 중앙값·IQR 기반을 쓰면 잔여 이상치의 영향이 작습니다(데이터 전처리 이론 04. 스케일링과 범주형 인코딩).
+
+
+<NotionDivider />
+

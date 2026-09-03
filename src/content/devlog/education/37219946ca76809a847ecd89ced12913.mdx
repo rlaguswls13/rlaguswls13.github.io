@@ -49,12 +49,12 @@ notionUrl: "https://app.notion.com/p/37219946ca76809a847ecd89ced12913"
 
 무분별하게 최상위 `Exception`으로 `throws`를 던지거나, 적절한 사후 조치(Action) 없이 예외를 방치하면 시스템 에러의 정확한 위치와 원인을 파악하기가 극도로 어려워집니다. 예외는 컴파일 시점과 런타임 시점의 동작 방식에 따라 두 가지로 엄격히 분류됩니다.
 
-- **Checked Exception (예:** **`IOException`****,** **`SQLException`****)**
+- **Checked Exception (예: `IOException`, `SQLException`)**
 - `Exception`을 직접 상속받는 예외들입니다.
 - 컴파일 시점에 예외 처리(`try-catch` 또는 `throws`)를 강제합니다.
 - **트랜잭션 주의점:** 스프링 환경에서 기본적으로 **롤백(Rollback)되지 않고 커밋**되므로 설계 시 주의가 필요합니다.
 
-- **Unchecked / Runtime Exception (예:** **`NullPointerException`****,** **`IllegalArgumentException`****)**
+- **Unchecked / Runtime Exception (예: `NullPointerException`, `IllegalArgumentException`)**
 - `RuntimeException`을 상속받는 예외들입니다.
 - 컴파일 시점에 예외 처리를 강제하지 않으며, 런타임 중에 예외가 발생하면 별도의 처리가 없을 시 스레드가 중단되거나 시스템이 멈출 수 있습니다.
 - **트랜잭션 주의점:** 스프링 환경에서 예외 발생 시 기본적으로 **트랜잭션 롤백**이 수행됩니다.
@@ -167,7 +167,7 @@ public class GlobalExceptionHandler{
 
 ### 스프링의 기본 롤백 규칙 (Declarative Transaction)
 
-스프링의 `@Transactional` 어노테이션은 기본적으로 **`RuntimeException`****과** **`Error`****가 발생했을 때만 트랜잭션을 롤백**합니다. 앞서 언급한 `Checked Exception`이 발생하면 개발자가 예외를 인지하고 복구할 수 있다고 판단하여 데이터를 그대로 `Commit` 해버립니다.
+스프링의 `@Transactional` 어노테이션은 기본적으로 **`RuntimeException`과 `Error`가 발생했을 때만 트랜잭션을 롤백**합니다. 앞서 언급한 `Checked Exception`이 발생하면 개발자가 예외를 인지하고 복구할 수 있다고 판단하여 데이터를 그대로 `Commit` 해버립니다.
 
 <a id="데이터-손실-방지를-위한-롤백-제어-전략"></a>
 
@@ -175,7 +175,7 @@ public class GlobalExceptionHandler{
 
 만약 `Checked Exception`이 발생하는 비즈니스 로직(예: 외부 파일 I/O 작업 실패, 특정 SQL 연동 예외 등)에서 전체 데이터를 안전하게 롤백해야 한다면, 다음과 같은 두 가지 방법으로 후처리를 통제해야 합니다.
 
-- **방법 1:** **`rollbackFor`** **속성 명시 (추천)**`@Transactional(rollbackFor = Exception.class)` 처럼 명시적 설정을 추가하여 Checked Exception 발생 시에도 무조건 트랜잭션이 롤백되도록 유도합니다.
+- **방법 1: `rollbackFor` 속성 명시 (추천)**`@Transactional(rollbackFor = Exception.class)` 처럼 명시적 설정을 추가하여 Checked Exception 발생 시에도 무조건 트랜잭션이 롤백되도록 유도합니다.
 - **방법 2: Unchecked 예외로 전환(Wrapping)**
 Checked Exception이 발생하는 구간을 `try-catch`로 감싸서 catch 블록 내부에서 방어적인 비즈니스 로직을 수행하거나, 시스템이 인지할 수 있는 `BusinessException`으로 재투척(throw)하여 자연스럽게 롤백이 동작하도록 아키텍처를 유연하게 가져갑니다.
 

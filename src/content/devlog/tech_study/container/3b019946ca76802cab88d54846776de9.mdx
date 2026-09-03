@@ -21,7 +21,7 @@ notionUrl: "https://app.notion.com/p/Docker-Image-Commit-Dockerfile-entry-sh-3b0
 
 ## 목차
 
-- [1. 기존 컨테이너를 활용한 추출 (Commit & Push)](#1-기존-컨테이너를-활용한-추출-commit-push)
+- [1. 기존 컨테이너를 활용한 추출 (Commit &amp; Push)](#1-기존-컨테이너를-활용한-추출-commit-push)
 - [2. Dockerfile에 직접 작성하여 생성 (IaC 방식)](#2-dockerfile에-직접-작성하여-생성-iac-방식)
   - [2-1. Multi-stage 빌드 방식 (용량 및 보안 최적화)](#2-1-multi-stage-빌드-방식-용량-및-보안-최적화)
   - [2-2. 복잡한 entry.sh를 활용한 고난도 커스텀 이미지](#2-2-복잡한-entrysh를-활용한-고난도-커스텀-이미지)
@@ -97,7 +97,7 @@ RUN chmod +x /entry.sh
 ENTRYPOINT ["/entry.sh"]
 ```
 
-**`docker-entrypoint.sh`** **표준 패턴 예시 (공식 이미지 참조):**
+**`docker-entrypoint.sh` 표준 패턴 예시 (공식 이미지 참조):**
 
 
 ```bash

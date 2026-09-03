@@ -39,7 +39,7 @@ notionUrl: "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87
 
 아파치 톰캣(Apache Tomcat)은 설정 파일 관리 방식에 따라 시스템 업데이트 생산성과 인프라 운영 안정성이 크게 좌우된다.
 
-본 가이드는 톰캣 `conf/` 디렉터리의 **5대 핵심 설정 파일(server.xml, web.xml, context.xml, logging.properties, tomcat-users.xml)**의 역할 및 보안 관리 포인트, 원본 `catalina.sh`를 보존하고 설정을 완벽히 격리하는 **`setenv.sh`** **운영 및** **`CATALINA_OPTS`** **분리 이유**, 그리고 최신 **Tomcat 9/10 기반 OpenSSL 및 TLSv1.2/1.3 SSL(HTTPS) 튜닝 방법**을 정리한다.
+본 가이드는 톰캣 `conf/` 디렉터리의 **5대 핵심 설정 파일(server.xml, web.xml, context.xml, logging.properties, tomcat-users.xml)**의 역할 및 보안 관리 포인트, 원본 `catalina.sh`를 보존하고 설정을 완벽히 격리하는 **`setenv.sh` 운영 및 `CATALINA_OPTS` 분리 이유**, 그리고 최신 **Tomcat 9/10 기반 OpenSSL 및 TLSv1.2/1.3 SSL(HTTPS) 튜닝 방법**을 정리한다.
 
 
 <NotionDivider />
@@ -75,7 +75,7 @@ tomcat/conf/
 ### 💡 실무 설계 패턴: Spring 기반 처리 권장
 
 - 현대 엔터프라이즈 환경에서는 인프라 이식성과 환경 독립성을 위해 톰캣 전역 `web.xml`과 `context.xml`을 거의 수정하지 않고 유지한다.
-- DataSource, 세션, 에러 핸들링 등은 프로젝트 내부의 **Spring Java Config** 또는 **Spring Boot** **`application.yml`**에서 선언하고 직접 제어하는 것이 표준 아키텍처 모델이다.
+- DataSource, 세션, 에러 핸들링 등은 프로젝트 내부의 **Spring Java Config** 또는 **Spring Boot `application.yml`**에서 선언하고 직접 제어하는 것이 표준 아키텍처 모델이다.
 
 <NotionDivider />
 
@@ -118,7 +118,7 @@ fi
 <NotionTable>
   <tbody>
     <tr><td>구분</td><td>`JAVA_OPTS`</td><td>`CATALINA_OPTS` (권장)</td></tr>
-    <tr><td>**적용 범위**</td><td>톰캣 `start`, `stop`, 기타 외부 자바 도구 전역</td><td>오직 톰캣 **`start`** **/** **`run`** **구동 시에만 격리 적용**</td></tr>
+    <tr><td>**적용 범위**</td><td>톰캣 `start`, `stop`, 기타 외부 자바 도구 전역</td><td>오직 톰캣 **`start` / `run` 구동 시에만 격리 적용**</td></tr>
     <tr><td>**종료(stop) 시 동작**</td><td>톰캣을 끌 때도 대용량 힙을 할당하려다 OOM 발생 가능</td><td>톰캣 종료나 기타 명령어에 간섭하지 않음</td></tr>
     <tr><td>**사이드 이펙트**</td><td>같은 서버 내 다른 자바 프로세스에 영향 미침</td><td>**사이드 이펙트 전혀 없음 (Zero Side-Effects)**</td></tr>
   </tbody>

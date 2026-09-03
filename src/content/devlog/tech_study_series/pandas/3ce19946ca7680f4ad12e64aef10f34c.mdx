@@ -1,0 +1,172 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["Python","pandas","timeseries","resample","rolling"]
+slug: "python-pandas-timeseries"
+subcategory: "pandas"
+status: "publish"
+description: "시계열 전처리의 뼈대는 DatetimeIndex로 만들기 → resample로 빈도 바꾸기 → rolling/shift로 파생 만들기 입니다.\nresample은 시간 축 전용 groupby이고, rolling은 이동 창(window) 집계, shift/diff/pct_change는 \"이전 값과의 관계\"를 만듭니다."
+title: "Python - pandas 11. 시계열"
+page_id: "3ce19946-ca76-80f4-ad12-e64aef10f34c"
+source_id: "3ce19946ca7680f4ad12e64aef10f34c"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/Python-pandas-11-3ce19946ca7680f4ad12e64aef10f34c"
+id: "3ce19946ca7680f4ad12e64aef10f34c"
+sourceId: "3ce19946-ca76-80f4-ad12-e64aef10f34c"
+date: "2026-09-01"
+tags: ["Python","pandas","timeseries","resample","rolling"]
+package: "pandas"
+notionUrl: "https://app.notion.com/p/Python-pandas-11-3ce19946ca7680f4ad12e64aef10f34c"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 시간 인덱스 만들기](#1-시간-인덱스-만들기)
+  - [부분 문자열 인덱싱](#부분-문자열-인덱싱)
+- [2. resample — 빈도 변경 (시간 축 groupby)](#2-resample-빈도-변경-시간-축-groupby)
+  - [다운샘플링 (촘촘 → 성김, 집계 필요)](#다운샘플링-촘촘-성김-집계-필요)
+  - [업샘플링 (성김 → 촘촘, 채우기 필요)](#업샘플링-성김-촘촘-채우기-필요)
+- [3. rolling / expanding / ewm — 창 연산](#3-rolling-expanding-ewm-창-연산)
+- [4. shift / diff / pct_change — 이전 값과의 관계](#4-shift-diff-pctchange-이전-값과의-관계)
+- [5. 타임존 (tz)](#5-타임존-tz)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+시계열 전처리의 뼈대는 **`DatetimeIndex`로 만들기 → `resample`로 빈도 바꾸기 → `rolling`/`shift`로 파생 만들기** 입니다.
+
+`resample`은 시간 축 전용 `groupby`이고, `rolling`은 이동 창(window) 집계, `shift`/`diff`/`pct_change`는 "이전 값과의 관계"를 만듭니다.
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-시간-인덱스-만들기"></a>
+
+## 1. 시간 인덱스 만들기
+
+
+```python
+df["ts"] = pd.to_datetime(df["ts"], format="%Y-%m-%d %H:%M:%S")
+df = df.set_index("ts").sort_index()
+
+pd.date_range("2026-01-01", periods=12, freq="MS")   # 매월 1일
+pd.date_range("2026-01-01", "2026-12-31", freq="D")  # 매일
+pd.period_range("2026-01", periods=12, freq="M")     # Period(구간)
+```
+
+- **Timestamp**: 특정 시점(`2026-01-01 00:00`).
+- **Period**: 구간(`2026-01` = 1월 한 달). `to_period("M")` / `to_timestamp()`로 오갑니다.
+- 주요 `freq` 별칭: `D`(일), `W`(주), `MS`/`ME`(월초/월말), `QS`/`QE`(분기), `YS`/`YE`(연), `h`, `min`, `s`, `B`(영업일).
+<a id="부분-문자열-인덱싱"></a>
+
+### 부분 문자열 인덱싱
+
+
+```python
+df.loc["2026"]                 # 2026년 전체
+df.loc["2026-03"]              # 3월
+df.loc["2026-03-01":"2026-03-15"]
+df.between_time("09:00", "18:00")   # 매일 특정 시간대
+```
+
+
+<NotionDivider />
+
+<a id="2-resample-빈도-변경-시간-축-groupby"></a>
+
+## 2. `resample` — 빈도 변경 (시간 축 groupby)
+
+<a id="다운샘플링-촘촘-성김-집계-필요"></a>
+
+### 다운샘플링 (촘촘 → 성김, 집계 필요)
+
+
+```python
+df["amount"].resample("D").sum()          # 일별 합계
+df["amount"].resample("ME").mean()        # 월별 평균
+df.resample("W").agg({"amount": "sum", "qty": "mean"})
+df["price"].resample("D").ohlc()          # 시가/고가/저가/종가
+```
+
+<a id="업샘플링-성김-촘촘-채우기-필요"></a>
+
+### 업샘플링 (성김 → 촘촘, 채우기 필요)
+
+
+```python
+s.resample("h").ffill()                   # 직전 값 유지
+s.resample("h").interpolate()             # 선형 보간
+s.resample("h").asfreq()                  # 빈칸은 NaN 그대로
+```
+
+- `asfreq`는 집계 없이 **빈도만** 바꿉니다 (누락은 `NaN`).
+- `resample`은 `DatetimeIndex`/`PeriodIndex`가 있어야 합니다. 열 기준이면 `on="ts"`.
+> 💡 **이럴 때**: 초 단위 로그를 "분당 요청 수", "일별 매출"로 요약할 때 다운샘플링. 일별 데이터를 시간별 모델에 맞출 때 업샘플링 + 보간.
+
+
+<NotionDivider />
+
+<a id="3-rolling-expanding-ewm-창-연산"></a>
+
+## 3. `rolling` / `expanding` / `ewm` — 창 연산
+
+
+```python
+df["ma7"] = df["amount"].rolling(window=7).mean()          # 7일 이동평균
+df["ma7_c"] = df["amount"].rolling(7, center=True).mean()  # 중앙 정렬
+df["std7"] = df["amount"].rolling("7D").std()              # 시간 기반 창
+df["cummax"] = df["amount"].expanding().max()              # 시작~현재 누적
+df["ewm"] = df["amount"].ewm(span=7).mean()                # 지수가중 (최근 가중)
+df["ma7_grp"] = df.groupby("store")["amount"].rolling(7).mean().reset_index(0, drop=True)
+```
+
+- `rolling(7)`은 앞 6개가 `NaN`(창이 안 참). `min_periods=1`로 완화.
+- `ewm`은 오래된 값을 지수적으로 감쇠 — 추세 변화에 더 민감.
+> 💡 **이럴 때**: 노이즈 많은 지표를 매끄럽게(이동평균), 이상 급등 탐지(이동표준편차 대비 편차), 최근 흐름 강조(`ewm`).
+
+
+<NotionDivider />
+
+<a id="4-shift-diff-pctchange-이전-값과의-관계"></a>
+
+## 4. `shift` / `diff` / `pct_change` — 이전 값과의 관계
+
+
+```python
+df["prev"] = df["amount"].shift(1)             # 한 칸 뒤로 (전일 값)
+df["next"] = df["amount"].shift(-1)
+df["delta"] = df["amount"].diff()              # 현재 - 이전
+df["growth"] = df["amount"].pct_change()       # (현재-이전)/이전
+df["prev_by_store"] = df.groupby("store")["amount"].shift(1)   # 그룹별 lag
+df["lag7"] = df["amount"].shift(7, freq="D")   # 시간 기준 시프트
+```
+
+> 💡 **이럴 때**: 전일 대비 증감률, lag 피처(어제·지난주 값), 이벤트 전후 비교. 그룹 시계열은 반드시 `groupby(...).shift()`로 (그룹 경계 넘는 오염 방지).
+
+
+<NotionDivider />
+
+<a id="5-타임존-tz"></a>
+
+## 5. 타임존 (tz)
+
+
+```python
+s.tz_localize("Asia/Seoul")             # naive → aware (지역 시각 부여)
+s.tz_convert("UTC")                     # aware → 다른 tz로 변환
+s.tz_localize(None)                     # tz 제거
+```
+
+- `tz_localize`: 벽시계 시각에 "이건 서울 시각"이라고 라벨링.
+- `tz_convert`: 같은 순간을 다른 지역 시각 표기로.
+- 서로 다른 tz(또는 naive/aware 혼합) 시계열은 연산 전에 하나로 통일합니다.
+> 💡 **이럴 때**: 글로벌 서비스 로그를 분석할 때 전부 UTC로 모아 계산하고, 리포트 단계에서만 지역 시각으로 변환합니다.
+

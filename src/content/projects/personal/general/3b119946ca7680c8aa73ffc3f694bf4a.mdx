@@ -8,10 +8,10 @@ end: ""
 subcategory: "전체"
 tags: ["Java8","Spring Boot","File Upload","Performance"]
 status: "temp"
-title: "파일 업로드"
+title: "파일 업로드 : 비동기 타겟팅"
 page_id: "3b119946-ca76-80c8-aa73-ffc3f694bf4a"
 source_id: "3b119946ca7680c8aa73ffc3f694bf4a"
-last_edited_time: "2026-08-25T07:50:00.000Z"
+last_edited_time: "2026-09-01T00:38:00.000Z"
 notion_url: "https://app.notion.com/p/3b119946ca7680c8aa73ffc3f694bf4a"
 id: "3b119946ca7680c8aa73ffc3f694bf4a"
 sourceId: "3b119946-ca76-80c8-aa73-ffc3f694bf4a"
@@ -22,15 +22,15 @@ notionUrl: "https://app.notion.com/p/3b119946ca7680c8aa73ffc3f694bf4a"
 
 ## 목차
 
-  - [1. 도입 배경 및 과제 (Background & Problem)](#1-도입-배경-및-과제-background-problem)
+  - [1. 도입 배경 및 과제 (Background &amp; Problem)](#1-도입-배경-및-과제-background-problem)
   - [2. 기술적 구현 및 적용 (Technical Implementation)](#2-기술적-구현-및-적용-technical-implementation)
-  - [3. 성과 및 유용성 (Result & Benefit)](#3-성과-및-유용성-result-benefit)
+  - [3. 성과 및 유용성 (Result &amp; Benefit)](#3-성과-및-유용성-result-benefit)
 
 <a id="1-도입-배경-및-과제-background-problem"></a>
 
 ### 1. 도입 배경 및 과제 (Background & Problem)
 
-웹 브라우저 환경에서 수 기가바이트(GB) 단위의 대용량 파일을 단일 파일 스트림으로 업로드하는 경우, 서버 사이드의 일시적인 메모리 급증 현상(Out of Memory) 및 HTTP 세션 타임아웃 장애가 빈번하게 발생하여 업로드 안정성이 심각하게 저해되는 한계가 있었습니다.
+웹 브라우저 환경에서 수 기가바이트(GB) 단위의 대용량 파일을 단일 파일 스트림으로 업로드하는 경우, 서버 사이드의 일시적인 메모리 급증 현상(Out of Memory) 및 HTTP 세션 타임아웃 장애가 빈번하게 발생하여 업로드 안정성이 심각하게 저하되는 한계가 있었습니다.
 
 <a id="2-기술적-구현-및-적용-technical-implementation"></a>
 

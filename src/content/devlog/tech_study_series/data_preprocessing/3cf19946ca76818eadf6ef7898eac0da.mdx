@@ -1,0 +1,147 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["data-preprocessing","theory","data-leakage","reproducibility"]
+slug: "data-preprocessing-leakage-reproducibility"
+subcategory: "data_preprocessing"
+status: "publish"
+description: "앞의 모든 전처리 기법은 \"어디서 fit하고 어디에 적용하는가\"를 틀리는 순간 무너집니다. 이 노트는 전처리를 실험 설계 안에서 안전하게 배치하는 규율을 다룹니다."
+title: "데이터 전처리 이론 06. 불균형·데이터 누수·재현성"
+page_id: "3cf19946-ca76-818e-adf6-ef7898eac0da"
+source_id: "3cf19946ca76818eadf6ef7898eac0da"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/06-3cf19946ca76818eadf6ef7898eac0da"
+id: "3cf19946ca76818eadf6ef7898eac0da"
+sourceId: "3cf19946-ca76-818e-adf6-ef7898eac0da"
+date: "2026-09-01"
+tags: ["data-preprocessing","theory","data-leakage","reproducibility"]
+package: "data_preprocessing"
+notionUrl: "https://app.notion.com/p/06-3cf19946ca76818eadf6ef7898eac0da"
+---
+
+## 목차
+
+- [다루는 계층](#다루는-계층)
+- [1. 불균형 데이터](#1-불균형-데이터)
+  - [1.1 정확도의 함정](#11-정확도의-함정)
+  - [1.2 리샘플링](#12-리샘플링)
+- [2. 데이터 누수(data leakage)](#2-데이터-누수data-leakage)
+  - [2.1 전처리 시점 누수](#21-전처리-시점-누수)
+  - [2.2 타깃 누수(feature leakage)](#22-타깃-누수feature-leakage)
+  - [2.3 시간 누수(temporal leakage)](#23-시간-누수temporal-leakage)
+  - [2.4 교차검증 안에 전처리를 넣어야 하는 이유](#24-교차검증-안에-전처리를-넣어야-하는-이유)
+- [3. 재현성(reproducibility)](#3-재현성reproducibility)
+
+> 앞의 모든 전처리 기법은 "어디서 fit하고 어디에 적용하는가"를 틀리는 순간 무너집니다. 이 노트는 전처리를 실험 설계 안에서 안전하게 배치하는 규율을 다룹니다.
+
+<a id="다루는-계층"></a>
+
+## 다루는 계층
+
+- **통계 이론**: 클래스 불균형이 평가지표에 미치는 영향, 데이터 누수의 정의
+- **전처리 의사결정**: 리샘플링을 할지·어디서 할지, 어떤 지표로 볼지, 파이프라인 경계를 어디에 둘지
+- **도구 구현**: `sklearn`의 `Pipeline`·`ColumnTransformer`·`cross_val_score`, `imbalanced-learn`의 `SMOTE`
+
+<NotionDivider />
+
+<a id="1-불균형-데이터"></a>
+
+## 1. 불균형 데이터
+
+<a id="11-정확도의-함정"></a>
+
+### 1.1 정확도의 함정
+
+양성 클래스가 1%인 데이터에서 "전부 음성"이라 예측하면 정확도 99%입니다. 정확도(accuracy)는 다수 클래스에 지배되므로 불균형에서는 무의미합니다(사실).
+
+**대안 지표**:
+
+- **precision** = TP/(TP+FP): 양성 예측의 신뢰도.
+- **recall** = TP/(TP+FN): 실제 양성의 포착률.
+- **F1**: precision·recall의 조화평균.
+- **PR-AUC**: 불균형에서 ROC-AUC보다 소수 클래스 성능을 민감하게 반영.
+- **임계값 조정**: 확률 출력의 컷오프(기본 0.5)를 비용에 맞게 이동.
+<a id="12-리샘플링"></a>
+
+### 1.2 리샘플링
+
+- **오버샘플링**: 소수 클래스를 복제. 과적합 위험.
+- **언더샘플링**: 다수 클래스를 버림. 정보 손실.
+- **SMOTE**: 소수 클래스 표본들 사이를 보간해 합성 표본 생성. 경계가 겹치거나 노이즈가 있으면 잘못된 표본을 만들 수 있습니다.
+- **클래스 가중치**(`class_weight="balanced"`): 데이터를 건드리지 않고 손실에 가중. 종종 가장 간단하고 안전한 첫 시도입니다(권고).
+**핵심 규율(사실)**: 리샘플링은 **훈련 폴드에만** 적용합니다. 검증/테스트 세트는 원래 분포를 유지해야 실제 성능을 반영합니다. 분할 전에 SMOTE를 돌리면 합성 표본의 이웃이 검증셋에 새어 성능이 부풀려집니다. `imbalanced-learn`의 `Pipeline`을 써서 각 fold 내부에서만 리샘플링되게 합니다.
+
+
+<NotionDivider />
+
+<a id="2-데이터-누수data-leakage"></a>
+
+## 2. 데이터 누수(data leakage)
+
+누수는 **훈련 시점에 사용할 수 없는 정보가 모델 학습에 들어가는 것**입니다. 검증 성능은 좋지만 실제 배포 성능은 나쁩니다.
+
+<a id="21-전처리-시점-누수"></a>
+
+### 2.1 전처리 시점 누수
+
+전체 데이터로 스케일러·인코더·결측 대치기·`PowerTransformer`의 λ·`SelectKBest`를 fit하면, test의 통계가 train 전처리에 반영됩니다.
+
+
+```python
+# 잘못된 예: 분할 전에 전체로 fit
+X_scaled = StandardScaler().fit_transform(X)   # test 정보가 이미 샘
+X_tr, X_te = train_test_split(X_scaled)
+
+# 올바른 예
+X_tr, X_te = train_test_split(X, random_state=42)
+scaler = StandardScaler().fit(X_tr)            # train에서만 fit
+X_tr_s, X_te_s = scaler.transform(X_tr), scaler.transform(X_te)
+```
+
+이 원칙은 앞선 모든 노트에서 반복된 **train fit → test transform**의 근거입니다.
+
+<a id="22-타깃-누수feature-leakage"></a>
+
+### 2.2 타깃 누수(feature leakage)
+
+타깃과 사실상 같은 정보이거나, 타깃이 결정된 이후에야 생기는 변수를 특징으로 넣는 경우. 예: "해지 여부" 예측에 "해지 위약금 청구액"을 사용. 타깃 인코딩도 같은 행의 타깃을 쓰면 여기에 해당합니다(데이터 전처리 이론 04. 스케일링과 범주형 인코딩).
+
+<a id="23-시간-누수temporal-leakage"></a>
+
+### 2.3 시간 누수(temporal leakage)
+
+미래 정보가 과거 예측에 들어가는 경우. 미래 값으로 결측을 채우거나, 전체 기간 평균으로 집계 특성을 만들거나, 무작위 셔플 교차검증을 시계열에 적용하면 발생합니다. 시계열은 `TimeSeriesSplit`처럼 시간 순서를 지키는 분할을 씁니다.
+
+<a id="24-교차검증-안에-전처리를-넣어야-하는-이유"></a>
+
+### 2.4 교차검증 안에 전처리를 넣어야 하는 이유
+
+교차검증의 목적은 "보지 못한 데이터에서의 성능 추정"입니다. 전처리를 CV 밖에서 한 번 하면 각 fold의 검증 부분이 전처리 fit에 참여해 추정이 낙관적으로 편향됩니다. `Pipeline`으로 묶으면 매 fold마다 전처리가 훈련 부분에서만 새로 fit됩니다.
+
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+
+pre = ColumnTransformer([
+    ("num", StandardScaler(), num_cols),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols),
+])
+pipe = Pipeline([("pre", pre), ("model", LogisticRegression(class_weight="balanced"))])
+scores = cross_val_score(pipe, X, y, cv=5, scoring="f1")   # 전처리가 fold 안에서 fit
+```
+
+
+<NotionDivider />
+
+<a id="3-재현성reproducibility"></a>
+
+## 3. 재현성(reproducibility)
+
+- **랜덤 시드 고정**: 데이터 분할, 리샘플링, 모델 초기화, 부트스트랩에 `random_state`를 명시. 시드를 바꿔 여러 번 돌려 결과의 분산도 확인합니다.
+- **파이프라인화**: 전처리 순서·파라미터를 코드(`Pipeline`)로 고정. 노트북에서 셀을 순서 바꿔 실행하다 생기는 은근한 누수·불일치를 차단합니다.
+- **데이터·환경 버전 관리**: 원본 데이터의 스냅샷·스키마·버전을 기록(DVC 등), 라이브러리 버전을 `requirements.txt`/lock 파일로 고정. 같은 코드라도 라이브러리 버전이 다르면 결과가 달라질 수 있습니다.
+- **전처리 산출물 저장**: 학습된 scaler·encoder·imputer를 모델과 함께 직렬화해, 추론 시 동일 변환을 재현합니다.
+
+<NotionDivider />
+

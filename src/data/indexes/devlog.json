@@ -75,7 +75,7 @@
       "sourceId": "3b019946-ca76-8062-aeb4-e0e781ed366a",
       "source_id": "3b019946ca768062aeb4e0e781ed366a",
       "page_id": "3b019946-ca76-8062-aeb4-e0e781ed366a",
-      "last_edited_time": "2026-08-26T02:19:00.000Z",
+      "last_edited_time": "2026-09-01T00:24:00.000Z",
       "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
       "date": "2026.05.26",
       "tags": [
@@ -155,12 +155,72 @@
   ],
   "tech_study": [
     {
+      "id": "3ce19946ca7680c3bf5ada32fda9842c",
+      "slug": "java-gc-guide",
+      "sourceId": "3ce19946-ca76-80c3-bf5a-da32fda9842c",
+      "source_id": "3ce19946ca7680c3bf5ada32fda9842c",
+      "page_id": "3ce19946-ca76-80c3-bf5a-da32fda9842c",
+      "last_edited_time": "2026-09-01T06:41:00.000Z",
+      "title": "Java : 가비지 컬렉션(GC) 한 페이지 정리",
+      "date": "2026.09.01",
+      "tags": [
+        "java",
+        "gc",
+        "jvm",
+        "memory-management",
+        "overview"
+      ],
+      "description": "GC(Garbage Collection)는 프로그램이 더 이상 접근할 수 없는(도달 불가능, unreachable) 객체가 점유한 힙(Heap) 메모리를 자동으로 회수하는 JVM 기능입니다. 회수 대상 판정은 참조 카운팅이 아니라 GC Root로부터의 도달 가능성(reachability)을 기준으로 하므로, 서로만 참조하는 순환 참조 덩어리도 루트에서 닿지 않으면 통째로 회수됩니다.",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/Java-GC-3ce19946ca7680c3bf5ada32fda9842c"
+    },
+    {
+      "id": "3ce19946ca7680c19677fb9fa7f3dea7",
+      "slug": "java-oop-override-overload",
+      "sourceId": "3ce19946-ca76-80c1-9677-fb9fa7f3dea7",
+      "source_id": "3ce19946ca7680c19677fb9fa7f3dea7",
+      "page_id": "3ce19946-ca76-80c1-9677-fb9fa7f3dea7",
+      "last_edited_time": "2026-09-01T05:01:00.000Z",
+      "title": "Java : Override와 Overload는 어떻게 구분할까?",
+      "date": "2026.09.01",
+      "tags": [
+        "override",
+        "overload",
+        "OOP",
+        "polymorphism"
+      ],
+      "description": "그동안 무심코 overwrite로 혼동하며 쓰던 개념은 객체지향 상속 구조에서 유래한 override(재정의)가 올바른 표현임을 알게 되었습니다. 부모 클래스의 메서드를 자식 클래스가 자신의 목적에 맞게 재정의하여 사용하는 상속의 특성이 오버라이드의 핵심 원리입니다.\n반면 overload(오버로드)는 동일한 이름의 메서드를 매개변수의 개수나 타입에 따라 여러 개 선언하는 방식으로, 하나의 이름이 다양한 형태를 가질 수 있게 만드는 다형성 개념에서 출발합니다. 이처럼 두 용어의 정확한 기원과 객체지향적 배경을 정리함으로써 코드의 구조적 의미를 더욱 선명하게 이해할 수 있습니다.",
+      "subcategory": "jvav",
+      "package": "jvav",
+      "notionUrl": "https://app.notion.com/p/Java-Override-Overload-3ce19946ca7680c19677fb9fa7f3dea7"
+    },
+    {
+      "id": "3c819946ca768094bfebe1e7bea97aa6",
+      "slug": "java-jre-jdk-jvm-diff",
+      "sourceId": "3c819946-ca76-8094-bfeb-e1e7bea97aa6",
+      "source_id": "3c819946ca768094bfebe1e7bea97aa6",
+      "page_id": "3c819946-ca76-8094-bfeb-e1e7bea97aa6",
+      "last_edited_time": "2026-09-01T02:52:00.000Z",
+      "title": "Java : JVM, JRE, JDK 이들의 차이가 뭘까?",
+      "date": "2026.08.27",
+      "tags": [
+        "jre",
+        "jdk",
+        "jvm"
+      ],
+      "description": "jre, jdk, jvm 용어에 대해서 간략하게 정리해 봤습니다. JVM은 자바 바이트코드를 각 운영체제에 맞게 변환해 실행하는 가상 머신이고, JRE는 여기에 프로그램 실행에 필요한 표준 라이브러리를 더한 실행 환경이며, JDK는 컴파일러 등 소스 코드 작성과 개발 도구까지 모두 포함한 통합 개발 키트라는 걸 다시 한번 명확히 깨달았습니다. 결국 단순히 자바 프로그램을 실행만 할 때는 JRE를 사용하고, 직접 소스를 작성하고 개발하는 환경을 구축할 때는 JDK를 선택해야 한다는 점을 확실히 짚고 넘어갈수 있었습니다.",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7bea97aa6"
+    },
+    {
       "id": "3c819946ca7680ae8b31f2d87255a3fb",
       "slug": "ai-python-history-data-pipeline",
       "sourceId": "3c819946-ca76-80ae-8b31-f2d87255a3fb",
       "source_id": "3c819946ca7680ae8b31f2d87255a3fb",
       "page_id": "3c819946-ca76-80ae-8b31-f2d87255a3fb",
-      "last_edited_time": "2026-08-26T02:55:00.000Z",
+      "last_edited_time": "2026-08-26T22:41:00.000Z",
       "title": "Python이 AI 생태계의 표준이 된 이유 - 언어의 역사, 하드웨어 아키텍처 및 데이터 파이프라인",
       "date": "2026.08.26",
       "tags": [
@@ -178,7 +238,7 @@
       "sourceId": "3c719946-ca76-80bb-89cc-c0dfc9bf2c87",
       "source_id": "3c719946ca7680bb89ccc0dfc9bf2c87",
       "page_id": "3c719946-ca76-80bb-89cc-c0dfc9bf2c87",
-      "last_edited_time": "2026-08-26T02:29:00.000Z",
+      "last_edited_time": "2026-09-01T00:23:00.000Z",
       "title": "AI 에이전트 협업과 프롬프트 엔지니어링 - 동료 관점의 업무 지시와 하네스 파이프라인",
       "date": "2026.08.25",
       "tags": [
@@ -186,7 +246,7 @@
         "AI Agent",
         "vibe coding"
       ],
-      "description": "AI를 대하는 가장 이상적인 관점은 전지전능한 도구가 아니라 **\"방대한 데이터를 암기하고 있으나 조직의 맥락과 인과관계를 스스로 엮지 못하는 '지치지 않는 신입 동료(Junior Worker)'\"**로 인식하는 것입니다. 우리가 회사에서 신입 사원을 온보딩하듯 **프롬프트(Prompt)**로 명확한 업무 지시서를 주고, 탈선과 실수를 방지하기 위해 **하네스(Harness)**로 규칙과 행동 반경을 좁히며, 사내 문서처럼 Wiki 기반 RAG로 과거의 히스토리와 기억을 공유해 줄 때 AI는 비로소 최상의 퍼포먼스를 발휘합니다.\n빅테크가 주입한 데이터는 도서관의 키워드 검색처럼 통계적 확률과 편중으로 엮여 있을 뿐이므로, 치밀한 도메인 관계성과 아키텍처 규칙을 세워주는 주체는 언제나 인간이어야 합니다. 결국 AI 시대의 엔지니어는 단순한 코드 타이핑 노동자에서 벗어나, **\"인간이 통제할 수 있는 범위 내에서 명확한 룰과 작업 환경을 세팅하고, 단계별 파이프라인(Workflow)을 지휘·감독하는 총괄 디렉터\"**로서 AI와 협업할 때 압도적인 생산성과 소프트웨어 품질을 달성할 수 있습니다.",
+      "description": "AI를 대하는 가장 이상적인 관점은 전지전능한 도구가 아니라 \"방대한 데이터를 암기하고 있으나 조직의 맥락과 인과관계를 스스로 엮지 못하는 '지치지 않는 신입 동료(Junior Worker)\"로 인식하는 것입니다. 우리가 회사에서 신입 사원을 온보딩하듯 프롬프트(Prompt)로 명확한 업무 지시서를 주고, 탈선과 실수를 방지하기 위해 하네스(Harness)로 규칙과 행동 반경을 좁히며, 사내 문서처럼 Wiki 기반 RAG로 과거의 히스토리와 기억을 공유해 줄 때 AI는 비로소 최상의 퍼포먼스를 발휘합니다.\n빅테크가 주입한 데이터는 도서관의 키워드 검색처럼 통계적 확률과 편중으로 엮여 있을 뿐이므로, 치밀한 도메인 관계성과 아키텍처 규칙을 세워주는 주체는 언제나 인간이어야 합니다. 결국 AI 시대의 엔지니어는 단순한 코드 타이핑 노동자에서 벗어나, \"인간이 통제할 수 있는 범위 내에서 명확한 룰과 작업 환경을 세팅하고, 단계별 파이프라인(Workflow)을 지휘·감독하는 총괄 디렉터\"로서 AI와 협업할 때 압도적인 생산성과 소프트웨어 품질을 달성할 수 있습니다.",
       "subcategory": "ai",
       "package": "ai",
       "notionUrl": "https://app.notion.com/p/AI-3c719946ca7680bb89ccc0dfc9bf2c87"
@@ -216,7 +276,7 @@
       "sourceId": "3c619946-ca76-80a3-96e8-dde2dccbfac3",
       "source_id": "3c619946ca7680a396e8dde2dccbfac3",
       "page_id": "3c619946-ca76-80a3-96e8-dde2dccbfac3",
-      "last_edited_time": "2026-08-26T02:31:00.000Z",
+      "last_edited_time": "2026-09-01T00:21:00.000Z",
       "title": "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?",
       "date": "2026.08.24",
       "tags": [
@@ -225,7 +285,7 @@
         "불변",
         "가변"
       ],
-      "description": "함수에 인자를 전달할 때 원본 변수의 변경 여부를 혼동하지 않기 위해서는 Primitive(원시 타입) vs Reference(참조 타입), 그리고 Immutable(불변 객체) vs **Mutable(가변 객체)**이라는 4가지 키워드 조합으로 구분해 기억하는 것이 핵심입니다. Primitive 타입과 Immutable 객체는 함수 내부에서 어떤 조작을 하더라도 원본이 절대 변경되지 않는 안전한 영역이며, 오직 **Reference 타입이면서 동시에 Mutable 객체(예: 커스텀 객체, 리스트, 맵)**인 경우에만 원본 수정 가능성이 존재합니다.\n하지만 Mutable 참조 타입이라 할지라도 **\"함수 내부에서 수행하는 액션\"**에 따라 최종 결과가 달라집니다. 매개변수 자체에 새로운 객체를 =(재할당)하면 복사된 주소 포인터만 바뀔 뿐 원본은 보호되며, 오직 기존 객체의 내부 필드나 요소를 직접 수정(p.name = \"X\", list.append())할 때만 원본 객체가 변경됩니다. 이 4가지 키워드로 메모리 저장 형태(값 vs 주소)와 객체 상태 변경 가능 여부(가변 vs 불변)를 연결해 두면, Java와 Python을 넘나들며 매개변수 전달 동작 방식을 100% 명확하게 구분할 수 있습니다.",
+      "description": "함수에 인자를 전달할 때 원본 변수의 변경 여부를 혼동하지 않기 위해서는 Primitive(원시 타입) vs Reference(참조 타입), 그리고 Immutable(불변 객체) vs Mutable(가변 객체)이라는 4가지 키워드 조합으로 구분해 기억하는 것이 핵심입니다. Primitive 타입과 Immutable 객체는 함수 내부에서 어떤 조작을 하더라도 원본이 절대 변경되지 않는 안전한 영역이며, 오직 Reference 타입이면서 동시에 Mutable 객체(예: 커스텀 객체, 리스트, 맵)인 경우에만 원본 수정 가능성이 존재합니다.\n하지만 Mutable 참조 타입이라 할지라도 \"함수 내부에서 수행하는 액션\"에 따라 최종 결과가 달라집니다. 매개변수 자체에 새로운 객체를 =(재할당)하면 복사된 주소 포인터만 바뀔 뿐 원본은 보호되며, 오직 기존 객체의 내부 필드나 요소를 직접 수정(p.name = \"X\", list.append())할 때만 원본 객체가 변경됩니다. 이 4가지 키워드로 메모리 저장 형태(값 vs 주소)와 객체 상태 변경 가능 여부(가변 vs 불변)를 연결해 두면, Java와 Python을 넘나들며 매개변수 전달 동작 방식을 100% 명확하게 구분할 수 있습니다.",
       "subcategory": "java",
       "package": "java",
       "notionUrl": "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
@@ -555,7 +615,7 @@
       "sourceId": "3b019946-ca76-806b-8b45-f39febf76658",
       "source_id": "3b019946ca76806b8b45f39febf76658",
       "page_id": "3b019946-ca76-806b-8b45-f39febf76658",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-09-01T00:25:00.000Z",
       "title": "물리적 저장 매체 비교: M.2 NVMe SSD vs SATA SSD vs HDD",
       "date": "2026.05.25",
       "tags": [
@@ -576,7 +636,7 @@
       "sourceId": "3b019946-ca76-809c-936c-d86896eb38db",
       "source_id": "3b019946ca76809c936cd86896eb38db",
       "page_id": "3b019946-ca76-809c-936c-d86896eb38db",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-01T00:24:00.000Z",
       "title": "레거시 환경(SVN/NAS) 대량 데이터 마이그레이션 및 인코딩 복원 가이드",
       "date": "2026.05.25",
       "tags": [
@@ -597,7 +657,7 @@
       "sourceId": "3b019946-ca76-8030-ad15-dcc419fe79a4",
       "source_id": "3b019946ca768030ad15dcc419fe79a4",
       "page_id": "3b019946-ca76-8030-ad15-dcc419fe79a4",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-01T00:24:00.000Z",
       "title": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리)",
       "date": "2026.05.25",
       "tags": [
@@ -639,7 +699,7 @@
       "sourceId": "3b019946-ca76-8084-9498-da3bf66eaf67",
       "source_id": "3b019946ca7680849498da3bf66eaf67",
       "page_id": "3b019946-ca76-8084-9498-da3bf66eaf67",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-09-01T00:25:00.000Z",
       "title": "스토리지 아키텍처 비교: DAS vs NAS vs SAN",
       "date": "2026.05.25",
       "tags": [
@@ -720,7 +780,7 @@
       "sourceId": "3b019946-ca76-80aa-b42b-e44f7d069738",
       "source_id": "3b019946ca7680aab42be44f7d069738",
       "page_id": "3b019946-ca76-80aa-b42b-e44f7d069738",
-      "last_edited_time": "2026-08-18T03:21:00.000Z",
+      "last_edited_time": "2026-09-01T00:24:00.000Z",
       "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
       "date": "2026.05.06",
       "tags": [
@@ -778,7 +838,7 @@
       "sourceId": "3b019946-ca76-8079-be45-f5fdc2d4019f",
       "source_id": "3b019946ca768079be45f5fdc2d4019f",
       "page_id": "3b019946-ca76-8079-be45-f5fdc2d4019f",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-01T00:24:00.000Z",
       "title": "Docker 기본 및 Container 구동 프로세스 이해",
       "date": "2026.04.30",
       "tags": [
@@ -789,6 +849,1085 @@
       "subcategory": "container",
       "package": "container",
       "notionUrl": "https://app.notion.com/p/Docker-Container-3b019946ca768079be45f5fdc2d4019f"
+    }
+  ],
+  "tech_study_series": [
+    {
+      "id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
+      "slug": "python-pandas-reshaping",
+      "sourceId": "3ce19946-ca76-80a5-8e17-e1ef1f5f0bd2",
+      "source_id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
+      "page_id": "3ce19946-ca76-80a5-8e17-e1ef1f5f0bd2",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 09. 재구조화 (pivot·melt·stack)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "wide-long",
+        "reshaping",
+        "pivot-melt"
+      ],
+      "description": "같은 데이터도 wide(넓은) 포맷과 long(긴/tidy) 포맷으로 표현할 수 있습니다.\n• long → wide: pivot, pivot_table (집계 포함), unstack\n• wide → long: melt, stack\n분석·집계에는 long, 사람이 보는 표·시각화 입력에는 wide가 유리합니다. 두 방향을 자유롭게 오가는 것이 목표입니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-09-pivot-melt-stack-3ce19946ca7680a58e17e1ef1f5f0bd2"
+    },
+    {
+      "id": "3ce19946ca7680b39ad3e58bb37e15b5",
+      "slug": "python-pandas-missing-data",
+      "sourceId": "3ce19946-ca76-80b3-9ad3-e58bb37e15b5",
+      "source_id": "3ce19946ca7680b39ad3e58bb37e15b5",
+      "page_id": "3ce19946-ca76-80b3-9ad3-e58bb37e15b5",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 05. 결측치 처리",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "nullable-dtype",
+        "missing-data",
+        "fillna"
+      ],
+      "description": "처리 흐름은 ① 탐지(isna/notna) → ② 제거(dropna) 또는 대체(fillna/interpolate) 입니다.\n\npandas의 결측 표기는 dtype에 따라 갈립니다: float은 NaN, object는 None/NaN, 확장 dtype은 pd.NA, datetime은 NaT.\n\n\"결측을 담을 수 있는 정수/불리언 열\"이 필요하면 nullable dtype(Int64, boolean)을 씁니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-05-3ce19946ca7680b39ad3e58bb37e15b5"
+    },
+    {
+      "id": "3ce19946ca7680f3aab1ed09c080a491",
+      "slug": "python-pandas-sorting",
+      "sourceId": "3ce19946-ca76-80f3-aab1-ed09c080a491",
+      "source_id": "3ce19946ca7680f3aab1ed09c080a491",
+      "page_id": "3ce19946-ca76-80f3-aab1-ed09c080a491",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 07. 정렬과 순위",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "top-n",
+        "rank",
+        "sorting"
+      ],
+      "description": "정렬은 값 기준(sort_values) 과 라벨 기준(sort_index) 두 가지입니다.\n\n\"상위 N개\"만 필요하면 전체 정렬(sort_values().head())보다 nlargest/nsmallest 가 빠릅니다.\n\n값의 \"몇 등인지\"가 필요하면 rank 를 씁니다 (동점 처리 방식이 핵심 옵션).",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-07-3ce19946ca7680f3aab1ed09c080a491"
+    },
+    {
+      "id": "3ce19946ca7680f4ad12e64aef10f34c",
+      "slug": "python-pandas-timeseries",
+      "sourceId": "3ce19946-ca76-80f4-ad12-e64aef10f34c",
+      "source_id": "3ce19946ca7680f4ad12e64aef10f34c",
+      "page_id": "3ce19946-ca76-80f4-ad12-e64aef10f34c",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 11. 시계열",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "timeseries",
+        "resample",
+        "rolling"
+      ],
+      "description": "시계열 전처리의 뼈대는 DatetimeIndex로 만들기 → resample로 빈도 바꾸기 → rolling/shift로 파생 만들기 입니다.\nresample은 시간 축 전용 groupby이고, rolling은 이동 창(window) 집계, shift/diff/pct_change는 \"이전 값과의 관계\"를 만듭니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-11-3ce19946ca7680f4ad12e64aef10f34c"
+    },
+    {
+      "id": "3ce19946ca7680f7bac7ec38787111f8",
+      "slug": "python-pandas-performance",
+      "sourceId": "3ce19946-ca76-80f7-bac7-ec38787111f8",
+      "source_id": "3ce19946ca7680f7bac7ec38787111f8",
+      "page_id": "3ce19946-ca76-80f7-bac7-ec38787111f8",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 12. 성능과 함정",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "performance",
+        "pitfalls",
+        "method-chaining"
+      ],
+      "description": "1~11장을 한 번 본 뒤 다시 읽는 챕터입니다. pandas에서 반복적으로 사람을 잡는 것들: ① apply/iterrows 남용, ② 연쇄 인덱싱과 SettingWithCopyWarning, ③ dtype·메모리 낭비, ④ inplace 오해, ⑤ 자동 정렬로 생기는 결측. 마지막에 method chaining과 pandas를 벗어날 시점을 정리합니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-12-3ce19946ca7680f7bac7ec38787111f8"
+    },
+    {
+      "id": "3ce19946ca7680f09aade69d51fc4014",
+      "slug": "python-pandas-io",
+      "sourceId": "3ce19946-ca76-80f0-9aad-e69d51fc4014",
+      "source_id": "3ce19946ca7680f09aade69d51fc4014",
+      "page_id": "3ce19946-ca76-80f0-9aad-e69d51fc4014",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 02. 데이터 입출력 (IO)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "io",
+        "read-csv",
+        "parquet"
+      ],
+      "description": "pandas 전처리는 대부분 read_csv로 시작해 to_parquet/to_csv로 끝납니다.\nread_csv는 옵션이 수십 개지만, 실무에서 반복적으로 쓰는 것은 dtype, parse_dates, na_values, usecols, nrows/chunksize, encoding 정도입니다.\n\n\"읽을 때 형을 제대로 지정\"하는 것이 이후 모든 정제 비용을 줄입니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-02-IO-3ce19946ca7680f09aade69d51fc4014"
+    },
+    {
+      "id": "3ce19946ca7680feb4a3f6dd8439c4b2",
+      "slug": "python-pandas-indexing",
+      "sourceId": "3ce19946-ca76-80fe-b4a3-f6dd8439c4b2",
+      "source_id": "3ce19946ca7680feb4a3f6dd8439c4b2",
+      "page_id": "3ce19946-ca76-80fe-b4a3-f6dd8439c4b2",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 04. 선택과 인덱싱",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "boolean-indexing",
+        "fancy-indexing",
+        "loc-iloc"
+      ],
+      "description": "pandas에서 데이터를 고르는 방법은 크게 4가지입니다: [](대괄호), .loc(라벨), .iloc(위치), .at/.iat(단일 값).\n\n헷갈림의 90%는 \"라벨 슬라이스는 끝을 포함(.loc), 위치 슬라이스는 끝을 제외(.iloc)\"와 \"연쇄 인덱싱 대입 금지\"를 지키면 사라집니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-04-3ce19946ca7680feb4a3f6dd8439c4b2"
+    },
+    {
+      "id": "3ce19946ca76800cb869e94167204db4",
+      "slug": "python-pandas-inspection",
+      "sourceId": "3ce19946-ca76-800c-b869-e94167204db4",
+      "source_id": "3ce19946ca76800cb869e94167204db4",
+      "page_id": "3ce19946-ca76-800c-b869-e94167204db4",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "inspection",
+        "describe",
+        "eda"
+      ],
+      "description": "데이터를 로드한 직후에는 모양(shape) → 형(info) → 분포(describe, value_counts) → 결측(isna().sum()) → 메모리(memory_usage) 순으로 점검합니다.\n\n이 5분짜리 점검이 이후 정제 단계에서 \"이 열이 왜 object지?\", \"왜 행이 이렇게 많지?\" 같은 혼란을 없애 줍니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-03-3ce19946ca76800cb869e94167204db4"
+    },
+    {
+      "id": "3ce19946ca76801d914ce5d0c1a9f881",
+      "slug": "python-pandas-series-dataframe",
+      "sourceId": "3ce19946-ca76-801d-914c-e5d0c1a9f881",
+      "source_id": "3ce19946ca76801d914ce5d0c1a9f881",
+      "page_id": "3ce19946-ca76-801d-914c-e5d0c1a9f881",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 01. 기초 개념과 자료구조",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas"
+      ],
+      "description": "pandas의 모든 것은 Series(1차원) 와 DataFrame(2차원), 그리고 두 구조의 행·열에 붙는 Index(라벨) 위에 세워집니다.\nDataFrame은 \"같은 길이의 Series 여러 개를 열로 묶고, 공통 행 라벨(Index)을 공유\"하는 구조입니다.\n\nNumPy ndarray가 \"위치(0,1,2)로만 접근하는 균일 dtype 블록\"이라면, pandas는 그 위에 의미 있는 라벨과 열별 dtype, 결측 표현을 얹은 계층입니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-01-3ce19946ca76801d914ce5d0c1a9f881"
+    },
+    {
+      "id": "3ce19946ca76803b86fbf536ae878dba",
+      "slug": "python-pandas-merge-join",
+      "sourceId": "3ce19946-ca76-803b-86fb-f536ae878dba",
+      "source_id": "3ce19946ca76803b86fbf536ae878dba",
+      "page_id": "3ce19946-ca76-803b-86fb-f536ae878dba",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 10. 결합 (concat·merge·join)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "merge-join",
+        "concatenate",
+        "sql-join"
+      ],
+      "description": "표를 합치는 방법은 3가지입니다.\n• concat: 위/아래(또는 옆) 로 쌓기 (같은 스키마 이어 붙이기).\n• merge: 공통 키(열) 기준 관계형 조인 (SQL JOIN).\n• join: merge의 편의 버전으로 인덱스 기준 결합에 최적.merge에서 사고를 예방하는 핵심 옵션은 how, validate, indicator, suffixes 입니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-10-concat-merge-join-3ce19946ca76803b86fbf536ae878dba"
+    },
+    {
+      "id": "3ce19946ca768008b586d2599f340817",
+      "slug": "python-pandas-cleaning-transform",
+      "sourceId": "3ce19946-ca76-8008-b586-d2599f340817",
+      "source_id": "3ce19946ca768008b586d2599f340817",
+      "page_id": "3ce19946-ca76-8008-b586-d2599f340817",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 06. 정제와 변환",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "dt-accessor",
+        "str-accessor",
+        "cleaning"
+      ],
+      "description": "정제는 크게 형 변환(astype/to_numeric/to_datetime), 값 매핑(replace/map/rename), 파생 열 생성(assign/apply), 문자열·날짜 처리(.str/.dt), 범주화(cut/qcut/category), 중복 제거(drop_duplicates)로 나뉩니다.\n\n핵심 습관은 벡터화된 접근자(.str, .dt)를 먼저 찾고, apply는 최후에 쓰는 것입니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-06-3ce19946ca768008b586d2599f340817"
+    },
+    {
+      "id": "3ce19946ca768075bbfaee5987ee2017",
+      "slug": "python-pandas-groupby",
+      "sourceId": "3ce19946-ca76-8075-bbfa-ee5987ee2017",
+      "source_id": "3ce19946ca768075bbfaee5987ee2017",
+      "page_id": "3ce19946-ca76-8075-bbfa-ee5987ee2017",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 08. 그룹 연산 (groupby)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "groupby",
+        "split-apply-combine",
+        "aggregation"
+      ],
+      "description": "groupby는 split(키로 쪼갬) → apply(각 조각에 함수) → combine(결과 합침) 3단계입니다.\n\n조각에 적용하는 함수는 성격에 따라 4가지로 갈립니다: agg(그룹당 스칼라), transform(원본과 같은 shape), filter(그룹 통째로 포함/제외), apply(가장 유연, 가장 느림).\ndf.groupby(...)는 즉시 계산하지 않는 지연 객체이며, 뒤에 오는 연산에서 실제로 평가됩니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-08-groupby-3ce19946ca768075bbfaee5987ee2017"
+    },
+    {
+      "id": "3ce19946ca768086abc3f701bae8b934",
+      "slug": "python-pandas-next-steps",
+      "sourceId": "3ce19946-ca76-8086-abc3-f701bae8b934",
+      "source_id": "3ce19946ca768086abc3f701bae8b934",
+      "page_id": "3ce19946-ca76-8086-abc3-f701bae8b934",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - pandas 13. 다음 단계 연결",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "pandas",
+        "visualization",
+        "next-steps",
+        "scikit-learn"
+      ],
+      "description": "pandas로 정제·집계한 DataFrame은 그 자체가 목적이 아니라 시각화와 모델링의 입력입니다.",
+      "subcategory": "pandas",
+      "package": "pandas",
+      "notionUrl": "https://app.notion.com/p/Python-pandas-13-3ce19946ca768086abc3f701bae8b934"
+    },
+    {
+      "id": "3cf19946ca7681a3a538cb7ae266b519",
+      "slug": "python-matplotlib-basic-plots",
+      "sourceId": "3cf19946-ca76-81a3-a538-cb7ae266b519",
+      "source_id": "3cf19946ca7681a3a538cb7ae266b519",
+      "page_id": "3cf19946-ca76-81a3-a538-cb7ae266b519",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "basic-plots",
+        "line-scatter",
+        "bar-hist"
+      ],
+      "description": "matplotlib 실무의 90%는 다섯 가지 메서드로 해결됩니다. ax.plot(선), ax.scatter(점), ax.bar/ax.barh(막대), ax.hist(히스토그램), ax.fill_between(영역). 각 메서드는 데이터 값을 위치·길이·색·크기 같은 시각 채널로 매핑하며, 그린 결과를 나타내는 Artist 객체(예: Line2D, PathCollection)를 반환합니다. 반환 객체를 변수로 받아 두면 나중에 색·라벨·투명도를 바꾸거나 범례를 세밀하게 제어할 수 있습니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-02-line-scatter-bar-hist-3cf19946ca7681a3a538cb7ae266b519"
+    },
+    {
+      "id": "3cf19946ca7681af988bc22a6d4e44f5",
+      "slug": "python-seaborn-categorical",
+      "sourceId": "3cf19946-ca76-81af-988b-c22a6d4e44f5",
+      "source_id": "3cf19946ca7681af988bc22a6d4e44f5",
+      "page_id": "3cf19946-ca76-81af-988b-c22a6d4e44f5",
+      "last_edited_time": "2026-09-03T05:52:00.000Z",
+      "title": "Python - seaborn 03. 범주형 시각화 (box·violin·bar·strip)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "seaborn",
+        "categorical",
+        "boxplot",
+        "barplot"
+      ],
+      "description": "한 축이 범주(카테고리), 다른 축이 수치일 때 쓰는 함수 묶음입니다. 세 계열로 나뉩니다. - 분포 요약: boxplot(사분위·수염), violinplot(KDE 대칭), boxenplot(꼬리까지 세분화) - 개별 관측: stripplot(지터 산점), swarmplot(겹침 없이 배치) - 추정치: barplot(평균+오차막대), pointplot(평균 점+연결선), countplot(빈도)",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-seaborn-03-box-violin-bar-strip-3cf19946ca7681af988bc22a6d4e44f5"
+    },
+    {
+      "id": "3cf19946ca7681b78d22d1d4fc08a2a2",
+      "slug": "visualization-chart-selection",
+      "sourceId": "3cf19946-ca76-81b7-8d22-d1d4fc08a2a2",
+      "source_id": "3cf19946ca7681b78d22d1d4fc08a2a2",
+      "page_id": "3cf19946-ca76-81b7-8d22-d1d4fc08a2a2",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 시각화 이론 02. 데이터 타입별 차트 선택",
+      "date": "2026.09.01",
+      "tags": [
+        "visualization",
+        "theory",
+        "chart-selection",
+        "pie-chart"
+      ],
+      "description": "차트 선택은 취향이 아니라 \"보여주려는 관계의 종류\"와 \"변수의 타입\"의 함수입니다. 관계의 종류를 분포·관계·비교·구성·시간의 다섯 가지로 나누고, 각 상황에서 일반적으로 권장되는 차트와 그 이유를 정리합니다. 마지막으로 파이차트를 왜 대체로 지양하는지 인코딩 관점에서 설명합니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/02-3cf19946ca7681b78d22d1d4fc08a2a2"
+    },
+    {
+      "id": "3cf19946ca7681b49734d816abd8255d",
+      "slug": "python-matplotlib-axes-scale",
+      "sourceId": "3cf19946-ca76-81b4-9734-d816abd8255d",
+      "source_id": "3cf19946ca7681b49734d816abd8255d",
+      "page_id": "3cf19946-ca76-81b4-9734-d816abd8255d",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 04. 축·스케일·틱·범례",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "axes-scale",
+        "ticks-legend",
+        "twinx"
+      ],
+      "description": "Axes 하나를 발표 수준으로 다듬는 작업은 범위(setxlim)·라벨(setxlabel)·제목(settitle), 스케일(setxscale('log')), 눈금(tick)과 눈금 포맷, 범례(legend) 네 가지로 나뉩니다. 눈금 위치는 Locator, 눈금 표시 문자열은 Formatter가 담당하며, MaxNLocator·FuncFormatter로 세밀하게 제어합니다. 서로 다른 단위의 두 지표를 한 그림에 겹치는 twinx()(이중 축)는 상관 착시를 일으키기 쉬워 신중해야 합니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-04-3cf19946ca7681b49734d816abd8255d"
+    },
+    {
+      "id": "3cf19946ca7681b89728e6ec505da82c",
+      "slug": "python-matplotlib-figure-axes",
+      "sourceId": "3cf19946-ca76-81b8-9728-e6ec505da82c",
+      "source_id": "3cf19946ca7681b89728e6ec505da82c",
+      "page_id": "3cf19946-ca76-81b8-9728-e6ec505da82c",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "figure-axes",
+        "pyplot-oo",
+        "backend"
+      ],
+      "description": "matplotlib 그림은 Figure(전체 도화지) 안에 하나 이상의 Axes(좌표계, 흔히 말하는 \"그래프 한 칸\")가 들어가고, 그 안의 선·점·축·눈금·텍스트는 모두 Artist 객체라는 계층으로 되어 있습니다. 그림을 그리는 방법은 두 가지입니다. plt.plot(...)처럼 \"현재 Axes\"에 암묵적으로 그리는 pyplot(상태 기반) 방식과, fig, ax = plt.subplots()로 객체를 받아 ax.plot(...)을 호출하는 객체지향(OO) 방식입니다. 서브플롯이 둘 이상이거나 함수 안에서 그림을 만드는 순간부터는 OO 방식이 사실상 표준입니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-01-Figure-Axes-3cf19946ca7681b89728e6ec505da82c"
+    },
+    {
+      "id": "3cf19946ca7681caaf36cee1e0816907",
+      "slug": "data-preprocessing-missing-mechanisms",
+      "sourceId": "3cf19946-ca76-81ca-af36-cee1e0816907",
+      "source_id": "3cf19946ca7681caaf36cee1e0816907",
+      "page_id": "3cf19946-ca76-81ca-af36-cee1e0816907",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 전처리 이론 02. 결측치 이론 (MCAR·MAR·MNAR)",
+      "date": "2026.09.01",
+      "tags": [
+        "data-preprocessing",
+        "theory",
+        "missing-data",
+        "imputation"
+      ],
+      "description": "\"결측치를 어떻게 채울까\"보다 먼저 \"왜 비어 있는가\"를 물어야 합니다. 결측 메커니즘에 대한 가정이 틀리면, 아무리 정교한 대치도 편향을 만듭니다.",
+      "subcategory": "data_preprocessing",
+      "package": "data_preprocessing",
+      "notionUrl": "https://app.notion.com/p/02-MCAR-MAR-MNAR-3cf19946ca7681caaf36cee1e0816907"
+    },
+    {
+      "id": "3cf19946ca7681cbbe26ed818aac5650",
+      "slug": "python-matplotlib-style-color",
+      "sourceId": "3cf19946-ca76-81cb-be26-ed818aac5650",
+      "source_id": "3cf19946ca7681cbbe26ed818aac5650",
+      "page_id": "3cf19946-ca76-81cb-be26-ed818aac5650",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 05. 스타일·색상·컬러맵",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "style-color",
+        "colormap",
+        "rcparams"
+      ],
+      "description": "그림의 일관된 외형은 세 계층으로 관리합니다. 스타일시트(plt.style.use(...))로 전체 톤을 한 번에 바꾸고, rcParams로 개별 기본값(폰트 크기, 선 굵기 등)을 조정하며, 각 플롯 호출에서 색을 직접 지정합니다. 색을 값에 매핑할 때는 컬러맵(colormap)을 쓰며, 데이터 성격에 따라 순차형(viridis)·발산형(coolwarm)·범주형(tab10)을 구분해 골라야 합니다. 연속값→색 변환은 Normalize가 담당하고, 그 대응표를 colorbar로 보여줍니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-05-3cf19946ca7681cbbe26ed818aac5650"
+    },
+    {
+      "id": "3cf19946ca7681e2a209d4dd550c41bf",
+      "slug": "data-preprocessing-visualization-theory",
+      "sourceId": "3cf19946-ca76-81e2-a209-d4dd550c41bf",
+      "source_id": "3cf19946ca7681e2a209d4dd550c41bf",
+      "page_id": "3cf19946-ca76-81e2-a209-d4dd550c41bf",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 전처리·시각화 이론 학습 로드맵",
+      "date": "2026.09.01",
+      "tags": [
+        "data-preprocessing",
+        "visualization",
+        "theory",
+        "eda",
+        "moc"
+      ],
+      "description": "도구(NumPy·pandas·matplotlib) 사용법과 별개로, \"왜 이렇게 전처리하는가 / 왜 이 그래프인가\"를 설명하는 이론 목차입니다. 도구 시리즈(Python - NumPy MOC, Python - pandas MOC)와 짝을 이루며, 각 항목은 나중에 개별 노트로 확장할 수 있습니다.",
+      "subcategory": "data_preprocessing",
+      "package": "data_preprocessing",
+      "notionUrl": "https://app.notion.com/p/3cf19946ca7681e2a209d4dd550c41bf"
+    },
+    {
+      "id": "3cf19946ca7681fcbe3ec8e5f91e745a",
+      "slug": "python-seaborn-distribution",
+      "sourceId": "3cf19946-ca76-81fc-be3e-c8e5f91e745a",
+      "source_id": "3cf19946ca7681fcbe3ec8e5f91e745a",
+      "page_id": "3cf19946-ca76-81fc-be3e-c8e5f91e745a",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - seaborn 02. 분포 시각화 (histplot·kdeplot·ecdfplot)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "seaborn",
+        "distribution",
+        "histplot",
+        "kdeplot"
+      ],
+      "description": "한 변수의 분포를 보는 도구는 세 가지 관점입니다: 빈도 막대(histplot), 매끄러운 밀도 곡선(kdeplot), 누적 비율 계단(ecdfplot). 여기에 개별 관측 위치를 축에 표시하는 rugplot을 곁들입니다. figure-level 함수 displot이 위 셋을 kind=\"hist\"|\"kde\"|\"ecdf\"로 통합하며, col/row로 격자를 만듭니다. 가장 큰 함정은 히스토그램의 bin 편향입니다: bin 개수·경계를 어떻게 잡느냐에 따라 같은 데이터가 단봉으로도, 다봉으로도 보입니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-seaborn-02-histplot-kdeplot-ecdfplot-3cf19946ca7681fcbe3ec8e5f91e745a"
+    },
+    {
+      "id": "3cf19946ca76811a9d6de5fbd9f1bb91",
+      "slug": "visualization-color-scale",
+      "sourceId": "3cf19946-ca76-811a-9d6d-e5fbd9f1bb91",
+      "source_id": "3cf19946ca76811a9d6de5fbd9f1bb91",
+      "page_id": "3cf19946-ca76-811a-9d6d-e5fbd9f1bb91",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 시각화 이론 04. 색상·축·스케일",
+      "date": "2026.09.01",
+      "tags": [
+        "visualization",
+        "theory",
+        "color",
+        "axis-scale"
+      ],
+      "description": "색상과 축은 \"데이터 값을 화면 값으로 옮기는 규칙\"인 스케일의 두 축입니다. 잘못 고르면 없는 패턴을 만들어냅니다. 이 노트는 (1) 팔레트 세 유형(순차형·발산형·범주형)과 접근성, (2) 0 기준선·로그축·이중 축·종횡비라는 축 설계 쟁점을 다룹니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/04-3cf19946ca76811a9d6de5fbd9f1bb91"
+    },
+    {
+      "id": "3cf19946ca76811dae3ede3a7c8f12db",
+      "slug": "visualization-perception",
+      "sourceId": "3cf19946-ca76-811d-ae3e-de3a7c8f12db",
+      "source_id": "3cf19946ca76811dae3ede3a7c8f12db",
+      "page_id": "3cf19946-ca76-811d-ae3e-de3a7c8f12db",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 시각화 이론 03. 시각화 원리",
+      "date": "2026.09.01",
+      "tags": [
+        "visualization",
+        "theory",
+        "perception",
+        "gestalt"
+      ],
+      "description": "좋은 차트와 나쁜 차트를 가르는 기준의 상당 부분은 사람의 시각 시스템이 어떤 정보를 정확히, 빠르게 읽는가에 있습니다. 이 노트는 세 가지 축을 다룹니다. (1) 정량 값을 인코딩하는 채널의 정확도 순위(Cleveland–McGill), (2) 노력 없이 즉시 인지되는 전주의적 속성, (3) 요소를 묶어 지각하는 게슈탈트 원리입니다. 앞 노트들의 차트 선택 규범은 대부분 여기서 파생됩니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/03-3cf19946ca76811dae3ede3a7c8f12db"
+    },
+    {
+      "id": "3cf19946ca76813eb32ff2a31c344958",
+      "slug": "python-matplotlib-save-backend",
+      "sourceId": "3cf19946-ca76-813e-b32f-f2a31c344958",
+      "source_id": "3cf19946ca76813eb32ff2a31c344958",
+      "page_id": "3cf19946-ca76-813e-b32f-f2a31c344958",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 07. 저장·해상도·백엔드",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "savefig",
+        "dpi-figsize",
+        "backend"
+      ],
+      "description": "그림 저장은 fig.savefig(\"out.png\", dpi=..., bbox_inches=\"tight\", transparent=...) 한 줄이지만, 결과 품질은 figsize(인치 단위 크기)와 dpi(인치당 픽셀)의 곱으로 정해지는 최종 픽셀 수, 그리고 파일 포맷 선택에 달려 있습니다. 래스터 포맷(PNG)은 픽셀 고정, 벡터 포맷(SVG·PDF)은 무한 확대가 가능하므로 용도가 다릅니다. 창을 띄우는 인터랙티브 백엔드와 파일만 만드는 비인터랙티브(Agg) 백엔드의 차이도 저장 흐름에 영향을 줍니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-07-3cf19946ca76813eb32ff2a31c344958"
+    },
+    {
+      "id": "3cf19946ca76815aa820cecd0954af15",
+      "slug": "visualization-multivariate-storytelling",
+      "sourceId": "3cf19946-ca76-815a-a820-cecd0954af15",
+      "source_id": "3cf19946ca76815aa820cecd0954af15",
+      "page_id": "3cf19946-ca76-815a-a820-cecd0954af15",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 시각화 이론 05. 다변량 표현·오해 유발·스토리텔링",
+      "date": "2026.09.01",
+      "tags": [
+        "visualization",
+        "theory",
+        "multivariate",
+        "storytelling"
+      ],
+      "description": "시각화 이론 시리즈의 마지막 노트로, 세 덩어리를 묶습니다. (1) 변수가 3개 이상일 때의 표현 전략(추가 채널, small multiples, 히트맵), (2) 오해를 부르는 시각화의 전형적 기법, (3) 과밀 데이터 대응과 도구 지형, 그리고 (4) 데이터-잉크 비율과 스토리텔링 원칙입니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/05-3cf19946ca76815aa820cecd0954af15"
+    },
+    {
+      "id": "3cf19946ca76815babb4da01c6777de4",
+      "slug": "python-matplotlib-annotation",
+      "sourceId": "3cf19946-ca76-815b-abb4-da01c6777de4",
+      "source_id": "3cf19946ca76815babb4da01c6777de4",
+      "page_id": "3cf19946-ca76-815b-abb4-da01c6777de4",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 06. 주석과 텍스트",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "annotation",
+        "text-mathtext",
+        "hangul-font"
+      ],
+      "description": "데이터 위에 의미를 얹는 도구는 ax.annotate(화살표가 있는 주석), ax.text(단순 텍스트), 그리고 axhline/axvline/axhspan/axvspan(기준선·기준 구간)입니다. 텍스트 위치는 좌표계(데이터 좌표 vs Axes 비율 좌표)를 무엇으로 잡느냐가 핵심이며, transform 인자로 지정합니다. 수식은 달러 기호로 감싼 mathtext로 쓰고, 한글은 폰트 설정(font.family)과 axes.unicode_minus=False를 지정하지 않으면 깨지거나 마이너스 기호가 사라집니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-06-3cf19946ca76815babb4da01c6777de4"
+    },
+    {
+      "id": "3cf19946ca76816ebac2efc477794575",
+      "slug": "python-seaborn-heatmap",
+      "sourceId": "3cf19946-ca76-816e-bac2-efc477794575",
+      "source_id": "3cf19946ca76816ebac2efc477794575",
+      "page_id": "3cf19946-ca76-816e-bac2-efc477794575",
+      "last_edited_time": "2026-09-03T05:52:00.000Z",
+      "title": "Python - seaborn 06. 행렬·히트맵 (heatmap·clustermap)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "seaborn",
+        "heatmap",
+        "clustermap",
+        "correlation"
+      ],
+      "description": "2차원 표(행 x 열)의 값을 색 농도로 표현합니다. - heatmap: 넘겨준 2D 데이터를 그대로 색칠. annot으로 숫자 표기, cmap으로 색 체계, center/vmin/vmax로 색 스케일 통제. - 가장 흔한 용도는 상관행렬 시각화입니다: df.corr() + 위삼각 마스크가 관용구. - clustermap: 행·열을 계층적 군집으로 재배열하고 덴드로그램을 붙임. \"비슷한 것끼리 모아서\" 패턴을 드러냄.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-seaborn-06-heatmap-clustermap-3cf19946ca76816ebac2efc477794575"
+    },
+    {
+      "id": "3cf19946ca76817ebabec10460e7a57f",
+      "slug": "python-seaborn-relational",
+      "sourceId": "3cf19946-ca76-817e-babe-c10460e7a57f",
+      "source_id": "3cf19946ca76817ebabec10460e7a57f",
+      "page_id": "3cf19946-ca76-817e-babe-c10460e7a57f",
+      "last_edited_time": "2026-09-03T05:52:00.000Z",
+      "title": "Python - seaborn 04. 관계 시각화 (scatterplot·lineplot·relplot)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "seaborn",
+        "relational",
+        "scatterplot",
+        "lineplot"
+      ],
+      "description": "두 수치 변수의 관계를 보는 도구입니다. - scatterplot: 점 하나 = 관측 하나. hue(색)/size(크기)/style(마커)로 최대 3개 변수를 추가로 인코딩. - lineplot: x값마다 y를 자동 집계(기본 평균)하고 그 주위에 오차 밴드를 그림. 시계열·추세에 적합. - figure-level relplot: 위 둘을 kind=\"scatter\"|\"line\"으로 통합, col/row 격자.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-seaborn-04-scatterplot-lineplot-relplot-3cf19946ca76817ebabec10460e7a57f"
+    },
+    {
+      "id": "3cf19946ca76818eadf6ef7898eac0da",
+      "slug": "data-preprocessing-leakage-reproducibility",
+      "sourceId": "3cf19946-ca76-818e-adf6-ef7898eac0da",
+      "source_id": "3cf19946ca76818eadf6ef7898eac0da",
+      "page_id": "3cf19946-ca76-818e-adf6-ef7898eac0da",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 전처리 이론 06. 불균형·데이터 누수·재현성",
+      "date": "2026.09.01",
+      "tags": [
+        "data-preprocessing",
+        "theory",
+        "data-leakage",
+        "reproducibility"
+      ],
+      "description": "앞의 모든 전처리 기법은 \"어디서 fit하고 어디에 적용하는가\"를 틀리는 순간 무너집니다. 이 노트는 전처리를 실험 설계 안에서 안전하게 배치하는 규율을 다룹니다.",
+      "subcategory": "data_preprocessing",
+      "package": "data_preprocessing",
+      "notionUrl": "https://app.notion.com/p/06-3cf19946ca76818eadf6ef7898eac0da"
+    },
+    {
+      "id": "3cf19946ca768109b3a7ffc0316e422b",
+      "slug": "python-matplotlib-subplots",
+      "sourceId": "3cf19946-ca76-8109-b3a7-ffc0316e422b",
+      "source_id": "3cf19946ca768109b3a7ffc0316e422b",
+      "page_id": "3cf19946-ca76-8109-b3a7-ffc0316e422b",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 03. 여러 서브플롯 배치",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "subplots",
+        "gridspec",
+        "layout"
+      ],
+      "description": "한 Figure에 여러 Axes를 놓는 표준 방법은 fig, axes = plt.subplots(nrows, ncols)입니다. 반환된 axes는 (행, 열) 모양의 ndarray이므로 인덱싱 또는 axes.flatten() 순회로 각 칸을 채웁니다. 축 범위를 공유하려면 sharex/sharey, 불규칙한 격자(칸마다 크기가 다른 배치)가 필요하면 fig.addgridspec을 씁니다. 칸끼리 라벨·제목이 겹치는 문제는 constrainedlayout=True(권장) 또는 fig.tight_layout()으로 자동 조정합니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-03-3cf19946ca768109b3a7ffc0316e422b"
+    },
+    {
+      "id": "3cf19946ca768177b804f1dcf7e634eb",
+      "slug": "data-preprocessing-scaling-encoding",
+      "sourceId": "3cf19946-ca76-8177-b804-f1dcf7e634eb",
+      "source_id": "3cf19946ca768177b804f1dcf7e634eb",
+      "page_id": "3cf19946-ca76-8177-b804-f1dcf7e634eb",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 전처리 이론 04. 스케일링과 범주형 인코딩",
+      "date": "2026.09.01",
+      "tags": [
+        "data-preprocessing",
+        "theory",
+        "scaling",
+        "Encoding"
+      ],
+      "description": "스케일링과 인코딩은 \"데이터를 모델이 이해하는 형태로 바꾸는\" 작업입니다. 어느 것도 모델과 독립적이지 않습니다. 트리 모델과 선형 모델은 필요로 하는 것이 정반대입니다.",
+      "subcategory": "data_preprocessing",
+      "package": "data_preprocessing",
+      "notionUrl": "https://app.notion.com/p/04-3cf19946ca768177b804f1dcf7e634eb"
+    },
+    {
+      "id": "3cf19946ca768181b844db7274f690fe",
+      "slug": "data-preprocessing-feature-engineering",
+      "sourceId": "3cf19946-ca76-8181-b844-db7274f690fe",
+      "source_id": "3cf19946ca768181b844db7274f690fe",
+      "page_id": "3cf19946-ca76-8181-b844-db7274f690fe",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 전처리 이론 05. 변수 변환·특성 공학·차원 축소",
+      "date": "2026.09.01",
+      "tags": [
+        "data-preprocessing",
+        "theory",
+        "feature-engineering",
+        "dimensionality-reduction"
+      ],
+      "description": "스케일링이 \"축의 눈금\"을 바꾼다면, 변환은 \"분포의 모양\"을 바꾸고, 특성 공학은 \"새 축을 만들며\", 차원 축소는 \"축의 수를 줄입니다\".",
+      "subcategory": "data_preprocessing",
+      "package": "data_preprocessing",
+      "notionUrl": "https://app.notion.com/p/05-3cf19946ca768181b844db7274f690fe"
+    },
+    {
+      "id": "3cf19946ca768182b731f659c1d1b08c",
+      "slug": "python-seaborn-regression-joint",
+      "sourceId": "3cf19946-ca76-8182-b731-f659c1d1b08c",
+      "source_id": "3cf19946ca768182b731f659c1d1b08c",
+      "page_id": "3cf19946-ca76-8182-b731-f659c1d1b08c",
+      "last_edited_time": "2026-09-03T05:52:00.000Z",
+      "title": "Python - seaborn 05. 회귀와 결합분포 (lmplot·jointplot·pairplot)",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "seaborn",
+        "regression",
+        "jointplot",
+        "pairplot"
+      ],
+      "description": "산점도에 모델·요약을 겹쳐 관계를 더 읽는 도구입니다. - regplot(axes) / lmplot(figure): 산점도 + 회귀선 + 신뢰구간. order(다항), logistic, lowess로 모델 종류를 바꿈. - residplot: 잔차 산점도. 회귀 가정(선형성·등분산) 위반을 눈으로 확인. - jointplot: 가운데 이변량 플롯 + 위·오른쪽에 주변(marginal) 분포. kind로 종류 선택. - pairplot: 여러 변수의 산점도 행렬(scatter matrix) + 대각선 분포. hue로 그룹, corner로 절반만.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-seaborn-05-lmplot-jointplot-pairplot-3cf19946ca768182b731f659c1d1b08c"
+    },
+    {
+      "id": "3cf19946ca768194b117f421e79a1e9c",
+      "slug": "python-seaborn-theme-palette",
+      "sourceId": "3cf19946-ca76-8194-b117-f421e79a1e9c",
+      "source_id": "3cf19946ca768194b117f421e79a1e9c",
+      "page_id": "3cf19946-ca76-8194-b117-f421e79a1e9c",
+      "last_edited_time": "2026-09-03T05:52:00.000Z",
+      "title": "Python - seaborn 07. 테마·팔레트·컨텍스트",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "seaborn",
+        "theme",
+        "palette",
+        "context"
+      ],
+      "description": "seaborn은 그림의 외형을 세 축으로 나눠 통제합니다. - 스타일(style): 배경·격자·축선. setstyle로 5종 프리셋(darkgrid, whitegrid, dark, white, ticks). - 컨텍스트(context): 요소 크기(글꼴·선·마커) 스케일. setcontext로 4종(paper < notebook < talk < poster). - 팔레트(palette): 색. color_palette로 범주형(deep)·순차(viridis)·발산(coolwarm)을 구분해서 씀.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-seaborn-07-3cf19946ca768194b117f421e79a1e9c"
+    },
+    {
+      "id": "3cf19946ca768196a258cce5fac24945",
+      "slug": "python-matplotlib-pandas-seaborn",
+      "sourceId": "3cf19946-ca76-8196-a258-cce5fac24945",
+      "source_id": "3cf19946ca768196a258cce5fac24945",
+      "page_id": "3cf19946-ca76-8196-a258-cce5fac24945",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - matplotlib 08. pandas·seaborn와의 연계",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "matplotlib",
+        "pandas-plot",
+        "seaborn",
+        "axes-level"
+      ],
+      "description": "pandas의 df.plot(...)과 seaborn의 대부분 함수는 내부적으로 matplotlib Axes에 그립니다. 즉 1~7장에서 배운 ax 조작이 그대로 통합니다. df.plot(ax=ax)는 그린 Axes를 반환하므로 이후 ax.set_title(...) 등으로 다듬을 수 있습니다. seaborn 함수는 axes-level(histplot, scatterplot)ax= 인자를 받아 한 Axes에 그림)과 figure-level(displot, relplot -자체적으로 Figure와 격자를 생성)로 갈리며, 이 구분이 커스터마이징 방법을 결정합니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-matplotlib-08-pandas-seaborn-3cf19946ca768196a258cce5fac24945"
+    },
+    {
+      "id": "3cf19946ca7681068c0fc2596847fee1",
+      "slug": "data-preprocessing-scales-eda",
+      "sourceId": "3cf19946-ca76-8106-8c0f-c2596847fee1",
+      "source_id": "3cf19946ca7681068c0fc2596847fee1",
+      "page_id": "3cf19946-ca76-8106-8c0f-c2596847fee1",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 전처리 이론 01. 데이터의 척도와 EDA 기초",
+      "date": "2026.09.01",
+      "tags": [
+        "data-preprocessing",
+        "theory",
+        "scales",
+        "eda"
+      ],
+      "description": "전처리의 모든 의사결정은 \"이 변수가 어떤 척도인가\"에서 출발합니다. 척도를 잘못 읽으면 이후의 인코딩·스케일링·통계량 선택이 전부 어긋납니다.",
+      "subcategory": "data_preprocessing",
+      "package": "data_preprocessing",
+      "notionUrl": "https://app.notion.com/p/01-EDA-3cf19946ca7681068c0fc2596847fee1"
+    },
+    {
+      "id": "3cf19946ca7681169a32f945ea578aa5",
+      "slug": "visualization-purpose-grammar",
+      "sourceId": "3cf19946-ca76-8116-9a32-f945ea578aa5",
+      "source_id": "3cf19946ca7681169a32f945ea578aa5",
+      "page_id": "3cf19946-ca76-8116-9a32-f945ea578aa5",
+      "last_edited_time": "2026-09-03T05:51:00.000Z",
+      "title": "데이터 시각화 이론 01. 목적과 그래프 문법",
+      "date": "2026.09.01",
+      "tags": [
+        "visualization",
+        "theory",
+        "grammar-of-graphics",
+        "exploratory-explanatory"
+      ],
+      "description": "시각화를 배우기 전에 두 가지를 먼저 정해야 합니다. 첫째, 이 그림이 탐색용인가 설명용인가입니다. 둘째, 어떤 문법으로 그림을 조립할 것인가입니다. 차트 종류(막대냐 선이냐)는 이 두 결정 다음에 자동으로 따라옵니다. 이 노트는 시각화 이론 전체의 출발점으로, 목적 구분과 그래프 문법(Grammar of Graphics)이라는 사고 틀을 다룹니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/01-3cf19946ca7681169a32f945ea578aa5"
+    },
+    {
+      "id": "3cf19946ca7681718f2cc89aaf11e7b8",
+      "slug": "python-seaborn-overview",
+      "sourceId": "3cf19946-ca76-8171-8f2c-c89aaf11e7b8",
+      "source_id": "3cf19946ca7681718f2cc89aaf11e7b8",
+      "page_id": "3cf19946-ca76-8171-8f2c-c89aaf11e7b8",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "Python - seaborn 01. 개요와 figure-level vs axes-level",
+      "date": "2026.09.01",
+      "tags": [
+        "Python",
+        "seaborn",
+        "figure-level-axes-level",
+        "tidy-data"
+      ],
+      "description": "seaborn은 matplotlib 위에 얹힌 통계 그래프 API입니다. \"데이터프레임의 어떤 열을 x축·y축·색·격자에 대응시킬지\"만 선언하면, 그룹화·집계·색 매핑·범례·축 라벨을 자동으로 처리합니다. 입력은 원칙적으로 tidy(long) 데이터입니다: 관측 1건이 1행, 변수 1개가 1열이며, x=, y=, hue=에는 열 이름 문자열을 넘깁니다. seaborn 함수는 두 계열로 나뉩니다: 넘겨준 Axes 하나에 그리는 axes-level(histplot, boxplot, scatterplot ...)과, 자체 FacetGrid(Figure 전체)를 만드는 figure-level(displot, catplot, relplot). 이 구분이 이후 모든 챕터의 전제입니다.",
+      "subcategory": "visualization",
+      "package": "visualization",
+      "notionUrl": "https://app.notion.com/p/Python-seaborn-01-figure-level-vs-axes-level-3cf19946ca7681718f2cc89aaf11e7b8"
+    },
+    {
+      "id": "3cf19946ca7681979971cbf70e13c58b",
+      "slug": "data-preprocessing-outlier-theory",
+      "sourceId": "3cf19946-ca76-8197-9971-cbf70e13c58b",
+      "source_id": "3cf19946ca7681979971cbf70e13c58b",
+      "page_id": "3cf19946-ca76-8197-9971-cbf70e13c58b",
+      "last_edited_time": "2026-09-03T05:53:00.000Z",
+      "title": "데이터 전처리 이론 03. 이상치 이론",
+      "date": "2026.09.01",
+      "tags": [
+        "data-preprocessing",
+        "theory",
+        "outliers",
+        "robust-statistics"
+      ],
+      "description": "이상치는 \"지워야 할 오류\"일 수도, \"가장 흥미로운 진짜 신호\"일 수도 있습니다. 탐지 기법마다 깔린 가정이 다르므로, 가정을 먼저 확인하고 처리 방법을 고릅니다.",
+      "subcategory": "data_preprocessing",
+      "package": "data_preprocessing",
+      "notionUrl": "https://app.notion.com/p/03-3cf19946ca7681979971cbf70e13c58b"
+    },
+    {
+      "id": "3ce19946ca7680b5bd53de660571e6d2",
+      "slug": "python-numpy-dtype",
+      "sourceId": "3ce19946-ca76-80b5-bd53-de660571e6d2",
+      "source_id": "3ce19946ca7680b5bd53de660571e6d2",
+      "page_id": "3ce19946-ca76-80b5-bd53-de660571e6d2",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 03. 자료형(dtype) 다루기",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "dtype",
+        "type-casting",
+        "nan"
+      ],
+      "description": "ndarray는 배열 전체가 하나의 dtype으로 고정됩니다. 이 하나의 제약에서 세 가지 실무 이슈가 파생됩니다:\n\n① 정수형의 오버플로(에러 없이 값이 순환), ② 결측값(np.nan)은 실수형에서만 표현 가능, ③ float32/float64 선택이 메모리와 정밀도를 좌우.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-03-dtype-3ce19946ca7680b5bd53de660571e6d2"
+    },
+    {
+      "id": "3ce19946ca7680b48c90fb97102be10c",
+      "slug": "numpy-01-initial-concept",
+      "sourceId": "3ce19946-ca76-80b4-8c90-fb97102be10c",
+      "source_id": "3ce19946ca7680b48c90fb97102be10c",
+      "page_id": "3ce19946-ca76-80b4-8c90-fb97102be10c",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - Numpy 01. 기초개념",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "ndarray",
+        "vector",
+        "vectorization",
+        "view-copy"
+      ],
+      "description": "NumPy의 모든 것은 ndarray(N-dimensional array) 라는 단일 자료구조 위에 세워집니다.\nndarray는 같은 자료형(dtype)의 값들을 연속된 메모리 블록에 저장하고, 그 위에서 반복문 없는 연산(벡터화)을 제공합니다.\n이 챕터에서는 \"왜 list 대신 ndarray인가\", \"ndarray를 읽는 법(속성)\", \"view와 copy의 차이\"를 잡습니다. 이후 모든 챕터가 이 세 가지를 전제합니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-Numpy-01-3ce19946ca7680b48c90fb97102be10c"
+    },
+    {
+      "id": "3ce19946ca7680e78c9acb8da7f20f38",
+      "slug": "python-numpy-linear-algebra",
+      "sourceId": "3ce19946-ca76-80e7-8c9a-cb8da7f20f38",
+      "source_id": "3ce19946ca7680e78c9acb8da7f20f38",
+      "page_id": "3ce19946-ca76-80e7-8c9a-cb8da7f20f38",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 10. 선형대수 기초",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "linear-algebra",
+        "matmul",
+        "svd"
+      ],
+      "description": "전처리·머신러닝에 필요한 만큼의 선형대수만 다룹니다. 핵심은 @(행렬곱)와 *(원소별 곱)의 구분, 그리고 np.linalg의 inv/norm/eig/svd입니다.\n\nPCA·차원축소·정규방정식이 전부 이 함수들 위에 있습니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-10-3ce19946ca7680e78c9acb8da7f20f38"
+    },
+    {
+      "id": "3ce19946ca76801ab1cdf359ecdcf07e",
+      "slug": "python-numpy-indexing",
+      "sourceId": "3ce19946-ca76-801a-b1cd-f359ecdcf07e",
+      "source_id": "3ce19946ca76801ab1cdf359ecdcf07e",
+      "page_id": "3ce19946-ca76-801a-b1cd-f359ecdcf07e",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 04. 인덱싱과 슬라이싱",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "indexinq",
+        "boolean-mask",
+        "fancy-indexing"
+      ],
+      "description": "NumPy 인덱싱은 3종류입니다: ① 기본 인덱싱/슬라이싱(view 반환), ② 불리언 마스킹(조건 필터링, copy 반환), ③ 팬시 인덱싱(정수 배열로 위치 지정, copy 반환).\n\n전처리에서 가장 많이 쓰는 건 불리언 마스킹입니다 — \"조건에 맞는 행만 골라서 값을 바꾸는\" 작업이 전처리의 절반입니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-04-3ce19946ca76801ab1cdf359ecdcf07e"
+    },
+    {
+      "id": "3ce19946ca76807faa9def831b4cb504",
+      "slug": "python-numpy-preprocessing-patterns",
+      "sourceId": "3ce19946-ca76-807f-aa9d-ef831b4cb504",
+      "source_id": "3ce19946ca76807faa9def831b4cb504",
+      "page_id": "3ce19946-ca76-807f-aa9d-ef831b4cb504",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 09. 데이터 전처리 핵심 패턴",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "preprocessing",
+        "normalization",
+        "one-hot",
+        "binning"
+      ],
+      "description": "앞 챕터들(브로드캐스팅, 집계, 인덱싱)을 조합해 실제 전처리 작업을 수행하는 관용구 모음입니다.\n정규화/표준화, 원-핫 인코딩, 구간화(binning), 중복 제거, 정렬, 그룹 집계를 다룹니다. scikit-learn이 내부적으로 하는 일이기도 합니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-09-3ce19946ca76807faa9def831b4cb504"
+    },
+    {
+      "id": "3ce19946ca768005bc5cc7383a963f96",
+      "slug": "python-numpy-ufunc-aggregation",
+      "sourceId": "3ce19946-ca76-8005-bc5c-c7383a963f96",
+      "source_id": "3ce19946ca768005bc5cc7383a963f96",
+      "page_id": "3ce19946-ca76-8005-bc5c-c7383a963f96",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 07. 연산 (ufunc·집계·axis)",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "ufunc",
+        "aggregation",
+        "axis"
+      ],
+      "description": "NumPy 연산은 3층입니다: ① 원소별 연산(+, *, >), ② 유니버설 함수(ufunc)(np.sqrt, np.exp — 배열 전체에 함수 적용), ③ 집계 함수(sum, mean, std — 축을 따라 값을 요약).\n\n가장 헷갈리는 건 집계 함수의 axis 인자입니다. \"axis로 지정한 축이 사라진다\"만 기억하면 됩니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-07-ufunc-axis-3ce19946ca768005bc5cc7383a963f96"
+    },
+    {
+      "id": "3ce19946ca768063b0e1e8a297019e1e",
+      "slug": "python-numpy-array-creation",
+      "sourceId": "3ce19946-ca76-8063-b0e1-e8a297019e1e",
+      "source_id": "3ce19946ca768063b0e1e8a297019e1e",
+      "page_id": "3ce19946-ca76-8063-b0e1-e8a297019e1e",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 11. 입출력",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "io",
+        "csv",
+        "pandas"
+      ],
+      "description": "NumPy 배열을 저장·복원하는 방법입니다: ① .npy/.npz 바이너리(빠르고 dtype·shape 그대로 보존), ② 텍스트/CSV(loadtxt, genfromtxt), ③ pandas와 상호 변환.\n실무에서는 원천 데이터를 pandas로 읽고 → to_numpy()로 배열화 → NumPy로 전처리하는 흐름이 흔합니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-11-3ce19946ca768063b0e1e8a297019e1e"
+    },
+    {
+      "id": "3ce19946ca768071aabfd696b871a6f8",
+      "slug": "python-numpy-io",
+      "sourceId": "3ce19946-ca76-8071-aabf-d696b871a6f8",
+      "source_id": "3ce19946ca768071aabfd696b871a6f8",
+      "page_id": "3ce19946-ca76-8071-aabf-d696b871a6f8",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 02. 배열 생성",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "array-creation",
+        "random"
+      ],
+      "description": "배열을 만드는 방법은 크게 4가지입니다: ① 기존 데이터로부터(np.array), ② 상수로 초기화(zeros/ones/full), ③ 수열 생성(arange/linspace), ④ 난수 생성(default_rng).\n\n전처리에서는 \"결과를 담을 빈 버퍼를 만들고 채우는\" 패턴과 \"실험 데이터를 재현 가능하게 뽑는\" 패턴이 자주 나옵니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-02-3ce19946ca768071aabfd696b871a6f8"
+    },
+    {
+      "id": "3ce19946ca7680689d24d8fc50c66587",
+      "slug": "python-numpy-performance",
+      "sourceId": "3ce19946-ca76-8068-9d24-d8fc50c66587",
+      "source_id": "3ce19946ca7680689d24d8fc50c66587",
+      "page_id": "3ce19946-ca76-8068-9d24-d8fc50c66587",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 12. 성능과 함정",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "performance",
+        "pitfalls",
+        "debugging"
+      ],
+      "description": "1~9장을 한 번 본 뒤 다시 읽는 챕터입니다. NumPy에서 반복적으로 사람을 잡는 5가지: ① 파이썬 루프, ② view/copy 혼동, ③ 부동소수점 비교, ④ 정수 오버플로 / NaN 전파, ⑤ dtype·메모리 낭비. 마지막에 자주 보는 에러 메시지 사전을 붙였습니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-12-3ce19946ca7680689d24d8fc50c66587"
+    },
+    {
+      "id": "3ce19946ca7680768ccfde84c5980765",
+      "slug": "python-numpy-missing-values",
+      "sourceId": "3ce19946-ca76-8076-8ccf-de84c5980765",
+      "source_id": "3ce19946ca7680768ccfde84c5980765",
+      "page_id": "3ce19946-ca76-8076-8ccf-de84c5980765",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 08. 결측치와 이상치 처리",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "mssing-values",
+        "outliers",
+        "imputation"
+      ],
+      "description": "실데이터는 항상 결측(np.nan), 무한대(np.inf), 이상치(outlier)를 포함합니다.\n\nNumPy에서의 처리 흐름은 ① 탐지(np.isnan, np.isfinite) → ② 집계 시 무시(np.nanmean 계열) → ③ 대체(imputation) 또는 제거/클리핑입니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-08-3ce19946ca7680768ccfde84c5980765"
+    },
+    {
+      "id": "3ce19946ca7680568905f9100f8e9192",
+      "slug": "python-numpy-reshape",
+      "sourceId": "3ce19946-ca76-8056-8905-f9100f8e9192",
+      "source_id": "3ce19946ca7680568905f9100f8e9192",
+      "page_id": "3ce19946-ca76-8056-8905-f9100f8e9192",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 05. 형태 변경과 결합·분리",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "reshape",
+        "concatenate",
+        "axis"
+      ],
+      "description": "같은 데이터를 다른 shape로 \"다시 보는\" 작업(reshape, 축 추가/제거, 전치)과, 여러 배열을 합치거나 나누는 작업(concatenate, stack, split)을 다룹니다.\n\n브로드캐스팅(6장)과 모델 입력 shape 맞추기에서 reshape와 np.newaxis를 끊임없이 쓰게 됩니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-05-3ce19946ca7680568905f9100f8e9192"
+    },
+    {
+      "id": "3ce19946ca7680649261f238b2bc8181",
+      "slug": "python-numpy-broadcasting",
+      "sourceId": "3ce19946-ca76-8064-9261-f238b2bc8181",
+      "source_id": "3ce19946ca7680649261f238b2bc8181",
+      "page_id": "3ce19946-ca76-8064-9261-f238b2bc8181",
+      "last_edited_time": "2026-09-03T05:54:00.000Z",
+      "title": "Python - NumPy 06. 브로드캐스팅",
+      "date": "2026.08.30",
+      "tags": [
+        "Python",
+        "numpy",
+        "broadcasting",
+        "vectorization"
+      ],
+      "description": "브로드캐스팅은 shape가 다른 두 배열을 연산할 때, NumPy가 작은 배열을 \"복제한 것처럼\" 자동 확장해 shape를 맞추는 규칙입니다.\n\n실제로 데이터를 복제하지는 않으므로(메모리 효율적) 반복문 없이 \"각 행에서 열 평균 빼기\" 같은 연산을 한 줄로 쓸 수 있습니다. 정규화·표준화가 전부 이 원리 위에 있습니다.",
+      "subcategory": "numpy",
+      "package": "numpy",
+      "notionUrl": "https://app.notion.com/p/Python-NumPy-06-3ce19946ca7680649261f238b2bc8181"
     }
   ]
 }

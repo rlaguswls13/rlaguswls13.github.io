@@ -1,0 +1,153 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-01"
+tag: ["data-preprocessing","theory","feature-engineering","dimensionality-reduction"]
+slug: "data-preprocessing-feature-engineering"
+subcategory: "data_preprocessing"
+status: "publish"
+description: "스케일링이 \"축의 눈금\"을 바꾼다면, 변환은 \"분포의 모양\"을 바꾸고, 특성 공학은 \"새 축을 만들며\", 차원 축소는 \"축의 수를 줄입니다\"."
+title: "데이터 전처리 이론 05. 변수 변환·특성 공학·차원 축소"
+page_id: "3cf19946-ca76-8181-b844-db7274f690fe"
+source_id: "3cf19946ca768181b844db7274f690fe"
+last_edited_time: "2026-09-03T05:53:00.000Z"
+notion_url: "https://app.notion.com/p/05-3cf19946ca768181b844db7274f690fe"
+id: "3cf19946ca768181b844db7274f690fe"
+sourceId: "3cf19946-ca76-8181-b844-db7274f690fe"
+date: "2026-09-01"
+tags: ["data-preprocessing","theory","feature-engineering","dimensionality-reduction"]
+package: "data_preprocessing"
+notionUrl: "https://app.notion.com/p/05-3cf19946ca768181b844db7274f690fe"
+---
+
+## 목차
+
+- [다루는 계층](#다루는-계층)
+- [1. 변수 변환](#1-변수-변환)
+  - [1.1 치우친 분포 보정](#11-치우친-분포-보정)
+  - [1.2 구간화(binning)](#12-구간화binning)
+- [2. 특성 공학(feature engineering)](#2-특성-공학feature-engineering)
+- [3. 차원 축소](#3-차원-축소)
+  - [3.1 차원의 저주(curse of dimensionality)](#31-차원의-저주curse-of-dimensionality)
+  - [3.2 특성 선택(selection) vs 특성 추출(extraction)](#32-특성-선택selection-vs-특성-추출extraction)
+  - [3.3 PCA: 분산 최대화 = 공분산 고유분해 = 중심화 데이터의 SVD](#33-pca-분산-최대화-공분산-고유분해-중심화-데이터의-svd)
+  - [3.4 t-SNE / UMAP (개념)](#34-t-sne-umap-개념)
+
+> 스케일링이 "축의 눈금"을 바꾼다면, 변환은 "분포의 모양"을 바꾸고, 특성 공학은 "새 축을 만들며", 차원 축소는 "축의 수를 줄입니다".
+
+<a id="다루는-계층"></a>
+
+## 다루는 계층
+
+- **통계 이론**: 분포 변환의 목적, 차원의 저주, PCA의 분산 최대화와 SVD의 관계
+- **전처리 의사결정**: 어떤 변환을, 언제 / 특성을 늘릴지 줄일지 / 선택 vs 추출
+- **도구 구현**: `numpy.log1p`, `sklearn`의 `PowerTransformer`·`KBinsDiscretizer`·`PolynomialFeatures`·`PCA`·`SelectKBest`
+
+<NotionDivider />
+
+<a id="1-변수-변환"></a>
+
+## 1. 변수 변환
+
+<a id="11-치우친-분포-보정"></a>
+
+### 1.1 치우친 분포 보정
+
+오른쪽으로 긴 꼬리(양의 왜도)를 가진 변수(소득, 가격, 조회수)는 로그류 변환으로 대칭에 가깝게 만듭니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>변환</td><td>조건</td><td>특징</td></tr>
+    <tr><td>로그 `log(x)` / `log1p(x)`</td><td>x > 0 (또는 x ≥ 0)</td><td>강한 압축, 곱셈 관계를 덧셈으로</td></tr>
+    <tr><td>제곱근 `√x`</td><td>x ≥ 0</td><td>약한 압축, 카운트 데이터</td></tr>
+    <tr><td>Box-Cox</td><td>x > 0</td><td>λ를 데이터로 추정, 최적 멱변환</td></tr>
+    <tr><td>Yeo-Johnson</td><td>실수 전체(음수 허용)</td><td>Box-Cox의 확장</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+from sklearn.preprocessing import PowerTransformer
+pt = PowerTransformer(method="yeo-johnson").fit(X_train[["income"]])
+X_train_t = pt.transform(X_train[["income"]])
+X_test_t = pt.transform(X_test[["income"]])   # λ는 train에서 추정
+```
+
+**목적(사실)**: 선형 모델·정규성 가정 검정·z-score 이상치 탐지가 대칭·정규에 가까운 분포에서 더 잘 작동합니다. 변환은 스케일링과 달리 왜도·첨도를 실제로 줄입니다. 트리 모델은 단조 변환에 불변이라 이득이 거의 없습니다.
+
+<a id="12-구간화binning"></a>
+
+### 1.2 구간화(binning)
+
+연속값을 구간 범주로 나눕니다(나이 → 연령대). 트레이드오프가 분명합니다.
+
+- **이득**: 비선형 관계를 선형 모델이 흡수, 소수 극단값·노이즈의 영향 완화, 해석 용이.
+- **손실**: 구간 내 정보 소멸, 경계에서의 불연속, 임의의 경계 선택이 결과를 좌우. 정보 손실이 크므로 "노이즈 완화 효과 > 정보 손실"일 때만 사용합니다(권고).
+- 등폭(equal-width) vs 등도수(equal-frequency, 분위수) 중 분포가 치우치면 등도수가 안정적입니다.
+
+<NotionDivider />
+
+<a id="2-특성-공학feature-engineering"></a>
+
+## 2. 특성 공학(feature engineering)
+
+- **도메인 파생 변수**: BMI = 체중/키², 거래액/거래횟수 = 평균 거래액. 도메인 지식이 모델보다 강력할 때가 많습니다.
+- **상호작용·다항 항**: `x1·x2`, `x1²`. 선형 모델에 비선형·조건부 효과를 넣습니다. `PolynomialFeatures(degree=2)`는 차원을 급격히 늘리므로 정규화와 함께 씁니다.
+- **날짜/시간 분해**: 연·월·요일·시간대·공휴일 여부, 주기성은 사인/코사인 인코딩.
+- **텍스트 → 수치**: 길이, 단어 수, TF-IDF, 임베딩.
+- **집계 특성**: 고객별 과거 평균 구매액 등. 이때 **미래 데이터로 과거 특성을 만들면 시간 누수**이므로 시점 경계를 지킵니다(데이터 전처리 이론 06. 불균형·데이터 누수·재현성).
+특성이 늘수록 표현력은 커지지만 과적합과 차원의 저주 위험이 함께 커집니다.
+
+
+<NotionDivider />
+
+<a id="3-차원-축소"></a>
+
+## 3. 차원 축소
+
+<a id="31-차원의-저주curse-of-dimensionality"></a>
+
+### 3.1 차원의 저주(curse of dimensionality)
+
+차원이 커지면 (사실):
+
+- 공간 부피가 지수적으로 커져 데이터가 희소해지고, 표본 간 거리가 서로 비슷해져 최근접/최원거리의 대비가 사라집니다. 거리 기반 방법(KNN, 클러스터링)이 무력화됩니다.
+- 밀도 추정에 필요한 표본 수가 지수적으로 증가합니다.
+- 노이즈 특성이 많아져 과적합이 쉬워집니다.
+대응은 두 갈래입니다.
+
+<a id="32-특성-선택selection-vs-특성-추출extraction"></a>
+
+### 3.2 특성 선택(selection) vs 특성 추출(extraction)
+
+- **선택(subset)**: 원래 특성 중 일부만 고름. 필터(상관·카이제곱·상호정보량), 래퍼(전진·후진 선택, RFE), 임베디드(L1 라쏘, 트리 중요도). **해석 가능성 유지**가 장점.
+- **추출(projection)**: 원래 특성을 조합해 새 축을 만듦(PCA, LDA, 오토인코더). 정보 압축률이 높지만 새 축의 해석이 어려움.
+<a id="33-pca-분산-최대화-공분산-고유분해-중심화-데이터의-svd"></a>
+
+### 3.3 PCA: 분산 최대화 = 공분산 고유분해 = 중심화 데이터의 SVD
+
+PCA는 데이터를 **분산이 최대가 되는 직교 방향**들로 투영합니다. 수학적으로 세 관점이 같습니다.
+
+1. **분산 최대화**: 첫 주성분 w는 `Var(Xw)`를 `‖w‖=1` 하에서 최대화하는 방향.
+1. **공분산 고유분해**: 중심화한 데이터의 공분산 행렬 `C = (1/(n−1)) XᵀX`의 고유벡터가 주성분, 고유값이 그 방향의 분산.
+1. **SVD**: 중심화 데이터 `X = UΣVᵀ`에서 `V`의 열이 주성분, `Σ`의 특이값 제곱이 분산에 비례. 수치적으로 공분산을 직접 만들지 않는 SVD 경로가 더 안정적입니다.
+
+```python
+from sklearn.decomposition import PCA
+pca = PCA(n_components=0.95).fit(X_train_scaled)   # 분산 95% 설명하는 성분 수
+X_train_p = pca.transform(X_train_scaled)
+```
+
+**전제(권고)**: PCA는 스케일에 민감하므로 표준화가 선행돼야 하고(데이터 전처리 이론 04. 스케일링과 범주형 인코딩), 분산이 큰 방향이 곧 유용한 방향이라는 가정에 기댑니다. 선형 방법이라 곡면 구조는 못 잡습니다.
+
+<a id="34-t-sne-umap-개념"></a>
+
+### 3.4 t-SNE / UMAP (개념)
+
+국소 이웃 구조를 보존하며 2~3차원으로 임베딩하는 **시각화용** 비선형 기법입니다.
+
+- 군집의 존재 여부는 잘 보여주지만, **군집 간 거리·크기·전역 배치는 신뢰할 수 없습니다**(사실). perplexity/n_neighbors 등 하이퍼파라미터에 따라 그림이 크게 바뀝니다.
+- 학습된 좌표를 새 데이터에 적용하기 어렵고(특히 t-SNE), 모델 입력 특성으로 쓰는 것은 권장되지 않습니다. UMAP은 t-SNE보다 전역 구조 보존과 속도가 낫다고 알려져 있습니다.
+
+<NotionDivider />
+

@@ -1,0 +1,170 @@
+---
+category: "tech_study_series"
+created_date: "2026-08-30"
+tag: ["Python","numpy","dtype","type-casting","nan"]
+slug: "python-numpy-dtype"
+subcategory: "numpy"
+status: "publish"
+description: "ndarray는 배열 전체가 하나의 dtype으로 고정됩니다. 이 하나의 제약에서 세 가지 실무 이슈가 파생됩니다:\n\n① 정수형의 오버플로(에러 없이 값이 순환), ② 결측값(np.nan)은 실수형에서만 표현 가능, ③ float32/float64 선택이 메모리와 정밀도를 좌우."
+title: "Python - NumPy 03. 자료형(dtype) 다루기"
+page_id: "3ce19946-ca76-80b5-bd53-de660571e6d2"
+source_id: "3ce19946ca7680b5bd53de660571e6d2"
+last_edited_time: "2026-09-03T05:54:00.000Z"
+notion_url: "https://app.notion.com/p/Python-NumPy-03-dtype-3ce19946ca7680b5bd53de660571e6d2"
+id: "3ce19946ca7680b5bd53de660571e6d2"
+sourceId: "3ce19946-ca76-80b5-bd53-de660571e6d2"
+date: "2026-08-30"
+tags: ["Python","numpy","dtype","type-casting","nan"]
+package: "numpy"
+notionUrl: "https://app.notion.com/p/Python-NumPy-03-dtype-3ce19946ca7680b5bd53de660571e6d2"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 주요 dtype](#1-주요-dtype)
+- [2. 형변환 — astype](#2-형변환-astype)
+- [3. np.nan / np.inf — 결측·특수값](#3-npnan-npinf-결측특수값)
+  - [3-1. nan은 실수 전용](#3-1-nan은-실수-전용)
+  - [3-2. nan은 자기 자신과도 다르다](#3-2-nan은-자기-자신과도-다르다)
+  - [3-3. inf는 나눗셈 등에서 발생](#3-3-inf는-나눗셈-등에서-발생)
+- [4. dtype 선택이 주는 실무 영향](#4-dtype-선택이-주는-실무-영향)
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+`ndarray`는 **배열 전체가 하나의 dtype**으로 고정됩니다. 이 하나의 제약에서 세 가지 실무 이슈가 파생됩니다:
+
+① 정수형의 **오버플로**(에러 없이 값이 순환), ② **결측값(`np.nan`)은 실수형에서만** 표현 가능, ③ `float32`/`float64` 선택이 **메모리와 정밀도**를 좌우.
+
+
+```python
+import numpy as np
+```
+
+
+<NotionDivider />
+
+<a id="1-주요-dtype"></a>
+
+## 1. 주요 dtype
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>분류</td><td>예시</td><td>특징 / 주의</td></tr>
+    <tr><td>정수</td><td>`int8` `int16` `int32` `int64`</td><td>범위 초과 시 **오버플로**(경고 없이 순환). `uint8`은 이미지(0~255)에 흔함</td></tr>
+    <tr><td>실수</td><td>`float16` `float32` `float64`</td><td>`np.nan` / `np.inf` 표현 가능. 기본은 `float64`</td></tr>
+    <tr><td>불리언</td><td>`bool_`</td><td>마스킹의 재료. `True`=1, `False`=0으로 산술 연산 가능</td></tr>
+    <tr><td>복소수</td><td>`complex64` `complex128`</td><td>FFT 등</td></tr>
+    <tr><td>날짜/시간</td><td>`datetime64[D]` `timedelta64[s]`</td><td>단위를 대괄호로 지정</td></tr>
+    <tr><td>문자열</td><td>`<U10` (유니코드 10자), `object`</td><td>고정 길이는 `<U`, 가변 길이는 `object`(느림)</td></tr>
+  </tbody>
+</NotionTable>
+
+
+```python
+a = np.array([1, 2, 3])
+a.dtype                     # dtype('int64')  (Windows + NumPy 1.x는 int32)
+
+np.array([1, 2, 3], dtype=np.float32)
+np.array([1, 2, 3], dtype='uint8')
+```
+
+> **기본 정수 dtype**은 OS·NumPy 버전에 따라 `int32` 또는 `int64`입니다. 재현성이 중요하면 항상 명시합니다.
+
+
+<NotionDivider />
+
+<a id="2-형변환-astype"></a>
+
+## 2. 형변환 — `astype`
+
+
+```python
+a = np.array([1.7, 2.3, 3.9])
+
+a.astype(np.int64)              # array([1, 2, 3])
+                               # ← 반올림이 아니라 소수점 "절삭"(truncation)!
+np.round(a).astype(np.int64)   # array([2, 2, 4])  - 반올림하려면 명시적으로
+```
+
+> 💡 **이럴 때**: 확률·점수를 정수 등급으로 바꿀 때는 절삭이 아니라 `np.round` 후 `astype`을 씁니다. 수백만 행에서 메모리를 줄이려 `float64 → float32`로 낮추는 것도 같은 도구입니다.
+
+- `astype`은 **기본적으로 복사본을 만듭니다**(`copy=True`). `copy=False`를 주고 dtype이 이미 일치하면 복사를 건너뜁니다.
+- **실수 → 정수 변환은 0 방향으로 버립니다.** `1.9`는 `1`이 됩니다 (`floor`가 아님).
+- **범위를 벗어난 변환** — 두 경우를 구분합니다.
+- 정수 → 더 작은 정수: **2^N 모듈러로 순환**(결정적)합니다. `np.array([300]).astype(np.uint8)` → `44` (300 % 256).
+- 실수 → 정수(범위 초과): **플랫폼 의존, 정의되지 않음**입니다. `np.array([1e20]).astype(np.int32)`의 결과는 신뢰할 수 없습니다.
+- 참고: `np.array([300], dtype=np.uint8)`처럼 **생성 단계**에서 범위를 벗어나면 `OverflowError`가 나지만, `.astype`은 위처럼 조용히 순환합니다 (→ [Python - NumPy 12. 성능과 함정](https://app.notion.com/p/Python%20-%20NumPy%2012.%20%EC%84%B1%EB%8A%A5%EA%B3%BC%20%ED%95%A8%EC%A0%95) §4).
+
+
+<NotionDivider />
+
+<a id="3-npnan-npinf-결측특수값"></a>
+
+## 3. `np.nan` / `np.inf` — 결측·특수값
+
+<a id="3-1-nan은-실수-전용"></a>
+
+### 3-1. nan은 실수 전용
+
+
+```python
+np.array([1, 2, np.nan])          # dtype이 float64로 자동 승격됨
+np.array([1, 2, np.nan], dtype=np.int64)   # ValueError - 정수 배열에 nan 불가
+```
+
+정수 컬럼에 결측이 섞여 들어오면, NumPy 단계에서는 어쩔 수 없이 `float64`로 올려야 합니다. (pandas의 `Int64`(nullable) 타입은 이 문제를 별도로 해결한 것입니다.)
+
+<a id="3-2-nan은-자기-자신과도-다르다"></a>
+
+### 3-2. nan은 자기 자신과도 다르다
+
+
+```python
+np.nan == np.nan          # False   ← 절대 == 로 비교하지 말 것
+np.nan != np.nan          # True
+
+np.isnan(np.array([1.0, np.nan, 3.0]))   # array([False,  True, False])
+```
+
+> 💡 **이럴 때**: 결측 탐지는 항상 `np.isnan()`으로 합니다. `== np.nan`은 언제나 False라 조건이 조용히 무시됩니다.
+
+결측 탐지는 **반드시 `np.isnan()`**을 씁니다. 자세한 처리는 [Python - NumPy 08. 결측치와 이상치 처리](https://app.notion.com/p/Python%20-%20NumPy%2008.%20%EA%B2%B0%EC%B8%A1%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%83%81%EC%B9%98%20%EC%B2%98%EB%A6%AC).
+
+<a id="3-3-inf는-나눗셈-등에서-발생"></a>
+
+### 3-3. inf는 나눗셈 등에서 발생
+
+
+```python
+np.array([1.0, 2.0]) / 0.0        # array([inf, inf])  + RuntimeWarning
+np.array([-1.0]) / 0.0            # array([-inf])
+np.array([0.0]) / 0.0            # array([nan])  + RuntimeWarning
+# 주의: 순수 파이썬 float의 0.0 / 0.0 은 ZeroDivisionError (NumPy 배열만 nan/inf 반환)
+
+np.isinf(x)      # inf/-inf 탐지
+np.isfinite(x)   # nan도 inf도 아닌 정상값만 True
+```
+
+
+<NotionDivider />
+
+<a id="4-dtype-선택이-주는-실무-영향"></a>
+
+## 4. dtype 선택이 주는 실무 영향
+
+- **메모리**: `float64` → `float32`는 메모리 절반입니다. 수백만 행 전처리에서 체감됩니다. 정밀도 손실이 허용되는지 판단해서 선택합니다.
+- **오버플로**: 카운트 누적, 해시 계산 등에서 `int32`가 부족할 수 있습니다. 의심되면 `int64` 또는 `float64`를 씁니다.
+- **불리언 연산**: 마스크(`a > 0`)는 `bool` 배열이고, `.sum()`을 하면 True의 개수가 나옵니다 (조건을 만족하는 원소 수 세기의 관용 표현입니다).
+
+```python
+mask = a > 0
+mask.sum()          # 양수 개수
+mask.mean()         # 양수 비율
+```
+
+> 💡 **이럴 때**: 조건을 만족하는 행 수·비율을 빠르게 확인할 때(결측 비율, 이상치 비율, 클래스 양성 비율 점검).
+
