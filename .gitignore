@@ -97,6 +97,7 @@ next-env.d.ts
 # notion api data cache
 .cache
 
-# local wiki (Obsidian-managed, not tracked in this repo)
-/wiki/
+# wiki content now lives entirely outside this repo (D:\obsidian-storage\project-rag\blog\.wiki,
+# git-managed there). This just guards against a local .wiki/ ever being recreated by mistake.
+/.wiki/
 

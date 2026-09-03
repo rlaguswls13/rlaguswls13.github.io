@@ -7,13 +7,13 @@ document_status: canonical-entrypoint
 audience: coding-agents
 language: ko
 scope: repository-wide
-canonical_detail: docs/README.md, project/skills/, wiki/, wiki/rag/source-registry.json
+canonical_detail: docs/README.md, project/skills/, .wiki/, .wiki/rag/source-registry.json
 retrieval_queries: agent 작업 순서, skill 라우팅, 검증 게이트, 변경 안전성, 세션 memory
 -->
 
 ## 문서 역할과 우선순위
 
-이 문서는 이 저장소에서 작업하는 agent의 **진입점**입니다. 작업을 시작할 때 이 파일을 먼저 읽고, 절차의 상세 내용은 `project/skills/`, 정책·결정·근거는 `wiki/`의 canonical 문서에서 확인합니다.
+이 문서는 이 저장소에서 작업하는 agent의 **진입점**입니다. 작업을 시작할 때 이 파일을 먼저 읽고, 절차의 상세 내용은 `project/skills/`, 정책·결정·근거는 `.wiki/`의 canonical 문서에서 확인합니다.
 
 ## Kapa RAG 문서 프로필
 
@@ -25,26 +25,26 @@ retrieval_queries: agent 작업 순서, skill 라우팅, 검증 게이트, 변�
 | 적용 범위 | repository-wide |
 | 권위 수준 | entrypoint; 상세 절차와 정책은 linked canonical source가 우선 |
 | 최신성 기준 | 현재 checkout의 `AGENTS.md`, linked skill/wiki, 실제 코드·테스트 |
-| 주요 source group | 기본: `agent-harness`, `project-skills`, `project-wiki`; 보조: `project-reports`; 이력 전용: `project-worklogs` |
+| 주요 source group | 기본: `agent-harness`, `project-skills`, `project-wiki`; 보조: `project-raw`; 이력 전용: `project-worklogs` |
 | 인용 기준 | 이 파일의 해당 heading과 연결된 repository path를 함께 제시 |
 
 이 문서는 Markdown heading과 표를 기준으로 의미 단위가 나뉩니다. Kapa 또는 다른 RAG 소비자는 `문서 역할과 우선순위`, `작업 시작`, `skill 라우팅`, `검증 게이트`, `변경 안전성`, `세션 종료` heading을 section title과 citation anchor로 사용해야 합니다. HTML 주석 metadata만으로 문서의 의미를 판단하지 않습니다.
 
-문서 경로와 검색 우선순위의 기계 판독 기준은 `wiki/rag/source-registry.json`입니다. reports는 시점별 근거로 보조 검색하고, worklog와 `session-memory.md`는 기본 검색에서 제외해 이력 질의에만 사용합니다.
+문서 경로와 검색 우선순위의 기계 판독 기준은 `.wiki/rag/source-registry.json`입니다. `.wiki/raw/`(작업한 원본 증거)는 근거가 필요할 때 보조 검색하고, worklog와 `session-memory.md`는 기본 검색에서 제외해 이력 질의에만 사용합니다.
 
 ### 이 문서에 대한 자주 묻는 질문
 
 #### Q: 작업을 시작할 때 가장 먼저 읽을 문서는 무엇인가?
 
-A: `AGENTS.md`를 먼저 읽고, `docs/README.md`와 변경 유형에 맞는 `project/skills/` 및 `wiki/` 문서를 이어서 확인합니다.
+A: `AGENTS.md`를 먼저 읽고, `docs/README.md`와 변경 유형에 맞는 `project/skills/` 및 `.wiki/` 문서를 이어서 확인합니다.
 
 #### Q: 상세 절차와 장기 정책은 어디에 있는가?
 
-A: 반복 절차와 입력·출력·검증 계약은 `project/skills/`, 정책·결정·검증 근거·위험은 `wiki/`, lifecycle 자동화는 `project/hooks/`가 소유합니다. 이 파일은 entrypoint이며 상세 규칙의 복사본이 아닙니다.
+A: 반복 절차와 입력·출력·검증 계약은 `project/skills/`, 정책·결정·검증 근거·위험은 `.wiki/`, lifecycle 자동화는 `project/hooks/`가 소유합니다. 이 파일은 entrypoint이며 상세 규칙의 복사본이 아닙니다.
 
 #### Q: 답변에 어떤 출처를 인용해야 하는가?
 
-A: 주장과 가장 가까운 heading의 repository path를 인용합니다. 이 파일의 공통 규칙은 `AGENTS.md`, 실행 절차는 해당 `project/skills/<name>/SKILL.md`, 정책·결정은 해당 `wiki/*.md`, 자동화 동작은 해당 `project/hooks/*`를 출처로 사용합니다.
+A: 주장과 가장 가까운 heading의 repository path를 인용합니다. 이 파일의 공통 규칙은 `AGENTS.md`, 실행 절차는 해당 `project/skills/<name>/SKILL.md`, 정책·결정은 해당 `.wiki/*.md`, 자동화 동작은 해당 `project/hooks/*`를 출처로 사용합니다.
 
 #### Q: 문서와 코드가 서로 다르면 무엇을 우선하는가?
 
@@ -59,10 +59,10 @@ A: 문서에 근거가 없으면 사실을 만들어내지 말고 `확인할 수
 1. 사용자의 현재 요청과 안전 제약
 2. 이 `AGENTS.md`의 저장소 공통 규칙
 3. 작업 유형에 맞는 installed skill과 `project/skills/` task skill
-4. 관련 `wiki/` 정책·결정·검증 근거
+4. 관련 `.wiki/` 정책·결정·검증 근거
 5. 구현 코드와 기존 테스트의 실제 동작
 
-`docs/README.md`는 `project/skills/`, `project/hooks/`, `wiki/`의 관계를 설명하는 문서 surface controller입니다. 이 파일에 pipeline의 세부 절차를 복사하지 말고 해당 canonical 문서로 이동합니다.
+`docs/README.md`는 `project/skills/`, `project/hooks/`, `.wiki/`의 관계를 설명하는 문서 surface controller입니다. 이 파일에 pipeline의 세부 절차를 복사하지 말고 해당 canonical 문서로 이동합니다.
 
 ### 검색용 주제와 동의어
 
@@ -72,7 +72,7 @@ A: 문서에 근거가 없으면 사실을 만들어내지 말고 `확인할 수
 
 모든 작업은 아래 순서로 시작합니다.
 
-1. 이 파일, `docs/README.md`, 관련 `wiki/` 문서를 읽습니다.
+1. 이 파일, `docs/README.md`, 관련 `.wiki/` 문서를 읽습니다.
 2. `.agent/session-handoff.md`가 있으면 읽고, 현재 작업을 그 파일의 `Current status`와 `Remaining tasks`에 반영합니다.
 3. 변경 대상과 소비자를 조사합니다. 특히 managed path, 생성 파일, hook, 외부 연동 여부를 확인합니다.
 4. 작업 유형에 맞는 installed skill과 `project/skills/` task skill을 호출합니다.
@@ -115,10 +115,21 @@ $session-handoff-workflow finish
 | --- | --- | --- | --- |
 | `project/skills/` | 반복 가능한 절차, 입력·출력·검증 계약 | `project/skills/<name>/SKILL.md` | 장기 결정의 근거 기록 |
 | `project/hooks/` | host agent lifecycle adapter | `project/hooks/README.md` | 수동 운영 정책 |
-| `wiki/` | 정책, 결정, 검증 증거, 위험, durable memory | `wiki/index.md` | 실행 가능한 hook 로직 |
+| `.wiki/` | 정책, 결정, 검증 증거, 위험, durable memory | `.wiki/index.md` | 실행 가능한 hook 로직 |
 | `docs/README.md` | legacy docs와 project surface의 안내·매핑 | `docs/README.md` | 상세 규칙의 복사본 |
 
 관련 정보가 여러 곳에 있을 때는 실행 절차는 skill, 정책과 결정은 wiki, 자동화 동작은 hook을 source of truth로 취급합니다. 중복된 설명을 새로 만들기보다 canonical 링크를 남깁니다.
+
+**`.wiki/`는 이 저장소 디렉터리 안에 존재하지 않는다.** `.wiki/xxx`로 표기하는 모든 경로는 물리적으로 `D:\obsidian-storage\project-rag\blog\xxx`(환경변수 `$PROJECT_RAG_PATH` 설정 시 `$PROJECT_RAG_PATH\blog\xxx`)를 가리킨다 — 그 `blog\` 폴더 자체가 `.wiki` 루트이며, 그 안에 `.wiki`라는 이름의 하위 폴더가 한 번 더 있는 게 아니다(`.wiki/index.md` → `blog\index.md`, `.wiki/rag/source-registry.json` → `blog\rag\source-registry.json`). 그쪽 git으로만 버전 관리되고 이 저장소의 원격에는 절대 올라가지 않는다. `npm run wiki:index`(`scripts/wiki/build-rag-index.mjs`의 `stripWikiPrefix()`)와 `project/hooks/session-end.mjs`가 이 매핑을 자동으로 처리해 읽고 쓴다.
+
+## Central RAG vault (범용 룰·스킬 전용)
+
+이 프로젝트 고유의 정책·스키마·방향성은 위 표대로 이 프로젝트의 `.wiki/`(외부, 바로 위 설명 참고)가 canonical이다. 그와 별도로, 여러 프로젝트에 걸쳐 재사용하는 **범용** 코딩/보안/DB 규칙과 SOP는 같은 vault 루트(`project-rag`)의 다른 폴더를 참조한다.
+
+- 경로: 환경변수 `$PROJECT_RAG_PATH`가 설정되어 있으면 그 값을 우선 사용하고, 없으면 `D:\obsidian-storage\project-rag`를 사용한다.
+- 참조 내용: `01-global-rules/`(범용 하드 제약), `02-global-skills/`(범용 SOP)만 참조한다. `00-global-maps/`가 있으면 색인 진입점으로 참고한다. `blog/.wiki/`(이 프로젝트 전용)는 이 절이 가리키는 대상이 아니다 — 바로 위 canonical surfaces 설명을 따른다.
+- **이 vault는 이 저장소의 git 이력과 무관하다.** 이 프로젝트의 canonical 정책·결정·스키마(`.wiki/`, `project/skills/`)를 `01-global-rules/`·`02-global-skills/`의 내용으로 대체하거나 덮어쓰지 않는다 — 충돌 시 이 프로젝트의 `.wiki/`가 우선한다.
+- 경로가 존재하지 않거나 접근 불가능하면 조용히 건너뛰고 이 저장소 자체 규칙(`AGENTS.md`, `.wiki/agent-harness-rules.md`)만으로 계속 작업한다 — 중앙 볼트 부재를 이유로 작업을 막지 않는다.
 
 ## 작업 유형별 skill 라우팅
 
@@ -158,7 +169,7 @@ npm run build:local
 npm run validate:export
 ```
 
-화면을 변경했다면 `blog-verification`과 `omo:visual-qa`로 실제 브라우저에서 375px, 768px, 1280px 및 light/dark 상태를 확인합니다. 실행 결과, 기존 실패, 잔여 위험은 `wiki/session-memory.md` 또는 필요한 report에 기록합니다.
+화면을 변경했다면 `blog-verification`과 `omo:visual-qa`로 실제 브라우저에서 375px, 768px, 1280px 및 light/dark 상태를 확인합니다. 실행 결과, 기존 실패, 잔여 위험은 `.wiki/session-memory.md` 또는 필요한 `.wiki/raw/{topic}-{YYYYMMDD}.md`에 기록합니다.
 
 ## 변경 안전성 계약
 
@@ -171,6 +182,6 @@ npm run validate:export
 
 ## 세션 종료와 durable memory
 
-세션 종료 시 host agent는 구조화된 `session_end` event를 `node project/hooks/session-end.mjs`에 전달합니다. event에는 결정, 실행한 검증, 잔여 위험, 변경 파일을 짧게 포함하고 secret·token·PII·긴 로그는 포함하지 않습니다. hook은 `wiki/`의 memory를 로컬에만 갱신하고(`wiki/`는 gitignore 대상이며 커밋되지 않음, 로컬/Obsidian 전용), `project/skills`·`project/hooks`만 선택적으로 commit합니다.
+세션 종료 시 host agent는 구조화된 `session_end` event를 `node project/hooks/session-end.mjs`에 전달합니다. event에는 결정, 실행한 검증, 잔여 위험, 변경 파일을 짧게 포함하고 secret·token·PII·긴 로그는 포함하지 않습니다. hook은 `.wiki/`의 memory를 갱신하고(`.wiki/`는 이 저장소 안에 없음 — `D:\obsidian-storage\project-rag\blog\`가 유일한 원본이며 그 자체 git으로만 버전 관리됨, 이 프로젝트의 원격 저장소에는 절대 올라가지 않음), `project/skills`·`project/hooks`만 선택적으로 commit합니다.
 
-규칙을 변경하기 전에는 `wiki/reports/agent-harness-report.md`의 승인 상태와 `wiki/docs-migration.json`의 surface 매핑을 확인합니다. 규칙 변경과 그 근거는 필요한 report에도 남깁니다.
+규칙을 변경하기 전에는 `.wiki/raw/`에서 관련 topic의 최신 gate review·승인 기록과 `.wiki/docs-migration.json`의 surface 매핑을 확인합니다. 규칙 변경과 그 근거는 `.wiki/raw/{topic}-{YYYYMMDD}.md`에도 남깁니다.

@@ -1,0 +1,3 @@
+# Cursor rules pointer
+
+This project's single source of truth for AI agent instructions is [`AGENTS.md`](AGENTS.md) at the repository root. Follow it 100% — this file intentionally defines no independent rules of its own so `AGENTS.md` never drifts out of sync with a duplicate copy.

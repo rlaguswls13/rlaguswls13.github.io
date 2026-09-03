@@ -5,14 +5,14 @@ description: Use when a blog agent session ends or when durable decisions, verif
 
 # Session Memory Wiki
 
-세션 종료 시 `project/hooks/session-end.mjs`가 이 skill의 계약을 실행한다. 상세 wiki 운영 규칙은 [`wiki/agent-memory.md`](../../../wiki/agent-memory.md)를 읽는다.
+세션 종료 시 `project/hooks/session-end.mjs`가 이 skill의 계약을 실행한다. 상세 wiki 운영 규칙은 `.wiki/agent-memory.md`(저장소 밖 `D:\obsidian-storage\project-rag\blog\agent-memory.md`, `$PROJECT_RAG_PATH` 우선)를 읽는다.
 
 ## 기록할 것
 
 - 결정과 그 이유
 - 실제 실행한 검증 명령과 결과
 - 미해결 위험·기존 실패·다음 작업
-- 변경된 project skill/wiki/hook 파일
+- 변경된 project skill·`.wiki`·hook 파일
 
 ## Session handoff
 
@@ -26,4 +26,4 @@ description: Use when a blog agent session ends or when durable decisions, verif
 @'{"type":"session_end","session_id":"local","summary":"...","decisions":["..."],"risks":["..."]}'@ | node project/hooks/session-end.mjs
 ```
 
-hook은 `wiki/` memory를 로컬에 갱신한다(`wiki/`는 gitignore 대상, 커밋되지 않음 — 로컬 관리 후 별도 Obsidian repo로 이관 예정). `project/skills`, `project/hooks` 범위만 stage한 뒤 commit한다. 범위 밖의 사용자 변경은 자동 commit하지 않는다.
+hook은 `.wiki/` memory를 갱신한다(`.wiki/`는 이 저장소 안에 없음 — `D:\obsidian-storage\project-rag\blog\`가 유일한 원본이며 그 자체 git으로 버전 관리됨, 이 프로젝트의 원격 저장소에는 절대 올라가지 않음). `project/skills`, `project/hooks` 범위만 stage한 뒤 commit한다. 범위 밖의 사용자 변경은 자동 commit하지 않는다.

@@ -20,7 +20,7 @@ describe("project session-end hook", () => {
         },
       });
 
-      const memory = fs.readFileSync(path.join(root, "wiki/session-memory.md"), "utf8");
+      const memory = fs.readFileSync(path.join(root, "session-memory.md"), "utf8");
       expect(result).toMatchObject({ updated: true, committed: false });
       expect(memory).toContain("NOTION_TOKEN=[REDACTED]");
       expect(memory).not.toContain("secret-value");
@@ -37,7 +37,7 @@ describe("project session-end hook", () => {
         committed: false,
         reason: "not-session-end",
       });
-      expect(fs.existsSync(path.join(root, "wiki/session-memory.md"))).toBe(false);
+      expect(fs.existsSync(path.join(root, "session-memory.md"))).toBe(false);
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }
@@ -104,9 +104,9 @@ describe("project session-end hook", () => {
 
       expect(result.committed).toBe(true);
       expect(tracked).toContain("project/skills/example.md");
-      expect(tracked).not.toContain("wiki/session-memory.md");
+      expect(tracked).not.toContain("session-memory.md");
       expect(tracked).not.toContain("outside.txt");
-      expect(fs.existsSync(path.join(root, "wiki/session-memory.md"))).toBe(true);
+      expect(fs.existsSync(path.join(root, "session-memory.md"))).toBe(true);
       expect(fs.readFileSync(path.join(root, "outside.txt"), "utf8")).toBe("user change");
       expect(execFileSync("git", ["diff", "--cached", "--name-only"], { cwd: root, encoding: "utf8" })).toContain("outside.txt");
     } finally {

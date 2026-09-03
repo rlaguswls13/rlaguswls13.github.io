@@ -93,6 +93,45 @@ describe("RAG document index", () => {
     );
   });
 
+  it("resolves .wiki-prefixed sources against wikiRoot, not root", () => {
+    const { root } = createFixture();
+    const wikiRoot = fs.mkdtempSync(path.join(os.tmpdir(), "blog-rag-index-wiki-"));
+    temporaryRoots.push(wikiRoot);
+    fs.writeFileSync(path.join(wikiRoot, "policy.md"), "# Policy\n\n## Rule\n", "utf8");
+    const registry = {
+      schemaVersion: 1,
+      groups: [
+        {
+          id: "agent-harness",
+          role: "entrypoint",
+          authority: 100,
+          retrieval: "default",
+          sources: [{ path: "AGENTS.md", type: "file", extensions: [".md"] }],
+        },
+        {
+          id: "project-wiki",
+          role: "canonical",
+          authority: 90,
+          retrieval: "default",
+          sources: [{ path: ".wiki/policy.md", type: "file", extensions: [".md"] }],
+        },
+      ],
+    };
+
+    const index = buildDocumentIndex({ registry, root, wikiRoot });
+    const groupsByPath = Object.fromEntries(index.documents.map((document) => [document.path, document.sourceGroup]));
+    expect(groupsByPath).toMatchObject({ "AGENTS.md": "agent-harness", ".wiki/policy.md": "project-wiki" });
+  });
+
+  it("rejects a .wiki source that escapes wikiRoot even when root would allow it", () => {
+    const { root, registry } = createFixture();
+    const wikiRoot = fs.mkdtempSync(path.join(os.tmpdir(), "blog-rag-index-wiki-"));
+    temporaryRoots.push(wikiRoot);
+    registry.groups[1].sources = [{ path: ".wiki/../../outside.md", type: "file", extensions: [".md"] }];
+
+    expect(() => buildDocumentIndex({ registry, root, wikiRoot })).toThrow(/outside its owning root/i);
+  });
+
   it("produces byte-identical output for unchanged inputs", () => {
     const { registry, root } = createFixture();
 
@@ -120,7 +159,7 @@ describe("RAG document index", () => {
     const { registry, root } = createFixture();
     registry.groups[0].sources = [{ path: "../outside.md", type: "file", extensions: [".md"] }];
 
-    expect(() => buildDocumentIndex({ registry, root })).toThrow(/outside repository root/i);
+    expect(() => buildDocumentIndex({ registry, root })).toThrow(/outside its owning root/i);
   });
 
   it("records added, updated, and removed documents in an indexing worklog", () => {

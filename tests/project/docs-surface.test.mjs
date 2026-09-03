@@ -1,10 +1,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { defaultWikiRoot, isWikiSourcePath, stripWikiPrefix } from "../../scripts/wiki/build-rag-index.mjs";
 
 const root = process.cwd();
+const wikiRoot = defaultWikiRoot();
 const docsRoot = path.join(root, "docs");
-const inventoryPath = path.join(root, "wiki/docs-migration.json");
+const inventoryPath = path.join(wikiRoot, stripWikiPrefix(".wiki/docs-migration.json"));
+
+function resolveTarget(target) {
+  return isWikiSourcePath(target) ? path.join(wikiRoot, stripWikiPrefix(target)) : path.join(root, target);
+}
 
 describe("project documentation surfaces", () => {
   it("maps every legacy docs page to an existing project surface", () => {
@@ -20,7 +26,7 @@ describe("project documentation surfaces", () => {
     for (const mapping of inventory.mappings) {
       expect(mapping.targets.length).toBeGreaterThan(0);
       for (const target of mapping.targets) {
-        expect(fs.existsSync(path.join(root, target))).toBe(true);
+        expect(fs.existsSync(resolveTarget(target))).toBe(true);
       }
     }
   });
@@ -32,6 +38,6 @@ describe("project documentation surfaces", () => {
     expect(docsMarkdown).toEqual(["README.md"]);
     expect(controller).toContain("project/skills/");
     expect(controller).toContain("project/hooks/");
-    expect(controller).toContain("wiki/");
+    expect(controller).toContain(".wiki/");
   });
 });

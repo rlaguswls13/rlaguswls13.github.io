@@ -3,10 +3,20 @@ import path from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-const MEMORY_PATH = path.join("wiki", "session-memory.md");
+// `wikiRoot` (see defaultWikiRoot()) IS the `.wiki` root, flat — no nested `.wiki/` folder
+// inside it (mirrors scripts/wiki/build-rag-index.mjs's layout).
+const MEMORY_PATH = "session-memory.md";
 const HANDOFF_PATH = path.join(".agent", "session-handoff.md");
 const COMMIT_PATHS = Object.freeze(["project/skills", "project/hooks"]);
 const HANDOFF_STATUSES = Object.freeze(["empty", "active", "blocked", "ready"]);
+
+// `.wiki/` lives outside this repo, in the Obsidian-managed project-rag vault — never
+// inside `root` (the repo), which is what `commitProjectMemory` still commits against.
+export function defaultWikiRoot() {
+  return process.env.PROJECT_RAG_PATH
+    ? path.join(process.env.PROJECT_RAG_PATH, "blog")
+    : "D:\\obsidian-storage\\project-rag\\blog";
+}
 
 function redact(value) {
   return String(value || "")
@@ -68,13 +78,13 @@ export function readSessionHandoff(root) {
   };
 }
 
-export function updateMemoryWiki(root, event) {
+export function updateMemoryWiki(wikiRoot, event) {
   const entry = eventText(event);
-  const memoryPath = path.join(root, MEMORY_PATH);
+  const memoryPath = path.join(wikiRoot, MEMORY_PATH);
   fs.mkdirSync(path.dirname(memoryPath), { recursive: true });
   const current = fs.existsSync(memoryPath) ? fs.readFileSync(memoryPath, "utf8") : "# Session Memory\n\n";
   fs.writeFileSync(memoryPath, `${current.trimEnd()}\n\n${entry}`, "utf8");
-  return path.relative(root, memoryPath).replaceAll("\\", "/");
+  return path.relative(wikiRoot, memoryPath).replaceAll("\\", "/");
 }
 
 export function commitProjectMemory(root, event) {
@@ -90,12 +100,12 @@ export function commitProjectMemory(root, event) {
   return { committed: true };
 }
 
-export async function runSessionEndHook({ root = repositoryRoot(), event } = {}) {
+export async function runSessionEndHook({ root = repositoryRoot(), wikiRoot = root, event } = {}) {
   if (!event || (event.type && event.type !== "session_end")) return { updated: false, committed: false, reason: "not-session-end" };
   const handoff = readSessionHandoff(root);
   const hasMemory = [event.summary, ...(event.decisions || []), ...(event.verification || []), ...(event.risks || [])].some(Boolean);
   if (!hasMemory) return { updated: false, committed: false, reason: "empty-memory", handoff };
-  const memoryPath = updateMemoryWiki(root, event);
+  const memoryPath = updateMemoryWiki(wikiRoot, event);
   const commit = commitProjectMemory(root, event);
   return { updated: true, memoryPath, ...commit, handoff };
 }
@@ -110,7 +120,7 @@ if (path.resolve(process.argv[1] || "") === fileURLToPath(import.meta.url)) {
   try {
     const serialized = await readStdin();
     const event = serialized ? JSON.parse(serialized) : null;
-    const result = await runSessionEndHook({ event });
+    const result = await runSessionEndHook({ wikiRoot: defaultWikiRoot(), event });
     console.log(JSON.stringify(result));
   } catch (error) {
     console.error(`[session-end] ${error instanceof Error ? error.message : "unknown failure"}`);

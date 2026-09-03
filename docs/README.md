@@ -8,9 +8,9 @@
 | --- | --- | --- |
 | `project/skills/` | 반복 가능한 작업 절차, 입력·출력·검증 계약 | [`blog-content-pipeline`](../project/skills/blog-content-pipeline/SKILL.md), [`release-gate`](../project/skills/release-gate/SKILL.md), [`thumbnail-contract`](../project/skills/thumbnail-contract/SKILL.md) |
 | `project/hooks/` | 세션 종료처럼 host agent lifecycle에 연결되는 자동화 | [`README.md`](../project/hooks/README.md) |
-| `wiki/` | 아키텍처, 정책, 결정, 검증 근거, 잔여 위험 | [`index.md`](../wiki/index.md) |
+| `.wiki/` | 아키텍처, 정책, 결정, 검증 근거, 잔여 위험 | `index.md` (저장소 밖 `D:\obsidian-storage\project-rag\blog\`, `$PROJECT_RAG_PATH` 우선 — 이 저장소엔 없음, 그 폴더 자체가 `.wiki` 루트) |
 
-LLM RAG 소비자는 [`source-registry.json`](../wiki/rag/source-registry.json)을 문서 분류의 단일 기준으로 사용합니다. canonical Wiki, 시점별 report, append-only worklog는 서로 다른 검색 우선순위를 가집니다.
+LLM RAG 소비자는 `source-registry.json`(같은 위치)을 문서 분류의 단일 기준으로 사용합니다. canonical Wiki, 시점별 report, append-only worklog는 서로 다른 검색 우선순위를 가집니다.
 
 ## Operating order
 
@@ -19,4 +19,4 @@ LLM RAG 소비자는 [`source-registry.json`](../wiki/rag/source-registry.json)�
 3. 계약 테스트를 먼저 작성하고, 변경 후 해당 skill의 quality gate를 실행합니다.
 4. 세션 종료 시 구조화된 memory를 `project/hooks/session-end.mjs`로 전달합니다.
 
-상세 내용은 `docs/`에 복제하지 않습니다. 문서가 추가되면 `wiki/docs-migration.json`과 이 인덱스를 함께 갱신해야 합니다.
+상세 내용은 `docs/`에 복제하지 않습니다. 문서가 추가되면 `.wiki/docs-migration.json`과 이 인덱스를 함께 갱신해야 합니다.

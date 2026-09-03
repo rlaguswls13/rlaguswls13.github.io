@@ -3,10 +3,27 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const DEFAULT_REGISTRY_PATH = "wiki/rag/source-registry.json";
-const DEFAULT_INDEX_PATH = "wiki/rag/document-index.json";
-const DEFAULT_WORKLOG_PATH = "wiki/worklogs/indexing.jsonl";
+// `wikiRoot` (see defaultWikiRoot()) IS the `.wiki` root — there is no nested `.wiki/`
+// folder inside it. Registry source paths still read like ".wiki/rag/..." for readability
+// and consistency with every doc that links to ".wiki/..."; stripWikiPrefix() below is what
+// maps that string onto wikiRoot's actual flat layout.
+const WIKI_PREFIX = ".wiki";
+const DEFAULT_REGISTRY_PATH = "rag/source-registry.json";
+const DEFAULT_INDEX_PATH = "rag/document-index.json";
+const DEFAULT_WORKLOG_PATH = "worklogs/indexing.jsonl";
 const RETRIEVAL_MODES = new Set(["default", "secondary", "history-only"]);
+
+export function defaultWikiRoot() {
+  return process.env.PROJECT_RAG_PATH
+    ? path.join(process.env.PROJECT_RAG_PATH, "blog")
+    : "D:\\obsidian-storage\\project-rag\\blog";
+}
+
+export function stripWikiPrefix(sourcePath) {
+  if (sourcePath === WIKI_PREFIX) return ".";
+  if (sourcePath.startsWith(`${WIKI_PREFIX}/`)) return sourcePath.slice(WIKI_PREFIX.length + 1);
+  return sourcePath;
+}
 
 function sha256(value) {
   return crypto.createHash("sha256").update(value).digest("hex");
@@ -22,6 +39,10 @@ function isWithinRoot(root, candidate) {
     relativePath === "" ||
     (relativePath !== ".." && !relativePath.startsWith(`..${path.sep}`) && !path.isAbsolute(relativePath))
   );
+}
+
+export function isWikiSourcePath(sourcePath) {
+  return sourcePath === ".wiki" || sourcePath.startsWith(".wiki/") || sourcePath.startsWith(`.wiki${path.sep}`);
 }
 
 function assertRegistry(registry) {
@@ -52,11 +73,17 @@ function walkDirectory(directory, extensions) {
   });
 }
 
-function resolveSourceFiles(root, source) {
-  const resolvedRoot = path.resolve(root);
-  const absolutePath = path.resolve(resolvedRoot, source.path);
+// `.wiki/**` sources resolve against `wikiRoot` (the Obsidian-managed vault, outside this
+// repo) instead of `root` (this repo). Both boundaries are still enforced with the same
+// no-escape guarantee — just against whichever root actually owns that source.
+function resolveSourceFiles({ root, wikiRoot }, source) {
+  const isWiki = isWikiSourcePath(source.path);
+  const baseRoot = isWiki ? wikiRoot : root;
+  const relativeSourcePath = isWiki ? stripWikiPrefix(source.path) : source.path;
+  const resolvedRoot = path.resolve(baseRoot);
+  const absolutePath = path.resolve(resolvedRoot, relativeSourcePath);
   if (!isWithinRoot(resolvedRoot, absolutePath)) {
-    throw new Error(`RAG source path is outside repository root: ${source.path}`);
+    throw new Error(`RAG source path is outside its owning root: ${source.path}`);
   }
   if (!fs.existsSync(absolutePath)) {
     throw new Error(`RAG source path does not exist: ${source.path}`);
@@ -64,7 +91,7 @@ function resolveSourceFiles(root, source) {
   const realRoot = fs.realpathSync(resolvedRoot);
   const realSource = fs.realpathSync(absolutePath);
   if (!isWithinRoot(realRoot, realSource)) {
-    throw new Error(`RAG source path resolves outside repository root: ${source.path}`);
+    throw new Error(`RAG source path resolves outside its owning root: ${source.path}`);
   }
   const extensions = new Set(source.extensions ?? [".md"]);
   if (source.type === "file") {
@@ -97,15 +124,18 @@ function markdownMetadata(content, fallbackTitle) {
   return { headings, title: headings.find(({ level }) => level === 1)?.text ?? fallbackTitle };
 }
 
-export function buildDocumentIndex({ registry, root }) {
+export function buildDocumentIndex({ registry, root, wikiRoot = root }) {
   assertRegistry(registry);
   const owners = new Map();
   const documents = [];
 
   for (const group of registry.groups) {
     for (const source of group.sources) {
-      for (const absolutePath of resolveSourceFiles(root, source)) {
-        const relativePath = normalizePath(path.relative(root, absolutePath));
+      const isWiki = isWikiSourcePath(source.path);
+      const baseRoot = isWiki ? wikiRoot : root;
+      for (const absolutePath of resolveSourceFiles({ root, wikiRoot }, source)) {
+        const baseRelative = normalizePath(path.relative(baseRoot, absolutePath));
+        const relativePath = isWiki ? `${WIKI_PREFIX}/${baseRelative}` : baseRelative;
         const existingOwner = owners.get(relativePath);
         if (existingOwner) {
           throw new Error(
@@ -201,13 +231,14 @@ function parseArguments(argumentsList) {
 
 function runCli() {
   const root = process.cwd();
+  const wikiRoot = defaultWikiRoot();
   const options = parseArguments(process.argv.slice(2));
-  const registryPath = path.join(root, DEFAULT_REGISTRY_PATH);
-  const indexPath = path.join(root, DEFAULT_INDEX_PATH);
-  const worklogPath = path.join(root, DEFAULT_WORKLOG_PATH);
+  const registryPath = path.join(wikiRoot, DEFAULT_REGISTRY_PATH);
+  const indexPath = path.join(wikiRoot, DEFAULT_INDEX_PATH);
+  const worklogPath = path.join(wikiRoot, DEFAULT_WORKLOG_PATH);
   const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
   const previous = readJsonIfPresent(indexPath);
-  const current = buildDocumentIndex({ registry, root });
+  const current = buildDocumentIndex({ registry, root, wikiRoot });
   const serialized = serializeDocumentIndex(current);
 
   if (options.check) {
@@ -224,7 +255,7 @@ function runCli() {
     const runId = options.runId || `local-${indexedAt.replace(/[:.]/g, "-")}`;
     appendIndexingWorklog({ current, indexedAt, previous, runId, worklogPath });
   }
-  console.log(`[wiki:index] wrote ${current.documentCount} documents`);
+  console.log(`[wiki:index] wrote ${current.documentCount} documents (wiki root: ${wikiRoot})`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
