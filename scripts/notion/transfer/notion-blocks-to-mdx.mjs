@@ -22,26 +22,62 @@ function escapeAttribute(value) {
     .replaceAll(">", "&gt;");
 }
 
+function renderRichTextSegment(segment) {
+  const value = segment.value;
+  const leading = value.match(/^\s*/)?.[0] || "";
+  const trailing = value.match(/\s*$/)?.[0] || "";
+  const trimmed = value.trim();
+  // Inline code spans are literal in CommonMark/MDX: entity refs like `&#123;` are not
+  // decoded inside backticks, so escaping `<`/`{`/`}` here would leak raw entity text
+  // onto the page instead of rendering `<`/`{`/`}`.
+  let content = segment.code ? trimmed : escapeMdxText(trimmed);
+  if (!content) return value;
+  if (segment.code) content = "`" + content + "`";
+  if (segment.href) {
+    const href = safeMarkdownHref(segment.href);
+    if (href) content = `[${content}](${href})`;
+  }
+  return leading + content + trailing;
+}
+
 export function richTextToMarkdown(items = []) {
-  return items.map((item) => {
+  // Notion splits a single styled phrase into several rich-text segments (for
+  // example an inline-code word sitting inside a bold sentence). Wrapping each
+  // segment in its own `**…**` / `*…*` leaves a doubled `****` marker where two
+  // adjacent segments meet, which MDX renders as literal asterisks. Coalesce
+  // neighbouring segments that share the same bold/italic/strikethrough set and
+  // emit one wrapper around the whole run; `code` and links stay per-segment
+  // because Markdown scopes them to a single span.
+  const runs = [];
+  for (const item of items) {
     const value = item.plain_text || item.text?.content || "";
-    const leading = value.match(/^\s*/)?.[0] || "";
-    const trailing = value.match(/\s*$/)?.[0] || "";
-    const trimmed = value.trim();
-    // Inline code spans are literal in CommonMark/MDX: entity refs like `&#123;` are not
-    // decoded inside backticks, so escaping `<`/`{`/`}` here would leak raw entity text
-    // onto the page instead of rendering `<`/`{`/`}`.
-    let content = item.annotations?.code ? trimmed : escapeMdxText(trimmed);
-    if (!content) return value;
-    if (item.annotations?.code) content = "`" + content + "`";
-    if (item.annotations?.bold) content = `**${content}**`;
-    if (item.annotations?.italic) content = `*${content}*`;
-    if (item.annotations?.strikethrough) content = `~~${content}~~`;
-    if (item.href) {
-      const href = safeMarkdownHref(item.href);
-      if (href) content = `[${content}](${href})`;
+    if (!value) continue;
+    const annotations = item.annotations || {};
+    const bold = Boolean(annotations.bold);
+    const italic = Boolean(annotations.italic);
+    const strikethrough = Boolean(annotations.strikethrough);
+    const signature = `${bold ? "b" : ""}${italic ? "i" : ""}${strikethrough ? "s" : ""}`;
+    const segment = { value, code: Boolean(annotations.code), href: item.href || "" };
+    const previous = runs[runs.length - 1];
+    if (previous && previous.signature === signature) {
+      previous.segments.push(segment);
+    } else {
+      runs.push({ signature, bold, italic, strikethrough, segments: [segment] });
     }
-    return leading + content + trailing;
+  }
+  return runs.map((run) => {
+    const inner = run.segments.map(renderRichTextSegment).join("");
+    if (!run.signature) return inner;
+    const leading = inner.match(/^\s*/)?.[0] || "";
+    const trailing = inner.match(/\s*$/)?.[0] || "";
+    let core = inner.slice(leading.length, inner.length - trailing.length);
+    if (!core) return inner;
+    // Emphasis markers cannot wrap surrounding whitespace, so the run's outer
+    // whitespace is hoisted outside the markers while interior spacing stays put.
+    if (run.bold) core = `**${core}**`;
+    if (run.italic) core = `*${core}*`;
+    if (run.strikethrough) core = `~~${core}~~`;
+    return leading + core + trailing;
   }).join("");
 }
 

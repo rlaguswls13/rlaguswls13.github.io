@@ -50,6 +50,33 @@ describe("Notion content security boundaries", () => {
     await expect(compile(markdown)).resolves.toBeDefined();
   });
 
+  it("Given adjacent rich-text segments sharing an emphasis When converted Then one wrapper spans the run without doubled markers", async () => {
+    // Given: Notion split one bold phrase into a bold code span followed by bold prose.
+    const richText = [
+      { plain_text: "README.md", annotations: { bold: true, code: true } },
+      { plain_text: "에 스키마를 적는다", annotations: { bold: true } },
+    ];
+
+    // When: the production converter renders the run.
+    const markdown = richTextToMarkdown(richText);
+
+    // Then: the bold wraps the whole run once and no literal `****` leaks through.
+    expect(markdown).toBe("**`README.md`에 스키마를 적는다**");
+    expect(markdown).not.toContain("****");
+    await expect(compile(markdown)).resolves.toBeDefined();
+  });
+
+  it("Given a bold run bounded by leading and trailing spaces When converted Then the spaces sit outside the markers", async () => {
+    // Given: a single bold segment padded with surrounding whitespace.
+    const richText = [{ plain_text: " 강조 ", annotations: { bold: true } }];
+
+    // When: the production converter renders it.
+    const markdown = richTextToMarkdown(richText);
+
+    // Then: emphasis markers hug the text, not the whitespace.
+    expect(markdown).toBe(" **강조** ");
+  });
+
   it("Given a legacy HTML table in Notion text When converted Then it becomes a safe NotionTable", async () => {
     const table = [
       '<table className="w-full" onclick="alert(1)">',
