@@ -42,8 +42,14 @@ export function inspectThumbnail(buffer, relativePath) {
   if (!String(relativePath).toLowerCase().endsWith(".webp")) issues.push("format");
   const dimensions = readWebpDimensions(buffer);
   if (!dimensions) issues.push("invalid-webp");
-  else if (dimensions.width !== 576 || dimensions.height !== 384) issues.push("dimensions");
+  else {
+    if (dimensions.width !== 576 || dimensions.height !== 384) issues.push("dimensions");
+  }
   return { valid: issues.length === 0, issues, action: issues.length === 0 ? "accept" : "imagegen" };
+}
+
+export function inspectThumbnailDraft(buffer, relativePath) {
+  return inspectThumbnail(buffer, relativePath);
 }
 
 export function validateThumbnail(buffer, relativePath) {

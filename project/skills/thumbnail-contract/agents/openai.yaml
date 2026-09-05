@@ -1,4 +1,4 @@
 interface:
-  display_name: Thumbnail Contract
-  short_description: Validate stable-ID blog thumbnail assets
-  default_prompt: Apply the thumbnail contract, call imagegen only when needed, and record verification evidence.
+  display_name: "Thumbnail Contract"
+  short_description: "Generate and validate 2.5D blog thumbnails"
+  default_prompt: "Use $thumbnail-contract to create a non-destructive 2.5D thumbnail draft and validate its stable-ID contract."
