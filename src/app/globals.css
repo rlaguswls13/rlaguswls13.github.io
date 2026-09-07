@@ -2497,6 +2497,15 @@ a.category-tab .category-tab-ext {
   margin-top: 12px;
   flex-grow: 1;
   font-size: 0.92rem;
+  display: -webkit-box;
+  min-height: 8em;
+  max-height: 8em;
+  overflow: hidden;
+  line-height: 1.6;
+  line-clamp: 5;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 
 .education-modal .education-blog-link {
@@ -3437,11 +3446,16 @@ header > p {
   }
 }
 
-/* Devlog card descriptions share a fixed five-line rhythm. */
+/* Devlog card descriptions share a fixed five-line rhythm.
+   min/max-height (not `height`) pin the box to five lines: the cards are
+   flex columns and the description carries `flex-grow`, so a plain `height`
+   gets overridden by the flex grow and the extra lines spill past the
+   -webkit-line-clamp ellipsis. A hard `max-height` the flex layout cannot
+   exceed keeps the clamp + ellipsis authoritative. */
 .devlog-card .devlog-description {
   display: -webkit-box;
-  height: 8em;
   min-height: 8em;
+  max-height: 8em;
   margin-bottom: 0;
   overflow: hidden;
   line-height: 1.6;
