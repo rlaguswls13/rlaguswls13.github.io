@@ -1,17 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TabGroup } from "@/components/ui/TabGroup";
-import { JournalSectionHeader } from "@/components/ui/JournalSectionHeader";
-import { EducationLog } from "@/components/ui/EducationLog";
-import { Pagination } from "@/components/ui/Pagination";
-import { TagList } from "@/components/ui/TagBadge";
-import { CardThumbnail } from "@/components/ui/CardThumbnail";
-import { CalendarIcon, CloseIcon, SearchIcon } from "@/components/ui/Icons";
-import { getDevlogHref } from "@/lib/devlog-slugs";
-import { getDevlogThumbnail } from "@/lib/thumbnails";
+import { JournalLog } from "@/components/ui/JournalLog";
+import { CloseIcon, SearchIcon } from "@/components/ui/Icons";
 import { journalListQuery } from "@/lib/list-query";
 import type { DevlogEntry } from "@/types";
 
@@ -26,10 +19,12 @@ const tabs = [
 ];
 type JournalListIslandProps = Readonly<{
   entries: readonly JournalDisplayEntry[];
-  initialEntries: readonly JournalDisplayEntry[];
 }>;
 
-export function JournalListIsland({ entries, initialEntries }: JournalListIslandProps) {
+const tabTitle = (tab: JournalTab) =>
+  tab === "all" ? "전체 일지" : tab === "education" ? "교육일지" : "개인일지";
+
+export function JournalListIsland({ entries }: JournalListIslandProps) {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<JournalTab>("all");
   const [activeSubcategory, setActiveSubcategory] = useState<string>("전체");
@@ -53,7 +48,7 @@ export function JournalListIsland({ entries, initialEntries }: JournalListIsland
     [categoryEntries],
   );
 
-  const personalEntries = useMemo(() => {
+  const visibleEntries = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     return categoryEntries.filter((entry) => {
       const subcategoryMatches = activeSubcategory === "전체"
@@ -66,11 +61,7 @@ export function JournalListIsland({ entries, initialEntries }: JournalListIsland
     });
   }, [activeSubcategory, categoryEntries, searchQuery]);
 
-  const totalPages = Math.ceil(personalEntries.length / itemsPerPage);
-  const clampedPage = journalListQuery.clampPage(currentPage, personalEntries.length, itemsPerPage);
-  const paginatedEntries = hasUrlState
-    ? personalEntries.slice((clampedPage - 1) * itemsPerPage, clampedPage * itemsPerPage)
-    : initialEntries;
+  const clampedPage = journalListQuery.clampPage(currentPage, visibleEntries.length, itemsPerPage);
 
   useEffect(() => {
     const applyLocation = () => {
@@ -177,60 +168,14 @@ export function JournalListIsland({ entries, initialEntries }: JournalListIsland
           </aside>
 
           <main className="devlog-main">
-            {activeCategory === "education" ? (
-              <EducationLog
-                entries={personalEntries}
-                searchQuery={searchQuery}
-                itemsPerPage={6}
-                currentPage={clampedPage}
-                onPageChange={setCurrentPage}
-              />
-            ) : (
-              <>
-                <JournalSectionHeader
-                  title={activeCategory === "all" ? "전체 일지" : "개인일지"}
-                  count={personalEntries.length}
-                />
-
-                {paginatedEntries.length === 0 ? (
-                  <div className="devlog-empty-state">조건에 맞는 일지가 없습니다.</div>
-                ) : (
-                  <div className="devlog-grid">
-                    {paginatedEntries.map((entry) => (
-                        <Link
-                          key={entry.id}
-                          href={`${getDevlogHref(entry.journalCategory === "education" ? "education" : "blog", entry.id)}?journal=${entry.journalCategory}&page=${clampedPage}`}
-                          className="devlog-card-link"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <div className="devlog-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-                            <CardThumbnail
-                              src={getDevlogThumbnail(entry.journalCategory === "education" ? "education" : "blog", entry.id)}
-                              alt=""
-                              className="devlog-card-thumbnail"
-                            />
-                            <div className="devlog-card-topline">
-                              <span className="devlog-card-category">
-                                {entry.journalCategory === "education" ? "교육일지" : "개인일지"}
-                              </span>
-                              <span className="devlog-meta"><CalendarIcon /> {entry.date}</span>
-                            </div>
-                            <div className="item-title" style={{ marginTop: 0, marginBottom: "12px", wordBreak: "keep-all" }}>{entry.title}</div>
-                            <TagList tags={entry.tags} />
-                            <p className="devlog-description" style={{ flexGrow: 1 }}>{entry.description}</p>
-                          </div>
-                        </Link>
-                    ))}
-                  </div>
-                )}
-                <Pagination
-                  currentPage={clampedPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                  maxPageButtons={5}
-                />
-              </>
-            )}
+            <JournalLog
+              entries={visibleEntries}
+              title={tabTitle(activeCategory)}
+              searchQuery={searchQuery}
+              itemsPerPage={itemsPerPage}
+              currentPage={clampedPage}
+              onPageChange={setCurrentPage}
+            />
           </main>
         </div>
     </div>

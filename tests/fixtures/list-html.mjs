@@ -15,7 +15,10 @@ export const listRouteContracts = [
     h1: "개인일지와 교육일지",
     gridClass: "devlog-grid",
     cardClass: "devlog-card",
-    linkClass: "devlog-card-link",
+    // Journal cards now use the JournalLog preview-card layout (full-card
+    // modal trigger + a separate `education-blog-link`), so there is no
+    // `devlog-card-link` anchor wrapping the card.
+    linkClass: null,
     firstTitle: "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
     visibleCount: 6,
   },

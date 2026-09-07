@@ -26,7 +26,7 @@ export default function JournalPage() {
         description="일상의 생각과 교육 과정에서 배운 내용을 기록합니다."
         marker="04"
       />
-      <JournalListIsland entries={entries} initialEntries={entries.slice(0, 6)} />
+      <JournalListIsland entries={entries} />
     </>
   );
 }

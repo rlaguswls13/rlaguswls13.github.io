@@ -22,7 +22,7 @@ describe("list route integration", () => {
 
   it.each([
     ["devlog", DevlogPage, "q=was&page=999", "devlog-card-link"],
-    ["journal", JournalPage, "q=java&page=999", "devlog-card-link"],
+    ["journal", JournalPage, "q=java&page=999", "devlog-card"],
     ["projects", ProjectsPage, "q=devops&page=999", "project-card"],
   ])("renders matching %s content from an out-of-range page", (_route, Page, search, cardClass) => {
     // Given: a nonempty filtered list requested beyond its final page.

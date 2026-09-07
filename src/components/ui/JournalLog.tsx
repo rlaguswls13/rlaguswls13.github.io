@@ -13,7 +13,10 @@ import { getDevlogHref } from "@/lib/devlog-slugs";
 import type { DevlogEntry } from "@/types";
 import { Dialog } from "@/components/ui/Dialog";
 
-interface EducationEntry {
+type JournalCategory = "personal" | "education";
+type JournalLogSource = DevlogEntry & { journalCategory: JournalCategory };
+
+interface JournalPreviewEntry {
   id: string;
   title: string;
   round: string;
@@ -23,10 +26,12 @@ interface EducationEntry {
   blogTitle: string;
   notionUrl: string;
   slug: string;
+  journalCategory: JournalCategory;
 }
 
-interface EducationLogProps {
-  entries: DevlogEntry[];
+interface JournalLogProps {
+  entries: JournalLogSource[];
+  title: string;
   itemsPerPage?: number;
   maxPageButtons?: number;
   searchQuery?: string;
@@ -34,26 +39,33 @@ interface EducationLogProps {
   onPageChange: (page: number) => void;
 }
 
-export function EducationLog({
+// Personal journal posts are full articles, education logs are Notion notes.
+// Both live under the devlog routing tree, keyed by their own category slug.
+const contentCategory = (journalCategory: JournalCategory) =>
+  journalCategory === "education" ? "education" : "blog";
+
+export function JournalLog({
   entries: sourceEntries,
+  title,
   itemsPerPage = 9,
   maxPageButtons = 5,
   searchQuery = "",
   currentPage,
   onPageChange,
-}: EducationLogProps) {
-  const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(null);
+}: JournalLogProps) {
+  const [selectedEntry, setSelectedEntry] = useState<JournalPreviewEntry | null>(null);
 
-  const entries = useMemo(() => sortByDateDesc(sourceEntries.map((entry) => ({
+  const entries = useMemo<JournalPreviewEntry[]>(() => sortByDateDesc(sourceEntries.map((entry) => ({
     id: entry.id,
     title: entry.title,
-    round: entry.round || "교육일지",
+    round: entry.round || (entry.journalCategory === "education" ? "교육일지" : "개인일지"),
     date: entry.date,
     keywords: entry.tags,
     impression: entry.impression || entry.description,
     blogTitle: entry.blogTitle || entry.title,
     notionUrl: entry.notionUrl || "",
     slug: entry.slug || "",
+    journalCategory: entry.journalCategory,
   }))), [sourceEntries]);
 
   const filteredEntries = useMemo(() => {
@@ -74,21 +86,17 @@ export function EducationLog({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentEntries = filteredEntries.slice(indexOfFirstItem, indexOfLastItem);
 
-
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
     return dateStr.replace(/-/g, ".");
   };
 
-  const truncateText = (text: string, maxLen: number) => {
-    if (!text) return "내용 없음";
-    if (text.length <= maxLen) return text;
-    return text.substring(0, maxLen) + "...";
-  };
+  const previewLabel = (entry: JournalPreviewEntry) =>
+    entry.journalCategory === "education" ? "느낀점" : "요약";
 
   return (
     <>
-      <JournalSectionHeader title="교육일지" count={filteredEntries.length} />
+      <JournalSectionHeader title={title} count={filteredEntries.length} />
 
       <div className="devlog-grid">
         {currentEntries.map((entry, index) => (
@@ -103,7 +111,7 @@ export function EducationLog({
               onClick={() => setSelectedEntry(entry)}
             />
             <div className="education-card-content">
-              <CardThumbnail src={getDevlogThumbnail("education", entry.id)} alt="" className="devlog-card-thumbnail" priority={index === 0} />
+              <CardThumbnail src={getDevlogThumbnail(contentCategory(entry.journalCategory), entry.id)} alt="" className="devlog-card-thumbnail" priority={index === 0} />
               <div className="devlog-card-topline">
                 <span className="devlog-card-category">{entry.round}</span>
                 <span className="devlog-meta">
@@ -120,13 +128,13 @@ export function EducationLog({
               <TagList tags={entry.keywords} />
 
               <p className="devlog-description">
-                {truncateText(entry.impression, 100)}
+                {entry.impression || "내용 없음"}
               </p>
             </div>
 
             {entry.slug && (
               <Link
-                href={`${getDevlogHref("education", entry.id)}?journal=education`}
+                href={`${getDevlogHref(contentCategory(entry.journalCategory), entry.id)}?journal=${entry.journalCategory}`}
                 className="education-blog-link"
               >
                 <BlogIcon /> 상세내용 ↗
@@ -137,7 +145,7 @@ export function EducationLog({
       </div>
 
       {currentEntries.length === 0 && (
-        <div className="devlog-empty-state">검색 조건에 맞는 교육일지가 없습니다.</div>
+        <div className="devlog-empty-state">검색 조건에 맞는 일지가 없습니다.</div>
       )}
 
       {/* Pagination */}
@@ -153,7 +161,7 @@ export function EducationLog({
       {selectedEntry && (
         <Dialog
           isOpen
-          labelledBy={`education-dialog-title-${selectedEntry.id}`}
+          labelledBy={`journal-dialog-title-${selectedEntry.id}`}
           onClose={() => setSelectedEntry(null)}
           overlayClassName="education-modal-overlay"
           dialogClassName="education-modal"
@@ -176,7 +184,7 @@ export function EducationLog({
             </div>
 
             {selectedEntry.blogTitle && (
-              <h2 id={`education-dialog-title-${selectedEntry.id}`} className="section-title" style={{ margin: "12px 0 16px" }}>
+              <h2 id={`journal-dialog-title-${selectedEntry.id}`} className="section-title" style={{ margin: "12px 0 16px" }}>
                 {selectedEntry.blogTitle}
               </h2>
             )}
@@ -184,7 +192,7 @@ export function EducationLog({
             <TagList tags={selectedEntry.keywords} />
 
             <div className="education-modal-section">
-              <h4><CommentIcon /> 느낀점</h4>
+              <h4><CommentIcon /> {previewLabel(selectedEntry)}</h4>
               <p className="education-modal-impression">
                 {selectedEntry.impression || "내용이 아직 없습니다."}
               </p>
@@ -192,7 +200,7 @@ export function EducationLog({
 
             {selectedEntry.slug && (
               <Link
-                href={`${getDevlogHref("education", selectedEntry.id)}?journal=education`}
+                href={`${getDevlogHref(contentCategory(selectedEntry.journalCategory), selectedEntry.id)}?journal=${selectedEntry.journalCategory}`}
                 className="education-blog-link"
               >
                 <BlogIcon /> 상세내용 ↗
