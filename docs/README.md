@@ -20,3 +20,5 @@ LLM RAG 소비자는 `source-registry.json`(같은 위치)을 문서 분류의 �
 4. 세션 종료 시 구조화된 memory를 `project/hooks/session-end.mjs`로 전달합니다.
 
 상세 내용은 `docs/`에 복제하지 않습니다. 문서가 추가되면 `.wiki/docs-migration.json`과 이 인덱스를 함께 갱신해야 합니다.
+
+저장소 루트에는 `AGENTS.md`, `CLAUDE.md`, `README.md`만 Markdown으로 유지합니다. 새 정책·설계 문서는 외부 `.wiki/`의 canonical 경로로 이전하고 migration inventory와 Wiki index를 함께 갱신합니다.

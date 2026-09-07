@@ -124,6 +124,8 @@ $session-handoff-workflow finish
 
 ## Central RAG vault (범용 룰·스킬 전용)
 
+저장소 루트의 Markdown은 agent 진입점 `AGENTS.md`, host adapter `CLAUDE.md`, 제품 안내 `README.md`만 유지합니다. 새 장기 정책·설계 Markdown은 저장소에 추가하지 않고 외부 `.wiki/`의 책임별 canonical 경로로 이전하며, `.wiki/docs-migration.json`, `.wiki/index.md`, 관련 참조를 함께 갱신합니다. 현재 디자인 계약은 `.wiki/architecture/design-system.md`가 소유하고 실제 구현은 `src/app/globals.css`에서 검증합니다.
+
 이 프로젝트 고유의 정책·스키마·방향성은 위 표대로 이 프로젝트의 `.wiki/`(외부, 바로 위 설명 참고)가 canonical이다. 그와 별도로, 여러 프로젝트에 걸쳐 재사용하는 **범용** 코딩/보안/DB 규칙과 SOP는 같은 vault 루트(`project-rag`)의 다른 폴더를 참조한다.
 
 - 경로: 환경변수 `$PROJECT_RAG_PATH`가 설정되어 있으면 그 값을 우선 사용하고, 없으면 `D:\obsidian-storage\project-rag`를 사용한다.
