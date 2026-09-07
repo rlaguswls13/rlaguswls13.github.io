@@ -171,12 +171,10 @@ export default function HomePageClient() {
               const engagement = getEngagement(entry);
               return (
                 <Link key={`${entry.category}-${entry.id}`} href={getDevlogHref(entry.category, entry.id)} className="tech-post-card">
-                  {entry.category !== "blog" && (
-                    <div className={`tech-post-cover cover-${index + 1}`}>
-                      <CardThumbnail src={getDevlogThumbnail(entry.category, entry.id)} alt="" className="tech-post-cover-image" priority={index < 3} />
-                      <span>{entry.package || contentCategoryInfo[entry.category].label}</span>
-                    </div>
-                  )}
+                  <div className={`tech-post-cover cover-${index + 1}`}>
+                    <CardThumbnail src={getDevlogThumbnail(entry.category, entry.id)} alt="" className="tech-post-cover-image" priority={index < 3} />
+                    <span>{entry.category === "blog" ? contentCategoryInfo.blog.label : (entry.package || contentCategoryInfo[entry.category].label)}</span>
+                  </div>
                   <div className="tech-post-body">
                     <span className="tech-post-category">{contentCategoryInfo[entry.category].label}</span>
                     <h3>{entry.title}</h3>
