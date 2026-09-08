@@ -13,7 +13,7 @@ export default defineConfig({
       reportsDirectory: "artifacts/coverage",
       reporter: ["text", "json", "html"],
     },
-    include: ["tests/**/*.test.{ts,mts,mjs}"],
+    include: ["tests/**/*.test.{ts,tsx,mts,mjs}"],
     outputFile: {
       junit: ".omo/evidence/todo-1/vitest-junit.xml",
     },
