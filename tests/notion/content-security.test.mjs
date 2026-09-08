@@ -60,10 +60,47 @@ describe("Notion content security boundaries", () => {
     // When: the production converter renders the run.
     const markdown = richTextToMarkdown(richText);
 
-    // Then: the bold wraps the whole run once and no literal `****` leaks through.
-    expect(markdown).toBe("**`README.md`에 스키마를 적는다**");
+    // Then: the bold wraps the prose once, the edge code span sits outside the
+    // markers so they flank cleanly, and no literal `****`/`**` leaks through.
+    expect(markdown).toBe("`README.md`**에 스키마를 적는다**");
     expect(markdown).not.toContain("****");
     await expect(compile(markdown)).resolves.toBeDefined();
+  });
+
+  it("Given a bold run ending in a code span followed by text When converted Then the closing marker never sits against a backtick", async () => {
+    // Given: Notion bolded a phrase whose final token is inline code, immediately
+    // followed by a Korean particle (a very common Notion export shape).
+    const richText = [
+      { plain_text: "Spring Boot ", annotations: { bold: true } },
+      { plain_text: "application.yml", annotations: { bold: true, code: true } },
+      { plain_text: "에서 선언한다", annotations: {} },
+    ];
+
+    // When: the production converter renders the run.
+    const markdown = richTextToMarkdown(richText);
+
+    // Then: the trailing code span is hoisted outside the bold so `**` closes,
+    // and the rendered output carries no literal asterisks.
+    expect(markdown).toBe("**Spring Boot** `application.yml`에서 선언한다");
+    const compiled = String(await compile(markdown));
+    expect(compiled).not.toContain("**");
+  });
+
+  it("Given a bold run that is only a code span followed by text When converted Then emphasis is dropped rather than left broken", async () => {
+    // Given: Notion bolded a lone inline-code token followed by a particle.
+    const richText = [
+      { plain_text: "ThreadLocal", annotations: { bold: true, code: true } },
+      { plain_text: "은 스레드별 저장소다", annotations: {} },
+    ];
+
+    // When: the production converter renders the run.
+    const markdown = richTextToMarkdown(richText);
+
+    // Then: the code span stands on its own (still visually distinct) with no
+    // dangling `**`.
+    expect(markdown).toBe("`ThreadLocal`은 스레드별 저장소다");
+    const compiled = String(await compile(markdown));
+    expect(compiled).not.toContain("**");
   });
 
   it("Given a bold run bounded by leading and trailing spaces When converted Then the spaces sit outside the markers", async () => {

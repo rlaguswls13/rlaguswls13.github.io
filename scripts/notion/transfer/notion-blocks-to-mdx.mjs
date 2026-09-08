@@ -66,18 +66,29 @@ export function richTextToMarkdown(items = []) {
     }
   }
   return runs.map((run) => {
-    const inner = run.segments.map(renderRichTextSegment).join("");
-    if (!run.signature) return inner;
-    const leading = inner.match(/^\s*/)?.[0] || "";
-    const trailing = inner.match(/\s*$/)?.[0] || "";
-    let core = inner.slice(leading.length, inner.length - trailing.length);
-    if (!core) return inner;
+    const rendered = run.segments.map(renderRichTextSegment);
+    if (!run.signature) return rendered.join("");
+    // A `**`/`*`/`~~` marker placed directly against a code span breaks
+    // CommonMark's flanking rules — `**` + backtick + letter (for example
+    // `**`ThreadLocal`**은`) leaves a literal `**` on the page. Keep any code
+    // span that touches either edge of the run outside the emphasis markers;
+    // interior code spans stay wrapped.
+    const firstText = run.segments.findIndex((segment) => !segment.code);
+    if (firstText === -1) return rendered.join("");
+    const lastText = run.segments.reduce((last, segment, index) => (segment.code ? last : index), -1);
+    const before = rendered.slice(0, firstText).join("");
+    const middle = rendered.slice(firstText, lastText + 1).join("");
+    const after = rendered.slice(lastText + 1).join("");
+    const leading = middle.match(/^\s*/)?.[0] || "";
+    const trailing = middle.match(/\s*$/)?.[0] || "";
+    let core = middle.slice(leading.length, middle.length - trailing.length);
+    if (!core) return rendered.join("");
     // Emphasis markers cannot wrap surrounding whitespace, so the run's outer
     // whitespace is hoisted outside the markers while interior spacing stays put.
     if (run.bold) core = `**${core}**`;
     if (run.italic) core = `*${core}*`;
     if (run.strikethrough) core = `~~${core}~~`;
-    return leading + core + trailing;
+    return before + leading + core + trailing + after;
   }).join("");
 }
 
