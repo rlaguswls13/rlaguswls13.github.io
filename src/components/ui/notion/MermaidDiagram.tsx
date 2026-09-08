@@ -53,6 +53,29 @@ function themeVariables() {
   };
 }
 
+// Mermaid renders flowcharts at their intrinsic pixel width and caps growth
+// with an inline `max-width`, so on a wide article column a small graph sits
+// centered in a sea of empty space. Let it grow to the full content width
+// (scaled via its viewBox) while keeping the intrinsic width as a floor so
+// narrow viewports scroll instead of shrinking the labels to nothing.
+function fitSvgToContainer(svg: SVGSVGElement | null): void {
+  if (!svg) return;
+  const viewBox = svg.getAttribute("viewBox");
+  const intrinsicWidth = viewBox
+    ? Number.parseFloat(viewBox.split(/[\s,]+/)[2])
+    : Number.parseFloat(svg.getAttribute("width") ?? "");
+
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+  if (Number.isFinite(intrinsicWidth) && intrinsicWidth > 0) {
+    svg.style.minWidth = `${Math.round(intrinsicWidth)}px`;
+    // Cap the upscale so a tiny two-node graph doesn't balloon to billboard size.
+    svg.style.maxWidth = `${Math.round(intrinsicWidth * 2)}px`;
+  } else {
+    svg.style.maxWidth = "100%";
+  }
+}
+
 function childrenToText(children: ReactNode): string {
   if (Array.isArray(children)) return children.map(childrenToText).join("");
   if (children == null || typeof children === "boolean") return "";
@@ -86,7 +109,10 @@ export function MermaidDiagram({ children }: { children?: ReactNode }) {
           themeVariables: themeVariables(),
         });
         const { svg } = await mermaid.render(`mermaid-${renderId}-${themeTick}`, code);
-        if (!cancelled && containerRef.current) containerRef.current.innerHTML = svg;
+        if (!cancelled && containerRef.current) {
+          containerRef.current.innerHTML = svg;
+          fitSvgToContainer(containerRef.current.querySelector("svg"));
+        }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : String(err));
       }
@@ -109,8 +135,8 @@ export function MermaidDiagram({ children }: { children?: ReactNode }) {
   }
 
   return (
-    <div className="mermaid-diagram my-4 flex justify-center overflow-x-auto rounded-xl border border-[var(--border-color)] bg-[var(--bg-tertiary)] p-4">
-      <div ref={containerRef} />
+    <div className="mermaid-diagram my-4 overflow-x-auto rounded-xl border border-[var(--border-color)] bg-[var(--bg-tertiary)] p-4">
+      <div ref={containerRef} className="min-w-fit" />
     </div>
   );
 }
