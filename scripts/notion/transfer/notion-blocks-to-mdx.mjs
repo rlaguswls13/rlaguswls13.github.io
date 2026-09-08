@@ -81,6 +81,9 @@ export function richTextToMarkdown(items = []) {
     const trailing = inner.match(/\s*$/)?.[0] || "";
     let core = inner.slice(leading.length, inner.length - trailing.length);
     if (!core) return inner;
+    // A blank line closes the MDX paragraph, so a run cannot contain one — fold
+    // any interior blank run to a single break before wrapping.
+    core = core.replace(/\n[ \t]*\n[ \t\n]*/gu, "<br />");
     // Whitespace is hoisted outside the tags so the run edges stay tight.
     if (run.bold) core = `<strong>${core}</strong>`;
     if (run.italic) core = `<em>${core}</em>`;
@@ -91,13 +94,22 @@ export function richTextToMarkdown(items = []) {
 
 // Turn author-typed `**bold**` into <strong> (`*italic*` is left alone — a lone
 // asterisk is far more often a glob, footnote, or math token than emphasis).
-// `2**8` and other unpaired operators never form a `**…**` match. Inline code
-// spans are masked first so a stray `**` inside one is not treated as a marker.
+// Inline code spans and Markdown links are masked first so `**` inside them is
+// never read as a marker; the opening `**` must not follow an alphanumeric or
+// `/`, which rules out `2**8`, `a**b`, and `src/**/*.ts` even when two such
+// operators pair up on one line.
 function normalizeTypedEmphasis(text) {
   const spans = [];
-  const masked = text.replace(/`[^`\n]+`/gu, (match) => `￹${spans.push(match) - 1}￻`);
-  const fixed = masked.replace(/\*\*(?=\S)((?:(?!\*\*).)+?)(?<=\S)\*\*/gu, "<strong>$1</strong>");
-  return fixed.replace(/￹(\d+)￻/gu, (_, index) => spans[Number(index)]);
+  const mask = (match) => `￹${spans.push(match) - 1}￻`;
+  const masked = text
+    .replace(/[￹￻]/gu, "") // drop stray sentinels an author may have typed
+    .replace(/`[^`\n]+`/gu, mask)
+    .replace(/\[[^\]\n]*\]\([^)\n]*\)/gu, mask);
+  const fixed = masked.replace(
+    /(?<![\p{L}\p{N}_/])\*\*(?=\S)((?:(?!\*\*).)+?)(?<=\S)\*\*(?!\*)/gu,
+    "<strong>$1</strong>",
+  );
+  return fixed.replace(/￹(\d+)￻/gu, (whole, index) => spans[Number(index)] ?? whole);
 }
 
 function escapeMdxText(value) {

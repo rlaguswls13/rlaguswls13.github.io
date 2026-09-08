@@ -125,10 +125,33 @@ describe("Notion content security boundaries", () => {
     expect(compiled).not.toContain("**");
   });
 
-  it("Given a Python power operator in prose When converted Then it is left untouched", async () => {
-    const richText = [{ plain_text: "지수는 2**8 = 256 이다" }];
+  it("Given Python power operators or shell globs in prose When converted Then no `**` pair is treated as emphasis", async () => {
+    for (const text of [
+      "지수는 2**8 = 256 그리고 3**4 이다",
+      "경로는 src/**/*.ts 와 dist/**/*.js 두 곳",
+      "복잡도는 n**2, 최악은 n**3",
+    ]) {
+      expect(richTextToMarkdown([{ plain_text: text }])).toBe(text);
+    }
+  });
+
+  it("Given typed `**` inside a Markdown link When converted Then the link is left intact", async () => {
+    const richText = [{ plain_text: "참고 [**볼드**링크](https://x.com/a**b) 끝" }];
     const markdown = richTextToMarkdown(richText);
-    expect(markdown).toBe("지수는 2**8 = 256 이다");
+    expect(markdown).toBe("참고 [**볼드**링크](https://x.com/a**b) 끝");
+  });
+
+  it("Given an author-typed private-use sentinel char When converted Then it cannot corrupt code-span masking", async () => {
+    const richText = [{ plain_text: "입력 ￹0￻ 그리고 `code` 끝" }];
+    const markdown = richTextToMarkdown(richText);
+    expect(markdown).toBe("입력 0 그리고 `code` 끝");
+  });
+
+  it("Given a bold run containing a blank line When converted Then it folds to a break, not an unclosed tag", async () => {
+    const richText = [{ plain_text: "첫 문단\n\n둘째 문단", annotations: { bold: true } }];
+    const markdown = richTextToMarkdown(richText);
+    expect(markdown).toBe("<strong>첫 문단<br />둘째 문단</strong>");
+    await expect(compile(markdown)).resolves.toBeDefined();
   });
 
   it("Given author-typed **bold** straddling an inline-code segment When converted Then the whole run becomes one <strong>", async () => {
