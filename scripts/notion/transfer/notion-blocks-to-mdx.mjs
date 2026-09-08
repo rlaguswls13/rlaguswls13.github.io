@@ -32,15 +32,7 @@ function renderRichTextSegment(segment) {
   // onto the page instead of rendering `<`/`{`/`}`.
   let content = segment.code ? trimmed : escapeMdxText(trimmed);
   if (!content) return value;
-  if (segment.code) {
-    content = "`" + content + "`";
-  } else {
-    // Authors sometimes type `**bold**` literally in Notion instead of using
-    // Notion's bold annotation. Normalise those runs to <strong> so they render
-    // consistently and never leave a flanking-broken literal `**` on the page.
-    // Fenced and inline code never reach this branch.
-    content = content.replace(/\*\*(?=\S)((?:(?!\*\*).)+?)(?<=\S)\*\*/gu, "<strong>$1</strong>");
-  }
+  if (segment.code) content = "`" + content + "`";
   if (segment.href) {
     const href = safeMarkdownHref(segment.href);
     if (href) content = `[${content}](${href})`;
@@ -80,7 +72,10 @@ export function richTextToMarkdown(items = []) {
     }
   }
   return runs.map((run) => {
-    const inner = run.segments.map(renderRichTextSegment).join("");
+    // Normalise on the assembled run text: authors sometimes type `**bold**`
+    // literally instead of using Notion's bold, and Notion keeps an inline-code
+    // word as its own segment, so a typed marker often straddles two segments.
+    const inner = normalizeTypedEmphasis(run.segments.map(renderRichTextSegment).join(""));
     if (!run.signature) return inner;
     const leading = inner.match(/^\s*/)?.[0] || "";
     const trailing = inner.match(/\s*$/)?.[0] || "";
@@ -92,6 +87,17 @@ export function richTextToMarkdown(items = []) {
     if (run.strikethrough) core = `<del>${core}</del>`;
     return leading + core + trailing;
   }).join("");
+}
+
+// Turn author-typed `**bold**` into <strong> (`*italic*` is left alone — a lone
+// asterisk is far more often a glob, footnote, or math token than emphasis).
+// `2**8` and other unpaired operators never form a `**…**` match. Inline code
+// spans are masked first so a stray `**` inside one is not treated as a marker.
+function normalizeTypedEmphasis(text) {
+  const spans = [];
+  const masked = text.replace(/`[^`\n]+`/gu, (match) => `￹${spans.push(match) - 1}￻`);
+  const fixed = masked.replace(/\*\*(?=\S)((?:(?!\*\*).)+?)(?<=\S)\*\*/gu, "<strong>$1</strong>");
+  return fixed.replace(/￹(\d+)￻/gu, (_, index) => spans[Number(index)]);
 }
 
 function escapeMdxText(value) {

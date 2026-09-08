@@ -131,6 +131,25 @@ describe("Notion content security boundaries", () => {
     expect(markdown).toBe("지수는 2**8 = 256 이다");
   });
 
+  it("Given author-typed **bold** straddling an inline-code segment When converted Then the whole run becomes one <strong>", async () => {
+    // Given: Notion split `**`DispatcherServlet`**을` into three segments —
+    // the typed `**` markers land in the plain text on either side of the code.
+    const richText = [
+      { plain_text: "Spring MVC는 **" },
+      { plain_text: "DispatcherServlet", annotations: { code: true } },
+      { plain_text: "**을 중심으로 작동한다" },
+    ];
+
+    // When: the production converter renders the run.
+    const markdown = richTextToMarkdown(richText);
+
+    // Then: the marker pair is joined across segments and no literal `**` leaks.
+    expect(markdown).toBe("Spring MVC는 <strong>`DispatcherServlet`</strong>을 중심으로 작동한다");
+    const compiled = String(await compile(markdown));
+    expect(compiled).toContain("_components.code");
+    expect(compiled).not.toContain("**");
+  });
+
   it("Given a bold run bounded by leading and trailing spaces When converted Then the spaces sit outside the tags", async () => {
     // Given: a single bold segment padded with surrounding whitespace.
     const richText = [{ plain_text: " 강조 ", annotations: { bold: true } }];
