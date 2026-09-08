@@ -111,6 +111,26 @@ describe("Notion content security boundaries", () => {
     expect(compiled).not.toContain("**");
   });
 
+  it("Given author-typed **bold** literal text When converted Then it becomes a <strong> tag", async () => {
+    // Given: a plain segment where the author typed asterisks rather than using
+    // Notion's bold annotation, ending in punctuation before a Korean particle.
+    const richText = [{ plain_text: "핵심은 **덕 타이핑(Duck Typing)**과 **MRO**다" }];
+
+    // When: the production converter renders it.
+    const markdown = richTextToMarkdown(richText);
+
+    // Then: both literal runs become <strong> and nothing renders as raw `**`.
+    expect(markdown).toBe("핵심은 <strong>덕 타이핑(Duck Typing)</strong>과 <strong>MRO</strong>다");
+    const compiled = String(await compile(markdown));
+    expect(compiled).not.toContain("**");
+  });
+
+  it("Given a Python power operator in prose When converted Then it is left untouched", async () => {
+    const richText = [{ plain_text: "지수는 2**8 = 256 이다" }];
+    const markdown = richTextToMarkdown(richText);
+    expect(markdown).toBe("지수는 2**8 = 256 이다");
+  });
+
   it("Given a bold run bounded by leading and trailing spaces When converted Then the spaces sit outside the tags", async () => {
     // Given: a single bold segment padded with surrounding whitespace.
     const richText = [{ plain_text: " 강조 ", annotations: { bold: true } }];

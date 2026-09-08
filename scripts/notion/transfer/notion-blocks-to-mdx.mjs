@@ -32,7 +32,15 @@ function renderRichTextSegment(segment) {
   // onto the page instead of rendering `<`/`{`/`}`.
   let content = segment.code ? trimmed : escapeMdxText(trimmed);
   if (!content) return value;
-  if (segment.code) content = "`" + content + "`";
+  if (segment.code) {
+    content = "`" + content + "`";
+  } else {
+    // Authors sometimes type `**bold**` literally in Notion instead of using
+    // Notion's bold annotation. Normalise those runs to <strong> so they render
+    // consistently and never leave a flanking-broken literal `**` on the page.
+    // Fenced and inline code never reach this branch.
+    content = content.replace(/\*\*(?=\S)((?:(?!\*\*).)+?)(?<=\S)\*\*/gu, "<strong>$1</strong>");
+  }
   if (segment.href) {
     const href = safeMarkdownHref(segment.href);
     if (href) content = `[${content}](${href})`;
