@@ -58,7 +58,7 @@ export default function ProjectDetailClient({
   const currentDiagram = activeTab ? activeTab.flow_diagram : detail.flow_diagram;
 
   return (
-    <article className="detail-content-page project-detail-page">
+    <main className="detail-content-page project-detail-page">
       <ProjectBackLink />
       <header className="detail-page-heading project-card" style={{ marginBottom: "40px" }}>
         <span className="page-heading-eyebrow">PROJECT DETAIL</span>
@@ -88,7 +88,7 @@ export default function ProjectDetailClient({
           <LegacyProjectSections sections={currentSections} />
         </div>
       </div>
-    </article>
+    </main>
   );
 }
 

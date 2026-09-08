@@ -149,7 +149,7 @@ export default async function DevlogDetailPage({
   const jsonLd = buildBlogPostingJsonLd(metadataForEntry(pageEntry));
 
   return (
-    <article className="detail-content-page devlog-detail-page">
+    <main className="detail-content-page devlog-detail-page">
       <JsonLd id="blog-posting-json-ld" document={jsonLd} />
       <DevlogBackLink category={category} />
       <header className="detail-page-heading project-card" style={{ marginBottom: "40px" }}>
@@ -191,6 +191,6 @@ export default async function DevlogDetailPage({
         )}
       </div>
       <GiscusComments config={siteConfig.giscus} term={pageEntry.discussionTerm} />
-    </article>
+    </main>
   );
 }

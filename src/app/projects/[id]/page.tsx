@@ -70,7 +70,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
   if (data.status === "ready") {
     return (
-      <article className="detail-content-page project-detail-page">
+      <main className="detail-content-page project-detail-page">
         <ProjectBackLink />
         <header className="detail-page-heading project-card" style={{ marginBottom: 40 }}>
           <span className="page-heading-eyebrow">PROJECT · {(meta.subcategory || "general").toUpperCase()}</span>
@@ -81,7 +81,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <div className="mdx-content">
           <EditingPlaceholder />
         </div>
-      </article>
+      </main>
     );
   }
 
@@ -92,7 +92,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   }
 
   return (
-    <article className="detail-content-page project-detail-page">
+    <main className="detail-content-page project-detail-page">
       <ProjectBackLink />
       <header className="detail-page-heading project-card" style={{ marginBottom: 40 }}>
         <span className="page-heading-eyebrow">PROJECT · {(meta.subcategory || "general").toUpperCase()}</span>
@@ -107,6 +107,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           options={{ mdxOptions: { rehypePlugins: [rehypeMermaid, rehypeArticleToc] } }}
         />
       </div>
-    </article>
+    </main>
   );
 }
