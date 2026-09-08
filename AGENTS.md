@@ -70,14 +70,11 @@ A: 문서에 근거가 없으면 사실을 만들어내지 말고 `확인할 수
 
 ## 작업 시작: 컨텍스트와 영향 범위
 
-모든 작업은 아래 순서로 시작합니다.
+실행 순서·영향 범위 조사·failing-first 규칙의 canonical 정의는 project-rag로 이전됐습니다 → `.wiki/agent-harness-rules.md`의 *Execution order*. 이 저장소에서만 유효한 진입 절차는 다음과 같습니다.
 
 1. 이 파일, `docs/README.md`, 관련 `.wiki/` 문서를 읽습니다.
 2. `.agent/session-handoff.md`가 있으면 읽고, 현재 작업을 그 파일의 `Current status`와 `Remaining tasks`에 반영합니다.
-3. 변경 대상과 소비자를 조사합니다. 특히 managed path, 생성 파일, hook, 외부 연동 여부를 확인합니다.
-4. 작업 유형에 맞는 installed skill과 `project/skills/` task skill을 호출합니다.
-5. 새 계약이나 동작 변경이면 실패하는 테스트 또는 가장 가까운 실제 표면의 failing-first 증거를 먼저 확보합니다. 순수 문서·주석 변경에는 문장 검색 테스트를 만들지 않습니다.
-6. 최소 변경을 구현하고, 변경 범위에 맞는 검증을 실행합니다.
+3. 이후 단계(소비자·managed path·hook·외부 연동 조사 → skill 호출 → 동작 변경 시 failing-first 증거 → 최소 변경 → 범위에 맞는 검증)는 `.wiki/agent-harness-rules.md`를 따릅니다. 순수 문서·주석 변경에는 문장 검색 테스트를 만들지 않습니다.
 
 ## 공통 세션 handoff 계약
 
@@ -111,20 +108,13 @@ $session-handoff-workflow finish
 
 ## Canonical agent surfaces
 
-| Surface | 책임 | 대표 진입 문서 | 여기에 두지 않는 것 |
-| --- | --- | --- | --- |
-| `project/skills/` | 반복 가능한 절차, 입력·출력·검증 계약 | `project/skills/<name>/SKILL.md` | 장기 결정의 근거 기록 |
-| `project/hooks/` | host agent lifecycle adapter | `project/hooks/README.md` | 수동 운영 정책 |
-| `.wiki/` | 정책, 결정, 검증 증거, 위험, durable memory | `.wiki/index.md` | 실행 가능한 hook 로직 |
-| `docs/README.md` | legacy docs와 project surface의 안내·매핑 | `docs/README.md` | 상세 규칙의 복사본 |
-
-관련 정보가 여러 곳에 있을 때는 실행 절차는 skill, 정책과 결정은 wiki, 자동화 동작은 hook을 source of truth로 취급합니다. 중복된 설명을 새로 만들기보다 canonical 링크를 남깁니다.
+surface별 책임 표(무엇을 어디에 두는가)의 canonical 정의는 project-rag로 이전됐습니다 → `.wiki/index.md`의 *Ownership* 절. 요약하면 재현 가능한 절차는 `project/skills/`, host lifecycle 자동화는 `project/hooks/`, 정책·결정·검증 증거·위험·durable memory는 `.wiki/`, legacy docs 매핑은 `docs/README.md`가 소유합니다. 관련 정보가 여러 곳에 있으면 실행 절차는 skill, 정책·결정은 wiki, 자동화 동작은 hook을 source of truth로 삼고, 중복 설명을 만들지 말고 canonical 링크를 남깁니다.
 
 **`.wiki/`는 이 저장소 디렉터리 안에 존재하지 않는다.** `.wiki/xxx`로 표기하는 모든 경로는 물리적으로 `D:\obsidian-storage\project-rag\blog\xxx`(환경변수 `$PROJECT_RAG_PATH` 설정 시 `$PROJECT_RAG_PATH\blog\xxx`)를 가리킨다 — 그 `blog\` 폴더 자체가 `.wiki` 루트이며, 그 안에 `.wiki`라는 이름의 하위 폴더가 한 번 더 있는 게 아니다(`.wiki/index.md` → `blog\index.md`, `.wiki/rag/source-registry.json` → `blog\rag\source-registry.json`). 그쪽 git으로만 버전 관리되고 이 저장소의 원격에는 절대 올라가지 않는다. `npm run wiki:index`(`scripts/wiki/build-rag-index.mjs`의 `stripWikiPrefix()`)와 `project/hooks/session-end.mjs`가 이 매핑을 자동으로 처리해 읽고 쓴다.
 
 ## Central RAG vault (범용 룰·스킬 전용)
 
-저장소 루트의 Markdown은 agent 진입점 `AGENTS.md`, host adapter `CLAUDE.md`, 제품 안내 `README.md`만 유지합니다. 새 장기 정책·설계 Markdown은 저장소에 추가하지 않고 외부 `.wiki/`의 책임별 canonical 경로로 이전하며, `.wiki/docs-migration.json`, `.wiki/index.md`, 관련 참조를 함께 갱신합니다. 현재 디자인 계약은 `.wiki/architecture/design-system.md`가 소유하고 실제 구현은 `src/app/globals.css`에서 검증합니다.
+저장소 루트의 Markdown은 agent 진입점 `AGENTS.md`, host adapter `CLAUDE.md`, 제품 안내 `README.md`만 유지합니다. 새 장기 정책·설계 Markdown을 저장소에 추가하지 않고 외부 `.wiki/`로 이전하는 절차의 canonical 정의는 `.wiki/agent-harness-rules.md`의 *Maintenance and security*에 있습니다(이전 시 `.wiki/docs-migration.json`, `.wiki/index.md`, 관련 참조를 함께 갱신). 현재 디자인 계약은 `.wiki/architecture/design-system.md`가 소유하고 실제 구현은 `src/app/globals.css`에서 검증합니다.
 
 이 프로젝트 고유의 정책·스키마·방향성은 위 표대로 이 프로젝트의 `.wiki/`(외부, 바로 위 설명 참고)가 canonical이다. 그와 별도로, 여러 프로젝트에 걸쳐 재사용하는 **범용** 코딩/보안/DB 규칙과 SOP는 같은 vault 루트(`project-rag`)의 다른 폴더를 참조한다.
 
@@ -155,35 +145,24 @@ $session-handoff-workflow finish
 
 ## 검증 게이트
 
-기본 검증 명령은 다음과 같습니다.
-
-```powershell
-npm run validate:content
-npm run lint:ci
-npm run typecheck
-npm run test:unit -- --run
-```
-
-정적 산출물·콘텐츠 pipeline을 변경했다면 다음도 실행합니다.
-
-```powershell
-npm run build:local
-npm run validate:export
-```
-
-화면을 변경했다면 `blog-verification`과 `omo:visual-qa`로 실제 브라우저에서 375px, 768px, 1280px 및 light/dark 상태를 확인합니다. 실행 결과, 기존 실패, 잔여 위험은 `.wiki/session-memory.md` 또는 필요한 `.wiki/raw/{topic}-{YYYYMMDD}.md`에 기록합니다.
+검증 게이트 정책(기본 명령, `build:local`/`validate:export` 조건, 브라우저 viewport·light/dark, e2e/lighthouse)은 project-rag로 이전됐습니다 → `.wiki/agent-harness-rules.md`의 *Validation gate* · *UI and quality boundaries*. 실행 명령의 canonical 목록과 순서는 `project/skills/release-gate`가 소유하고, 화면 변경 검증은 `blog-verification`과 `omo:visual-qa`로 수행합니다. 실행 결과·기존 실패·잔여 위험은 `.wiki/session-memory.md` 또는 `.wiki/raw/{topic}-{YYYYMMDD}.md`에 기록합니다.
 
 ## 변경 안전성 계약
 
-- Notion 원본은 안정적인 `page_id`/`source_id`를 식별자로 사용하고 slug를 파일명 식별자로 사용하지 않습니다.
-- schema 위반은 `artifacts/notion-quarantine/`에 안전한 요약 보고서를 남기고 sync·commit·deploy를 차단합니다.
-- staging 검증이 끝나기 전 live 콘텐츠·index·썸네일을 교체하지 않습니다.
-- 비밀 값은 환경변수 또는 GitHub Secret에서만 읽고 문서·로그·JSON·MDX·artifact에 기록하지 않습니다.
-- 관련 없는 사용자 변경은 수정·삭제·staging하지 않습니다.
-- 생성 파일은 generator를 통해서만 갱신하고, 기존 실패를 숨기거나 테스트를 약화하지 않습니다.
+변경 안전성 규칙(Notion `page_id`/`source_id` 식별자, schema quarantine, staging→live 원자적 promote, secret 취급, 무관한 사용자 변경 금지, 생성 파일 취급)은 project-rag로 이전됐습니다 → `.wiki/agent-harness-rules.md`의 *Pipeline boundaries* · *Maintenance and security*.
 
 ## 세션 종료와 durable memory
 
-세션 종료 시 host agent는 구조화된 `session_end` event를 `node project/hooks/session-end.mjs`에 전달합니다. event에는 결정, 실행한 검증, 잔여 위험, 변경 파일을 짧게 포함하고 secret·token·PII·긴 로그는 포함하지 않습니다. hook은 `.wiki/`의 memory를 갱신하고(`.wiki/`는 이 저장소 안에 없음 — `D:\obsidian-storage\project-rag\blog\`가 유일한 원본이며 그 자체 git으로만 버전 관리됨, 이 프로젝트의 원격 저장소에는 절대 올라가지 않음), `project/skills`·`project/hooks`만 선택적으로 commit합니다.
+세션 종료 시 host agent는 구조화된 `session_end` event를 `node project/hooks/session-end.mjs`에 전달합니다. event 스키마, redaction, commit 범위(`project/skills`·`project/hooks`만), 기억 품질 규칙은 project-rag로 이전됐습니다 → `.wiki/agent-memory.md`. `.wiki/`는 이 저장소 안에 없고 `D:\obsidian-storage\project-rag\blog\`가 유일한 원본이며 그 자체 git으로만 버전 관리되어 이 프로젝트의 원격 저장소에는 올라가지 않습니다.
 
 규칙을 변경하기 전에는 `.wiki/raw/`에서 관련 topic의 최신 gate review·승인 기록과 `.wiki/docs-migration.json`의 surface 매핑을 확인합니다. 규칙 변경과 그 근거는 `.wiki/raw/{topic}-{YYYYMMDD}.md`에도 남깁니다.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
