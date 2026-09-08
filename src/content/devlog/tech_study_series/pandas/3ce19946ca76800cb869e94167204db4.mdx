@@ -33,7 +33,7 @@ notionUrl: "https://app.notion.com/p/Python-pandas-03-3ce19946ca76800cb869e94167
 
 ## 핵심 요약
 
-데이터를 로드한 직후에는 **모양(`shape`) → 형(`info`) → 분포(`describe`, `value_counts`) → 결측(`isna().sum()`) → 메모리(`memory_usage`)** 순으로 점검합니다.
+데이터를 로드한 직후에는 <strong>모양(`shape`) → 형(`info`) → 분포(`describe`, `value_counts`) → 결측(`isna().sum()`) → 메모리(`memory_usage`)</strong> 순으로 점검합니다.
 
 이 5분짜리 점검만 해도 이후 정제 단계에서 "이 열이 왜 `object`지?", "왜 행이 이렇게 많지?" 같은 혼란을 크게 줄일 수 있습니다.
 
@@ -58,7 +58,7 @@ df.sample(5, random_state=0)   # 무작위 5행 (앞뒤 편향 없이 실제 값
 df.columns.tolist()            # 열 이름 목록
 ```
 
-> 💡 **이럴 때**: `head`만 보면 정렬된 앞부분만 보게 됩니다. `sample`까지 함께 봐야 중간에 섞인 이상한 값을 발견할 수 있습니다.
+> 💡 <strong>이럴 때</strong>: `head`만 보면 정렬된 앞부분만 보게 됩니다. `sample`까지 함께 봐야 중간에 섞인 이상한 값을 발견할 수 있습니다.
 
 
 <NotionDivider />
@@ -82,8 +82,8 @@ df.info(memory_usage="deep")
 #  ...
 ```
 
-- **Non-Null Count**로 열별 결측을 한눈에 확인합니다.
-- **Dtype**이 예상과 다르면(숫자인데 `object`, 날짜인데 `object`) 이 단계에서 바로 잡습니다.
+- <strong>Non-Null Count</strong>로 열별 결측을 한눈에 확인합니다.
+- <strong>Dtype</strong>이 예상과 다르면(숫자인데 `object`, 날짜인데 `object`) 이 단계에서 바로 잡습니다.
 - `memory_usage="deep"`는 `object` 열의 실제 문자열 크기까지 계산합니다.
 
 <NotionDivider />
@@ -109,7 +109,7 @@ df.describe(include="object")     # 문자열 열: count, unique, top, freq
 df.describe(include="all")        # 전체
 ```
 
-> 💡 **이럴 때**: `min`이 음수/0인데 그럴 수 없는 값(나이, 금액, 수량)이라면 데이터 오류를 의심해야 합니다. `max`가 `75%`보다 훨씬 크면 이상치가 있거나 로그 스케일이 필요한 분포일 수 있습니다.
+> 💡 <strong>이럴 때</strong>: `min`이 음수/0인데 그럴 수 없는 값(나이, 금액, 수량)이라면 데이터 오류를 의심해야 합니다. `max`가 `75%`보다 훨씬 크면 이상치가 있거나 로그 스케일이 필요한 분포일 수 있습니다.
 
 
 <NotionDivider />
@@ -129,12 +129,12 @@ df["category"].unique()                        # 고유값 배열
 pd.crosstab(df["category"], df["is_member"])   # 두 범주 교차표
 ```
 
-> 💡 **이럴 때**: `value_counts(dropna=False)`로 결측 비율을 확인합니다. `nunique()`가 행 수와 비슷하면 식별자(ID) 열일 가능성이 크고, 아주 작으면 범주형 후보입니다.
+> 💡 <strong>이럴 때</strong>: `value_counts(dropna=False)`로 결측 비율을 확인합니다. `nunique()`가 행 수와 비슷하면 식별자(ID) 열일 가능성이 크고, 아주 작으면 범주형 후보입니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: `"Seoul"`, `"seoul"`, `"서울 "`처럼 표기가 흔들리면 `value_counts`에서 별개 항목으로 드러납니다 → [Python - pandas 06. 정제와 변환](https://app.notion.com/p/Python%20-%20pandas%2006.%20%EC%A0%95%EC%A0%9C%EC%99%80%20%EB%B3%80%ED%99%98)의 `.str` 정규화 대상.
+💡 <strong>이럴 때</strong>: `"Seoul"`, `"seoul"`, `"서울 "`처럼 표기가 흔들리면 `value_counts`에서 별개 항목으로 드러납니다 → [Python - pandas 06. 정제와 변환](https://app.notion.com/p/Python%20-%20pandas%2006.%20%EC%A0%95%EC%A0%9C%EC%99%80%20%EB%B3%80%ED%99%98)의 `.str` 정규화 대상.
 
 
 </NotionIndent>
@@ -170,5 +170,5 @@ df.memory_usage(deep=True).sum() / 1e6 # 전체 MB
 df.select_dtypes("object").nunique()   # object 열의 카디널리티 → category 후보
 ```
 
-> 💡 **이럴 때**: 메모리가 빠듯하면 `object` 열 중 `nunique`가 작은 것은 `category`로, 큰 정수/실수 열은 `downcast`로 줄입니다
+> 💡 <strong>이럴 때</strong>: 메모리가 빠듯하면 `object` 열 중 `nunique`가 작은 것은 `category`로, 큰 정수/실수 열은 `downcast`로 줄입니다
 

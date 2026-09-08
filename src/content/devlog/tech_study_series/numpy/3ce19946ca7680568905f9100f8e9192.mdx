@@ -40,7 +40,7 @@ notionUrl: "https://app.notion.com/p/Python-NumPy-05-3ce19946ca7680568905f9100f8
 
 같은 데이터를 다른 shape로 "다시 보는" 작업(`reshape`, 축 추가/제거, 전치)과, 여러 배열을 합치거나 나누는 작업(`concatenate`, `stack`, `split`)을 다룹니다.
 
-브로드캐스팅(6장)과 모델 입력 shape 맞추기에서 **`reshape`와 `np.newaxis`**를 끊임없이 쓰게 됩니다.
+브로드캐스팅(6장)과 모델 입력 shape 맞추기에서 <strong>`reshape`와 `np.newaxis`</strong>를 끊임없이 쓰게 됩니다.
 
 
 ```python
@@ -54,7 +54,7 @@ import numpy as np
 
 ## 1. `reshape` : 형태 다시 보기
 
-원소의 총 개수(`size`)가 같아야 합니다. 데이터는 복사되지 않고 대개 **view**입니다.
+원소의 총 개수(`size`)가 같아야 합니다. 데이터는 복사되지 않고 대개 <strong>view</strong>입니다.
 
 
 ```python
@@ -67,10 +67,10 @@ a.reshape(3, -1)              # -1 자리는 자동 계산 → (3, 4)
 a.reshape(-1, 1)              # (12, 1) - "세로 벡터"로 만드는 관용구
 ```
 
-> 💡 **이럴 때**: sklearn 등이 2D 입력을 요구하는데 특징이 1D 벡터일 때 `reshape(-1, 1)`로 열벡터를 만듭니다.
+> 💡 <strong>이럴 때</strong>: sklearn 등이 2D 입력을 요구하는데 특징이 1D 벡터일 때 `reshape(-1, 1)`로 열벡터를 만듭니다.
 
-- **`1`**: 한 축만 `1`로 두면 나머지로부터 자동 계산됩니다. 두 축을 `1`로 둘 수는 없습니다.
-- **`(12,)` vs `(12, 1)` vs `(1, 12)`**: 원소는 같지만 차원이 다릅니다. 브로드캐스팅 결과가 달라지므로 구분이 중요합니다.
+- <strong>`1`</strong>: 한 축만 `1`로 두면 나머지로부터 자동 계산됩니다. 두 축을 `1`로 둘 수는 없습니다.
+- <strong>`(12,)` vs `(12, 1)` vs `(1, 12)`</strong>: 원소는 같지만 차원이 다릅니다. 브로드캐스팅 결과가 달라지므로 구분이 중요합니다.
 <a id="평탄화-ravel-vs-flatten"></a>
 
 ### 평탄화 : `ravel` vs `flatten`
@@ -107,7 +107,7 @@ a[:, None]                       # (3, 1) - None은 np.newaxis의 별칭
 np.expand_dims(a, axis=0)        # (1, 3) - 함수형
 ```
 
-> 💡 **이럴 때**: `(N,)` 벡터를 `(N, 1)` 또는 `(1, N)`으로 만들어 각 행/열에 broadcast 연산을 걸 때.
+> 💡 <strong>이럴 때</strong>: `(N,)` 벡터를 `(N, 1)` 또는 `(1, N)`으로 만들어 각 행/열에 broadcast 연산을 걸 때.
 
 <a id="제거-squeeze"></a>
 
@@ -124,7 +124,7 @@ np.squeeze(b, axis=0).shape      # (3, 1) - 특정 축만
 
 모델 출력이 `(N, 1)`로 나올 때 `(N,)`으로 펴는 데 자주 씁니다.
 
-> 💡 **이럴 때**: 모델 예측이 `(N, 1)`로 나와 정답 레이블 `(N,)`과 shape가 안 맞을 때 `squeeze`로 맞춥니다.
+> 💡 <strong>이럴 때</strong>: 모델 예측이 `(N, 1)`로 나와 정답 레이블 `(N,)`과 shape가 안 맞을 때 `squeeze`로 맞춥니다.
 
 
 <NotionDivider />
@@ -185,7 +185,7 @@ np.vstack([x, y])      # 수직(행) 결합 = concatenate axis=0  (2차원 이�
 np.hstack([x, y])      # 수평(열) 결합 = concatenate axis=1  (2차원 이상 기준)
 ```
 
-> **1차원 입력에서는 규칙이 다릅니다**: `np.vstack([[1,2],[3,4]])` → `(2, 2)`로 축을 추가하고, `np.hstack([[1,2],[3,4]])` → `(4,)`로 axis=0을 따라 이어붙입니다. 헷갈리면 `concatenate` + 명시적 `reshape`가 안전합니다.
+> <strong>1차원 입력에서는 규칙이 다릅니다</strong>: `np.vstack([[1,2],[3,4]])` → `(2, 2)`로 축을 추가하고, `np.hstack([[1,2],[3,4]])` → `(4,)`로 axis=0을 따라 이어붙입니다. 헷갈리면 `concatenate` + 명시적 `reshape`가 안전합니다.
 
 
 <NotionDivider />
@@ -205,5 +205,5 @@ np.array_split(np.arange(10), 3)     # OK - [4, 3, 3]개로 최대한 균등하�
 
 `np.split`은 정확히 나눠떨어져야 하고, `np.array_split`은 아니어도 됩니다. 데이터를 K-fold로 쪼갤 때 후자가 편합니다.
 
-> 💡 **이럴 때**: 데이터를 K개 폴드로 나누거나 배치로 쪼갤 때, 개수가 안 떨어져도 되는 `np.array_split`을 씁니다.
+> 💡 <strong>이럴 때</strong>: 데이터를 K개 폴드로 나누거나 배치로 쪼갤 때, 개수가 안 떨어져도 되는 `np.array_split`을 씁니다.
 

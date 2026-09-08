@@ -37,13 +37,13 @@ notionUrl: "https://app.notion.com/p/Docker-Image-Commit-Dockerfile-entry-sh-3b0
 
 실행 중인 베이스 컨테이너에 직접 쉘 접속하여 프로그램 설치 및 환경 설정을 마치고, 그 상태 그대로 '스냅샷'을 떠서 이미지를 만드는 직관적인 방식입니다.
 
-**작업 과정:**
+<strong>작업 과정:</strong>
 
 1. `docker exec -it [컨테이너명] /bin/bash` 로 접속하여 필요한 작업 수행
 1. `docker commit [컨테이너명] my_custom_image:1.0` (이미지 굽기)
 1. `docker tag my_custom_image:1.0 my_registry/my_custom_image:1.0` (태그 설정)
 1. `docker push my_registry/my_custom_image:1.0` (원격 저장소에 업로드)
-**단점:**
+<strong>단점:</strong>
 
 - 이미지가 어떻게 구성되었는지 이력을 추적할 수 없어 유지보수가 매우 어렵습니다. 실무 환경보다는 일회성 테스트용으로 적합합니다.
 
@@ -97,7 +97,7 @@ RUN chmod +x /entry.sh
 ENTRYPOINT ["/entry.sh"]
 ```
 
-**`docker-entrypoint.sh` 표준 패턴 예시 (공식 이미지 참조):**
+<strong>`docker-entrypoint.sh` 표준 패턴 예시 (공식 이미지 참조):</strong>
 
 
 ```bash

@@ -52,19 +52,19 @@ notionUrl: "https://app.notion.com/p/Collection-37219946ca76809eb4d7eac0cc7677af
 
 ### Java 언어의 특화 개념인가?
 
-- **개념 자체는 모든 언어의 공통 사항입니다.** 
+- <strong>개념 자체는 모든 언어의 공통 사항입니다.</strong> 
 C++, 파이썬, 자바스크립트 등 대부분의 프로그래밍 언어에 동일한 개념이 존재합니다.
-- **다만,** 자바는 표준 라이브러리 차원에서 인터페이스와 클래스를 정형화하여 '자바 컬렉션 프레임워크(Java Collection Framework)'라는 고유의 체계로 제공하여 쉽게 사용이 가능합니다.
+- <strong>다만,</strong> 자바는 표준 라이브러리 차원에서 인터페이스와 클래스를 정형화하여 '자바 컬렉션 프레임워크(Java Collection Framework)'라는 고유의 체계로 제공하여 쉽게 사용이 가능합니다.
 <a id="자바-컬렉션의-핵심-구조"></a>
 
 ### 자바 컬렉션의 핵심 구조
 
 자바 컬렉션은 `java.util` 패키지에 속하며, 크게 세 가지 주요 인터페이스를 중심으로 상속 구조가 이루어져 있습니다.
 
-- **List:** 순서가 있으며, 데이터의 중복을 허용합니다. (예: ArrayList, LinkedList)
-- **Set:** 순서가 없으며, 데이터의 중복을 허용하지 않습니다. (예: HashSet, TreeSet)
-- **Queue:** 먼저 들어온 데이터가 먼저 나가는 FIFO(First-In-First-Out) 구조를 가집니다. (예: PriorityQueue, ArrayDeque)
-- *(참고) Map은 구조상 Collection 인터페이스를 직접 상속받지 않지만, 구조적 연관성 때문에 컬렉션 프레임워크의 일부라 할 수 있습니다.*
+- <strong>List:</strong> 순서가 있으며, 데이터의 중복을 허용합니다. (예: ArrayList, LinkedList)
+- <strong>Set:</strong> 순서가 없으며, 데이터의 중복을 허용하지 않습니다. (예: HashSet, TreeSet)
+- <strong>Queue:</strong> 먼저 들어온 데이터가 먼저 나가는 FIFO(First-In-First-Out) 구조를 가집니다. (예: PriorityQueue, ArrayDeque)
+- <em>(참고) Map은 구조상 Collection 인터페이스를 직접 상속받지 않지만, 구조적 연관성 때문에 컬렉션 프레임워크의 일부라 할 수 있습니다.</em>
 <a id="2-collection-사용의-장점과-적합한-상황"></a>
 
 ## 2. Collection 사용의 장점과 적합한 상황
@@ -73,31 +73,31 @@ C++, 파이썬, 자바스크립트 등 대부분의 프로그래밍 언어에 �
 
 ### 컬렉션을 사용하면 좋은 점
 
-- **동적 크기 할당**
+- <strong>동적 크기 할당</strong>
 고정 크기인 배열과 달리, 메모리가 허용하는 한 데이터의 개수에 따라 크기가 자동으로 늘어나고 줄어듭니다.
-- **표준화된 고성능 알고리즘**
+- <strong>표준화된 고성능 알고리즘</strong>
 정렬, 검색, 데이터 순회 등 검증되고 최적화된 자료구조 알고리즘을 기본 제공하므로 개발 생산성이 높아집니다.
-- **다형성을 통한 유지보수성 향상**
+- <strong>다형성을 통한 유지보수성 향상</strong>
 인터페이스 기반으로 설계되어 있어, 요구사항 변경 시 구현체(예: ArrayList -> LinkedList)를 쉽게 교체할 수 있습니다.
 <a id="어느-상황에서-쓰면-좋은가"></a>
 
 ### 어느 상황에서 쓰면 좋은가?
 
 - 저장해야 할 데이터의 개수를 미리 예측할 수 없을 때
-- 데이터의 중복을 자동으로 제거하고 유일한 값만 관리해야 할 때 (**Set** 활용)
-- 키-값(Key-Value) 쌍으로 묶어 특정 데이터에 빠르게 접근해야 할 때 (**Map** 활용)
-- 작업 스케줄링이나 메시지 대기열처럼 순차적인 처리가 필요할 때 (**Queue** 활용)
+- 데이터의 중복을 자동으로 제거하고 유일한 값만 관리해야 할 때 (<strong>Set</strong> 활용)
+- 키-값(Key-Value) 쌍으로 묶어 특정 데이터에 빠르게 접근해야 할 때 (<strong>Map</strong> 활용)
+- 작업 스케줄링이나 메시지 대기열처럼 순차적인 처리가 필요할 때 (<strong>Queue</strong> 활용)
 <a id="3-collection-직접-구현-가능-여부"></a>
 
 ## 3. Collection 직접 구현 가능 여부
 
-**네, 직접 구현할 수 있습니다.** 두 가지 접근 방식이 있습니다.
+<strong>네, 직접 구현할 수 있습니다.</strong> 두 가지 접근 방식이 있습니다.
 
-1. **표준 인터페이스 구현**
+1. <strong>표준 인터페이스 구현</strong>
  `java.util.Collection` 또는 `List`, `Set` 같은 하위 인터페이스를 상속받아(`implements`) 자바 표준 규격에 맞는 커스텀 컬렉션 클래스를 만들 수 있습니다.
-1. **독립적 구조 구현**
+1. <strong>독립적 구조 구현</strong>
 자바 프레임워크 체계와 상관없이, 배열(Array)이나 노드(Node) 포인터 구조를 활용해 나만의 독창적인 데이터 컨테이너를 직접 코딩할 수 있습니다.
-***실무에서는 표준 인터페이스를 직접 처음부터 구현하기보다는, 기존 컬렉션을 상속 받아 내부 비즈니스 유효성 검증 로직을 추가하는 방식을 주로 사용합니다.***
+<em><strong>실무에서는 표준 인터페이스를 직접 처음부터 구현하기보다는, 기존 컬렉션을 상속 받아 내부 비즈니스 유효성 검증 로직을 추가하는 방식을 주로 사용합니다.</strong></em>
 
 <a id="4-collection-사용-시-주의해야-할-점"></a>
 
@@ -113,11 +113,11 @@ C++, 파이썬, 자바스크립트 등 대부분의 프로그래밍 언어에 �
 
 ### 성능 및 메모리 오버헤드
 
-- **시간 복잡도**
+- <strong>시간 복잡도</strong>
 자원의 삽입, 삭제, 조회가 빈번한 형태에 따라 적절한 자료구조를 선택해야 합니다. 
-**대량의 중간 삽입/삭제가 일어나는 환경에서 ArrayList를 사용하면 심각한 성능 저하가** 발생합니다.
-- **기본 타입 제약**
-자바 컬렉션은 기본 타입(int, char 등)을 담지 못하고 객체(Wrapper 클래스: Integer, Character 등)만 저장할 수 있습니다. 이로 인해 자동 박싱/언박싱(Auto-boxing/Unboxing)이 일어나며 **대용량 처리 시 메모리 오버헤드가** 발생합니다.
+<strong>대량의 중간 삽입/삭제가 일어나는 환경에서 ArrayList를 사용하면 심각한 성능 저하가</strong> 발생합니다.
+- <strong>기본 타입 제약</strong>
+자바 컬렉션은 기본 타입(int, char 등)을 담지 못하고 객체(Wrapper 클래스: Integer, Character 등)만 저장할 수 있습니다. 이로 인해 자동 박싱/언박싱(Auto-boxing/Unboxing)이 일어나며 <strong>대용량 처리 시 메모리 오버헤드가</strong> 발생합니다.
 <a id="5-핵심-주의사항-참조-변수-공유로-인한-데이터-오염"></a>
 
 ## 5. 핵심 주의사항: 참조 변수 공유로 인한 데이터 오염
@@ -176,11 +176,11 @@ class Team{
 
 #### 3) 데이터 오염 해결 방안
 
-- **방어적 복사(Defensive Copy)**
+- <strong>방어적 복사(Defensive Copy)</strong>
 생성자나 getter 반환 시 원본의 주소를 주지 않고 `new ArrayList<>(원본)` 형태로 새 인스턴스에 담아 반환합니다.
-- **불변 컬렉션(Unmodifiable Collection)**
+- <strong>불변 컬렉션(Unmodifiable Collection)</strong>
 Java 9 이상에서 제공하는 `List.copyOf()` 등을 활용하여 읽기 전용 컬렉션으로 반환합니다. 외부에서 수정을 시도할 경우 `UnsupportedOperationException`이 발생하여 안전합니다.
-- **깊은 복사(Deep Copy)**
+- <strong>깊은 복사(Deep Copy)</strong>
 리스트뿐만 아니라 리스트 내부에 든 객체들까지 모두 `new` 키워드로 새롭게 인스턴스를 생성하여 완전히 연결고리를 끊어냅니다.
 <a id="6-타-프로그래밍-언어와의-비교"></a>
 
@@ -191,11 +191,11 @@ Java 9 이상에서 제공하는 `List.copyOf()` 등을 활용하여 읽기 전�
 
 <NotionTable>
   <tbody>
-    <tr><td>**구분**</td><td>**Java (Collection Framework)**</td><td>**C++ (STL Container)**</td><td>**Python (Built-in Types)**</td></tr>
-    <tr><td>**기반 패러다임**</td><td>**인터페이스 기반 구조**<br />계층 구조가 정형화되어 다형성 극대화</td><td>**템플릿(Template) 기반**<br />컴파일 시점에 타입 결정, 성능 중심</td><td>**동적 타이핑 기반**<br />언어 자체에 유연하게 내장됨</td></tr>
-    <tr><td>**타입 제약**</td><td>**제네릭(Generics)** 적용<br />컴파일 시 타입 체크, 런타임에는 삭제됨</td><td>**정적 타입 컴파일**<br />타입별 실제 코드 생성, 런타임 비용 없음</td><td>**동적 타입 / 혼재 가능**<br />하나의 리스트에 다양한 타입 혼재 가능</td></tr>
-    <tr><td>**메모리 모델**</td><td>**참조 타입만 저장**<br />기본 타입은 래퍼 객체로 박싱되어 저장</td><td>**값(Value)과 참조 모두 저장**<br />연속된 메모리 배치로 하드웨어 최적화</td><td>**모든 것이 객체(Reference)**<br />내부 객체 포인터 배열로 관리</td></tr>
-    <tr><td>**자바의 특화점**</td><td>스트림 API(Stream), 람다식과의 연계가 매우 강력하며, 엄격한 표준 인터페이스 설계 덕분에 대규모 앤터프라이즈 시스템 협업 및 유지보수에 최적화되어 있음</td><td>메모리 제어 권한이 개발자에게 있어 극상의 성능을 내지만 포인터 관리 책임이 따름</td><td>별도의 import 없이도 리스트, 딕셔너리 등을 유연하게 사용할 수 있어 개발 속도가 압도적으로 빠름</td></tr>
+    <tr><td><strong>구분</strong></td><td><strong>Java (Collection Framework)</strong></td><td><strong>C++ (STL Container)</strong></td><td><strong>Python (Built-in Types)</strong></td></tr>
+    <tr><td><strong>기반 패러다임</strong></td><td><strong>인터페이스 기반 구조</strong><br />계층 구조가 정형화되어 다형성 극대화</td><td><strong>템플릿(Template) 기반</strong><br />컴파일 시점에 타입 결정, 성능 중심</td><td><strong>동적 타이핑 기반</strong><br />언어 자체에 유연하게 내장됨</td></tr>
+    <tr><td><strong>타입 제약</strong></td><td><strong>제네릭(Generics)</strong> 적용<br />컴파일 시 타입 체크, 런타임에는 삭제됨</td><td><strong>정적 타입 컴파일</strong><br />타입별 실제 코드 생성, 런타임 비용 없음</td><td><strong>동적 타입 / 혼재 가능</strong><br />하나의 리스트에 다양한 타입 혼재 가능</td></tr>
+    <tr><td><strong>메모리 모델</strong></td><td><strong>참조 타입만 저장</strong><br />기본 타입은 래퍼 객체로 박싱되어 저장</td><td><strong>값(Value)과 참조 모두 저장</strong><br />연속된 메모리 배치로 하드웨어 최적화</td><td><strong>모든 것이 객체(Reference)</strong><br />내부 객체 포인터 배열로 관리</td></tr>
+    <tr><td><strong>자바의 특화점</strong></td><td>스트림 API(Stream), 람다식과의 연계가 매우 강력하며, 엄격한 표준 인터페이스 설계 덕분에 대규모 앤터프라이즈 시스템 협업 및 유지보수에 최적화되어 있음</td><td>메모리 제어 권한이 개발자에게 있어 극상의 성능을 내지만 포인터 관리 책임이 따름</td><td>별도의 import 없이도 리스트, 딕셔너리 등을 유연하게 사용할 수 있어 개발 속도가 압도적으로 빠름</td></tr>
   </tbody>
 </NotionTable>
 

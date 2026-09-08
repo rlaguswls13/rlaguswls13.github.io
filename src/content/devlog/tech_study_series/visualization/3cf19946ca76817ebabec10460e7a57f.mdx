@@ -32,11 +32,11 @@ notionUrl: "https://app.notion.com/p/Python-seaborn-04-scatterplot-lineplot-relp
 
 ## 핵심 요약
 
-두 **수치 변수의 관계**를 보는 도구입니다.
+두 <strong>수치 변수의 관계</strong>를 보는 도구입니다.
 
-- **`scatterplot`**: 점 하나 = 관측 하나. `hue`(색)/`size`(크기)/`style`(마커)로 최대 3개 변수를 추가로 인코딩.
-- **`lineplot`**: x값마다 y를 **자동 집계**(기본 평균)하고 그 주위에 **오차 밴드**를 그림. 시계열·추세에 적합.
-- figure-level **`relplot`**: 위 둘을 `kind="scatter"|"line"`으로 통합, `col`/`row` 격자.
+- <strong>`scatterplot`</strong>: 점 하나 = 관측 하나. `hue`(색)/`size`(크기)/`style`(마커)로 최대 3개 변수를 추가로 인코딩.
+- <strong>`lineplot`</strong>: x값마다 y를 <strong>자동 집계</strong>(기본 평균)하고 그 주위에 <strong>오차 밴드</strong>를 그림. 시계열·추세에 적합.
+- figure-level <strong>`relplot`</strong>: 위 둘을 `kind="scatter"|"line"`으로 통합, `col`/`row` 격자.
 `lineplot`이 "그냥 선을 잇는" 게 아니라 "집계 후 선을 잇는다"는 점을 이해하는 것이 핵심입니다.
 
 
@@ -73,9 +73,9 @@ sns.scatterplot(data=tips, x="total_bill", y="tip",
 - `hue`가 수치형이면 자동으로 연속 컬러바가 생깁니다. 범주형이면 이산 팔레트+범례.
 - 채널을 3개까지 겹칠 수 있지만, 실제로 판독 가능한 것은 보통 색 1개 + 크기 1개 정도입니다.
 - 겹치는 점이 많으면 `alpha=0.5`, 또는 2절의 밀도 계열 플롯을 검토합니다.
-**그림에서 보이는 것**: `total_bill`이 커질수록 `tip`도 대체로 커지는 우상향 관계가 보이고, 점 색으로 흡연 그룹이 특별히 분리되지는 않으며, 큰 점(인원수 많은 테이블)이 오른쪽 위(고액·고팁)에 몰립니다.
+<strong>그림에서 보이는 것</strong>: `total_bill`이 커질수록 `tip`도 대체로 커지는 우상향 관계가 보이고, 점 색으로 흡연 그룹이 특별히 분리되지는 않으며, 큰 점(인원수 많은 테이블)이 오른쪽 위(고액·고팁)에 몰립니다.
 
-> 💡 **이럴 때**: 색(`hue`)에 연속 변수를 넣으면 값 차이를 정밀하게 읽기 어렵습니다. 정확한 비교가 목적이면 그 변수를 y축이나 `col`(구간화 후)로 옮기고, 색은 범주형에만 씁니다.
+> 💡 <strong>이럴 때</strong>: 색(`hue`)에 연속 변수를 넣으면 값 차이를 정밀하게 읽기 어렵습니다. 정확한 비교가 목적이면 그 변수를 y축이나 `col`(구간화 후)로 옮기고, 색은 범주형에만 씁니다.
 
 
 <NotionDivider />
@@ -112,11 +112,11 @@ sns.lineplot(data=fmri, x="timepoint", y="signal", estimator=None, units="subjec
   </tbody>
 </NotionTable>
 
-**그림에서 보이는 것**: `hue="region"`으로 parietal과 frontal 두 선이 그려지고, 각 선을 감싼 반투명 밴드의 폭이 곧 그 시점의 불확실성입니다. 자극(event) 직후 신호가 솟았다가 감소하는 곡선이 보입니다.
+<strong>그림에서 보이는 것</strong>: `hue="region"`으로 parietal과 frontal 두 선이 그려지고, 각 선을 감싼 반투명 밴드의 폭이 곧 그 시점의 불확실성입니다. 자극(event) 직후 신호가 솟았다가 감소하는 곡선이 보입니다.
 
-> 💡 **이럴 때**: `lineplot`이 예상보다 느리면 `errorbar` 부트스트랩 때문입니다. 탐색 단계에서는 `errorbar=None`이나 `errorbar="sd"`(부트스트랩 없음)로 두고, 발표용에서만 `("ci", 95)`로 되돌립니다.
+> 💡 <strong>이럴 때</strong>: `lineplot`이 예상보다 느리면 `errorbar` 부트스트랩 때문입니다. 탐색 단계에서는 `errorbar=None`이나 `errorbar="sd"`(부트스트랩 없음)로 두고, 발표용에서만 `("ci", 95)`로 되돌립니다.
 
-💡 **이럴 때**: "선이 왜 위아래로 진동하지?" 싶으면 x에 중복이 있어 집계가 일어난 것입니다. 개별 궤적을 원하면 `estimator=None, units="개체열"`을 씁니다.
+💡 <strong>이럴 때</strong>: "선이 왜 위아래로 진동하지?" 싶으면 x에 중복이 있어 집계가 일어난 것입니다. 개별 궤적을 원하면 `estimator=None, units="개체열"`을 씁니다.
 
 
 <NotionDivider />
@@ -158,9 +158,9 @@ sns.relplot(data=fmri, x="timepoint", y="signal", kind="line",
 - `col`/`row`로 격자, 축 범위 자동 공유(`facet_kws={"sharey": False}`로 해제).
 - 대응 axes-level 함수의 인자(`estimator`, `errorbar`, `size` 등)를 그대로 전달.
 - `ax=`는 받지 못합니다.
-**그림에서 보이는 것**: `col="time", row="sex"`로 만든 2x2 격자에서 네 조합 모두 `total_bill`–`tip` 우상향 관계가 유지되며, Dinner 열의 점들이 오른쪽으로(고액) 더 퍼져 있습니다.
+<strong>그림에서 보이는 것</strong>: `col="time", row="sex"`로 만든 2x2 격자에서 네 조합 모두 `total_bill`–`tip` 우상향 관계가 유지되며, Dinner 열의 점들이 오른쪽으로(고액) 더 퍼져 있습니다.
 
-> 💡 **이럴 때**: 관계가 하위 그룹마다 유지되는지(심슨의 역설 점검)를 볼 때 `relplot(col="그룹")`로 쪼개 봅니다. 전체에서는 양의 관계인데 그룹별로는 음의 관계일 수 있습니다.
+> 💡 <strong>이럴 때</strong>: 관계가 하위 그룹마다 유지되는지(심슨의 역설 점검)를 볼 때 `relplot(col="그룹")`로 쪼개 봅니다. 전체에서는 양의 관계인데 그룹별로는 음의 관계일 수 있습니다.
 
 
 <NotionDivider />

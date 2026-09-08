@@ -33,9 +33,9 @@ notionUrl: "https://app.notion.com/p/38019946ca768018bc76cbe284514b07"
 
 ## 1. 문제 : 대고객 메시징 서비스 마케팅 이력관리
 
-최근 3개월(2026-03-01 ~ 2026-05-31) 동안 **총 3회 이상의 캠페인 이메일을 받았으나, 단 한 번도 이메일을 열어보지 않은(status가 'OPENED'인 이력이 없는) 휴면 고객**군을 추출하려 합니다.
+최근 3개월(2026-03-01 ~ 2026-05-31) 동안 <strong>총 3회 이상의 캠페인 이메일을 받았으나, 단 한 번도 이메일을 열어보지 않은(status가 'OPENED'인 이력이 없는) 휴면 고객</strong>군을 추출하려 합니다.
 
-이 조건을 만족하는 고객별로 **가장 최근에 발송 실패(BOUNCED 또는 FAILED)가 발생한 캠페인 ID와 해당 실패 일시**를 함께 조회하는 고난도 튜닝/집계 쿼리 작성 및 테이블 수정 필요 시 진행.
+이 조건을 만족하는 고객별로 <strong>가장 최근에 발송 실패(BOUNCED 또는 FAILED)가 발생한 캠페인 ID와 해당 실패 일시</strong>를 함께 조회하는 고난도 튜닝/집계 쿼리 작성 및 테이블 수정 필요 시 진행.
 
 <a id="1-테이블-정보"></a>
 
@@ -146,13 +146,13 @@ ORDER BY f.last_failed_at DESC NULLS LAST, rc.customer_id ASC;
 
 #### (2) 포인트
 
-- **`IN (SELECT campaign_id FROM ...)`를 통한 인덱스 프루닝**
+- <strong>`IN (SELECT campaign_id FROM ...)`를 통한 인덱스 프루닝</strong>
 `target_campaigns`를 통해 필요한 구간의 데이터만 집어서 읽게 되므로 수천만 건의 데이터를 풀 스캔(Full Scan)하는 방지 예상
-- **`COUNT(CASE WHEN ...)`을 활용한 피벗 집계**
-오픈한 로그가 **단 한 건도 없는** 사람을 찾기 위해 발송 로그와 오픈 로그를 각각 따로 `JOIN`하는 것이 아니라, 하나의 로그 테이블을 한 번만 읽으면서 발송 횟수와 오픈 횟수를 동시에 집계하여 I/O 비용을 감소
-- **`ROW_NUMBER()` 기반 최신 실패 이력만 추출**
+- <strong>`COUNT(CASE WHEN ...)`을 활용한 피벗 집계</strong>
+오픈한 로그가 <strong>단 한 건도 없는</strong> 사람을 찾기 위해 발송 로그와 오픈 로그를 각각 따로 `JOIN`하는 것이 아니라, 하나의 로그 테이블을 한 번만 읽으면서 발송 횟수와 오픈 횟수를 동시에 집계하여 I/O 비용을 감소
+- <strong>`ROW_NUMBER()` 기반 최신 실패 이력만 추출</strong>
 실패한 이력들 중 '가장 최근 1건'을 가져오기 위해 `GROUP BY customer_id` 후 `MAX(updated_at)`를 쓰고 또 한 번 로그 테이블을 조인하는 서브쿼리 지옥 대신, 윈도우 함수를 통해 단 한 번에 `campaign_id`와 `updated_at` 
-- **`LEFT JOIN ... AND f.rn = 1` 구조**
+- <strong>`LEFT JOIN ... AND f.rn = 1` 구조</strong>
 위험 고객 중에는 이메일이 단순히 '전송 완료(DELIVERED)'만 되고 실패는 안 한 상태에서 안 열어본 고객도 존재합니다. 이들이 결과에서 누락되지 않도록 `LEFT JOIN` 처리를 하되, 윈도우 순위가 1등인 데이터만 연결되도록 조건을 결합
 
 <a id="2-파티셔닝암묵적-fk-1차-개선"></a>
@@ -189,7 +189,7 @@ CREATE INDEX idx_logs_query ON email_logs (workday, status, customer_id);
 
 <a id="2-java-백엔드-제어-암묵적-fk"></a>
 
-#### **(2) Java 백엔드 제어 (암묵적 FK)**
+#### <strong>(2) Java 백엔드 제어 (암묵적 FK)</strong>
 
 데이터 무결성 검증은 DB 하드웨어에 맡기지 않고, Java 애플리케이션의 비즈니스 로직(Service 레이어) 또는 무결성 체크 배치(Spring Batch 등) 단계에서 검증 후 진입할 수 있게 유도하여 설계합니다. 이로 인해 인덱스 쓰기 비용과 데드락 위험이 현저히 줄어듭니다.
 

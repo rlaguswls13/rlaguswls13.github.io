@@ -33,9 +33,9 @@ notionUrl: "https://app.notion.com/p/Python-seaborn-02-histplot-kdeplot-ecdfplot
 
 ## 핵심 요약
 
-한 변수의 **분포**를 보는 도구는 세 가지 관점입니다: **빈도 막대**(`histplot`), **매끄러운 밀도 곡선**(`kdeplot`), **누적 비율 계단**(`ecdfplot`). 여기에 개별 관측 위치를 축에 표시하는 `rugplot`을 곁들입니다.
-figure-level 함수 **`displot`**이 위 셋을 `kind="hist"|"kde"|"ecdf"`로 통합하며, `col`/`row`로 격자를 만듭니다.
-가장 큰 함정은 **히스토그램의 bin 편향**입니다: bin 개수·경계를 어떻게 잡느냐에 따라 같은 데이터가 단봉으로도, 다봉으로도 보입니다.
+한 변수의 <strong>분포</strong>를 보는 도구는 세 가지 관점입니다: <strong>빈도 막대</strong>(`histplot`), <strong>매끄러운 밀도 곡선</strong>(`kdeplot`), <strong>누적 비율 계단</strong>(`ecdfplot`). 여기에 개별 관측 위치를 축에 표시하는 `rugplot`을 곁들입니다.
+figure-level 함수 <strong>`displot`</strong>이 위 셋을 `kind="hist"|"kde"|"ecdf"`로 통합하며, `col`/`row`로 격자를 만듭니다.
+가장 큰 함정은 <strong>히스토그램의 bin 편향</strong>입니다: bin 개수·경계를 어떻게 잡느냐에 따라 같은 데이터가 단봉으로도, 다봉으로도 보입니다.
 
 
 ```python
@@ -75,9 +75,9 @@ sns.histplot(data=penguins, x="bill_length_mm", y="flipper_length_mm")  # 2D 히
   </tbody>
 </NotionTable>
 
-**그림에서 보이는 것**: `flipper_length_mm` 히스토그램은 약 190mm와 215mm 부근에 두 개의 봉우리가 있는 이봉(bimodal) 형태로 나타납니다. `hue="species"`로 나누면 이 두 봉우리가 사실상 Gentoo와 나머지 두 종의 차이임이 드러납니다.
+<strong>그림에서 보이는 것</strong>: `flipper_length_mm` 히스토그램은 약 190mm와 215mm 부근에 두 개의 봉우리가 있는 이봉(bimodal) 형태로 나타납니다. `hue="species"`로 나누면 이 두 봉우리가 사실상 Gentoo와 나머지 두 종의 차이임이 드러납니다.
 
-> 💡 **이럴 때**: 그룹별 분포를 비교하는데 표본 수가 다르면 `multiple="stack"`보다 `stat="density"` + `common_norm=False`가 형태 비교에 유리합니다. 절대 빈도가 아니라 모양을 보고 싶기 때문입니다.
+> 💡 <strong>이럴 때</strong>: 그룹별 분포를 비교하는데 표본 수가 다르면 `multiple="stack"`보다 `stat="density"` + `common_norm=False`가 형태 비교에 유리합니다. 절대 빈도가 아니라 모양을 보고 싶기 때문입니다.
 
 
 <NotionDivider />
@@ -94,15 +94,15 @@ for b in [5, 15, 50]:
     sns.displot(data=penguins, x="flipper_length_mm", bins=b)
 ```
 
-- **bin이 너무 적으면**: 봉우리가 뭉개져 단봉처럼 보입니다(과평활).
-- **bin이 너무 많으면**: 표본 잡음이 튀어 가짜 다봉이 생깁니다(과적합).
-- bin **경계 위치**만 옮겨도 특정 값이 어느 칸에 들어가느냐가 바뀌어 모양이 흔들립니다.
+- <strong>bin이 너무 적으면</strong>: 봉우리가 뭉개져 단봉처럼 보입니다(과평활).
+- <strong>bin이 너무 많으면</strong>: 표본 잡음이 튀어 가짜 다봉이 생깁니다(과적합).
+- bin <strong>경계 위치</strong>만 옮겨도 특정 값이 어느 칸에 들어가느냐가 바뀌어 모양이 흔들립니다.
 대응:
 
 - `binwidth`로 폭을 도메인 기준(예: 5mm)으로 고정하면 재현·비교가 쉽습니다.
 - 여러 bin 설정을 같이 보거나, bin에 덜 민감한 `ecdfplot`으로 교차 확인합니다.
 - KDE는 bin 문제는 없지만 대신 대역폭(`bw`) 선택 문제가 있습니다(3절).
-> 💡 **이럴 때**: "이 분포가 정말 이봉인가?"가 의심되면 `ecdfplot`을 봅니다. 누적 곡선의 기울기가 완만해지는 구간이 곧 밀도가 낮은 골이므로, bin 선택과 무관하게 봉우리 수를 가늠할 수 있습니다.
+> 💡 <strong>이럴 때</strong>: "이 분포가 정말 이봉인가?"가 의심되면 `ecdfplot`을 봅니다. 누적 곡선의 기울기가 완만해지는 구간이 곧 밀도가 낮은 골이므로, bin 선택과 무관하게 봉우리 수를 가늠할 수 있습니다.
 
 
 <NotionDivider />
@@ -135,13 +135,13 @@ sns.kdeplot(data=penguins, x="bill_length_mm", y="flipper_length_mm")  # 2D 등�
   </tbody>
 </NotionTable>
 
-**그림에서 보이는 것**: `bw_adjust=0.5`면 곡선이 울퉁불퉁해지며 국소 봉우리가 여럿 생기고, 기본값이나 `bw_adjust=2`면 완만한 이봉 곡선으로 정리됩니다.
+<strong>그림에서 보이는 것</strong>: `bw_adjust=0.5`면 곡선이 울퉁불퉁해지며 국소 봉우리가 여럿 생기고, 기본값이나 `bw_adjust=2`면 완만한 이봉 곡선으로 정리됩니다.
 
-**주의**:
+<strong>주의</strong>:
 
-- KDE는 **경계가 있는 변수에서 새어 나갑니다**. 나이·금액처럼 음수가 불가능한 데이터에서 0 아래로 꼬리가 생기면 `clip=(0, None)`을 씁니다.
+- KDE는 <strong>경계가 있는 변수에서 새어 나갑니다</strong>. 나이·금액처럼 음수가 불가능한 데이터에서 0 아래로 꼬리가 생기면 `clip=(0, None)`을 씁니다.
 - 표본이 적으면(수십 개 이하) KDE 곡선을 신뢰하기 어렵습니다. 이때는 히스토그램이나 rug가 더 정직합니다.
-> 💡 **이럴 때**: KDE의 `bw_adjust`는 히스토그램의 `bins`와 같은 역할(평활 정도 통제)입니다. 하나의 정답 값은 없으므로, 결론이 대역폭에 따라 뒤집히면 "데이터가 그 판단을 지지하지 않는다"는 신호로 읽습니다.
+> 💡 <strong>이럴 때</strong>: KDE의 `bw_adjust`는 히스토그램의 `bins`와 같은 역할(평활 정도 통제)입니다. 하나의 정답 값은 없으므로, 결론이 대역폭에 따라 뒤집히면 "데이터가 그 판단을 지지하지 않는다"는 신호로 읽습니다.
 
 
 <NotionDivider />
@@ -161,12 +161,12 @@ sns.ecdfplot(data=penguins, x="flipper_length_mm", stat="count")  # 비율 대�
 
 장점:
 
-- **비닝·대역폭 선택이 전혀 없습니다.** 모든 관측점이 그대로 반영됩니다.
+- <strong>비닝·대역폭 선택이 전혀 없습니다.</strong> 모든 관측점이 그대로 반영됩니다.
 - 분위수를 눈으로 읽습니다: y=0.5 지점의 x가 중앙값.
-- 그룹 비교에 강합니다: 한 곡선이 다른 곡선의 **왼쪽 위**에 있으면 그 그룹의 값이 전반적으로 작다는 뜻(확률적 우세).
+- 그룹 비교에 강합니다: 한 곡선이 다른 곡선의 <strong>왼쪽 위</strong>에 있으면 그 그룹의 값이 전반적으로 작다는 뜻(확률적 우세).
 단점: 봉우리·최빈값이 직관적으로 안 보입니다(기울기로 읽어야 함).
 
-> 💡 **이럴 때**: A/B 두 그룹의 지표를 비교할 때 `ecdfplot(hue=...)`을 씁니다. 두 계단이 교차하지 않고 한쪽이 계속 앞서면 "분포 전체가 이동"한 것이고, 교차하면 "일부 구간에서만 차이"입니다.
+> 💡 <strong>이럴 때</strong>: A/B 두 그룹의 지표를 비교할 때 `ecdfplot(hue=...)`을 씁니다. 두 계단이 교차하지 않고 한쪽이 계속 앞서면 "분포 전체가 이동"한 것이고, 교차하면 "일부 구간에서만 차이"입니다.
 
 
 <NotionDivider />
@@ -201,9 +201,9 @@ sns.displot(data=penguins, x="bill_length_mm", y="flipper_length_mm", col="speci
 - `kind`로 `histplot`/`kdeplot`/`ecdfplot`을 고릅니다. 각 축 함수의 인자(`bins`, `bw_adjust` 등)를 그대로 전달합니다.
 - `col`/`row`로 종별·성별 격자를 자동 생성합니다.
 - `ax=`는 받지 못합니다(1장 참고). 서브플롯 합성이 필요하면 축 함수를 직접 씁니다.
-**그림에서 보이는 것**: `col="species"`로 나눈 세 패널에서 Adelie·Chinstrap은 190mm 부근 단봉, Gentoo는 215mm 부근 단봉으로, 전체에서 보이던 이봉이 "종 간 차이"였음이 분명해집니다.
+<strong>그림에서 보이는 것</strong>: `col="species"`로 나눈 세 패널에서 Adelie·Chinstrap은 190mm 부근 단봉, Gentoo는 215mm 부근 단봉으로, 전체에서 보이던 이봉이 "종 간 차이"였음이 분명해집니다.
 
-> 💡 **이럴 때**: 분포가 카테고리(부서·지역·분기)에 따라 어떻게 달라지는지가 관심사면 `displot(..., col="카테고리")`가 가장 빠릅니다. 한 축에 다 겹쳐서 `hue`로만 보면 4~5개 그룹부터 판독이 어렵습니다.
+> 💡 <strong>이럴 때</strong>: 분포가 카테고리(부서·지역·분기)에 따라 어떻게 달라지는지가 관심사면 `displot(..., col="카테고리")`가 가장 빠릅니다. 한 축에 다 겹쳐서 `hue`로만 보면 4~5개 그룹부터 판독이 어렵습니다.
 
 
 <NotionDivider />

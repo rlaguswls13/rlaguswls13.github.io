@@ -35,9 +35,9 @@ notionUrl: "https://app.notion.com/p/Python-pandas-06-3ce19946ca768008b586d2599f
 
 ## 핵심 요약
 
-정제는 크게 **형 변환**(`astype`/`to_numeric`/`to_datetime`), **값 매핑**(`replace`/`map`/`rename`), **파생 열 생성**(`assign`/`apply`), **문자열·날짜 처리**(`.str`/`.dt`), **범주화**(`cut`/`qcut`/`category`), **중복 제거**(`drop_duplicates`)로 나뉩니다.
+정제는 크게 <strong>형 변환</strong>(`astype`/`to_numeric`/`to_datetime`), <strong>값 매핑</strong>(`replace`/`map`/`rename`), <strong>파생 열 생성</strong>(`assign`/`apply`), <strong>문자열·날짜 처리</strong>(`.str`/`.dt`), <strong>범주화</strong>(`cut`/`qcut`/`category`), <strong>중복 제거</strong>(`drop_duplicates`)로 나뉩니다.
 
-핵심 습관은 **벡터화된 접근자(`.str`, `.dt`)를 먼저 찾고, `apply`는 최후에** 쓰는 것입니다.
+핵심 습관은 <strong>벡터화된 접근자(`.str`, `.dt`)를 먼저 찾고, `apply`는 최후에</strong> 쓰는 것입니다.
 
 
 ```python
@@ -63,7 +63,7 @@ df["user_id"] = df["user_id"].astype("Int64")              # nullable 정수
 
 - `errors="coerce"`: 실패한 값을 결측으로 (안전). `errors="raise"`(기본)는 예외.
 - `to_datetime`은 `format`을 명시하면 훨씬 빠르고 예측 가능합니다.
-> 💡 **이럴 때**: 숫자여야 하는 열이 `object`면 `to_numeric(errors="coerce")` 후 `isna()`로 몇 개가 실패했는지 확인합니다.
+> 💡 <strong>이럴 때</strong>: 숫자여야 하는 열이 `object`면 `to_numeric(errors="coerce")` 후 `isna()`로 몇 개가 실패했는지 확인합니다.
 
 
 <NotionDivider />
@@ -81,7 +81,7 @@ df = df.rename(columns=str.lower)                             # 열 이름 일�
 df.index = df.index.map(str)
 ```
 
-- `map`은 **Series 전용**이고 매핑 딕셔너리에 없는 키는 `NaN`이 됩니다 (누락 주의).
+- `map`은 <strong>Series 전용</strong>이고 매핑 딕셔너리에 없는 키는 `NaN`이 됩니다 (누락 주의).
 - `replace`는 부분 매핑도 되고 원래 값을 유지합니다.
 
 <NotionDivider />
@@ -110,7 +110,7 @@ df["tier"] = np.select(
 )
 ```
 
-> 💡 **이럴 때**: `apply(axis=1)`이 보이면 벡터 연산·`np.where`·`np.select`·`.str`/`.dt`로 대체 가능한지 먼저 확인합니다. 큰 데이터에서 수십 배 차이.
+> 💡 <strong>이럴 때</strong>: `apply(axis=1)`이 보이면 벡터 연산·`np.where`·`np.select`·`.str`/`.dt`로 대체 가능한지 먼저 확인합니다. 큰 데이터에서 수십 배 차이.
 
 
 <NotionDivider />
@@ -134,12 +134,12 @@ s.len()
 s.cat(sep=", ")                      # 결합
 ```
 
-> 💡 **이럴 때**: `value_counts`에서 `"Seoul"`, `"seoul "`, `" Seoul"`이 따로 잡히면 `.str.strip().str.title()`으로 표준화합니다.
+> 💡 <strong>이럴 때</strong>: `value_counts`에서 `"Seoul"`, `"seoul "`, `" Seoul"`이 따로 잡히면 `.str.strip().str.title()`으로 표준화합니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 이메일·전화번호·주소에서 일부만 뽑을 때 `.str.extract`(정규식)로 한 번에.
+💡 <strong>이럴 때</strong>: 이메일·전화번호·주소에서 일부만 뽑을 때 `.str.extract`(정규식)로 한 번에.
 
 
 </NotionIndent>
@@ -165,7 +165,7 @@ d.normalize()                # 시각을 00:00:00으로
 (df["ship_date"] - df["order_date"]).dt.days   # 일수 차이
 ```
 
-> 💡 **이럴 때**: 요일·월·분기별 집계를 하려면 먼저 `.dt`로 파생 열을 만든 뒤 `groupby`.
+> 💡 <strong>이럴 때</strong>: 요일·월·분기별 집계를 하려면 먼저 `.dt`로 파생 열을 만든 뒤 `groupby`.
 
 
 <NotionDivider />
@@ -181,10 +181,10 @@ df["age_band"] = pd.cut(df["age"], bins=[0, 20, 40, 60, 100],
 df["income_q"] = pd.qcut(df["income"], q=4, labels=["Q1", "Q2", "Q3", "Q4"])
 ```
 
-- `cut`: **경계값을 직접 지정** (동일 폭 구간).
-- `qcut`: **분위수 기준** (구간마다 원소 수 비슷).
+- `cut`: <strong>경계값을 직접 지정</strong> (동일 폭 구간).
+- `qcut`: <strong>분위수 기준</strong> (구간마다 원소 수 비슷).
 - 결과는 `category` dtype입니다.
-> 💡 **이럴 때**: 연속형 변수를 구간으로 묶어 집계·시각화하거나, 트리 기반이 아닌 모델에 넣기 전에.
+> 💡 <strong>이럴 때</strong>: 연속형 변수를 구간으로 묶어 집계·시각화하거나, 트리 기반이 아닌 모델에 넣기 전에.
 
 
 <NotionDivider />
@@ -217,5 +217,5 @@ df.duplicated(subset=["user_id", "order_date"]).sum()
 df = df.drop_duplicates(subset=["user_id", "order_date"], keep="last")
 ```
 
-> 💡 **이럴 때**: 로그를 여러 번 적재해 중복이 생겼을 때. `subset`으로 "같은 주문"의 기준 키를 지정하고, `keep="last"`로 최신 레코드를 남깁니다.
+> 💡 <strong>이럴 때</strong>: 로그를 여러 번 적재해 중복이 생겼을 때. `subset`으로 "같은 주문"의 기준 키를 지정하고, `keep="last"`로 최신 레코드를 남깁니다.
 

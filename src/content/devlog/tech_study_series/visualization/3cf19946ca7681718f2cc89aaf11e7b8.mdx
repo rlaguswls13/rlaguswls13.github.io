@@ -34,9 +34,9 @@ notionUrl: "https://app.notion.com/p/Python-seaborn-01-figure-level-vs-axes-leve
 
 ## 핵심 요약
 
-seaborn은 **matplotlib 위에 얹힌 통계 그래프 API**입니다. "데이터프레임의 어떤 열을 x축·y축·색·격자에 대응시킬지"만 선언하면, 그룹화·집계·색 매핑·범례·축 라벨을 자동으로 처리합니다.
-입력은 원칙적으로 **tidy(long) 데이터**입니다: 관측 1건이 1행, 변수 1개가 1열이며, `x=`, `y=`, `hue=`에는 **열 이름 문자열**을 넘깁니다.
-seaborn 함수는 두 계열로 나뉩니다: 넘겨준 `Axes` 하나에 그리는 **axes-level**(`histplot`, `boxplot`, `scatterplot` ...)과, 자체 `FacetGrid`(Figure 전체)를 만드는 **figure-level**(`displot`, `catplot`, `relplot`). 이 구분이 이후 모든 챕터의 전제입니다.
+seaborn은 <strong>matplotlib 위에 얹힌 통계 그래프 API</strong>입니다. "데이터프레임의 어떤 열을 x축·y축·색·격자에 대응시킬지"만 선언하면, 그룹화·집계·색 매핑·범례·축 라벨을 자동으로 처리합니다.
+입력은 원칙적으로 <strong>tidy(long) 데이터</strong>입니다: 관측 1건이 1행, 변수 1개가 1열이며, `x=`, `y=`, `hue=`에는 <strong>열 이름 문자열</strong>을 넘깁니다.
+seaborn 함수는 두 계열로 나뉩니다: 넘겨준 `Axes` 하나에 그리는 <strong>axes-level</strong>(`histplot`, `boxplot`, `scatterplot` ...)과, 자체 `FacetGrid`(Figure 전체)를 만드는 <strong>figure-level</strong>(`displot`, `catplot`, `relplot`). 이 구분이 이후 모든 챕터의 전제입니다.
 
 
 ```python
@@ -61,15 +61,15 @@ tips = sns.load_dataset("tips")
 <NotionTable>
   <tbody>
     <tr><td>계층</td><td>질문</td><td>담당</td></tr>
-    <tr><td>**저수준 그리기**</td><td>"선·점·축·색을 화면 어디에 어떻게 놓을까"</td><td>matplotlib — `Figure`, `Axes`, `Artist`, `Transform`</td></tr>
-    <tr><td>**통계 그래프 추상**</td><td>"이 데이터를 이 차트 종류로, 그룹은 색으로, 카테고리는 서브플롯으로"</td><td>**seaborn** — `data`/`x`/`y`/`hue`/`col`/`row`</td></tr>
-    <tr><td>**시각화 이론**</td><td>"왜 막대가 아니라 상자그림인가", "이 인코딩 채널이 지각적으로 정확한가"</td><td>로드맵의 이론 노트</td></tr>
+    <tr><td><strong>저수준 그리기</strong></td><td>"선·점·축·색을 화면 어디에 어떻게 놓을까"</td><td>matplotlib — `Figure`, `Axes`, `Artist`, `Transform`</td></tr>
+    <tr><td><strong>통계 그래프 추상</strong></td><td>"이 데이터를 이 차트 종류로, 그룹은 색으로, 카테고리는 서브플롯으로"</td><td><strong>seaborn</strong> — `data`/`x`/`y`/`hue`/`col`/`row`</td></tr>
+    <tr><td><strong>시각화 이론</strong></td><td>"왜 막대가 아니라 상자그림인가", "이 인코딩 채널이 지각적으로 정확한가"</td><td>로드맵의 이론 노트</td></tr>
   </tbody>
 </NotionTable>
 
 seaborn은 가운데 계층입니다. 아래(matplotlib)로 내려가면 `ax.spines`·`ax.set_xticks` 같은 세부 제어를, 위(이론)로 올라가면 차트 선택의 근거를 다룹니다. seaborn은 "선택된 차트를 데이터에 맞게 빠르게 그리는" 도구이지, 차트를 대신 골라 주지는 않습니다.
 
-> 💡 **이럴 때**: 축 눈금 포맷, 이중 y축, 주석 화살표처럼 seaborn이 노출하지 않는 것이 필요하면, seaborn으로 그린 뒤 반환된 `Axes`를 받아 matplotlib API로 마저 손봅니다. 계층을 오르내리는 것이지 둘 중 하나를 버리는 게 아닙니다.
+> 💡 <strong>이럴 때</strong>: 축 눈금 포맷, 이중 y축, 주석 화살표처럼 seaborn이 노출하지 않는 것이 필요하면, seaborn으로 그린 뒤 반환된 `Axes`를 받아 matplotlib API로 마저 손봅니다. 계층을 오르내리는 것이지 둘 중 하나를 버리는 게 아닙니다.
 
 
 <NotionDivider />
@@ -80,10 +80,10 @@ seaborn은 가운데 계층입니다. 아래(matplotlib)로 내려가면 `ax.spi
 
 seaborn은 모든 그림을 결국 matplotlib `Axes`에 그립니다. seaborn이 더해 주는 것은 다음 네 가지입니다.
 
-1. **통계 변환 내장**: `histplot`은 비닝, `kdeplot`은 커널 밀도 추정, `barplot`은 평균+신뢰구간, `lineplot`은 자동 집계+오차 밴드를 함수 안에서 계산합니다.
-1. **의미 매핑**: `hue`(색), `size`(크기), `style`(마커·선모양)에 데이터 열을 대응시키면 범례까지 자동 생성됩니다.
-1. **패싯(격자)**: `col`, `row`에 열을 주면 카테고리별 서브플롯 격자를 만듭니다.
-1. **테마**: `set_theme()` 한 줄로 폰트·색·격자 스타일이 일관되게 바뀝니다.
+1. <strong>통계 변환 내장</strong>: `histplot`은 비닝, `kdeplot`은 커널 밀도 추정, `barplot`은 평균+신뢰구간, `lineplot`은 자동 집계+오차 밴드를 함수 안에서 계산합니다.
+1. <strong>의미 매핑</strong>: `hue`(색), `size`(크기), `style`(마커·선모양)에 데이터 열을 대응시키면 범례까지 자동 생성됩니다.
+1. <strong>패싯(격자)</strong>: `col`, `row`에 열을 주면 카테고리별 서브플롯 격자를 만듭니다.
+1. <strong>테마</strong>: `set_theme()` 한 줄로 폰트·색·격자 스타일이 일관되게 바뀝니다.
 
 ```python
 # matplotlib만으로: 그룹별로 직접 반복
@@ -104,7 +104,7 @@ sns.scatterplot(data=tips, x="total_bill", y="tip", hue="smoker")
 
 ## 3. tidy(long) 데이터 전제
 
-seaborn의 자동화는 "어떤 열이 어떤 변수인지"를 알아야 작동합니다. 그래서 **long 형식**을 전제합니다.
+seaborn의 자동화는 "어떤 열이 어떤 변수인지"를 알아야 작동합니다. 그래서 <strong>long 형식</strong>을 전제합니다.
 
 
 ```python
@@ -128,7 +128,7 @@ sns.boxplot(data=long, x="day", y="total_bill")
 
 - axes-level 함수 일부는 wide 데이터(DataFrame 전체, 배열의 리스트)도 받아 "알아서" 그리지만, `hue`/`col` 매핑은 long에서만 온전히 동작합니다.
 - `x=`, `y=`에 열 이름 대신 pandas `Series`나 배열을 직접 넘길 수도 있습니다.
-> 💡 **이럴 때**: "여러 지표를 한 그림에 겹쳐 보고 싶다"면, 지표별 열을 그대로 두지 말고 `melt`로 `(지표이름, 값)` 두 열로 편 다음 `hue="지표이름"`으로 넘깁니다.
+> 💡 <strong>이럴 때</strong>: "여러 지표를 한 그림에 겹쳐 보고 싶다"면, 지표별 열을 그대로 두지 말고 `melt`로 `(지표이름, 값)` 두 열로 편 다음 `hue="지표이름"`으로 넘깁니다.
 
 
 <NotionDivider />
@@ -169,7 +169,7 @@ sns.scatterplot(data=tips, x="total_bill", y="tip",
 
 ## 5. axes-level 함수
 
-**하나의 matplotlib `Axes`에 그리고, 그 `Axes`를 반환**합니다. `ax=` 인자로 그릴 위치를 지정할 수 있습니다.
+<strong>하나의 matplotlib `Axes`에 그리고, 그 `Axes`를 반환</strong>합니다. `ax=` 인자로 그릴 위치를 지정할 수 있습니다.
 
 
 ```python
@@ -190,7 +190,7 @@ fig.suptitle("axes-level: 내가 만든 서브플롯에 끼워 넣기")
 
 ## 6. figure-level 함수
 
-**Figure 전체를 관리하는 `FacetGrid`(또는 `JointGrid`/`PairGrid`)를 새로 만들고**, 그 그리드 객체를 반환합니다. `ax=`를 **받지 않습니다**.
+<strong>Figure 전체를 관리하는 `FacetGrid`(또는 `JointGrid`/`PairGrid`)를 새로 만들고</strong>, 그 그리드 객체를 반환합니다. `ax=`를 <strong>받지 않습니다</strong>.
 
 
 ```python
@@ -212,9 +212,9 @@ g.figure.suptitle("figure-level: col·row로 격자 자동 생성", y=1.03)
 
 - 크기 지정은 `figsize`가 아니라 `height`(패싯 하나의 높이)와 `aspect`(가로/세로 비)로 합니다.
 - 개별 `Axes`는 `g.axes` 또는 `g.axes_dict`로 접근합니다.
-> 💡 **이럴 때**: 카테고리별로 나눠서 봐야 패턴이 보이면 figure-level(`col=`/`row=`)을 씁니다. 반대로 이미 만든 대시보드 격자 한 칸에 넣어야 하면 axes-level + `ax=`를 씁니다.
+> 💡 <strong>이럴 때</strong>: 카테고리별로 나눠서 봐야 패턴이 보이면 figure-level(`col=`/`row=`)을 씁니다. 반대로 이미 만든 대시보드 격자 한 칸에 넣어야 하면 axes-level + `ax=`를 씁니다.
 
-💡 **이럴 때**: figure-level 함수에 `ax=`를 넘기면 오류가 납니다. 서브플롯에 합성이 필요하면 대응하는 axes-level 함수(`displot`→`histplot`)로 바꿉니다.
+💡 <strong>이럴 때</strong>: figure-level 함수에 `ax=`를 넘기면 오류가 납니다. 서브플롯에 합성이 필요하면 대응하는 axes-level 함수(`displot`→`histplot`)로 바꿉니다.
 
 
 <NotionDivider />
@@ -235,7 +235,7 @@ g.figure.suptitle("figure-level: col·row로 격자 자동 생성", y=1.03)
    예 → JointGrid / PairGrid 계열 (5장)
 ```
 
-> 💡 **이럴 때**: 튜토리얼 예제를 따라 하는데 `ax=`가 안 먹혀서 당황하면, 그 함수가 figure-level인지부터 확인합니다. `sns.displot`(figure)과 `sns.histplot`(axes)은 이름이 한 글자 차이입니다.
+> 💡 <strong>이럴 때</strong>: 튜토리얼 예제를 따라 하는데 `ax=`가 안 먹혀서 당황하면, 그 함수가 figure-level인지부터 확인합니다. `sns.displot`(figure)과 `sns.histplot`(axes)은 이름이 한 글자 차이입니다.
 
 
 <NotionDivider />

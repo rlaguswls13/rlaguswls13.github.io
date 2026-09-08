@@ -212,11 +212,11 @@ tags: [tag1, tag2]
 <NotionTable>
   <tbody>
     <tr><td>구분</td><td>기존 RAG (Retrieval-Augmented Generation)</td><td>Andrej Karpathy의 LLM Wiki</td></tr>
-    <tr><td>**처리 시점**</td><td>**Query-time (검색 시점)**&lt;br>질문이 들어올 때마다 매번 검색 수행</td><td>**Compile-time (컴파일 시점)**&lt;br>자료 수집 시 사전에 구조화하여 위키로 컴파일</td></tr>
-    <tr><td>**데이터 형태**</td><td>**파편화된 텍스트 조각 (Chunks)**&lt;br>문맥이 단절된 텍스트 블록 참조</td><td>**상호 연결된 마크다운 문서**&lt;br>전체 맥락과 하이퍼링크가 보존된 지식 체계</td></tr>
-    <tr><td>**지식 지속성**</td><td>**휘발성 (Stateless)**&lt;br>질의응답 종료 후 통찰이 저장되지 않음</td><td>**영속성 및 축적성 (Stateful)**&lt;br>데이터가 쌓일수록 위키가 정밀해짐</td></tr>
-    <tr><td>**토큰 효율성**</td><td>매 질문마다 대량의 유사 조각 검색으로 토큰 소모 누적</td><td>정돈된 요약 및 색인 참조로 불필요한 토큰 소모 절감</td></tr>
-    <tr><td>**AI 통제력**</td><td>모듈 고도화 시 환각 발생 위험 높음</td><td>정돈된 위키 맥락 기반으로 세부 영역 통제 가능</td></tr>
+    <tr><td><strong>처리 시점</strong></td><td><strong>Query-time (검색 시점)</strong>&lt;br>질문이 들어올 때마다 매번 검색 수행</td><td><strong>Compile-time (컴파일 시점)</strong>&lt;br>자료 수집 시 사전에 구조화하여 위키로 컴파일</td></tr>
+    <tr><td><strong>데이터 형태</strong></td><td><strong>파편화된 텍스트 조각 (Chunks)</strong>&lt;br>문맥이 단절된 텍스트 블록 참조</td><td><strong>상호 연결된 마크다운 문서</strong>&lt;br>전체 맥락과 하이퍼링크가 보존된 지식 체계</td></tr>
+    <tr><td><strong>지식 지속성</strong></td><td><strong>휘발성 (Stateless)</strong>&lt;br>질의응답 종료 후 통찰이 저장되지 않음</td><td><strong>영속성 및 축적성 (Stateful)</strong>&lt;br>데이터가 쌓일수록 위키가 정밀해짐</td></tr>
+    <tr><td><strong>토큰 효율성</strong></td><td>매 질문마다 대량의 유사 조각 검색으로 토큰 소모 누적</td><td>정돈된 요약 및 색인 참조로 불필요한 토큰 소모 절감</td></tr>
+    <tr><td><strong>AI 통제력</strong></td><td>모듈 고도화 시 환각 발생 위험 높음</td><td>정돈된 위키 맥락 기반으로 세부 영역 통제 가능</td></tr>
   </tbody>
 </NotionTable>
 

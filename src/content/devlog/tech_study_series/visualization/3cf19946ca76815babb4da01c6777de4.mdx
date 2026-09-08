@@ -32,9 +32,9 @@ notionUrl: "https://app.notion.com/p/Python-matplotlib-06-3cf19946ca76815babb4da
 
 ## 핵심 요약
 
-데이터 위에 의미를 얹는 도구는 **`ax.annotate`(화살표가 있는 주석)**, **`ax.text`(단순 텍스트)**, 그리고 **`axhline`/`axvline`/`axhspan`/`axvspan`(기준선·기준 구간)**입니다.
-텍스트 위치는 **좌표계(데이터 좌표 vs Axes 비율 좌표)**를 무엇으로 잡느냐가 핵심이며, `transform` 인자로 지정합니다.
-수식은 달러 기호로 감싼 **mathtext**로 쓰고, 한글은 **폰트 설정(`font.family`)과 `axes.unicode_minus=False`**를 지정하지 않으면 깨지거나 마이너스 기호가 사라집니다.
+데이터 위에 의미를 얹는 도구는 <strong>`ax.annotate`(화살표가 있는 주석)</strong>, <strong>`ax.text`(단순 텍스트)</strong>, 그리고 <strong>`axhline`/`axvline`/`axhspan`/`axvspan`(기준선·기준 구간)</strong>입니다.
+텍스트 위치는 <strong>좌표계(데이터 좌표 vs Axes 비율 좌표)</strong>를 무엇으로 잡느냐가 핵심이며, `transform` 인자로 지정합니다.
+수식은 달러 기호로 감싼 <strong>mathtext</strong>로 쓰고, 한글은 <strong>폰트 설정(`font.family`)과 `axes.unicode_minus=False`</strong>를 지정하지 않으면 깨지거나 마이너스 기호가 사라집니다.
 
 
 ```python
@@ -71,7 +71,7 @@ ax.annotate(
 - `xy`는 화살표 끝(가리키는 곳), `xytext`는 글자가 놓이는 곳입니다.
 - `xycoords`/`textcoords`로 좌표계를 바꿉니다. 기본은 `"data"`(데이터 좌표), `"axes fraction"`은 Axes 기준 0~1 비율.
 - `arrowprops` 없이 쓰면 화살표 없는 텍스트가 됩니다.
-> 💡 **이럴 때**: "이 그림에서 봐야 할 곳"이 분명하면 제목에 결론을 쓰고(`ax.set_title("Q3에 매출이 정점")`) 해당 지점에 `annotate`로 화살표를 답니다. 독자가 스스로 찾게 두지 않습니다. → 데이터 전처리·시각화 이론 학습 로드맵 2.11
+> 💡 <strong>이럴 때</strong>: "이 그림에서 봐야 할 곳"이 분명하면 제목에 결론을 쓰고(`ax.set_title("Q3에 매출이 정점")`) 해당 지점에 `annotate`로 화살표를 답니다. 독자가 스스로 찾게 두지 않습니다. → 데이터 전처리·시각화 이론 학습 로드맵 2.11
 
 
 <NotionDivider />
@@ -116,7 +116,7 @@ ax.axvspan("2026-03", "2026-05", color="gray", alpha=0.15)  # 수직 띠 (특정
 
 - `axhline`/`axvline`은 축 전체를 가로지르는 선, `axhspan`/`axvspan`은 범위를 채운 띠입니다.
 - 좌표 지정 없이 축 끝까지 자동으로 뻗습니다(부분만 원하면 `xmin`/`xmax`를 0~1 비율로).
-> 💡 **이럴 때**: 임계치(SLA 99%, 손익분기점)나 사건 발생 시점(배포, 정책 변경)을 `axhline`/`axvline`으로 표시하면 데이터가 그 기준을 넘었는지 즉시 읽힙니다.
+> 💡 <strong>이럴 때</strong>: 임계치(SLA 99%, 손익분기점)나 사건 발생 시점(배포, 정책 변경)을 `axhline`/`axvline`으로 표시하면 데이터가 그 기준을 넘었는지 즉시 읽힙니다.
 
 
 <NotionDivider />
@@ -141,7 +141,7 @@ ax.text(0.5, 0.5, r"$\bar{x} \pm \sigma$", transform=ax.transAxes)
 
 ## 5. 한글 폰트 설정 이슈
 
-논의 계층을 분리합니다. 한글 깨짐은 **① 폰트 지정 문제**와 **② 마이너스 기호 문제**가 별개로 겹칩니다.
+논의 계층을 분리합니다. 한글 깨짐은 <strong>① 폰트 지정 문제</strong>와 <strong>② 마이너스 기호 문제</strong>가 별개로 겹칩니다.
 
 
 ```python
@@ -166,9 +166,9 @@ from matplotlib import font_manager
 ```
 
 - 특정 텍스트에만 폰트를 주려면 `ax.set_title("제목", fontproperties=font_manager.FontProperties(fname="C:/Windows/Fonts/malgun.ttf"))`.
-> 💡 **이럴 때**: 축 라벨의 한글은 나오는데 음수 눈금이 `□2`, `□4`로 보이면 폰트가 아니라 `axes.unicode_minus` 문제입니다. `False`로 지정합니다.
+> 💡 <strong>이럴 때</strong>: 축 라벨의 한글은 나오는데 음수 눈금이 `□2`, `□4`로 보이면 폰트가 아니라 `axes.unicode_minus` 문제입니다. `False`로 지정합니다.
 
-💡 **이럴 때**: 협업 환경(CI, 동료 PC)에서 폰트 이름이 제각각이면, 폰트 파일을 리포지토리에 포함하고 `font_manager.fontManager.addfont(path)` 후 `font.family`에 그 폰트 이름을 지정해 환경 독립적으로 만듭니다.
+💡 <strong>이럴 때</strong>: 협업 환경(CI, 동료 PC)에서 폰트 이름이 제각각이면, 폰트 파일을 리포지토리에 포함하고 `font_manager.fontManager.addfont(path)` 후 `font.family`에 그 폰트 이름을 지정해 환경 독립적으로 만듭니다.
 
 
 <NotionDivider />

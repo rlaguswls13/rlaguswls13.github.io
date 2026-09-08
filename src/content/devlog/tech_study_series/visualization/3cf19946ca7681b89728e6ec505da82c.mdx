@@ -32,9 +32,9 @@ notionUrl: "https://app.notion.com/p/Python-matplotlib-01-Figure-Axes-3cf19946ca
 
 ## 핵심 요약
 
-matplotlib 그림은 **`Figure`(전체 도화지)** 안에 하나 이상의 **`Axes`(좌표계, 흔히 말하는 "그래프 한 칸")**가 들어가고, 그 안의 선·점·축·눈금·텍스트는 모두 **`Artist` 객체**라는 계층으로 되어 있습니다.
-그림을 그리는 방법은 두 가지입니다. `plt.plot(...)`처럼 **"현재 Axes"에 암묵적으로 그리는 pyplot(상태 기반) 방식**과, `fig, ax = plt.subplots()`로 객체를 받아 `ax.plot(...)`을 호출하는 **객체지향(OO) 방식**입니다.
-서브플롯이 둘 이상이거나 함수 안에서 그림을 만드는 순간부터는 **OO 방식**이 사실상 표준입니다.
+matplotlib 그림은 <strong>`Figure`(전체 도화지)</strong> 안에 하나 이상의 <strong>`Axes`(좌표계, 흔히 말하는 "그래프 한 칸")</strong>가 들어가고, 그 안의 선·점·축·눈금·텍스트는 모두 <strong>`Artist` 객체</strong>라는 계층으로 되어 있습니다.
+그림을 그리는 방법은 두 가지입니다. `plt.plot(...)`처럼 <strong>"현재 Axes"에 암묵적으로 그리는 pyplot(상태 기반) 방식</strong>과, `fig, ax = plt.subplots()`로 객체를 받아 `ax.plot(...)`을 호출하는 <strong>객체지향(OO) 방식</strong>입니다.
+서브플롯이 둘 이상이거나 함수 안에서 그림을 만드는 순간부터는 <strong>OO 방식</strong>이 사실상 표준입니다.
 
 
 ```python
@@ -69,7 +69,7 @@ line, = ax.plot([0, 1, 2], [3, 1, 2])   # Axes 위에 Line2D(Artist) 하나 추�
 
 - `Figure`는 `Axes`를 담는 컨테이너이고, `Axes`는 다시 `Artist`들을 담습니다.
 - `ax.xaxis` / `ax.yaxis`(`Axis` 객체)는 눈금(tick)과 눈금 라벨, 축 라벨을 관리합니다. → Python - matplotlib 04. 축·스케일·틱·범례
-> 💡 **이럴 때**: "제목을 그림 전체에 달까, 특정 칸에 달까"가 헷갈리면 계층을 떠올립니다. `fig.suptitle(...)`은 캔버스 전체, `ax.set_title(...)`은 해당 좌표계 한 칸입니다.
+> 💡 <strong>이럴 때</strong>: "제목을 그림 전체에 달까, 특정 칸에 달까"가 헷갈리면 계층을 떠올립니다. `fig.suptitle(...)`은 캔버스 전체, `ax.set_title(...)`은 해당 좌표계 한 칸입니다.
 
 
 <NotionDivider />
@@ -78,7 +78,7 @@ line, = ax.plot([0, 1, 2], [3, 1, 2])   # Axes 위에 Line2D(Artist) 하나 추�
 
 ## 2. pyplot(상태 기반) 인터페이스
 
-`pyplot`은 MATLAB 스타일의 간편 API입니다. "현재 Figure"와 "현재 Axes"라는 **전역 상태**를 두고, 함수 호출이 그 대상에 적용됩니다.
+`pyplot`은 MATLAB 스타일의 간편 API입니다. "현재 Figure"와 "현재 Axes"라는 <strong>전역 상태</strong>를 두고, 함수 호출이 그 대상에 적용됩니다.
 
 
 ```python
@@ -90,7 +90,7 @@ plt.show()
 ```
 
 - "현재 Axes"는 `plt.gca()`(get current axes), "현재 Figure"는 `plt.gcf()`로 얻습니다.
-- 어느 Axes가 "현재"인지는 마지막으로 만들어졌거나 선택된 것에 따라 **암묵적으로** 바뀝니다.
+- 어느 Axes가 "현재"인지는 마지막으로 만들어졌거나 선택된 것에 따라 <strong>암묵적으로</strong> 바뀝니다.
 그려지는 것: 왼쪽 위에서 아래로 꺾였다가 다시 살짝 올라오는 꺾은선 하나가 있는 단일 그래프가 화면(또는 노트북 셀)에 나타납니다.
 
 
@@ -100,7 +100,7 @@ plt.show()
 
 ## 3. 객체지향(OO) 인터페이스
 
-`plt.subplots()`가 `Figure`와 `Axes`(또는 Axes 배열)를 **명시적으로 반환**합니다. 이후에는 그 객체의 메서드만 호출합니다.
+`plt.subplots()`가 `Figure`와 `Axes`(또는 Axes 배열)를 <strong>명시적으로 반환</strong>합니다. 이후에는 그 객체의 메서드만 호출합니다.
 
 
 ```python
@@ -141,9 +141,9 @@ fig, ax = plt.subplots()
 plot_series(ax, [0, 1, 2], [1, 3, 2], "A")   # 이 함수는 전역 상태를 건드리지 않음
 ```
 
-> 💡 **이럴 때**: 스크립트가 커지거나 재사용 함수를 만들 때는 처음부터 `fig, ax = plt.subplots()`로 시작합니다. pyplot 방식은 노트북에서 한 칸짜리 그림을 빠르게 확인할 때로 한정합니다.
+> 💡 <strong>이럴 때</strong>: 스크립트가 커지거나 재사용 함수를 만들 때는 처음부터 `fig, ax = plt.subplots()`로 시작합니다. pyplot 방식은 노트북에서 한 칸짜리 그림을 빠르게 확인할 때로 한정합니다.
 
-💡 **이럴 때**: 예제 코드가 `plt.plot(...)`으로만 되어 있어도, subplot이 필요해지면 `plt.subplot(...)` 대신 `plt.subplots(...)`로 바꾸고 `ax.` 메서드로 옮깁니다.
+💡 <strong>이럴 때</strong>: 예제 코드가 `plt.plot(...)`으로만 되어 있어도, subplot이 필요해지면 `plt.subplot(...)` 대신 `plt.subplots(...)`로 바꾸고 `ax.` 메서드로 옮깁니다.
 
 
 <NotionDivider />
@@ -152,7 +152,7 @@ plot_series(ax, [0, 1, 2], [1, 3, 2], "A")   # 이 함수는 전역 상태를 �
 
 ## 5. `plt.show()`와 백엔드
 
-**백엔드(backend)**는 Artist 트리를 실제 픽셀이나 벡터로 렌더링하는 계층입니다. 논의 계층을 나누면 이렇습니다.
+<strong>백엔드(backend)</strong>는 Artist 트리를 실제 픽셀이나 벡터로 렌더링하는 계층입니다. 논의 계층을 나누면 이렇습니다.
 
 
 <NotionTable>
@@ -170,10 +170,10 @@ import matplotlib
 print(matplotlib.get_backend())   # 현재 백엔드 확인
 ```
 
-- **스크립트**에서는 `plt.show()`를 호출해야 창이 뜨고, 그 시점에 이벤트 루프가 돌며 그림이 표시됩니다.
-- **Jupyter 노트북**은 인라인 백엔드가 기본이라 셀이 끝나면 자동으로 그림이 출력되고, `plt.show()`는 사실상 불필요합니다(중복 출력을 막는 용도로만 쓰기도 합니다).
+- <strong>스크립트</strong>에서는 `plt.show()`를 호출해야 창이 뜨고, 그 시점에 이벤트 루프가 돌며 그림이 표시됩니다.
+- <strong>Jupyter 노트북</strong>은 인라인 백엔드가 기본이라 셀이 끝나면 자동으로 그림이 출력되고, `plt.show()`는 사실상 불필요합니다(중복 출력을 막는 용도로만 쓰기도 합니다).
 - 창이 안 뜨는 환경(SSH, CI)에서 `Agg`가 선택되면 `plt.show()`는 아무 일도 하지 않으며, `fig.savefig(...)`로 파일을 만들어야 합니다. → Python - matplotlib 07. 저장·해상도·백엔드
-> 💡 **이럴 때**: 서버에서 `plt.show()`가 멈추거나 에러가 나면 그림을 파일로 저장하는 흐름으로 바꾸고, 필요하면 스크립트 최상단에서 `matplotlib.use("Agg")`를 `pyplot` import 전에 지정합니다.
+> 💡 <strong>이럴 때</strong>: 서버에서 `plt.show()`가 멈추거나 에러가 나면 그림을 파일로 저장하는 흐름으로 바꾸고, 필요하면 스크립트 최상단에서 `matplotlib.use("Agg")`를 `pyplot` import 전에 지정합니다.
 
 
 <NotionDivider />

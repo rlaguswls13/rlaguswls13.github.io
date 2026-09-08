@@ -31,7 +31,7 @@ notionUrl: "https://app.notion.com/p/Python-matplotlib-07-3cf19946ca76813eb32ff2
 
 ## 핵심 요약
 
-그림 저장은 **`fig.savefig("out.png", dpi=..., bbox_inches="tight", transparent=...)`** 한 줄이지만, 결과 품질은 **`figsize`(인치 단위 크기)와 `dpi`(인치당 픽셀)의 곱**으로 정해지는 최종 픽셀 수, 그리고 **파일 포맷 선택**에 달려 있습니다.
+그림 저장은 <strong>`fig.savefig("out.png", dpi=..., bbox_inches="tight", transparent=...)`</strong> 한 줄이지만, 결과 품질은 <strong>`figsize`(인치 단위 크기)와 `dpi`(인치당 픽셀)의 곱</strong>으로 정해지는 최종 픽셀 수, 그리고 <strong>파일 포맷 선택</strong>에 달려 있습니다.
 래스터 포맷(PNG)은 픽셀 고정, 벡터 포맷(SVG·PDF)은 무한 확대가 가능하므로 용도가 다릅니다.
 창을 띄우는 인터랙티브 백엔드와 파일만 만드는 비인터랙티브(`Agg`) 백엔드의 차이도 저장 흐름에 영향을 줍니다.
 
@@ -48,9 +48,9 @@ import matplotlib.pyplot as plt
 
 ## 1. `figsize`와 `dpi`의 관계
 
-- `figsize=(w, h)`는 **인치** 단위 크기입니다. `plt.subplots(figsize=(6, 4))` → 6인치 × 4인치.
-- `dpi`는 **인치당 픽셀 수**입니다.
-- 최종 이미지 픽셀 = `figsize × dpi`. 예: `(6, 4)` × `150` = **900 × 600 px**.
+- `figsize=(w, h)`는 <strong>인치</strong> 단위 크기입니다. `plt.subplots(figsize=(6, 4))` → 6인치 × 4인치.
+- `dpi`는 <strong>인치당 픽셀 수</strong>입니다.
+- 최종 이미지 픽셀 = `figsize × dpi`. 예: `(6, 4)` × `150` = <strong>900 × 600 px</strong>.
 
 ```python
 fig, ax = plt.subplots(figsize=(6, 4))     # 물리 크기
@@ -59,10 +59,10 @@ fig.savefig("plot@2x.png", dpi=300)        # 같은 그림, 1800x1200 px
 ```
 
 - 화면 표시용 `dpi`(`figure.dpi`)와 저장용 `dpi`(`savefig.dpi`)는 별개입니다. `savefig(dpi=...)`가 저장 시점 값을 덮어씁니다.
-- **폰트·선 굵기는 `figsize`에 상대적**입니다. `figsize`를 키우지 않고 `dpi`만 올리면 픽셀은 늘지만 글자 비율은 그대로입니다. 반대로 `figsize`를 줄이면 상대적으로 글자가 커 보입니다.
-> 💡 **이럴 때**: 논문·슬라이드에 넣을 그림은 목표 물리 크기를 `figsize`로 먼저 정하고(예: 2단 칼럼 폭 3.5인치), `dpi=300`으로 저장합니다. 나중에 이미지를 키우고 줄이지 않습니다.
+- <strong>폰트·선 굵기는 `figsize`에 상대적</strong>입니다. `figsize`를 키우지 않고 `dpi`만 올리면 픽셀은 늘지만 글자 비율은 그대로입니다. 반대로 `figsize`를 줄이면 상대적으로 글자가 커 보입니다.
+> 💡 <strong>이럴 때</strong>: 논문·슬라이드에 넣을 그림은 목표 물리 크기를 `figsize`로 먼저 정하고(예: 2단 칼럼 폭 3.5인치), `dpi=300`으로 저장합니다. 나중에 이미지를 키우고 줄이지 않습니다.
 
-💡 **이럴 때**: 글자가 너무 작으면 `dpi`가 아니라 `figsize`를 줄이거나 `font.size`를 키웁니다.
+💡 <strong>이럴 때</strong>: 글자가 너무 작으면 `dpi`가 아니라 `figsize`를 줄이거나 `font.size`를 키웁니다.
 
 
 <NotionDivider />
@@ -108,10 +108,10 @@ fig.savefig(
 <NotionTable>
   <tbody>
     <tr><td>포맷</td><td>종류</td><td>장점</td><td>단점</td><td>용도</td></tr>
-    <tr><td>**PNG**</td><td>래스터</td><td>어디서나 열림, 투명 지원, 무손실</td><td>확대 시 픽셀 깨짐, `dpi` 고정</td><td>웹, README, 슬라이드</td></tr>
-    <tr><td>**SVG**</td><td>벡터</td><td>무한 확대, 텍스트 검색·편집 가능, 작은 용량(선 위주)</td><td>점이 수만 개면 오히려 무겁고 느림</td><td>웹 문서, 편집이 필요한 도식</td></tr>
-    <tr><td>**PDF**</td><td>벡터</td><td>인쇄 품질, LaTeX 문서 삽입 표준</td><td>브라우저 기본 표시 아님</td><td>논문, 인쇄물</td></tr>
-    <tr><td>**JPG**</td><td>래스터</td><td>사진에 용량 유리</td><td>손실 압축으로 선·글자 주변 뭉개짐, 투명 불가</td><td>사진이 포함된 경우만</td></tr>
+    <tr><td><strong>PNG</strong></td><td>래스터</td><td>어디서나 열림, 투명 지원, 무손실</td><td>확대 시 픽셀 깨짐, `dpi` 고정</td><td>웹, README, 슬라이드</td></tr>
+    <tr><td><strong>SVG</strong></td><td>벡터</td><td>무한 확대, 텍스트 검색·편집 가능, 작은 용량(선 위주)</td><td>점이 수만 개면 오히려 무겁고 느림</td><td>웹 문서, 편집이 필요한 도식</td></tr>
+    <tr><td><strong>PDF</strong></td><td>벡터</td><td>인쇄 품질, LaTeX 문서 삽입 표준</td><td>브라우저 기본 표시 아님</td><td>논문, 인쇄물</td></tr>
+    <tr><td><strong>JPG</strong></td><td>래스터</td><td>사진에 용량 유리</td><td>손실 압축으로 선·글자 주변 뭉개짐, 투명 불가</td><td>사진이 포함된 경우만</td></tr>
   </tbody>
 </NotionTable>
 
@@ -122,7 +122,7 @@ fig.savefig("fig.svg")      # 벡터, 웹/편집
 fig.savefig("fig.png", dpi=200)   # 래스터, 범용
 ```
 
-> 💡 **이럴 때**: 산점도에 점이 10만 개가 넘으면 SVG/PDF가 수 MB로 커지고 뷰어가 느려집니다. 이럴 때는 PNG(고 dpi)로 저장하거나, `ax.scatter(..., rasterized=True)`로 그 요소만 래스터화하고 축·텍스트는 벡터로 유지합니다.
+> 💡 <strong>이럴 때</strong>: 산점도에 점이 10만 개가 넘으면 SVG/PDF가 수 MB로 커지고 뷰어가 느려집니다. 이럴 때는 PNG(고 dpi)로 저장하거나, `ax.scatter(..., rasterized=True)`로 그 요소만 래스터화하고 축·텍스트는 벡터로 유지합니다.
 
 
 <NotionDivider />
@@ -153,9 +153,9 @@ print(matplotlib.get_backend())  # 현재 백엔드
 - 서버·CI·크론잡처럼 디스플레이가 없는 환경에서는 `Agg`가 자동 선택되며, 그림은 오직 `savefig`로만 얻습니다.
 - `Agg`는 "Anti-Grain Geometry"의 약자로, 대부분의 인터랙티브 백엔드도 실제 픽셀 렌더링은 Agg 엔진을 씁니다(그래서 `QtAgg`, `TkAgg`처럼 이름에 Agg가 붙습니다).
 - Jupyter는 `inline`(정적 PNG/SVG) 또는 `ipympl`/`widget`(인터랙티브)을 씁니다. `%matplotlib inline` / `%matplotlib widget` 매직으로 전환합니다.
-> 💡 **이럴 때**: 리눅스 서버에서 `plt.show()` 호출 시 `no display name` 류의 에러나 멈춤이 나면, 스크립트 최상단에서 `matplotlib.use("Agg")`를 지정하고 표시 대신 저장하도록 바꿉니다.
+> 💡 <strong>이럴 때</strong>: 리눅스 서버에서 `plt.show()` 호출 시 `no display name` 류의 에러나 멈춤이 나면, 스크립트 최상단에서 `matplotlib.use("Agg")`를 지정하고 표시 대신 저장하도록 바꿉니다.
 
-💡 **이럴 때**: 배치로 그림 수백 장을 생성하면 메모리가 계속 쌓입니다. 각 그림 저장 후 `plt.close(fig)`를 반드시 호출합니다.
+💡 <strong>이럴 때</strong>: 배치로 그림 수백 장을 생성하면 메모리가 계속 쌓입니다. 각 그림 저장 후 `plt.close(fig)`를 반드시 호출합니다.
 
 
 <NotionDivider />

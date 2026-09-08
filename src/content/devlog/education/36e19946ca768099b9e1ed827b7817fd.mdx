@@ -40,80 +40,80 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 
 ### 구성 클래스 및 역할
 
-**Point**
+<strong>Point</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `x : int` — X 좌표
 - `y : int` — Y 좌표
 
-- **생성자**
+- <strong>생성자</strong>
 - `Point()` — 기본 생성자
 - `Point(int x, int y)` — 좌표 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `toString(): String` → `"x, y"` 형식의 문자열 반환
 
 
 </NotionIndent>
 
-**Circle**
+<strong>Circle</strong>
 
 
 <NotionIndent>
 
-- **상속**
-- **Point**
+- <strong>상속</strong>
+- <strong>Point</strong>
 
-- **필드**
+- <strong>필드</strong>
 - `radius : int` — 반지름
 
-- **생성자**
+- <strong>생성자</strong>
 - `Circle()` — 기본 생성자
 - `Circle(int x, int y, int radius)` — 좌표·반지름 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `toString(): String` → `"x, y, radius"` 형식의 문자열 반환
 
 
 </NotionIndent>
 
-**Rectangle**
+<strong>Rectangle</strong>
 
 
 <NotionIndent>
 
-- **상속**
-- **Point**
+- <strong>상속</strong>
+- <strong>Point</strong>
 
-- **필드**
+- <strong>필드</strong>
 - `width : int` — 너비
 - `height : int` — 높이
 
-- **생성자**
+- <strong>생성자</strong>
 - `Rectangle()` — 기본 생성자
 - `Rectangle(int x, int y, int width, int height)` — 좌표·너비·높이 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `toString(): String` → `"x, y, width, height"` 형식의 문자열 반환
 
 
 </NotionIndent>
 
-**CircleController**
+<strong>CircleController</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `c : Circle = new Circle()` — 원 객체
 
-- **메서드**
+- <strong>메서드</strong>
 - `calcArea(int x, int y, int radius): String`
 - 필드 초기화 후 `"x, y, radius / 면적"` 문자열 반환
 - 면적 공식: `Math.PI * radius * radius`
@@ -126,15 +126,15 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 
 </NotionIndent>
 
-**RectangleController**
+<strong>RectangleController</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `r : Rectangle = new Rectangle()` — 사각형 객체
 
-- **메서드**
+- <strong>메서드</strong>
 - `calcArea(int x, int y, int height, int width): String`
 - 필드 초기화 후 `"x, y, height, width / 면적"` 문자열 반환
 - 면적 공식: `width * height`
@@ -147,17 +147,17 @@ notionUrl: "https://app.notion.com/p/java-36e19946ca768099b9e1ed827b7817fd"
 
 </NotionIndent>
 
-**PointMenu**
+<strong>PointMenu</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `sc : Scanner = new Scanner(System.in)`
 - `cc : CircleController = new CircleController()`
 - `rc : RectangleController = new RectangleController()`
 
-- **메서드**
+- <strong>메서드</strong>
 - `mainMenu(): void`
 - 메인 메뉴 출력 및 선택 처리 (1. 원, 2. 사각형, 9. 종료)
 
@@ -261,78 +261,78 @@ y 좌표 : 4
 
 ### 구성 클래스 및 역할
 
-**Person**
+<strong>Person</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `name : String` — 이름
 - `age : int` — 나이
 - `height : double` — 키
 - `weight : double` — 몸무게
 
-- **생성자**
+- <strong>생성자</strong>
 - `Person()` — 기본 생성자
 - `Person(String name, int age, double height, double weight)` — 필드 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `toString(): String` → `"name, age, height, weight"` 형식의 문자열 반환
 
 
 </NotionIndent>
 
-**Student**
+<strong>Student</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `grade : int` — 학년
 - `major : String` — 전공
 
-- **생성자**
+- <strong>생성자</strong>
 - `Student()` — 기본 생성자
 - `Student(String name, int age, double height, double weight, int grade, String major)` — 필드 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `toString(): String` → `"name, age, height, weight, grade, major"` 형식 문자열 반환
 
 
 </NotionIndent>
 
-**Employee**
+<strong>Employee</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `salary : int` — 급여
 - `dept : String` — 부서
 
-- **생성자**
+- <strong>생성자</strong>
 - `Employee()` — 기본 생성자
 - `Employee(String name, int age, double height, double weight, int salary, String dept)` — 필드 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `toString(): String` → `"name, age, height, weight, salary, dept"` 형식 문자열 반환
 
 
 </NotionIndent>
 
-**PersonController**
+<strong>PersonController</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `s : Student[] = new Student[3]` — 학생 객체 배열
 - `e : Employee[] = new Employee[10]` — 사원 객체 배열
 
-- **메서드**
+- <strong>메서드</strong>
 - `personCount(): int[]`
 - 학생·사원 배열에 저장된 객체 수 반환
 
@@ -352,16 +352,16 @@ y 좌표 : 4
 
 </NotionIndent>
 
-**PersonMenu**
+<strong>PersonMenu</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `sc : Scanner = new Scanner(System.in)`
 - `pc : PersonController = new PersonController()`
 
-- **메서드**
+- <strong>메서드</strong>
 - `mainMenu(): void`
 - 전체 메뉴 출력 및 선택 처리
 - (학생 수 3명 초과 시 추가 불가, 사원 수 10명 초과 시 추가 불가)

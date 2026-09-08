@@ -38,9 +38,9 @@ notionUrl: "https://app.notion.com/p/06-3cf19946ca76818eadf6ef7898eac0da"
 
 ## 다루는 계층
 
-- **통계 이론**: 클래스 불균형이 평가지표에 미치는 영향, 데이터 누수의 정의
-- **전처리 의사결정**: 리샘플링을 할지·어디서 할지, 어떤 지표로 볼지, 파이프라인 경계를 어디에 둘지
-- **도구 구현**: `sklearn`의 `Pipeline`·`ColumnTransformer`·`cross_val_score`, `imbalanced-learn`의 `SMOTE`
+- <strong>통계 이론</strong>: 클래스 불균형이 평가지표에 미치는 영향, 데이터 누수의 정의
+- <strong>전처리 의사결정</strong>: 리샘플링을 할지·어디서 할지, 어떤 지표로 볼지, 파이프라인 경계를 어디에 둘지
+- <strong>도구 구현</strong>: `sklearn`의 `Pipeline`·`ColumnTransformer`·`cross_val_score`, `imbalanced-learn`의 `SMOTE`
 
 <NotionDivider />
 
@@ -54,22 +54,22 @@ notionUrl: "https://app.notion.com/p/06-3cf19946ca76818eadf6ef7898eac0da"
 
 양성 클래스가 1%인 데이터에서 "전부 음성"이라 예측하면 정확도 99%입니다. 정확도(accuracy)는 다수 클래스에 지배되므로 불균형에서는 무의미합니다(사실).
 
-**대안 지표**:
+<strong>대안 지표</strong>:
 
-- **precision** = TP/(TP+FP): 양성 예측의 신뢰도.
-- **recall** = TP/(TP+FN): 실제 양성의 포착률.
-- **F1**: precision·recall의 조화평균.
-- **PR-AUC**: 불균형에서 ROC-AUC보다 소수 클래스 성능을 민감하게 반영.
-- **임계값 조정**: 확률 출력의 컷오프(기본 0.5)를 비용에 맞게 이동.
+- <strong>precision</strong> = TP/(TP+FP): 양성 예측의 신뢰도.
+- <strong>recall</strong> = TP/(TP+FN): 실제 양성의 포착률.
+- <strong>F1</strong>: precision·recall의 조화평균.
+- <strong>PR-AUC</strong>: 불균형에서 ROC-AUC보다 소수 클래스 성능을 민감하게 반영.
+- <strong>임계값 조정</strong>: 확률 출력의 컷오프(기본 0.5)를 비용에 맞게 이동.
 <a id="12-리샘플링"></a>
 
 ### 1.2 리샘플링
 
-- **오버샘플링**: 소수 클래스를 복제. 과적합 위험.
-- **언더샘플링**: 다수 클래스를 버림. 정보 손실.
-- **SMOTE**: 소수 클래스 표본들 사이를 보간해 합성 표본 생성. 경계가 겹치거나 노이즈가 있으면 잘못된 표본을 만들 수 있습니다.
-- **클래스 가중치**(`class_weight="balanced"`): 데이터를 건드리지 않고 손실에 가중. 종종 가장 간단하고 안전한 첫 시도입니다(권고).
-**핵심 규율(사실)**: 리샘플링은 **훈련 폴드에만** 적용합니다. 검증/테스트 세트는 원래 분포를 유지해야 실제 성능을 반영합니다. 분할 전에 SMOTE를 돌리면 합성 표본의 이웃이 검증셋에 새어 성능이 부풀려집니다. `imbalanced-learn`의 `Pipeline`을 써서 각 fold 내부에서만 리샘플링되게 합니다.
+- <strong>오버샘플링</strong>: 소수 클래스를 복제. 과적합 위험.
+- <strong>언더샘플링</strong>: 다수 클래스를 버림. 정보 손실.
+- <strong>SMOTE</strong>: 소수 클래스 표본들 사이를 보간해 합성 표본 생성. 경계가 겹치거나 노이즈가 있으면 잘못된 표본을 만들 수 있습니다.
+- <strong>클래스 가중치</strong>(`class_weight="balanced"`): 데이터를 건드리지 않고 손실에 가중. 종종 가장 간단하고 안전한 첫 시도입니다(권고).
+<strong>핵심 규율(사실)</strong>: 리샘플링은 <strong>훈련 폴드에만</strong> 적용합니다. 검증/테스트 세트는 원래 분포를 유지해야 실제 성능을 반영합니다. 분할 전에 SMOTE를 돌리면 합성 표본의 이웃이 검증셋에 새어 성능이 부풀려집니다. `imbalanced-learn`의 `Pipeline`을 써서 각 fold 내부에서만 리샘플링되게 합니다.
 
 
 <NotionDivider />
@@ -78,7 +78,7 @@ notionUrl: "https://app.notion.com/p/06-3cf19946ca76818eadf6ef7898eac0da"
 
 ## 2. 데이터 누수(data leakage)
 
-누수는 **훈련 시점에 사용할 수 없는 정보가 모델 학습에 들어가는 것**입니다. 검증 성능은 좋지만 실제 배포 성능은 나쁩니다.
+누수는 <strong>훈련 시점에 사용할 수 없는 정보가 모델 학습에 들어가는 것</strong>입니다. 검증 성능은 좋지만 실제 배포 성능은 나쁩니다.
 
 <a id="21-전처리-시점-누수"></a>
 
@@ -98,7 +98,7 @@ scaler = StandardScaler().fit(X_tr)            # train에서만 fit
 X_tr_s, X_te_s = scaler.transform(X_tr), scaler.transform(X_te)
 ```
 
-이 원칙은 앞선 모든 노트에서 반복된 **train fit → test transform**의 근거입니다.
+이 원칙은 앞선 모든 노트에서 반복된 <strong>train fit → test transform</strong>의 근거입니다.
 
 <a id="22-타깃-누수feature-leakage"></a>
 
@@ -138,10 +138,10 @@ scores = cross_val_score(pipe, X, y, cv=5, scoring="f1")   # 전처리가 fold �
 
 ## 3. 재현성(reproducibility)
 
-- **랜덤 시드 고정**: 데이터 분할, 리샘플링, 모델 초기화, 부트스트랩에 `random_state`를 명시. 시드를 바꿔 여러 번 돌려 결과의 분산도 확인합니다.
-- **파이프라인화**: 전처리 순서·파라미터를 코드(`Pipeline`)로 고정. 노트북에서 셀을 순서 바꿔 실행하다 생기는 은근한 누수·불일치를 차단합니다.
-- **데이터·환경 버전 관리**: 원본 데이터의 스냅샷·스키마·버전을 기록(DVC 등), 라이브러리 버전을 `requirements.txt`/lock 파일로 고정. 같은 코드라도 라이브러리 버전이 다르면 결과가 달라질 수 있습니다.
-- **전처리 산출물 저장**: 학습된 scaler·encoder·imputer를 모델과 함께 직렬화해, 추론 시 동일 변환을 재현합니다.
+- <strong>랜덤 시드 고정</strong>: 데이터 분할, 리샘플링, 모델 초기화, 부트스트랩에 `random_state`를 명시. 시드를 바꿔 여러 번 돌려 결과의 분산도 확인합니다.
+- <strong>파이프라인화</strong>: 전처리 순서·파라미터를 코드(`Pipeline`)로 고정. 노트북에서 셀을 순서 바꿔 실행하다 생기는 은근한 누수·불일치를 차단합니다.
+- <strong>데이터·환경 버전 관리</strong>: 원본 데이터의 스냅샷·스키마·버전을 기록(DVC 등), 라이브러리 버전을 `requirements.txt`/lock 파일로 고정. 같은 코드라도 라이브러리 버전이 다르면 결과가 달라질 수 있습니다.
+- <strong>전처리 산출물 저장</strong>: 학습된 scaler·encoder·imputer를 모델과 함께 직렬화해, 추론 시 동일 변환을 재현합니다.
 
 <NotionDivider />
 

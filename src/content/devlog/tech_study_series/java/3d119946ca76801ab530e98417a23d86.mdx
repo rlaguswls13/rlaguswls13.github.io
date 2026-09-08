@@ -1,0 +1,56 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-04"
+tag: []
+slug: "java-syntax-variables-types"
+subcategory: "java"
+status: "publish"
+description: "Java 문법 02. 변수와 기본 타입, 형 변환"
+title: "Java 문법 02. 변수와 기본 타입, 형 변환"
+page_id: "3d119946-ca76-801a-b530-e98417a23d86"
+source_id: "3d119946ca76801ab530e98417a23d86"
+last_edited_time: "2026-09-04T01:14:00.000Z"
+notion_url: "https://app.notion.com/p/Java-02-3d119946ca76801ab530e98417a23d86"
+id: "3d119946ca76801ab530e98417a23d86"
+sourceId: "3d119946-ca76-801a-b530-e98417a23d86"
+date: "2026-09-04"
+tags: []
+package: "java"
+notionUrl: "https://app.notion.com/p/Java-02-3d119946ca76801ab530e98417a23d86"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [1. 변수 선언과 초기화](#1-변수-선언과-초기화)
+
+값을 담는 그릇인 <strong>변수</strong>와, 그릇의 종류를 정하는 <strong>타입</strong>을 다룹니다. Java는 모든 변수에 타입이 고정된 <strong>정적 타입(statically typed)</strong> 언어이며, 타입은 크게 <strong>원시 타입(primitive) 8개</strong>와 <strong>참조 타입(reference)</strong>으로 나뉩니다.
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+- 변수는 <strong>선언 시점에 타입이 정해지고 이후 바뀌지 않습니다</strong>. `int x = 1;` 한 x에 문자열을 넣을 수 없습니다.
+- <strong>원시 타입 8개</strong>: 정수 `byte`(8) `short`(16) `int`(32) `long`(64), 실수 `float`(32) `double`(64), `char`(16, 부호 없음), `boolean`. 괄호 안은 비트 수.
+- 원시 타입은 <strong>값 자체</strong>를, 참조 타입은 <strong>객체의 주소(참조)</strong>를 담습니다. 이 차이가 대입·비교·매개변수 전달의 동작을 가릅니다.
+- <strong>작은 타입 → 큰 타입</strong>은 자동(묵시적 승격), <strong>큰 타입 → 작은 타입</strong>은 `(타입)` 캐스트를 직접 써야 하며 값이 잘릴 수 있습니다.
+- `var`(Java 10)는 <strong>지역 변수</strong>의 타입을 초기값에서 추론하게 해 줍니다. 동적 타입이 되는 것이 아니라, 컴파일러가 타입을 대신 적어 주는 것뿐입니다.
+
+<NotionDivider />
+
+<a id="1-변수-선언과-초기화"></a>
+
+## 1. 변수 선언과 초기화
+
+
+```java
+int count;              // 선언만 — 지역 변수는 이 상태로 읽으면 컴파일 에러
+count = 10;             // 대입
+int total = count + 5;  // 선언과 동시에 초기화
+
+final int MAX = 100;    // final: 한 번 대입하면 재대입 불가 (상수)
+```
+
+- <strong>지역 변수(메서드 안)는 기본값이 없습니다.</strong> 값을 넣기 전에 읽으면 `variable might not have been initialized` 컴파일 에러입니다. 이는 실수를 컴파일 단계에서 잡아 주는 장치입니다.
+- <strong>필드(클래스 멤버)는 기본값이 자동 부여</strong>됩니다: 숫자 `0`/`0.0`, `boolean` `false`, `char` `'`
+

@@ -35,7 +35,7 @@ notionUrl: "https://app.notion.com/p/Python-NumPy-11-3ce19946ca768063b0e1e8a2970
 ## 핵심 요약
 
 NumPy 배열을 저장·복원하는 방법입니다
-**① `.npy`/`.npz` 바이너리**(빠르고 dtype·shape 그대로 보존), **② 텍스트/CSV**(`loadtxt`, `genfromtxt`), **③ pandas와 상호 변환**.
+<strong>① `.npy`/`.npz` 바이너리</strong>(빠르고 dtype·shape 그대로 보존), <strong>② 텍스트/CSV</strong>(`loadtxt`, `genfromtxt`), <strong>③ pandas와 상호 변환</strong>.
 
 실무에서는 원천 데이터를 pandas로 읽고 → `to_numpy()`로 배열화 → NumPy로 전처리하는 흐름이 흔합니다.
 
@@ -51,7 +51,7 @@ import numpy as np
 
 ## 1. NumPy 바이너리 포맷 — `.npy` / `.npz`
 
-**중간 결과물을 저장할 때 최선의 선택입니다.** dtype, shape가 그대로 보존되고 로딩이 빠릅니다.
+<strong>중간 결과물을 저장할 때 최선의 선택입니다.</strong> dtype, shape가 그대로 보존되고 로딩이 빠릅니다.
 
 
 ```python
@@ -76,7 +76,7 @@ np.savez_compressed('bundle.npz', train=a)
 
 <NotionIndent>
 
-💡 **이럴 때**: 전처리 중간 산출물을 캐싱해 재실행 시간을 줄일 때. dtype·shape가 그대로 보존됩니다.
+💡 <strong>이럴 때</strong>: 전처리 중간 산출물을 캐싱해 재실행 시간을 줄일 때. dtype·shape가 그대로 보존됩니다.
 
 
 </NotionIndent>
@@ -119,12 +119,12 @@ arr = np.genfromtxt(
 )
 ```
 
-> **현실 조언**: CSV 파싱은 pandas(`pd.read_csv`)가 압도적으로 빠르고 유연합니다. NumPy의 텍스트 IO는 "의존성 없이 간단한 파일을 읽어야 할 때"로 제한하고, 복잡한 CSV는 pandas로 읽어 `to_numpy()` 합니다.
+> <strong>현실 조언</strong>: CSV 파싱은 pandas(`pd.read_csv`)가 압도적으로 빠르고 유연합니다. NumPy의 텍스트 IO는 "의존성 없이 간단한 파일을 읽어야 할 때"로 제한하고, 복잡한 CSV는 pandas로 읽어 `to_numpy()` 합니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 의존성 없이 간단한 수치 CSV만 읽으면 될 때 `loadtxt`, 결측이 있으면 `genfromtxt`. 복잡한 파일은 pandas로.
+💡 <strong>이럴 때</strong>: 의존성 없이 간단한 수치 CSV만 읽으면 될 때 `loadtxt`, 결측이 있으면 `genfromtxt`. 복잡한 파일은 pandas로.
 
 
 </NotionIndent>
@@ -155,13 +155,13 @@ np.asarray(df)
 #     혼합 dtype DataFrame은 항상 새 배열을 만든다 (object 또는 공통 상위 타입으로 승격)
 ```
 
-> 💡 **이럴 때**: pandas로 읽은 표를 NumPy 전처리 파이프라인에 넘길 때. 혼합 dtype이면 숫자 열만 골라 변환합니다.
+> 💡 <strong>이럴 때</strong>: pandas로 읽은 표를 NumPy 전처리 파이프라인에 넘길 때. 혼합 dtype이면 숫자 열만 골라 변환합니다.
 
 <a id="변환-시-주의"></a>
 
 ### 변환 시 주의
 
-- **혼합 dtype DataFrame**을 `to_numpy()`하면 공통 상위 타입(대개 `object` 또는 `float64`)으로 승격됩니다. 숫자만 필요하면 숫자 열만 골라서 변환합니다.
+- <strong>혼합 dtype DataFrame</strong>을 `to_numpy()`하면 공통 상위 타입(대개 `object` 또는 `float64`)으로 승격됩니다. 숫자만 필요하면 숫자 열만 골라서 변환합니다.
 - pandas의 결측(`NaN`, `pd.NA`)은 NumPy 배열로 오면 `np.nan`(float)이 되거나 `object`가 됩니다.
 - 인덱스·열 이름 정보는 배열로 오면 사라집니다. 필요하면 따로 보관합니다.
 

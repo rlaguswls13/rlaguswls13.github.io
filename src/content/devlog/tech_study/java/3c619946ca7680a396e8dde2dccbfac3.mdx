@@ -35,9 +35,9 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 
 ## 핵심 요약
 
-결론부터 말하면 **"함수 내부에서 객체의 내부 상태(필드/요소)를 수정하면 원본이 변경되지만, 매개변수 자체에 새로운 객체를 재할당(Reassignment)하면 원본은 변경되지 않는다."**
+결론부터 말하면 <strong>"함수 내부에서 객체의 내부 상태(필드/요소)를 수정하면 원본이 변경되지만, 매개변수 자체에 새로운 객체를 재할당(Reassignment)하면 원본은 변경되지 않는다."</strong>
 
-이 동작 원리를 이해하려면 **`Primitive` vs `Reference`**, **`Immutable` vs `Mutable`** 키워드와 Java의 **Pass-by-Value**, Python의 **Call-by-Sharing(Pass-by-Assignment)** 메커니즘을 알아야 한다.
+이 동작 원리를 이해하려면 <strong>`Primitive` vs `Reference`</strong>, <strong>`Immutable` vs `Mutable`</strong> 키워드와 Java의 <strong>Pass-by-Value</strong>, Python의 <strong>Call-by-Sharing(Pass-by-Assignment)</strong> 메커니즘을 알아야 한다.
 
 
 <NotionDivider />
@@ -50,10 +50,10 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 <NotionTable>
   <tbody>
     <tr><td>키워드</td><td>개념 정의</td><td>Java 예시</td><td>Python 예시</td></tr>
-    <tr><td>**Primitive Type** (원시 타입)</td><td>데이터의 **값(Value) 자체**를 변수 메모리에 직접 저장하는 타입</td><td>`int`, `double`, `boolean`, `char` 등</td><td>(파이썬은 모든 것이 객체이지만 `int`, `float`, `bool`이 원시 타입 역할을 함)</td></tr>
-    <tr><td>**Reference Type** (참조 타입)</td><td>힙(Heap) 메모리에 있는 **객체의 주소(참조값)**를 변수에 저장하는 타입</td><td>`Object`, `String`, `List`, 배열, 커스텀 클래스</td><td>`list`, `dict`, `set`, 커스텀 클래스 인스턴스</td></tr>
-    <tr><td>**Immutable** (불변 객체)</td><td>한 번 생성되면 **내부 상태/값을 변경할 수 없는** 객체</td><td>`String`, `Integer`, `Double` 등 Wrapper 클래스</td><td>`int`, `float`, `str`, `tuple`, `frozenset`</td></tr>
-    <tr><td>**Mutable** (가변 객체)</td><td>생성 후에도 **내부 상태/요소를 변경할 수 있는** 객체</td><td>커스텀 DTO/VO, `ArrayList`, `HashMap`</td><td>`list`, `dict`, `set`, 커스텀 클래스 인스턴스</td></tr>
+    <tr><td><strong>Primitive Type</strong> (원시 타입)</td><td>데이터의 <strong>값(Value) 자체</strong>를 변수 메모리에 직접 저장하는 타입</td><td>`int`, `double`, `boolean`, `char` 등</td><td>(파이썬은 모든 것이 객체이지만 `int`, `float`, `bool`이 원시 타입 역할을 함)</td></tr>
+    <tr><td><strong>Reference Type</strong> (참조 타입)</td><td>힙(Heap) 메모리에 있는 <strong>객체의 주소(참조값)</strong>를 변수에 저장하는 타입</td><td>`Object`, `String`, `List`, 배열, 커스텀 클래스</td><td>`list`, `dict`, `set`, 커스텀 클래스 인스턴스</td></tr>
+    <tr><td><strong>Immutable</strong> (불변 객체)</td><td>한 번 생성되면 <strong>내부 상태/값을 변경할 수 없는</strong> 객체</td><td>`String`, `Integer`, `Double` 등 Wrapper 클래스</td><td>`int`, `float`, `str`, `tuple`, `frozenset`</td></tr>
+    <tr><td><strong>Mutable</strong> (가변 객체)</td><td>생성 후에도 <strong>내부 상태/요소를 변경할 수 있는</strong> 객체</td><td>커스텀 DTO/VO, `ArrayList`, `HashMap`</td><td>`list`, `dict`, `set`, 커스텀 클래스 인스턴스</td></tr>
   </tbody>
 </NotionTable>
 
@@ -64,9 +64,9 @@ notionUrl: "https://app.notion.com/p/3c619946ca7680a396e8dde2dccbfac3"
 
 ## 2. Java의 매개변수 전달 방식: 100% Pass-by-Value
 
-Java는 **오직 Pass-by-Value(값에 의한 전달)** 방식으로만 동작한다.
+Java는 <strong>오직 Pass-by-Value(값에 의한 전달)</strong> 방식으로만 동작한다.
 
-다만, 참조 타입(Reference Type)을 넘길 때는 **"객체의 주소값(Reference Value)을 복사해서 전달"**한다.
+다만, 참조 타입(Reference Type)을 넘길 때는 <strong>"객체의 주소값(Reference Value)을 복사해서 전달"</strong>한다.
 
 <a id="1-primitive-타입-immutable-객체-전달-원본-변경-불가"></a>
 
@@ -138,15 +138,15 @@ public class JavaReferenceTest {
 
 ## 3. Python의 매개변수 전달 방식: Call-by-Sharing (Pass-by-Assignment)
 
-Python은 **Call-by-Sharing (Pass-by-Object-Reference)** 방식을 사용한다.
+Python은 <strong>Call-by-Sharing (Pass-by-Object-Reference)</strong> 방식을 사용한다.
 
-전달되는 객체가 **`Immutable`인가 `Mutable`인가**에 따라 동작이 달라진다.
+전달되는 객체가 <strong>`Immutable`인가 `Mutable`인가</strong>에 따라 동작이 달라진다.
 
 <a id="1-immutable-객체-전달-int-str-tuple-원본-변경-불가"></a>
 
 ### 1) Immutable 객체 전달 (`int`, `str`, `tuple` -> 원본 변경 불가)
 
-Python에서 Immutable 객체의 값을 변경하려 하면, 기존 객체를 수정하는 것이 아니라 **새로운 객체를 생성하여 변수에 재바인딩**한다.
+Python에서 Immutable 객체의 값을 변경하려 하면, 기존 객체를 수정하는 것이 아니라 <strong>새로운 객체를 생성하여 변수에 재바인딩</strong>한다.
 
 
 ```python
@@ -209,5 +209,5 @@ print("my_list after reassign:", my_list) # [1, 2, 3, 99] (원본 변경 안 됨
  🔥 원본 객체 변경됨!           원본 변경 안 됨!          원본 변경 안 됨!
 ```
 
-- **원본이 변경되는 유일한 조건**: **Mutable 객체(참조 타입)**를 인자로 전달한 뒤, 함수 내부에서 **새 객체를 생성하지 않고 기존 객체의 내부 필드/메서드/요소를 직접 수정(`set`, `append`, `.field =` )**할 때만 원본이 변경된다.
+- <strong>원본이 변경되는 유일한 조건</strong>: <strong>Mutable 객체(참조 타입)</strong>를 인자로 전달한 뒤, 함수 내부에서 <strong>새 객체를 생성하지 않고 기존 객체의 내부 필드/메서드/요소를 직접 수정(`set`, `append`, `.field =` )</strong>할 때만 원본이 변경된다.
 

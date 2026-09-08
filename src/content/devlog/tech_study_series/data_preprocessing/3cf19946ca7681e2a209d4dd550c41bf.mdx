@@ -50,7 +50,7 @@ notionUrl: "https://app.notion.com/p/3cf19946ca7681e2a209d4dd550c41bf"
 - [🔗 학습 순서 권장](#학습-순서-권장)
 - [이어서 볼 질문](#이어서-볼-질문)
 
-> 도구(NumPy·pandas·matplotlib) 사용법과 별개로, **"왜 이렇게 전처리하는가 / 왜 이 그래프인가"**를 설명하는 이론 목차입니다.
+> 도구(NumPy·pandas·matplotlib) 사용법과 별개로, <strong>"왜 이렇게 전처리하는가 / 왜 이 그래프인가"</strong>를 설명하는 이론 목차입니다.
 도구 시리즈(Python - NumPy MOC, Python - pandas MOC)와 짝을 이루며, 각 항목은 나중에 개별 노트로 확장할 수 있습니다.
 
 
@@ -64,8 +64,8 @@ notionUrl: "https://app.notion.com/p/3cf19946ca7681e2a209d4dd550c41bf"
 <NotionTable>
   <tbody>
     <tr><td>축</td><td>질문</td><td>도구 연계</td></tr>
-    <tr><td>**데이터 전처리 이론**</td><td>어떤 결측·이상치·스케일·인코딩 처리를, 왜, 언제 하는가</td><td>NumPy, pandas, scikit-learn</td></tr>
-    <tr><td>**시각화 이론**</td><td>어떤 데이터에 어떤 그래프를, 왜, 어떻게 그리는가</td><td>matplotlib, seaborn, plotly/altair</td></tr>
+    <tr><td><strong>데이터 전처리 이론</strong></td><td>어떤 결측·이상치·스케일·인코딩 처리를, 왜, 언제 하는가</td><td>NumPy, pandas, scikit-learn</td></tr>
+    <tr><td><strong>시각화 이론</strong></td><td>어떤 데이터에 어떤 그래프를, 왜, 어떻게 그리는가</td><td>matplotlib, seaborn, plotly/altair</td></tr>
   </tbody>
 </NotionTable>
 
@@ -122,14 +122,14 @@ notionUrl: "https://app.notion.com/p/3cf19946ca7681e2a209d4dd550c41bf"
 - 표준화(z-score) vs 정규화(min-max) vs 로버스트 스케일링의 전제
 - 스케일이 중요한 모델: 거리 기반(KNN·k-means·SVM), 경사하강(선형·신경망), 정규화 항(L1/L2)
 - 스케일이 무관한 모델: 트리 계열
-- **train 통계로 fit → test에 transform** (누수 방지)
+- <strong>train 통계로 fit → test에 transform</strong> (누수 방지)
 <a id="16-범주형-인코딩-이론"></a>
 
 ### 1.6 범주형 인코딩 이론
 
-- 명목형: 원-핫 인코딩, **더미변수 함정**(다중공선성), 희소성
+- 명목형: 원-핫 인코딩, <strong>더미변수 함정</strong>(다중공선성), 희소성
 - 순서형: ordinal 인코딩(순서 정보 보존)
-- 고카디널리티: 타깃(mean) 인코딩과 **타깃 누수**, 해싱 트릭, 빈도 인코딩
+- 고카디널리티: 타깃(mean) 인코딩과 <strong>타깃 누수</strong>, 해싱 트릭, 빈도 인코딩
 - 트리 모델과 인코딩의 상호작용
 <a id="17-변수-변환"></a>
 

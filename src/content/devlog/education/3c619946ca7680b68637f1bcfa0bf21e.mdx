@@ -37,31 +37,31 @@ notionUrl: "https://app.notion.com/p/OOP-3c619946ca7680b68637f1bcfa0bf21e"
 
 <a id="핵심-요약"></a>
 
-## **핵심 요약**
+## <strong>핵심 요약</strong>
 
-파이썬은 클래스(Class) 기반의 **객체지향 프로그래밍(OOP)**을 완벽히 지원하며, 언어 차원에서 매직 메서드(Dunder Methods)와 `try-except-else-finally` 예외 처리 및 `with` 구문(Context Manager)을 제공한다.
+파이썬은 클래스(Class) 기반의 <strong>객체지향 프로그래밍(OOP)</strong>을 완벽히 지원하며, 언어 차원에서 매직 메서드(Dunder Methods)와 `try-except-else-finally` 예외 처리 및 `with` 구문(Context Manager)을 제공한다.
 
 
 <NotionDivider />
 
 <a id="1-파이썬-객체지향-프로그래밍-oop"></a>
 
-## **1. 파이썬 객체지향 프로그래밍 (OOP)**
+## <strong>1. 파이썬 객체지향 프로그래밍 (OOP)</strong>
 
-파이썬은 클래스 기반의 객체지향 언어로, **캡슐화, 추상화, 상속, 다형성** 4대 요소를 완벽히 지원하며, 파이썬 특유의 **덕 타이핑(Duck Typing)**과 **MRO(Method Resolution Order)** 개념을 가지고 있다.
+파이썬은 클래스 기반의 객체지향 언어로, <strong>캡슐화, 추상화, 상속, 다형성</strong> 4대 요소를 완벽히 지원하며, 파이썬 특유의 <strong>덕 타이핑(Duck Typing)</strong>과 <strong>MRO(Method Resolution Order)</strong> 개념을 가지고 있다.
 
 
 <NotionDivider />
 
 <a id="1-캡슐화-encapsulation-property"></a>
 
-### **1) 캡슐화 (Encapsulation) & `@property`**
+### <strong>1) 캡슐화 (Encapsulation) & `@property`</strong>
 
-파이썬은 Java의 `private`, `public` 같은 키워드가 없는 대신 **네이밍 컨벤션(Naming Convention)**으로 접근 제어를 표현한다.
+파이썬은 Java의 `private`, `public` 같은 키워드가 없는 대신 <strong>네이밍 컨벤션(Naming Convention)</strong>으로 접근 제어를 표현한다.
 
 - `public`: 제한 없음 (`name`)
 - `protected`: 언더스코어 1개 (`_name`) — 외부 접근 가능하나 관례상 클래스 내부/자식에서만 사용 권장.
-- `private`: 언더스코어 2개 (`__name`) — **Name Mangling(이름 장식)**이 적용되어 클래스 외부 직접 접근 차단.
+- `private`: 언더스코어 2개 (`__name`) — <strong>Name Mangling(이름 장식)</strong>이 적용되어 클래스 외부 직접 접근 차단.
 
 ```python
 class Account:
@@ -88,7 +88,7 @@ print(acc.balance)  # 1500 (Getter 동작)
 
 <a id="2-추상화-abstraction-abc-모듈"></a>
 
-### **2) 추상화 (Abstraction) & `abc` 모듈**
+### <strong>2) 추상화 (Abstraction) & `abc` 모듈</strong>
 
 `abc` (Abstract Base Class) 모듈의 `ABC`와 `@abstractmethod`를 사용하여 하위 클래스가 반드시 구현해야 하는 추상 메서드를 강제한다.
 
@@ -114,9 +114,9 @@ pay.process_payment(5000)
 
 <a id="3-상속-inheritance-다중-상속-mro"></a>
 
-### **3) 상속 (Inheritance), 다중 상속 & MRO**
+### <strong>3) 상속 (Inheritance), 다중 상속 & MRO</strong>
 
-파이썬은 **다중 상속(Multiple Inheritance)**을 지원한다. 다중 상속 시 발생하는 다이아몬드 상속 문제(Diamond Problem)는 **MRO (Method Resolution Order)**를 통해 해결된다.
+파이썬은 <strong>다중 상속(Multiple Inheritance)</strong>을 지원한다. 다중 상속 시 발생하는 다이아몬드 상속 문제(Diamond Problem)는 <strong>MRO (Method Resolution Order)</strong>를 통해 해결된다.
 
 
 ```python
@@ -137,17 +137,17 @@ d.hello()  # "B 안녕" 출력 (B가 C보다 MRO 순서가 앞섬)
 print(D.mro())  # [<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>]
 ```
 
-- **`super()`**: MRO 순서에 따라 다음 부모 클래스의 메서드를 호출한다.
+- <strong>`super()`</strong>: MRO 순서에 따라 다음 부모 클래스의 메서드를 호출한다.
 
 <NotionDivider />
 
 <a id="4-다형성-polymorphism-덕-타이핑-duck-typing"></a>
 
-### **4) 다형성 (Polymorphism) & 덕 타이핑 (Duck Typing)**
+### <strong>4) 다형성 (Polymorphism) & 덕 타이핑 (Duck Typing)</strong>
 
-파이썬의 다형성은 명시적 상속 구조 없이도 동작하는 **덕 타이핑(Duck Typing)**이 핵심이다.
+파이썬의 다형성은 명시적 상속 구조 없이도 동작하는 <strong>덕 타이핑(Duck Typing)</strong>이 핵심이다.
 
-> *"오리처럼 걷고 오리처럼 꽥꽥거리면, 그것이 오리든 아니든 오리로 본다."*
+> <em>"오리처럼 걷고 오리처럼 꽥꽥거리면, 그것이 오리든 아니든 오리로 본다."</em>
 
 
 ```python
@@ -173,9 +173,9 @@ make_it_sound(Robot())  # 삐리삐리
 
 <a id="5-믹스인-mixin-패턴"></a>
 
-### **5) 믹스인 (Mixin) 패턴**
+### <strong>5) 믹스인 (Mixin) 패턴</strong>
 
-다중 상속의 장점을 활용하여, **독립된 기능 단위를 클래스에 부품처럼 조합(Plug-in)**하는 파이썬 고유의 디자인 패턴이다.
+다중 상속의 장점을 활용하여, <strong>독립된 기능 단위를 클래스에 부품처럼 조합(Plug-in)</strong>하는 파이썬 고유의 디자인 패턴이다.
 
 
 ```python
@@ -197,7 +197,7 @@ print(user.to_json())  # {"name": "Bob", "email": "bob@example.com"}
 
 <a id="2-매직-메서드-dunder-methods-double-underscore"></a>
 
-## **2. 매직 메서드 (Dunder Methods: Double Underscore)**
+## <strong>2. 매직 메서드 (Dunder Methods: Double Underscore)</strong>
 
 클래스에 미리 정의된 특별한 메서드로, 파이썬 빌트인 연산자 및 함수와 커스텀 객체를 연결한다.
 
@@ -224,11 +224,11 @@ print(len(book)) # 350
 
 <a id="3-예외-처리-exception-handling"></a>
 
-## **3. 예외 처리 (Exception Handling)**
+## <strong>3. 예외 처리 (Exception Handling)</strong>
 
 <a id="1-try-except-else-finally-구문"></a>
 
-### **1) `try - except - else - finally` 구문**
+### <strong>1) `try - except - else - finally` 구문</strong>
 
 
 ```python
@@ -252,7 +252,7 @@ finally:
 
 <a id="4-컨텍스트-매니저-context-manager-with-구문"></a>
 
-## **4. 컨텍스트 매니저 (Context Manager - `with` 구문)**
+## <strong>4. 컨텍스트 매니저 (Context Manager - `with` 구문)</strong>
 
 파일 열기/닫기, DB 커넥션 해제 등 자원 관리를 위해 `with` 구문을 사용한다. (`__enter__`와 `__exit__` 메서드가 자동 호출됨).
 

@@ -55,20 +55,20 @@ Spring Batch는 실행 중인 Job과 Step의 상태를 `BATCH_JOB_EXECUTION` 및
 
 ### ① BatchStatus (프레임워크 내부 제어용 상태)
 
-- **의미**: JVM 내에서 실행 중인 배치의 물리적인 실행 상태를 나타내며, `BATCH_JOB_EXECUTION` 테이블 등에 명확히 기록됩니다.
-- **주요 값**: `STARTING`, `STARTED`, `STOPPING`, `STOPPED`, `FAILED`, `COMPLETED`, `ABANDONED`
-- **메타데이터 업데이트 시점**:
-- **Step 시작 시**: 메타 테이블에 `STARTED` 상태로 레코드가 갱신됩니다.
-- **Chunk 커밋 시**: 트랜잭션이 커밋될 때마다 `COMMIT_COUNT`, `READ_COUNT`, `WRITE_COUNT` 등의 지표가 실시간으로 누적 업데이트됩니다.
-- **종료 시**: 내부 로직이 예외 없이 완수되면 `COMPLETED`로, 복구하지 못한 예외가 발생하여 Step이 터지면 `FAILED`로 마킹됩니다.
+- <strong>의미</strong>: JVM 내에서 실행 중인 배치의 물리적인 실행 상태를 나타내며, `BATCH_JOB_EXECUTION` 테이블 등에 명확히 기록됩니다.
+- <strong>주요 값</strong>: `STARTING`, `STARTED`, `STOPPING`, `STOPPED`, `FAILED`, `COMPLETED`, `ABANDONED`
+- <strong>메타데이터 업데이트 시점</strong>:
+- <strong>Step 시작 시</strong>: 메타 테이블에 `STARTED` 상태로 레코드가 갱신됩니다.
+- <strong>Chunk 커밋 시</strong>: 트랜잭션이 커밋될 때마다 `COMMIT_COUNT`, `READ_COUNT`, `WRITE_COUNT` 등의 지표가 실시간으로 누적 업데이트됩니다.
+- <strong>종료 시</strong>: 내부 로직이 예외 없이 완수되면 `COMPLETED`로, 복구하지 못한 예외가 발생하여 Step이 터지면 `FAILED`로 마킹됩니다.
 
 <a id="2-exitstatus-job-흐름-제어용-상태"></a>
 
 ### ② ExitStatus (Job 흐름 제어용 상태)
 
-- **의미**: Step의 실행이 끝났을 때, 다음 조건부 흐름(Flow)을 결정하기 위해 컴포넌트가 반환하는 프로세스 종료 코드입니다.
-- **주요 값**: `EXECUTING`, `COMPLETED`, `NOOP`, `FAILED`, `STOPPED`, `UNKNOWN`
-- **특징**: BatchStatus와 달리 개발자가 리스너 등을 통해 임의의 문자열로 커스텀할 수 있습니다. 예를 들어, 실제 물리적 상태는 실패(BatchStatus = FAILED)했더라도 후속 복구 Step을 실행시키기 위해 종료 코드를 `ExitStatus = "FAILED_BUT_RECOVERABLE"` 형태로 조작하여 다음 실행 경로를 바인딩할 수 있습니다.
+- <strong>의미</strong>: Step의 실행이 끝났을 때, 다음 조건부 흐름(Flow)을 결정하기 위해 컴포넌트가 반환하는 프로세스 종료 코드입니다.
+- <strong>주요 값</strong>: `EXECUTING`, `COMPLETED`, `NOOP`, `FAILED`, `STOPPED`, `UNKNOWN`
+- <strong>특징</strong>: BatchStatus와 달리 개발자가 리스너 등을 통해 임의의 문자열로 커스텀할 수 있습니다. 예를 들어, 실제 물리적 상태는 실패(BatchStatus = FAILED)했더라도 후속 복구 Step을 실행시키기 위해 종료 코드를 `ExitStatus = "FAILED_BUT_RECOVERABLE"` 형태로 조작하여 다음 실행 경로를 바인딩할 수 있습니다.
 
 <NotionDivider />
 

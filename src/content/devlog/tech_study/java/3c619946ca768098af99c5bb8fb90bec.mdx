@@ -38,7 +38,7 @@ notionUrl: "https://app.notion.com/p/Java-3c619946ca768098af99c5bb8fb90bec"
 
 ## 핵심 요약: 용어의 3대 구분선 (Scoping Boundaries)
 
-용어의 본질을 정확히 이해하기 위해서는 **설명하려는 추상화 계층의 구분선(Boundary)**을 명확히 정의해야 한다.
+용어의 본질을 정확히 이해하기 위해서는 <strong>설명하려는 추상화 계층의 구분선(Boundary)</strong>을 명확히 정의해야 한다.
 
 
 ```text
@@ -49,8 +49,8 @@ notionUrl: "https://app.notion.com/p/Java-3c619946ca768098af99c5bb8fb90bec"
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-- **언어 및 개발자 관점 (Language Specification)**: 소스코드(`.java`)는 `javac` 컴파일러의 엄격한 문법/타입 검증을 거쳐 바이너리 형태(`.class`)로 사전 빌드(AOT)되므로 **본질적인 컴파일 언어**이다.
-- **실행 환경 관점 (Runtime Implementation)**: JVM 내부에서 바이트코드가 **인터프리터(초기 기동)**와 **JIT 컴파일러(핫스팟 가속)**로 구동되므로 **하이브리드 런타임** 구조를 취한다.
+- <strong>언어 및 개발자 관점 (Language Specification)</strong>: 소스코드(`.java`)는 `javac` 컴파일러의 엄격한 문법/타입 검증을 거쳐 바이너리 형태(`.class`)로 사전 빌드(AOT)되므로 <strong>본질적인 컴파일 언어</strong>이다.
+- <strong>실행 환경 관점 (Runtime Implementation)</strong>: JVM 내부에서 바이트코드가 <strong>인터프리터(초기 기동)</strong>와 <strong>JIT 컴파일러(핫스팟 가속)</strong>로 구동되므로 <strong>하이브리드 런타임</strong> 구조를 취한다.
 
 <NotionDivider />
 
@@ -70,21 +70,21 @@ notionUrl: "https://app.notion.com/p/Java-3c619946ca768098af99c5bb8fb90bec"
 
 ### 1) 컴파일 언어 (Compiled Language)
 
-- **개념**: 소스 코드 전체를 실행하기 전 컴파일러(Compiler)를 통해 해당 OS의 **타깃 기계어(Machine Code)**로 한 번에 번역하여 실행 파일(`exe`, `bin`)을 생성하는 언어 (예: C, C++, Rust, Go).
-- **장점**:
-- **빠른 실행 속도**: 이미 기계어로 번역되어 있어 실행 시 오버헤드가 적다.
-- **사전 에러 검출 (Type Safety)**: 컴파일 시점에 문법 에러 및 타입 체크가 이루어진다.
-- **코드 보안**: 소스코드가 원천 노출되지 않고 바이너리 형태로 배포된다.
+- <strong>개념</strong>: 소스 코드 전체를 실행하기 전 컴파일러(Compiler)를 통해 해당 OS의 <strong>타깃 기계어(Machine Code)</strong>로 한 번에 번역하여 실행 파일(`exe`, `bin`)을 생성하는 언어 (예: C, C++, Rust, Go).
+- <strong>장점</strong>:
+- <strong>빠른 실행 속도</strong>: 이미 기계어로 번역되어 있어 실행 시 오버헤드가 적다.
+- <strong>사전 에러 검출 (Type Safety)</strong>: 컴파일 시점에 문법 에러 및 타입 체크가 이루어진다.
+- <strong>코드 보안</strong>: 소스코드가 원천 노출되지 않고 바이너리 형태로 배포된다.
 
 <a id="2-인터프리터-언어-interpreted-language"></a>
 
 ### 2) 인터프리터 언어 (Interpreted Language)
 
-- **개념**: 사전 컴파일 과정 없이 소스 코드를 한 줄씩(Line-by-Line) 읽어가며 인터프리터가 즉시 해석하여 실행하는 언어 (예: Python, JavaScript, Ruby).
-- **장점**:
-- **플랫폼 독립성**: 인터프리터만 설치되어 있으면 어떤 OS에서든 소스 코드 그대로 구동된다.
-- **높은 개발 생산성**: 컴파일 대기 시간이 없어 코드를 수정하고 즉시 결과를 확인할 수 있다.
-- **동적 유연성**: 동적 타이핑과 코드 수정을 쉽게 적용할 수 있다.
+- <strong>개념</strong>: 사전 컴파일 과정 없이 소스 코드를 한 줄씩(Line-by-Line) 읽어가며 인터프리터가 즉시 해석하여 실행하는 언어 (예: Python, JavaScript, Ruby).
+- <strong>장점</strong>:
+- <strong>플랫폼 독립성</strong>: 인터프리터만 설치되어 있으면 어떤 OS에서든 소스 코드 그대로 구동된다.
+- <strong>높은 개발 생산성</strong>: 컴파일 대기 시간이 없어 코드를 수정하고 즉시 결과를 확인할 수 있다.
+- <strong>동적 유연성</strong>: 동적 타이핑과 코드 수정을 쉽게 적용할 수 있다.
 
 
 <NotionDivider />
@@ -99,15 +99,15 @@ Java는 "Write Once, Run Anywhere (WORA)" 철학을 위해 2단계 프로세스�
 
 ### 1단계: 사전 컴파일 (`javac`)
 
-- 자바 컴파일러(`javac`)가 `.java` 소스 코드를 읽어 **자바 바이트코드(`.class`)**로 변환한다.
-- 이 단계는 OS 기계어로 번역하는 것이 아니며, 문법 검사 및 표식화 작업을 수행하는 **컴파일 과정**이다.
+- 자바 컴파일러(`javac`)가 `.java` 소스 코드를 읽어 <strong>자바 바이트코드(`.class`)</strong>로 변환한다.
+- 이 단계는 OS 기계어로 번역하는 것이 아니며, 문법 검사 및 표식화 작업을 수행하는 <strong>컴파일 과정</strong>이다.
 <a id="2단계-jvm-런타임-실행-interpreter-jit-compiler"></a>
 
 ### 2단계: JVM 런타임 실행 (Interpreter + JIT Compiler)
 
 - 바이트코드는 OS가 직접 실행할 수 없으므로 [JVM(Java Virtual Machine)](https://app.notion.com/p/JVM%EA%B3%BC%20JRE%20-%20%EC%B0%A8%EC%9D%B4)이 구동된다.
-- **인터프리터(Interpreter)**: 바이트코드를 한 줄씩 읽어 OS 기계어로 해석하며 구동한다 (빠른 초기 스타트).
-- **JIT(Just-In-Time) 컴파일러**: 반복 실행되는 핫스팟(Hotspot) 바이트코드를 감지하여, 해당 부분을 OS 기계어로 직접 컴파일 후 카피해 두고 인터프리팅 없이 기계어로 직접 쏜다 (컴파일 언어급 실행 속도 확보).
+- <strong>인터프리터(Interpreter)</strong>: 바이트코드를 한 줄씩 읽어 OS 기계어로 해석하며 구동한다 (빠른 초기 스타트).
+- <strong>JIT(Just-In-Time) 컴파일러</strong>: 반복 실행되는 핫스팟(Hotspot) 바이트코드를 감지하여, 해당 부분을 OS 기계어로 직접 컴파일 후 카피해 두고 인터프리팅 없이 기계어로 직접 쏜다 (컴파일 언어급 실행 속도 확보).
 
 <NotionDivider />
 
@@ -119,8 +119,8 @@ Java는 "Write Once, Run Anywhere (WORA)" 철학을 위해 2단계 프로세스�
 
 ### 1) 탄생 배경과 목적: 왜 Java는 본질적으로 '컴파일 언어'인가?
 
-- **설계 목적**: 1990년대 초 제임스 고슬링(James Gosling)이 Java를 설계할 당시의 핵심 목표는 C/C++의 플랫폼 종속성과 메모리 관리의 위험성을 극복하면서도, **엄격한 문법 검사(Type Safety)와 사전 오류 검출을 보장하는 정적 컴파일 언어**를 만드는 것이었다.
-- **언어 명세(Language Specification)의 본질**: 개발자가 소스코드를 작성하고 배포할 때 `javac`를 거쳐 바이너리 형태인 `.class`로 **사전 컴파일(AOT, Ahead-Of-Time)**하지 않으면 프로그램 자체가 성립하지 않는다. 따라서 언어의 탄생 목적과 빌드 규격상 **Java는 확고한 컴파일 언어**로 정의된다.
+- <strong>설계 목적</strong>: 1990년대 초 제임스 고슬링(James Gosling)이 Java를 설계할 당시의 핵심 목표는 C/C++의 플랫폼 종속성과 메모리 관리의 위험성을 극복하면서도, <strong>엄격한 문법 검사(Type Safety)와 사전 오류 검출을 보장하는 정적 컴파일 언어</strong>를 만드는 것이었다.
+- <strong>언어 명세(Language Specification)의 본질</strong>: 개발자가 소스코드를 작성하고 배포할 때 `javac`를 거쳐 바이너리 형태인 `.class`로 <strong>사전 컴파일(AOT, Ahead-Of-Time)</strong>하지 않으면 프로그램 자체가 성립하지 않는다. 따라서 언어의 탄생 목적과 빌드 규격상 <strong>Java는 확고한 컴파일 언어</strong>로 정의된다.
 
 <NotionDivider />
 
@@ -130,9 +130,9 @@ Java는 "Write Once, Run Anywhere (WORA)" 철학을 위해 2단계 프로세스�
 
 현대 언어들은 대부분 내부적으로 바이트코드를 거치거나 JIT를 탑재한다 (예: Python의 `.pyc`, JavaScript V8의 Ignition/TurboFan). 그렇다면 모든 언어가 컴파일 언어인가?
 
-- **구분의 핵심: "누가, 언제 번역하는가?" (AOT vs Runtime)**
-- **컴파일 언어 (Java, C, Rust)**: 실행 전에 소스코드를 타깃 형식(기계어 또는 바이트코드)으로 번역하는 **독립적인 빌드(Compile) 단계가 필수**이며, 소스코드(`.java`) 원본 없이 `.class` 파일만으로 배포 및 실행된다.
-- **인터프리터 언어 (Python, JS)**: 사용자가 소스코드(`.py`, `.js`) 자체를 런타임 엔진에 직접 던져 실행하며, 내부적인 바이트코드 변환이나 JIT는 런타임 엔진의 투명한 최적화 구현체일 뿐 언어 규격의 필수 사전 빌드 단계가 아니다.
+- <strong>구분의 핵심: "누가, 언제 번역하는가?" (AOT vs Runtime)</strong>
+- <strong>컴파일 언어 (Java, C, Rust)</strong>: 실행 전에 소스코드를 타깃 형식(기계어 또는 바이트코드)으로 번역하는 <strong>독립적인 빌드(Compile) 단계가 필수</strong>이며, 소스코드(`.java`) 원본 없이 `.class` 파일만으로 배포 및 실행된다.
+- <strong>인터프리터 언어 (Python, JS)</strong>: 사용자가 소스코드(`.py`, `.js`) 자체를 런타임 엔진에 직접 던져 실행하며, 내부적인 바이트코드 변환이나 JIT는 런타임 엔진의 투명한 최적화 구현체일 뿐 언어 규격의 필수 사전 빌드 단계가 아니다.
 
 
 <NotionDivider />
@@ -143,11 +143,11 @@ Java는 "Write Once, Run Anywhere (WORA)" 철학을 위해 2단계 프로세스�
 
 컴퓨터 구조론(Computer Architecture) 관점에서 볼 때 매우 날카로운 통찰이다.
 
-- **폰 노이만 구조(Von Neumann)의 본질**: CPU 제어 유닛(Control Unit)은 메모리에 적재된 기계어 명령어를 프로그램 카운터(PC)에 따라 **`Fetch(인출) ➔ Decode(해석) ➔ Execute(실행)`** 사이클로 순차 실행한다.
-- **하드웨어 인터프리터로서의 CPU**: 물리적 실리콘 회로 관점에서 **CPU는 기계어를 한 줄씩 해석하는 '하드웨어 인터프리터'**가 맞다 (현대 x86 CPU는 복잡한 CISC 기계어를 칩 내부에서 Micro-ops로 실시간 디코딩/해석하여 실행함).
-- **추상화 계층(Abstraction Layer)의 분리**:
-- 하드웨어가 기계어를 해석하는 것은 **컴퓨팅 하드웨어 계층**의 동작 방식이다.
-- 소프트웨어 공학에서 '컴파일러 vs 인터프리터'를 구분하는 것은 **"인간의 고수준 언어가 CPU가 이해할 수 있는 형태(또는 가상머신 바이트코드)로 변환되는 시점과 주체"**를 나누는 **소프트웨어 언어 계층**의 개념이다.
+- <strong>폰 노이만 구조(Von Neumann)의 본질</strong>: CPU 제어 유닛(Control Unit)은 메모리에 적재된 기계어 명령어를 프로그램 카운터(PC)에 따라 <strong>`Fetch(인출) ➔ Decode(해석) ➔ Execute(실행)`</strong> 사이클로 순차 실행한다.
+- <strong>하드웨어 인터프리터로서의 CPU</strong>: 물리적 실리콘 회로 관점에서 <strong>CPU는 기계어를 한 줄씩 해석하는 '하드웨어 인터프리터'</strong>가 맞다 (현대 x86 CPU는 복잡한 CISC 기계어를 칩 내부에서 Micro-ops로 실시간 디코딩/해석하여 실행함).
+- <strong>추상화 계층(Abstraction Layer)의 분리</strong>:
+- 하드웨어가 기계어를 해석하는 것은 <strong>컴퓨팅 하드웨어 계층</strong>의 동작 방식이다.
+- 소프트웨어 공학에서 '컴파일러 vs 인터프리터'를 구분하는 것은 <strong>"인간의 고수준 언어가 CPU가 이해할 수 있는 형태(또는 가상머신 바이트코드)로 변환되는 시점과 주체"</strong>를 나누는 <strong>소프트웨어 언어 계층</strong>의 개념이다.
 
 
 <NotionDivider />

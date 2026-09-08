@@ -38,22 +38,22 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 ### 구성 클래스 및 역할
 
-**Student**
+<strong>Student</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `name : String` — 이름
 - `subject : String` — 과목
 - `score : int` — 점수
 
-- **생성자**
+- <strong>생성자</strong>
 - `Student()` — 기본 생성자
 - `Student(String name, String subject, int score)` — 필드 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `inform(): String`
 → `"이름 : {이름} / 과목 : {과목} / 점수 : {점수}"` 형태의 문자열 반환
 
@@ -65,18 +65,18 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 <NotionDivider />
 
-**StudentController**
+<strong>StudentController</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `sArr : Student[] = new Student[5]` — 학생 정보 배열
 - `CUT_LINE : int = 60` — 합격 기준 점수
 
-- **생성자**
+- <strong>생성자</strong>
 - `StudentController()`
-→ 5명의 학생 객체를 **샘플 데이터**로 초기화
+→ 5명의 학생 객체를 <strong>샘플 데이터</strong>로 초기화
 
 
 ```text
@@ -89,7 +89,7 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 
 
-- **메서드**
+- <strong>메서드</strong>
 - `printStudent(): Student[]` — 학생 배열 반환
 - `sumScore(): int` — 모든 학생 점수 합계 반환
 - `avgScore(): double[]`
@@ -105,23 +105,23 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 <NotionDivider />
 
-**StudentMenu**
+<strong>StudentMenu</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `ssm : StudentController = new StudentController()`
 
-- **생성자**
+- <strong>생성자</strong>
 - `StudentMenu()` — 다음 순서로 출력
-1. **학생 정보 출력**
+1. <strong>학생 정보 출력</strong>
 - `printStudent()` 호출 → 배열 반복 출력
 
-1. **학생 성적 출력**
+1. <strong>학생 성적 출력</strong>
 - `avgScore()` 호출 → 합계와 평균 출력
 
-1. **성적 결과 출력**
+1. <strong>성적 결과 출력</strong>
 - 각 학생 점수가 `CUT_LINE` 미만이면 `"재시험 대상"`, 이상이면 `"통과"`
 
 
@@ -132,12 +132,12 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 <NotionDivider />
 
-**Run**
+<strong>Run</strong>
 
 
 <NotionIndent>
 
-- **main(String[] args)**
+- <strong>main(String[] args)</strong>
 - `StudentMenu` 객체 생성 → 실행 시 자동 출력
 
 
@@ -182,22 +182,22 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 ### 구성 클래스 및 역할
 
-**Product**
+<strong>Product</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `pName : String` — 상품명
 - `price : int` — 가격
 - `brand : String` — 브랜드
 
-- **생성자**
+- <strong>생성자</strong>
 - `Product()` — 기본 생성자
 - `Product(String pName, int price, String brand)` — 필드 초기화 생성자
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `inform(): String`
 → `"상품명 : {상품명} / 가격 : {가격} / 브랜드 : {브랜드}"` 형태의 문자열 반환
 
@@ -209,17 +209,17 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 <NotionDivider />
 
-**ProductController**
+<strong>ProductController</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `pro : Product[] = new Product[10]` — 상품 정보 배열
 
-- **생성자**
+- <strong>생성자</strong>
 - `ProductController()`
-→ 10칸 배열에 다음과 같이 **샘플 데이터**로 초기화 (3개만 사용)
+→ 10칸 배열에 다음과 같이 <strong>샘플 데이터</strong>로 초기화 (3개만 사용)
 
 
 ```text
@@ -230,7 +230,7 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 
 
-- **메서드**
+- <strong>메서드</strong>
 - `insertProduct(String pName, int price, String brand)` : `void`
 → 배열의 다음 빈 칸에 상품 추가
 
@@ -246,16 +246,16 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 <NotionDivider />
 
-**ProductMenu**
+<strong>ProductMenu</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `pc : ProductController = new ProductController()`
 - `sc : Scanner = new Scanner(System.in)`
 
-- **메서드**
+- <strong>메서드</strong>
 - `mainMenu()` : `void`
 → 다음 메뉴 반복 출력
 
@@ -268,9 +268,9 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 메뉴 번호 :
 ```
 
-- **1번** : 상품명, 가격, 브랜드 입력 후 `insertProduct()` 호출
-- **2번** : `selectProduct()` 호출 후 반복 출력 (`inform()` 사용)
-- **9번** : `"프로그램을 종료합니다."` 출력 후 종료
+- <strong>1번</strong> : 상품명, 가격, 브랜드 입력 후 `insertProduct()` 호출
+- <strong>2번</strong> : `selectProduct()` 호출 후 반복 출력 (`inform()` 사용)
+- <strong>9번</strong> : `"프로그램을 종료합니다."` 출력 후 종료
 - 그 외 번호 입력 시 `"잘못 입력하셨습니다. 다시 입력해주세요."` 출력
 
 
@@ -280,12 +280,12 @@ notionUrl: "https://app.notion.com/p/java-36d19946ca7680559155e3820742c2be"
 
 <NotionDivider />
 
-**Run**
+<strong>Run</strong>
 
 
 <NotionIndent>
 
-- **main(String[] args)**
+- <strong>main(String[] args)</strong>
 - `ProductMenu` 객체 생성 후 `mainMenu()` 호출
 
 

@@ -701,6 +701,18 @@
       "discussionTerm": "/devlog/problem_solving/3b019946ca7680b584e1c59c19e022a9"
     },
     {
+      "category": "problem_solving",
+      "id": "3d419946ca76809a9589dc1c6e4b7cdb",
+      "slug": "kafka-partition-concurrency-solve",
+      "sourceFile": "src/content/devlog/problem_solving/messaging/3d419946ca76809a9589dc1c6e4b7cdb.mdx",
+      "title": "Apache Kafka 동시성 문제에 따른 파티셔닝 조절",
+      "date": "2026-09-07",
+      "description": "Kafaka로 동일 action을 실행할때, 파티셔닝을 과도하게 나눠서 동시 실행을 하다보면, sequncail 작업이 꼬이는 경험을 할  수 있습니다. 이때, 이행했던 작업과 고민했던 작업에 대해서 작성해봤습니다.",
+      "author": "",
+      "href": "/devlog/problem_solving/kafka-partition-concurrency-solve",
+      "discussionTerm": "/devlog/problem_solving/3d419946ca76809a9589dc1c6e4b7cdb"
+    },
+    {
       "category": "tech_study_series",
       "id": "3ce19946ca768005bc5cc7383a963f96",
       "slug": "python-numpy-ufunc-aggregation",
@@ -1325,6 +1337,30 @@
       "discussionTerm": "/devlog/tech_study_series/3cf19946ca7681fcbe3ec8e5f91e745a"
     },
     {
+      "category": "tech_study_series",
+      "id": "3d119946ca76801ab530e98417a23d86",
+      "slug": "java-syntax-variables-types",
+      "sourceFile": "src/content/devlog/tech_study_series/java/3d119946ca76801ab530e98417a23d86.mdx",
+      "title": "Java 문법 02. 변수와 기본 타입, 형 변환",
+      "date": "2026-09-04",
+      "description": "Java 문법 02. 변수와 기본 타입, 형 변환",
+      "author": "",
+      "href": "/devlog/tech_study_series/java-syntax-variables-types",
+      "discussionTerm": "/devlog/tech_study_series/3d119946ca76801ab530e98417a23d86"
+    },
+    {
+      "category": "tech_study_series",
+      "id": "3d119946ca7680fc8dead72943e68907",
+      "slug": "java-syntax-program-structure",
+      "sourceFile": "src/content/devlog/tech_study_series/java/3d119946ca7680fc8dead72943e68907.mdx",
+      "title": "Java 문법 01. 프로그램 구조와 실행",
+      "date": "2026-09-04",
+      "description": "Java 문법 01. 프로그램 구조와 실행",
+      "author": "",
+      "href": "/devlog/tech_study_series/java-syntax-program-structure",
+      "discussionTerm": "/devlog/tech_study_series/3d119946ca7680fc8dead72943e68907"
+    },
+    {
       "category": "tech_study",
       "id": "3b019946ca76801cb6dac264f9d0c0e1",
       "slug": "spring-batch-core-architecture",
@@ -1755,23 +1791,34 @@
       "author": "",
       "href": "/devlog/tech_study/java-gc-guide",
       "discussionTerm": "/devlog/tech_study/3ce19946ca7680c3bf5ada32fda9842c"
+    },
+    {
+      "category": "tech_study",
+      "id": "3d419946ca768006b012ce7fe9ab675f",
+      "slug": "java-concurrency-thread-pool",
+      "sourceFile": "src/content/devlog/tech_study/java/3d419946ca768006b012ce7fe9ab675f.mdx",
+      "title": "스레드 풀 : 스레드 풀을 이용하는 이유?",
+      "date": "2026-09-07",
+      "description": "스레드 풀은 재사용 스레드 집합, 대기 작업 큐, 스케일링·거절 정책 세 부분으로 이루어진 관리 추상화이며, 비싼 자원을 생성·소멸의 대상이 아니라 빌리고 반납하는 대상으로 취급합니다. 스레드를 매번 만들고 없애며 적정 개수를 사람이 계속 조정하는 것은 불가능하므로, corePoolSize·maximumPoolSize·큐 용량·keepAliveTime·거절 정책을 한 번 계약으로 정해 두면 풀이 core → queue → max 순으로 확장하고 유휴 시 keepAlive로 축소합니다. 특히 큐 종류가 스케일링 성격을 좌우해서 무제한 LinkedBlockingQueue를 쓰면 maximumPoolSize가 무의미해지고, Executors 팩토리 메서드에는 이런 숨은 무제한이 있어 운영에서는 ThreadPoolExecutor를 직접 구성하고 다운스트림 커넥션 풀 상한과 정합시켜야 합니다.",
+      "author": "",
+      "href": "/devlog/tech_study/java-concurrency-thread-pool",
+      "discussionTerm": "/devlog/tech_study/3d419946ca768006b012ce7fe9ab675f"
+    },
+    {
+      "category": "tech_study",
+      "id": "3d419946ca7680348ce9f0d7a948b55c",
+      "slug": "java-concurrency-shared-mutable-state",
+      "sourceFile": "src/content/devlog/tech_study/java/3d419946ca7680348ce9f0d7a948b55c.mdx",
+      "title": "여러 스레드에서 하나의 객체를 공유 할 때 발생할 수 있는 문제는?",
+      "date": "2026-09-07",
+      "description": "\"공유·가변·최소 1개의 쓰기\" 세 조건이 동시에 성립할 때만 스레드 안전 문제가 생기며, 증상은 데이터 오염(갱신 유실·찢어진 상태·컬렉션 파손·dirty read), 가시성 부재(캐시·재정렬로 변경이 다른 스레드에 안 보임), 순서 재정렬(DCL 붕괴)의 세 갈래로 나타납니다. 이를 Lock으로 막으면 이번에는 경합으로 병렬성이 사라지고(암달의 법칙), 획득 순서 불일치로 데드락이 생기며, 기아·잘못된 락 객체·임계 구역 안 외부 호출 같은 새로운 문제가 따라옵니다. JMM은 synchronized·volatile·java.util.concurrent가 만드는 happens-before 관계로만 보장을 제공하므로 동기화가 하나도 없으면 아무것도 보장되지 않으며, 해결은 공유 제거 → 원자 도구 → 락 최소화 순으로 접근합니다.",
+      "author": "",
+      "href": "/devlog/tech_study/java-concurrency-shared-mutable-state",
+      "discussionTerm": "/devlog/tech_study/3d419946ca7680348ce9f0d7a948b55c"
     }
   ],
   "items": {
     "blog/3a319946ca768078b891d2ebf14c4741": [
-      {
-        "category": "blog",
-        "id": "3a619946ca7680288a44ef2065a0c130",
-        "title": "옵시디언으로 지식 마인드맵 만들어보기",
-        "date": "2026-07-23",
-        "tags": [
-          "옵시디언",
-          "마인드맵"
-        ],
-        "href": "/devlog/blog/building-a-knowledge-mind-map-with-obsidian",
-        "sharedKeywords": [],
-        "score": 12
-      },
       {
         "category": "blog",
         "id": "3cf19946ca7680bd9d9ac8cc8bd6b148",
@@ -1791,15 +1838,27 @@
       },
       {
         "category": "blog",
-        "id": "3c819946ca76800686abe41d9548e8b9",
-        "title": "LLM의 개별 wiki 구조 이후에, 통합관리",
-        "date": "2026-08-26",
+        "id": "3c119946ca7680b3ba08d943827ce08d",
+        "title": "토이프로젝트 무덤 : 마무리하는 습관의 필요성",
+        "date": "2026-08-19",
         "tags": [
-          "ai agent",
-          "wiki",
-          "link"
+          "개인프로젝트",
+          "toyproject"
         ],
-        "href": "/devlog/blog/ai-agent-linked-wiki",
+        "href": "/devlog/blog/toy-rip",
+        "sharedKeywords": [],
+        "score": 12
+      },
+      {
+        "category": "blog",
+        "id": "3ab19946ca768020a285dc6c49b14793",
+        "title": "메시징 사이드 프로젝트 - 개발 일지, 기존소스 날리고 복구중",
+        "date": "2026-07-28",
+        "tags": [
+          "개인프로젝트",
+          "messaging platform"
+        ],
+        "href": "/devlog/blog/rebuilding-from-specs-without-git",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1836,14 +1895,15 @@
       },
       {
         "category": "blog",
-        "id": "3ab19946ca768020a285dc6c49b14793",
-        "title": "메시징 사이드 프로젝트 - 개발 일지, 기존소스 날리고 복구중",
-        "date": "2026-07-28",
+        "id": "3c819946ca76800686abe41d9548e8b9",
+        "title": "LLM의 개별 wiki 구조 이후에, 통합관리",
+        "date": "2026-08-26",
         "tags": [
-          "개인프로젝트",
-          "messaging platform"
+          "ai agent",
+          "wiki",
+          "link"
         ],
-        "href": "/devlog/blog/rebuilding-from-specs-without-git",
+        "href": "/devlog/blog/ai-agent-linked-wiki",
         "sharedKeywords": [],
         "score": 12
       }
@@ -1865,18 +1925,6 @@
         "score": 112
       },
       {
-        "category": "education",
-        "id": "38019946ca768018bc76cbe284514b07",
-        "title": "대고객 메시징 서비스 마케팅 이력관리",
-        "date": "2026-06-17",
-        "tags": [
-          "SQL 실용문제"
-        ],
-        "href": "/devlog/education/backend-transactions-and-database-locks",
-        "sharedKeywords": [],
-        "score": 18
-      },
-      {
         "category": "tech_study",
         "id": "3b919946ca7680d9a4f3c5389ea08e85",
         "title": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
@@ -1887,6 +1935,18 @@
           "WIKI"
         ],
         "href": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
+        "sharedKeywords": [],
+        "score": 18
+      },
+      {
+        "category": "education",
+        "id": "38019946ca768018bc76cbe284514b07",
+        "title": "대고객 메시징 서비스 마케팅 이력관리",
+        "date": "2026-06-17",
+        "tags": [
+          "SQL 실용문제"
+        ],
+        "href": "/devlog/education/backend-transactions-and-database-locks",
         "sharedKeywords": [],
         "score": 18
       }
@@ -1909,15 +1969,13 @@
       },
       {
         "category": "blog",
-        "id": "3c819946ca76800686abe41d9548e8b9",
-        "title": "LLM의 개별 wiki 구조 이후에, 통합관리",
-        "date": "2026-08-26",
+        "id": "3a319946ca768078b891d2ebf14c4741",
+        "title": "2026년 상반기 면접을 보면서..",
+        "date": "2026-07-20",
         "tags": [
-          "ai agent",
-          "wiki",
-          "link"
+          "면접"
         ],
-        "href": "/devlog/blog/ai-agent-linked-wiki",
+        "href": "/devlog/blog/2026-first-half-interview-retrospective",
         "sharedKeywords": [],
         "score": 12
       },
@@ -1970,15 +2028,16 @@
       },
       {
         "category": "tech_study",
-        "id": "3c719946ca7680bb89ccc0dfc9bf2c87",
-        "title": "AI 에이전트 협업과 프롬프트 엔지니어링 - 동료 관점의 업무 지시와 하네스 파이프라인",
-        "date": "2026-08-25",
+        "id": "3b819946ca7680439eecd5fe23528952",
+        "title": "AI agent 활용한 학습: 프롬프트,하네스,루프 기법",
+        "date": "2026-08-10",
         "tags": [
-          "prompt",
           "AI Agent",
-          "vibe coding"
+          "하네스 기법",
+          "프롬프트 기술",
+          "루프 기법"
         ],
-        "href": "/devlog/tech_study/ai-agent-prompt-rule-guide",
+        "href": "/devlog/tech_study/ai-agent-basic-tech",
         "sharedKeywords": [
           "AI Agent"
         ],
@@ -2003,18 +2062,6 @@
         "score": 124
       },
       {
-        "category": "education",
-        "id": "37219946ca76809a847ecd89ced12913",
-        "title": "예외처리(예외)에 대한 정리",
-        "date": "2026-06-01",
-        "tags": [
-          "예외처리"
-        ],
-        "href": "/devlog/education/network-fundamentals",
-        "sharedKeywords": [],
-        "score": 18
-      },
-      {
         "category": "tech_study",
         "id": "3c719946ca76806daa29f22dc447a502",
         "title": "RDB(SQL)에서 정규화란? : 정규화의 정의와 비정규화(반정규화)는 언제 쓰는지에 대한 고찰",
@@ -2025,6 +2072,18 @@
           "비정규화"
         ],
         "href": "/devlog/tech_study/rdb-sql-denormalization-normalization",
+        "sharedKeywords": [],
+        "score": 18
+      },
+      {
+        "category": "education",
+        "id": "37219946ca76809a847ecd89ced12913",
+        "title": "예외처리(예외)에 대한 정리",
+        "date": "2026-06-01",
+        "tags": [
+          "예외처리"
+        ],
+        "href": "/devlog/education/network-fundamentals",
         "sharedKeywords": [],
         "score": 18
       }
@@ -2048,17 +2107,20 @@
         "score": 124
       },
       {
-        "category": "tech_study",
-        "id": "3b019946ca768079be45f5fdc2d4019f",
-        "title": "Docker 기본 및 Container 구동 프로세스 이해",
-        "date": "2026-04-30",
+        "category": "problem_solving",
+        "id": "3b019946ca7680b584e1c59c19e022a9",
+        "title": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결",
+        "date": "2026-05-15",
         "tags": [
-          "Container",
-          "DevOps"
+          "Spring",
+          "Quartz",
+          "Hackathon",
+          "Clustering",
+          "Sharding"
         ],
-        "href": "/devlog/tech_study/docker-container-runtime-basics",
+        "href": "/devlog/problem_solving/spring-quartz-ha-optimization",
         "sharedKeywords": [
-          "DevOps"
+          "Hackathon"
         ],
         "score": 100
       },
@@ -2081,6 +2143,16 @@
       }
     ],
     "education/35e19946ca76807b9fe4f64d17b2e1b6": [
+      {
+        "category": "tech_study_series",
+        "id": "3d119946ca76801ab530e98417a23d86",
+        "title": "Java 문법 02. 변수와 기본 타입, 형 변환",
+        "date": "2026-09-04",
+        "tags": [],
+        "href": "/devlog/tech_study_series/java-syntax-variables-types",
+        "sharedKeywords": [],
+        "score": 54
+      },
       {
         "category": "education",
         "id": "35f19946ca7680aaab2de0ba2b1acd0b",
@@ -2112,20 +2184,6 @@
         "href": "/devlog/tech_study/java-gc-guide",
         "sharedKeywords": [],
         "score": 42
-      },
-      {
-        "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
-        "tags": [
-          "배열",
-          "1차원 배열",
-          "문제풀이"
-        ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
-        "sharedKeywords": [],
-        "score": 30
       }
     ],
     "education/35f19946ca7680aaab2de0ba2b1acd0b": [
@@ -2405,15 +2463,15 @@
       },
       {
         "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
+        "id": "36119946ca7680f1baccfeea7b17d64b",
+        "title": "java 조건문, 반복문을 활용한 문제풀이",
+        "date": "2026-05-15",
         "tags": [
-          "배열",
-          "1차원 배열",
+          "math패키지",
+          "분기문",
           "문제풀이"
         ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
+        "href": "/devlog/education/java-conditional-loop-practice",
         "sharedKeywords": [],
         "score": 90
       }
@@ -2437,27 +2495,31 @@
       },
       {
         "category": "education",
-        "id": "36e19946ca768099b9e1ed827b7817fd",
-        "title": "java 상속을 활용한 기능 구현",
-        "date": "2026-05-28",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "상속"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/java-inheritance-feature-implementation",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 30
       },
       {
         "category": "education",
-        "id": "35e19946ca76807b9fe4f64d17b2e1b6",
-        "title": "Java 환경 구축 및 기본 문법",
-        "date": "2026-05-12",
+        "id": "36419946ca7680f6a116fe0b8c2c9648",
+        "title": "java 생성자를 활용한 문제풀이",
+        "date": "2026-05-20",
         "tags": [
-          "eclipse 설치",
-          "변수",
-          "java설치"
+          "메서드",
+          "생성자",
+          "lombok",
+          "builder패턴"
         ],
-        "href": "/devlog/education/java-development-environment-and-basic-syntax",
+        "href": "/devlog/education/java-constructor-practice",
         "sharedKeywords": [],
         "score": 30
       }
@@ -2522,15 +2584,15 @@
       },
       {
         "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
+        "id": "36119946ca7680f1baccfeea7b17d64b",
+        "title": "java 조건문, 반복문을 활용한 문제풀이",
+        "date": "2026-05-15",
         "tags": [
-          "배열",
-          "1차원 배열",
+          "math패키지",
+          "분기문",
           "문제풀이"
         ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
+        "href": "/devlog/education/java-conditional-loop-practice",
         "sharedKeywords": [],
         "score": 48
       },
@@ -2564,27 +2626,28 @@
       },
       {
         "category": "education",
-        "id": "37219946ca76809a847ecd89ced12913",
-        "title": "예외처리(예외)에 대한 정리",
-        "date": "2026-06-01",
+        "id": "36d19946ca7680559155e3820742c2be",
+        "title": "java 복합 기능 구현",
+        "date": "2026-05-27",
         "tags": [
-          "예외처리"
+          "객체배열",
+          "MVC"
         ],
-        "href": "/devlog/education/network-fundamentals",
+        "href": "/devlog/education/java-composite-feature-implementation",
         "sharedKeywords": [],
         "score": 30
       },
       {
         "category": "education",
-        "id": "36419946ca768084bdebc4e8de245ef7",
-        "title": "java 1차원 배열을 활용한 문제풀이",
-        "date": "2026-05-18",
+        "id": "38e19946ca7680e1a523fdf74099c07f",
+        "title": "js를 활용한 화면 구현하기 (회원가입 화면)",
+        "date": "2026-06-30",
         "tags": [
-          "배열",
-          "1차원 배열",
-          "문제풀이"
+          "실습",
+          "forntend",
+          "Strorage"
         ],
-        "href": "/devlog/education/java-two-dimensional-array-practice",
+        "href": "/devlog/education/javascript-signup-page-implementation",
         "sharedKeywords": [],
         "score": 30
       }
@@ -2695,27 +2758,30 @@
       },
       {
         "category": "education",
-        "id": "36d19946ca7680559155e3820742c2be",
-        "title": "java 복합 기능 구현",
-        "date": "2026-05-27",
+        "id": "36119946ca7680f1baccfeea7b17d64b",
+        "title": "java 조건문, 반복문을 활용한 문제풀이",
+        "date": "2026-05-15",
         "tags": [
-          "객체배열",
-          "MVC"
+          "math패키지",
+          "분기문",
+          "문제풀이"
         ],
-        "href": "/devlog/education/java-composite-feature-implementation",
+        "href": "/devlog/education/java-conditional-loop-practice",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "39119946ca76806dbd0fc549ddde2532",
-        "title": "JDBC란?",
-        "date": "2026-07-02",
+        "id": "36019946ca7680ac8b6cd025e664b34b",
+        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
+        "date": "2026-05-14",
         "tags": [
-          "JDBC",
-          "SpringFramework"
+          "조건문",
+          "반복문",
+          "분기",
+          "확장성"
         ],
-        "href": "/devlog/education/jdbc-fundamentals",
+        "href": "/devlog/education/java-control-flow-and-extensible-code",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2740,28 +2806,27 @@
       },
       {
         "category": "education",
-        "id": "37919946ca7680d68411e998f7cd476c",
-        "title": "윈도우함수와 파티셔닝/인덱스",
-        "date": "2026-06-11",
+        "id": "3a319946ca7680a6b7b3f98589e30442",
+        "title": "Spring에서 Filter와 Interceptor의 쓰임 +AOP",
+        "date": "2026-07-09",
         "tags": [
-          "window함수",
-          "파티셔닝",
-          "인덱스"
+          "Filter",
+          "Interceptor"
         ],
-        "href": "/devlog/education/sql-window-functions-partitioning-indexes",
+        "href": "/devlog/education/spring-filter-and-interceptor",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38019946ca768066812adf60bf9ac09a",
-        "title": "HTML과 CSS의 기능",
-        "date": "2026-06-18",
+        "id": "37919946ca7680ca8debe99c5967f5c9",
+        "title": "데이터베이스와 SQL",
+        "date": "2026-06-09",
         "tags": [
-          "HTML",
-          "CSS"
+          "SQL",
+          "RDBMS"
         ],
-        "href": "/devlog/education/html-and-css-fundamentals",
+        "href": "/devlog/education/process-and-thread",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2769,42 +2834,40 @@
     "education/37919946ca7680568248ea033ea13f4f": [
       {
         "category": "education",
-        "id": "38019946ca7680548aaff686f677ee28",
-        "title": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)",
-        "date": "2026-06-16",
+        "id": "38e19946ca768000b2fadd797469364b",
+        "title": "DOM/BOM, 이벤트 위임, 버블링 특성과 제어",
+        "date": "2026-06-29",
         "tags": [
-          "DDL",
-          "DML",
-          "DCL",
-          "트랜잭션",
-          "dbLock"
+          "DOM",
+          "BOM"
         ],
-        "href": "/devlog/education/jsp-and-modern-template-engine",
+        "href": "/devlog/education/dom-bom-event-delegation-bubbling",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37919946ca7680c4b292fdd5a6ce5794",
-        "title": "프로세스와 스레드",
-        "date": "2026-06-08",
+        "id": "3c619946ca7680bc83caffd2cba75df7",
+        "title": "파이썬 함수와 자료구조",
+        "date": "2026-08-19",
         "tags": [
-          "프로세스",
-          "스레드"
+          "기초문법"
         ],
-        "href": "/devlog/education/database-functions-and-procedures",
+        "href": "/devlog/education/python-basic-data-structure",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "36f19946ca76807b9740c769bb81319a",
-        "title": "다형성을 활용한 소스 구현  내용 정리",
-        "date": "2026-05-29",
+        "id": "3a319946ca7680f58266f72bdafd3de8",
+        "title": "웹 애플리케이션에서 SpringFramework란?",
+        "date": "2026-07-08",
         "tags": [
-          "다형성"
+          "웹 애플리케이션",
+          "프레임워크",
+          "SpringFramework"
         ],
-        "href": "/devlog/education/java-polymorphism-implementation",
+        "href": "/devlog/education/spring-framework-for-web-applications",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2812,18 +2875,18 @@
     "education/37919946ca7680c4b292fdd5a6ce5794": [
       {
         "category": "tech_study",
-        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
-        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
-        "date": "2026-06-15",
+        "id": "3d419946ca768006b012ce7fe9ab675f",
+        "title": "스레드 풀 : 스레드 풀을 이용하는 이유?",
+        "date": "2026-09-07",
         "tags": [
-          "scope",
-          "job",
-          "Spring",
-          "SpringBoot"
+          "thread",
+          "pool",
+          "SpringBoot",
+          "java"
         ],
-        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "href": "/devlog/tech_study/java-concurrency-thread-pool",
         "sharedKeywords": [],
-        "score": 24
+        "score": 42
       },
       {
         "category": "tech_study",
@@ -2839,16 +2902,19 @@
         "score": 24
       },
       {
-        "category": "education",
-        "id": "39519946ca7680febec1c485280ca77b",
-        "title": "MVC 패턴이란?",
-        "date": "2026-07-06",
+        "category": "tech_study",
+        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
+        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
+        "date": "2026-06-15",
         "tags": [
-          "MVC"
+          "scope",
+          "job",
+          "Spring",
+          "SpringBoot"
         ],
-        "href": "/devlog/education/mvc-pattern-fundamentals",
+        "href": "/devlog/tech_study/spring-batch-job-step-scope",
         "sharedKeywords": [],
-        "score": 12
+        "score": 24
       }
     ],
     "education/37919946ca7680ca8debe99c5967f5c9": [
@@ -2870,26 +2936,27 @@
       },
       {
         "category": "education",
-        "id": "3a319946ca76806db9ecf8824115ebea",
-        "title": "요구사항 정의서 : 작업의 방향성을 정하는 문서",
-        "date": "2026-07-10",
+        "id": "38019946ca7680e7a3a2c619019d037c",
+        "title": "페이지네이션(limit, offset)과 파티션닝",
+        "date": "2026-06-15",
         "tags": [
-          "PRD"
+          "pagination"
         ],
-        "href": "/devlog/education/requirements-definition-document",
+        "href": "/devlog/education/customer-messaging-marketing-history",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "39119946ca768076af6bf1cf7f4e52c4",
-        "title": "WAS, WEB은 무엇인가?",
-        "date": "2026-07-03",
+        "id": "38719946ca76807cbcf2f458ba72068c",
+        "title": "강제로 지운 git 히스토리 되돌려보기",
+        "date": "2026-06-23",
         "tags": [
-          "WAS",
-          "WEB"
+          "git",
+          "cherry-pick",
+          "reset --hard"
         ],
-        "href": "/devlog/education/was-and-web-server-fundamentals",
+        "href": "/devlog/education/javascript-prototype-and-class",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2908,27 +2975,29 @@
         "score": 54
       },
       {
-        "category": "education",
-        "id": "37219946ca76809a847ecd89ced12913",
-        "title": "예외처리(예외)에 대한 정리",
-        "date": "2026-06-01",
+        "category": "problem_solving",
+        "id": "3d419946ca76809a9589dc1c6e4b7cdb",
+        "title": "Apache Kafka 동시성 문제에 따른 파티셔닝 조절",
+        "date": "2026-09-07",
         "tags": [
-          "예외처리"
+          "Kafka",
+          "Partition",
+          "Concurrency"
         ],
-        "href": "/devlog/education/network-fundamentals",
+        "href": "/devlog/problem_solving/kafka-partition-concurrency-solve",
         "sharedKeywords": [],
-        "score": 12
+        "score": 42
       },
       {
         "category": "education",
-        "id": "38019946ca768066812adf60bf9ac09a",
-        "title": "HTML과 CSS의 기능",
-        "date": "2026-06-18",
+        "id": "3c619946ca7680b68637f1bcfa0bf21e",
+        "title": "파이썬 : OOP와 예외처리",
+        "date": "2026-08-20",
         "tags": [
-          "HTML",
-          "CSS"
+          "OOP",
+          "예외처리"
         ],
-        "href": "/devlog/education/html-and-css-fundamentals",
+        "href": "/devlog/education/python-oop-exception",
         "sharedKeywords": [],
         "score": 12
       }
@@ -2995,26 +3064,27 @@
       },
       {
         "category": "education",
-        "id": "38e19946ca768000b2fadd797469364b",
-        "title": "DOM/BOM, 이벤트 위임, 버블링 특성과 제어",
-        "date": "2026-06-29",
+        "id": "37219946ca768000a8abe3311816c88d",
+        "title": "네트워크 (java / OSI 7계층)",
+        "date": "2026-06-05",
         "tags": [
-          "DOM",
-          "BOM"
+          "네트워크"
         ],
-        "href": "/devlog/education/dom-bom-event-delegation-bubbling",
+        "href": "/devlog/education/restful-api-and-generics",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "36f19946ca76807b9740c769bb81319a",
-        "title": "다형성을 활용한 소스 구현  내용 정리",
-        "date": "2026-05-29",
+        "id": "38e19946ca7680e1a523fdf74099c07f",
+        "title": "js를 활용한 화면 구현하기 (회원가입 화면)",
+        "date": "2026-06-30",
         "tags": [
-          "다형성"
+          "실습",
+          "forntend",
+          "Strorage"
         ],
-        "href": "/devlog/education/java-polymorphism-implementation",
+        "href": "/devlog/education/javascript-signup-page-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3051,15 +3121,15 @@
       },
       {
         "category": "education",
-        "id": "3a319946ca7680f58266f72bdafd3de8",
-        "title": "웹 애플리케이션에서 SpringFramework란?",
-        "date": "2026-07-08",
+        "id": "36819946ca7680ad822eeb9d40d24cdb",
+        "title": "java 소스로 기능구현",
+        "date": "2026-05-26",
         "tags": [
-          "웹 애플리케이션",
-          "프레임워크",
-          "SpringFramework"
+          "소스 유연성",
+          "오버로딩",
+          "오버라이트"
         ],
-        "href": "/devlog/education/spring-framework-for-web-applications",
+        "href": "/devlog/education/java-source-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3170,30 +3240,27 @@
       },
       {
         "category": "education",
-        "id": "37919946ca7680c4b292fdd5a6ce5794",
-        "title": "프로세스와 스레드",
-        "date": "2026-06-08",
+        "id": "3c619946ca7680b68637f1bcfa0bf21e",
+        "title": "파이썬 : OOP와 예외처리",
+        "date": "2026-08-20",
         "tags": [
-          "프로세스",
-          "스레드"
+          "OOP",
+          "예외처리"
         ],
-        "href": "/devlog/education/database-functions-and-procedures",
+        "href": "/devlog/education/python-oop-exception",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38019946ca7680548aaff686f677ee28",
-        "title": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)",
-        "date": "2026-06-16",
+        "id": "37219946ca76809eb4d7eac0cc7677af",
+        "title": "Collection 핵심정리",
+        "date": "2026-06-04",
         "tags": [
-          "DDL",
-          "DML",
-          "DCL",
-          "트랜잭션",
-          "dbLock"
+          "컬렉션",
+          "java 미니 프로젝트"
         ],
-        "href": "/devlog/education/jsp-and-modern-template-engine",
+        "href": "/devlog/education/java-collection-framework",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3252,6 +3319,22 @@
     "education/38719946ca7680639d1ecf7b31dabb61": [
       {
         "category": "education",
+        "id": "38719946ca76804c968ee8521154cff7",
+        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
+        "date": "2026-06-25",
+        "tags": [
+          "배열",
+          "자료구조",
+          "javascript"
+        ],
+        "href": "/devlog/education/recover-deleted-git-history",
+        "sharedKeywords": [
+          "javascript"
+        ],
+        "score": 112
+      },
+      {
+        "category": "education",
         "id": "38719946ca768076a4ced4f41fd6f26c",
         "title": "인터프린트언어인 javascirpt에서 헷갈리는 클로저/호이스팅",
         "date": "2026-06-24",
@@ -3262,22 +3345,6 @@
           "scope"
         ],
         "href": "/devlog/education/javascript-closure-hoisting-scope",
-        "sharedKeywords": [
-          "javascript"
-        ],
-        "score": 112
-      },
-      {
-        "category": "education",
-        "id": "38719946ca76804c968ee8521154cff7",
-        "title": "javascript내에서 배열(자료구조) - 고차함수/콜백/프로미스/비동기/대기",
-        "date": "2026-06-25",
-        "tags": [
-          "배열",
-          "자료구조",
-          "javascript"
-        ],
-        "href": "/devlog/education/recover-deleted-git-history",
         "sharedKeywords": [
           "javascript"
         ],
@@ -3370,26 +3437,31 @@
       },
       {
         "category": "education",
-        "id": "39119946ca76806dbd0fc549ddde2532",
-        "title": "JDBC란?",
-        "date": "2026-07-02",
+        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
+        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
+        "date": "2026-05-13",
         "tags": [
-          "JDBC",
-          "SpringFramework"
+          "상수",
+          "형변환",
+          "메모리 구조",
+          "연산자",
+          "조건문"
         ],
-        "href": "/devlog/education/jdbc-fundamentals",
+        "href": "/devlog/education/java-constants-type-casting-and-memory",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "39519946ca7680febec1c485280ca77b",
-        "title": "MVC 패턴이란?",
-        "date": "2026-07-06",
+        "id": "36419946ca76801f84b2e07084d1a544",
+        "title": "java 2차원 배열을 활용한 문제풀이",
+        "date": "2026-05-19",
         "tags": [
-          "MVC"
+          "2차원배열",
+          "문제풀이",
+          "메모리접근"
         ],
-        "href": "/devlog/education/mvc-pattern-fundamentals",
+        "href": "/devlog/education/java-one-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3458,6 +3530,20 @@
         "score": 18
       },
       {
+        "category": "tech_study",
+        "id": "3b019946ca7680aab42be44f7d069738",
+        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
+        "date": "2026-05-06",
+        "tags": [
+          "Container",
+          "Network",
+          "Port"
+        ],
+        "href": "/devlog/tech_study/docker-network-inbound-outbound",
+        "sharedKeywords": [],
+        "score": 18
+      },
+      {
         "category": "problem_solving",
         "id": "3b019946ca768059b91cc1de8dbbe8f7",
         "title": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략",
@@ -3472,34 +3558,34 @@
         "href": "/devlog/problem_solving/activemq-kahadb-disk-rate-limit",
         "sharedKeywords": [],
         "score": 18
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca7680aab42be44f7d069738",
-        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
-        "date": "2026-05-06",
-        "tags": [
-          "Container",
-          "Network",
-          "Port"
-        ],
-        "href": "/devlog/tech_study/docker-network-inbound-outbound",
-        "sharedKeywords": [],
-        "score": 18
       }
     ],
     "education/38e19946ca7680e1a523fdf74099c07f": [
       {
         "category": "education",
-        "id": "36119946ca7680f1baccfeea7b17d64b",
-        "title": "java 조건문, 반복문을 활용한 문제풀이",
-        "date": "2026-05-15",
+        "id": "36419946ca768084bdebc4e8de245ef7",
+        "title": "java 1차원 배열을 활용한 문제풀이",
+        "date": "2026-05-18",
         "tags": [
-          "math패키지",
-          "분기문",
+          "배열",
+          "1차원 배열",
           "문제풀이"
         ],
-        "href": "/devlog/education/java-conditional-loop-practice",
+        "href": "/devlog/education/java-two-dimensional-array-practice",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "education",
+        "id": "36419946ca76801f84b2e07084d1a544",
+        "title": "java 2차원 배열을 활용한 문제풀이",
+        "date": "2026-05-19",
+        "tags": [
+          "2차원배열",
+          "문제풀이",
+          "메모리접근"
+        ],
+        "href": "/devlog/education/java-one-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 30
       },
@@ -3512,18 +3598,6 @@
           "다형성"
         ],
         "href": "/devlog/education/java-polymorphism-implementation",
-        "sharedKeywords": [],
-        "score": 30
-      },
-      {
-        "category": "education",
-        "id": "36e19946ca768099b9e1ed827b7817fd",
-        "title": "java 상속을 활용한 기능 구현",
-        "date": "2026-05-28",
-        "tags": [
-          "상속"
-        ],
-        "href": "/devlog/education/java-inheritance-feature-implementation",
         "sharedKeywords": [],
         "score": 30
       }
@@ -3557,13 +3631,14 @@
       },
       {
         "category": "education",
-        "id": "3a319946ca76806db9ecf8824115ebea",
-        "title": "요구사항 정의서 : 작업의 방향성을 정하는 문서",
-        "date": "2026-07-10",
+        "id": "36d19946ca7680559155e3820742c2be",
+        "title": "java 복합 기능 구현",
+        "date": "2026-05-27",
         "tags": [
-          "PRD"
+          "객체배열",
+          "MVC"
         ],
-        "href": "/devlog/education/requirements-definition-document",
+        "href": "/devlog/education/java-composite-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3601,13 +3676,14 @@
       },
       {
         "category": "education",
-        "id": "3c019946ca7680f5aa3ef175479b1dba",
-        "title": "파이썬 기초 문법",
-        "date": "2026-08-18",
+        "id": "36d19946ca7680559155e3820742c2be",
+        "title": "java 복합 기능 구현",
+        "date": "2026-05-27",
         "tags": [
-          "env"
+          "객체배열",
+          "MVC"
         ],
-        "href": "/devlog/education/python-basic",
+        "href": "/devlog/education/java-composite-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3654,17 +3730,14 @@
       },
       {
         "category": "education",
-        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
-        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
-        "date": "2026-05-13",
+        "id": "3a319946ca7680a6b7b3f98589e30442",
+        "title": "Spring에서 Filter와 Interceptor의 쓰임 +AOP",
+        "date": "2026-07-09",
         "tags": [
-          "상수",
-          "형변환",
-          "메모리 구조",
-          "연산자",
-          "조건문"
+          "Filter",
+          "Interceptor"
         ],
-        "href": "/devlog/education/java-constants-type-casting-and-memory",
+        "href": "/devlog/education/spring-filter-and-interceptor",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3687,25 +3760,31 @@
       },
       {
         "category": "education",
-        "id": "37919946ca7680db8d27fc34d79d9c45",
-        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
-        "date": "2026-06-12",
+        "id": "38e19946ca7680e1a523fdf74099c07f",
+        "title": "js를 활용한 화면 구현하기 (회원가입 화면)",
+        "date": "2026-06-30",
         "tags": [
-          "관계성 연산"
+          "실습",
+          "forntend",
+          "Strorage"
         ],
-        "href": "/devlog/education/sql-join-normalization-index-management",
+        "href": "/devlog/education/javascript-signup-page-implementation",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca768000a8abe3311816c88d",
-        "title": "네트워크 (java / OSI 7계층)",
-        "date": "2026-06-05",
+        "id": "38019946ca7680548aaff686f677ee28",
+        "title": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)",
+        "date": "2026-06-16",
         "tags": [
-          "네트워크"
+          "DDL",
+          "DML",
+          "DCL",
+          "트랜잭션",
+          "dbLock"
         ],
-        "href": "/devlog/education/restful-api-and-generics",
+        "href": "/devlog/education/jsp-and-modern-template-engine",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3728,28 +3807,26 @@
       },
       {
         "category": "education",
-        "id": "36419946ca7680f6a116fe0b8c2c9648",
-        "title": "java 생성자를 활용한 문제풀이",
-        "date": "2026-05-20",
+        "id": "36e19946ca768099b9e1ed827b7817fd",
+        "title": "java 상속을 활용한 기능 구현",
+        "date": "2026-05-28",
         "tags": [
-          "메서드",
-          "생성자",
-          "lombok",
-          "builder패턴"
+          "상속"
         ],
-        "href": "/devlog/education/java-constructor-practice",
+        "href": "/devlog/education/java-inheritance-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "3a319946ca76806db9ecf8824115ebea",
-        "title": "요구사항 정의서 : 작업의 방향성을 정하는 문서",
-        "date": "2026-07-10",
+        "id": "36d19946ca7680559155e3820742c2be",
+        "title": "java 복합 기능 구현",
+        "date": "2026-05-27",
         "tags": [
-          "PRD"
+          "객체배열",
+          "MVC"
         ],
-        "href": "/devlog/education/requirements-definition-document",
+        "href": "/devlog/education/java-composite-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3790,16 +3867,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
-        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
-        "date": "2026-06-15",
+        "id": "3b019946ca768094a4c9f440ffdf6bfd",
+        "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
+        "date": "2026-07-06",
         "tags": [
-          "scope",
-          "job",
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
         "sharedKeywords": [],
         "score": 24
       }
@@ -3807,41 +3882,40 @@
     "education/3a319946ca76806db9ecf8824115ebea": [
       {
         "category": "education",
-        "id": "36d19946ca7680559155e3820742c2be",
-        "title": "java 복합 기능 구현",
-        "date": "2026-05-27",
+        "id": "39519946ca7680febec1c485280ca77b",
+        "title": "MVC 패턴이란?",
+        "date": "2026-07-06",
         "tags": [
-          "객체배열",
           "MVC"
         ],
-        "href": "/devlog/education/java-composite-feature-implementation",
+        "href": "/devlog/education/mvc-pattern-fundamentals",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "38719946ca768076a4ced4f41fd6f26c",
-        "title": "인터프린트언어인 javascirpt에서 헷갈리는 클로저/호이스팅",
-        "date": "2026-06-24",
+        "id": "38019946ca7680e7a3a2c619019d037c",
+        "title": "페이지네이션(limit, offset)과 파티션닝",
+        "date": "2026-06-15",
         "tags": [
-          "javascript",
-          "클로저",
-          "호이스팅",
-          "scope"
+          "pagination"
         ],
-        "href": "/devlog/education/javascript-closure-hoisting-scope",
+        "href": "/devlog/education/customer-messaging-marketing-history",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37919946ca7680db8d27fc34d79d9c45",
-        "title": "Join과 실무에서의 인덱스 관리 (추가개념: 정규화/비정규화)",
-        "date": "2026-06-12",
+        "id": "36419946ca7680f6a116fe0b8c2c9648",
+        "title": "java 생성자를 활용한 문제풀이",
+        "date": "2026-05-20",
         "tags": [
-          "관계성 연산"
+          "메서드",
+          "생성자",
+          "lombok",
+          "builder패턴"
         ],
-        "href": "/devlog/education/sql-join-normalization-index-management",
+        "href": "/devlog/education/java-constructor-practice",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3849,42 +3923,41 @@
     "education/3a319946ca76807b8e7ac1d05c32e441": [
       {
         "category": "education",
-        "id": "38019946ca7680548aaff686f677ee28",
-        "title": "백엔드 개발자가 고려해야 하는 트랜잭션/dbLock(추가개념 : DDL, DML, DCL, TCL)",
-        "date": "2026-06-16",
+        "id": "39519946ca7680febec1c485280ca77b",
+        "title": "MVC 패턴이란?",
+        "date": "2026-07-06",
         "tags": [
-          "DDL",
-          "DML",
-          "DCL",
-          "트랜잭션",
-          "dbLock"
+          "MVC"
         ],
-        "href": "/devlog/education/jsp-and-modern-template-engine",
+        "href": "/devlog/education/mvc-pattern-fundamentals",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "3c619946ca7680b68637f1bcfa0bf21e",
-        "title": "파이썬 : OOP와 예외처리",
-        "date": "2026-08-20",
+        "id": "38019946ca768066812adf60bf9ac09a",
+        "title": "HTML과 CSS의 기능",
+        "date": "2026-06-18",
         "tags": [
-          "OOP",
-          "예외처리"
+          "HTML",
+          "CSS"
         ],
-        "href": "/devlog/education/python-oop-exception",
+        "href": "/devlog/education/html-and-css-fundamentals",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "3a319946ca76806db9ecf8824115ebea",
-        "title": "요구사항 정의서 : 작업의 방향성을 정하는 문서",
-        "date": "2026-07-10",
+        "id": "36419946ca7680f6a116fe0b8c2c9648",
+        "title": "java 생성자를 활용한 문제풀이",
+        "date": "2026-05-20",
         "tags": [
-          "PRD"
+          "메서드",
+          "생성자",
+          "lombok",
+          "builder패턴"
         ],
-        "href": "/devlog/education/requirements-definition-document",
+        "href": "/devlog/education/java-constructor-practice",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3892,45 +3965,39 @@
     "education/3a319946ca7680a6b7b3f98589e30442": [
       {
         "category": "education",
-        "id": "36019946ca7680ac8b6cd025e664b34b",
-        "title": "Java 제어문과 코드 구조의 진화: 기초부터 확장성까지",
-        "date": "2026-05-14",
+        "id": "36819946ca7680ad822eeb9d40d24cdb",
+        "title": "java 소스로 기능구현",
+        "date": "2026-05-26",
         "tags": [
-          "조건문",
-          "반복문",
-          "분기",
-          "확장성"
+          "소스 유연성",
+          "오버로딩",
+          "오버라이트"
         ],
-        "href": "/devlog/education/java-control-flow-and-extensible-code",
+        "href": "/devlog/education/java-source-feature-implementation",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
-        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
-        "date": "2026-05-13",
+        "id": "3a319946ca76807b8e7ac1d05c32e441",
+        "title": "세미프로젝트 : youwin - 음악중심소통 웹사이트",
+        "date": "2026-07-13",
         "tags": [
-          "상수",
-          "형변환",
-          "메모리 구조",
-          "연산자",
-          "조건문"
+          "세미프로젝트"
         ],
-        "href": "/devlog/education/java-constants-type-casting-and-memory",
+        "href": "/devlog/education/python-download-workspace-env",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "37219946ca7680b18b5dec7e65c0f197",
-        "title": "API + REST  → RESTful API ?",
-        "date": "2026-06-02",
+        "id": "3c019946ca7680f5aa3ef175479b1dba",
+        "title": "파이썬 기초 문법",
+        "date": "2026-08-18",
         "tags": [
-          "API",
-          "제네릭"
+          "env"
         ],
-        "href": "/devlog/education/java-exception-handling",
+        "href": "/devlog/education/python-basic",
         "sharedKeywords": [],
         "score": 12
       }
@@ -3953,34 +4020,44 @@
       },
       {
         "category": "education",
-        "id": "35f19946ca7680aaab2de0ba2b1acd0b",
-        "title": "Java 기본 : 상수, 형변환 (메모리구조)",
-        "date": "2026-05-13",
+        "id": "36419946ca768084bdebc4e8de245ef7",
+        "title": "java 1차원 배열을 활용한 문제풀이",
+        "date": "2026-05-18",
         "tags": [
-          "상수",
-          "형변환",
-          "메모리 구조",
-          "연산자",
-          "조건문"
+          "배열",
+          "1차원 배열",
+          "문제풀이"
         ],
-        "href": "/devlog/education/java-constants-type-casting-and-memory",
+        "href": "/devlog/education/java-two-dimensional-array-practice",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "education",
-        "id": "3c019946ca7680f5aa3ef175479b1dba",
-        "title": "파이썬 기초 문법",
-        "date": "2026-08-18",
+        "id": "37219946ca76809a847ecd89ced12913",
+        "title": "예외처리(예외)에 대한 정리",
+        "date": "2026-06-01",
         "tags": [
-          "env"
+          "예외처리"
         ],
-        "href": "/devlog/education/python-basic",
+        "href": "/devlog/education/network-fundamentals",
         "sharedKeywords": [],
         "score": 12
       }
     ],
     "education/3c019946ca7680f5aa3ef175479b1dba": [
+      {
+        "category": "education",
+        "id": "3c619946ca7680bc83caffd2cba75df7",
+        "title": "파이썬 함수와 자료구조",
+        "date": "2026-08-19",
+        "tags": [
+          "기초문법"
+        ],
+        "href": "/devlog/education/python-basic-data-structure",
+        "sharedKeywords": [],
+        "score": 30
+      },
       {
         "category": "education",
         "id": "3c619946ca7680b68637f1bcfa0bf21e",
@@ -3991,18 +4068,6 @@
           "예외처리"
         ],
         "href": "/devlog/education/python-oop-exception",
-        "sharedKeywords": [],
-        "score": 30
-      },
-      {
-        "category": "education",
-        "id": "3c619946ca7680bc83caffd2cba75df7",
-        "title": "파이썬 함수와 자료구조",
-        "date": "2026-08-19",
-        "tags": [
-          "기초문법"
-        ],
-        "href": "/devlog/education/python-basic-data-structure",
         "sharedKeywords": [],
         "score": 30
       },
@@ -4038,6 +4103,22 @@
       },
       {
         "category": "tech_study",
+        "id": "3b019946ca76801da149f494c3231de4",
+        "title": "도서 리뷰: 실무 관점에서 재해석하는 《Clean Code》 핵심 요약 및 리뷰",
+        "date": "2026-05-31",
+        "tags": [
+          "Clean Code",
+          "Book",
+          "OOP"
+        ],
+        "href": "/devlog/tech_study/clean-code-book-review",
+        "sharedKeywords": [
+          "OOP"
+        ],
+        "score": 100
+      },
+      {
+        "category": "tech_study",
         "id": "3ce19946ca7680c19677fb9fa7f3dea7",
         "title": "Java : Override와 Overload는 어떻게 구분할까?",
         "date": "2026-09-01",
@@ -4048,22 +4129,6 @@
           "polymorphism"
         ],
         "href": "/devlog/tech_study/java-oop-override-overload",
-        "sharedKeywords": [
-          "OOP"
-        ],
-        "score": 100
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca76801da149f494c3231de4",
-        "title": "도서 리뷰: 실무 관점에서 재해석하는 《Clean Code》 핵심 요약 및 리뷰",
-        "date": "2026-05-31",
-        "tags": [
-          "Clean Code",
-          "Book",
-          "OOP"
-        ],
-        "href": "/devlog/tech_study/clean-code-book-review",
         "sharedKeywords": [
           "OOP"
         ],
@@ -4214,16 +4279,20 @@
     "problem_solving/3b019946ca768059b91cc1de8dbbe8f7": [
       {
         "category": "problem_solving",
-        "id": "3b019946ca768062aeb4e0e781ed366a",
-        "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
+        "id": "3b019946ca76808e9f6ec9aec83dbaaf",
+        "title": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안",
         "date": "2026-05-26",
         "tags": [
-          "API",
-          "Asynchronous",
-          "Architecture",
-          "MSA"
+          "SpringBoot",
+          "LoadBalance",
+          "Redis",
+          "JWT",
+          "Clustering",
+          "Session",
+          "Tomcat",
+          "WAS"
         ],
-        "href": "/devlog/problem_solving/async-api-processing-architecture",
+        "href": "/devlog/problem_solving/was-session-consistency",
         "sharedKeywords": [],
         "score": 30
       },
@@ -4245,20 +4314,16 @@
       },
       {
         "category": "problem_solving",
-        "id": "3b019946ca76808e9f6ec9aec83dbaaf",
-        "title": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안",
+        "id": "3b019946ca768062aeb4e0e781ed366a",
+        "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
         "date": "2026-05-26",
         "tags": [
-          "SpringBoot",
-          "LoadBalance",
-          "Redis",
-          "JWT",
-          "Clustering",
-          "Session",
-          "Tomcat",
-          "WAS"
+          "API",
+          "Asynchronous",
+          "Architecture",
+          "MSA"
         ],
-        "href": "/devlog/problem_solving/was-session-consistency",
+        "href": "/devlog/problem_solving/async-api-processing-architecture",
         "sharedKeywords": [],
         "score": 30
       }
@@ -4281,24 +4346,6 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768030ad15dcc419fe79a4",
-        "title": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리)",
-        "date": "2026-05-25",
-        "tags": [
-          "Architecture",
-          "Spring Boot",
-          "Pub/Sub",
-          "Event-Driven",
-          "Logging"
-        ],
-        "href": "/devlog/tech_study/spring-event-logging-pub-sub-architecture",
-        "sharedKeywords": [
-          "Architecture"
-        ],
-        "score": 118
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca7680849498da3bf66eaf67",
         "title": "스토리지 아키텍처 비교: DAS vs NAS vs SAN",
         "date": "2026-05-25",
@@ -4310,6 +4357,24 @@
           "Architecture"
         ],
         "href": "/devlog/tech_study/das-nas-san-storage-architecture",
+        "sharedKeywords": [
+          "Architecture"
+        ],
+        "score": 118
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768030ad15dcc419fe79a4",
+        "title": "스프링 내장 이벤트를 활용한 로깅 아키텍처 (Pub/Sub 기반 의존성 분리)",
+        "date": "2026-05-25",
+        "tags": [
+          "Architecture",
+          "Spring Boot",
+          "Pub/Sub",
+          "Event-Driven",
+          "Logging"
+        ],
+        "href": "/devlog/tech_study/spring-event-logging-pub-sub-architecture",
         "sharedKeywords": [
           "Architecture"
         ],
@@ -4373,21 +4438,6 @@
     "problem_solving/3b019946ca7680b584e1c59c19e022a9": [
       {
         "category": "tech_study",
-        "id": "3b019946ca768060a97ee328eea5a576",
-        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-scaling",
-        "sharedKeywords": [
-          "Spring"
-        ],
-        "score": 142
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca7680809e0fcf7c0f56c7bb",
         "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
         "date": "2026-06-15",
@@ -4398,6 +4448,21 @@
           "SpringBoot"
         ],
         "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "sharedKeywords": [
+          "Spring"
+        ],
+        "score": 142
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-scaling",
         "sharedKeywords": [
           "Spring"
         ],
@@ -4423,6 +4488,54 @@
         "score": 136
       }
     ],
+    "problem_solving/3d419946ca76809a9589dc1c6e4b7cdb": [
+      {
+        "category": "education",
+        "id": "37919946ca7680d68411e998f7cd476c",
+        "title": "윈도우함수와 파티셔닝/인덱스",
+        "date": "2026-06-11",
+        "tags": [
+          "window함수",
+          "파티셔닝",
+          "인덱스"
+        ],
+        "href": "/devlog/education/sql-window-functions-partitioning-indexes",
+        "sharedKeywords": [],
+        "score": 42
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768079878fed99b13e958f",
+        "title": "웹 서버엔진 비교: Nginx vs Apache HTTPD vs IIS",
+        "date": "2026-05-25",
+        "tags": [
+          "Web Server",
+          "Nginx",
+          "Apache",
+          "IIS",
+          "Architecture"
+        ],
+        "href": "/devlog/tech_study/nginx-apache-iis-comparison",
+        "sharedKeywords": [],
+        "score": 42
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680f69492e6e87f7a4530",
+        "title": "Apache Tomcat 운영 표준: 설정 파일 최적화 및 최신 SSL 적용 가이드",
+        "date": "2026-05-25",
+        "tags": [
+          "Tomcat",
+          "WAS",
+          "Server",
+          "SSL",
+          "Security"
+        ],
+        "href": "/devlog/tech_study/apache-tomcat-ssl-operations-guide",
+        "sharedKeywords": [],
+        "score": 18
+      }
+    ],
     "tech_study_series/3ce19946ca768005bc5cc7383a963f96": [
       {
         "category": "tech_study_series",
@@ -4446,18 +4559,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76807faa9def831b4cb504",
-        "title": "Python - NumPy 09. 데이터 전처리 핵심 패턴",
+        "id": "3ce19946ca768071aabfd696b871a6f8",
+        "title": "Python - NumPy 02. 배열 생성",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "preprocessing",
-          "normalization",
-          "one-hot",
-          "binning"
+          "array-creation",
+          "random"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-preprocessing-patterns",
+        "href": "/devlog/tech_study_series/python-numpy-io",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -4466,18 +4577,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680b48c90fb97102be10c",
-        "title": "Python - Numpy 01. 기초개념",
+        "id": "3ce19946ca7680649261f238b2bc8181",
+        "title": "Python - NumPy 06. 브로드캐스팅",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "ndarray",
-          "vector",
-          "vectorization",
-          "view-copy"
+          "broadcasting",
+          "vectorization"
         ],
-        "href": "/devlog/tech_study_series/numpy-01-initial-concept",
+        "href": "/devlog/tech_study_series/python-numpy-broadcasting",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -4488,17 +4597,17 @@
     "tech_study_series/3ce19946ca768008b586d2599f340817": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680f4ad12e64aef10f34c",
-        "title": "Python - pandas 11. 시계열",
+        "id": "3ce19946ca7680feb4a3f6dd8439c4b2",
+        "title": "Python - pandas 04. 선택과 인덱싱",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "timeseries",
-          "resample",
-          "rolling"
+          "boolean-indexing",
+          "fancy-indexing",
+          "loc-iloc"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-timeseries",
+        "href": "/devlog/tech_study_series/python-pandas-indexing",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -4507,17 +4616,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76800cb869e94167204db4",
-        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
+        "id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
+        "title": "Python - pandas 09. 재구조화 (pivot·melt·stack)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "inspection",
-          "describe",
-          "eda"
+          "wide-long",
+          "reshaping",
+          "pivot-melt"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-inspection",
+        "href": "/devlog/tech_study_series/python-pandas-reshaping",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -4526,17 +4635,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680b39ad3e58bb37e15b5",
-        "title": "Python - pandas 05. 결측치 처리",
+        "id": "3ce19946ca768075bbfaee5987ee2017",
+        "title": "Python - pandas 08. 그룹 연산 (groupby)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "nullable-dtype",
-          "missing-data",
-          "fillna"
+          "groupby",
+          "split-apply-combine",
+          "aggregation"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-missing-data",
+        "href": "/devlog/tech_study_series/python-pandas-groupby",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -4585,14 +4694,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76801d914ce5d0c1a9f881",
-        "title": "Python - pandas 01. 기초 개념과 자료구조",
+        "id": "3ce19946ca768086abc3f701bae8b934",
+        "title": "Python - pandas 13. 다음 단계 연결",
         "date": "2026-09-01",
         "tags": [
           "Python",
-          "pandas"
+          "pandas",
+          "visualization",
+          "next-steps",
+          "scikit-learn"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-series-dataframe",
+        "href": "/devlog/tech_study_series/python-pandas-next-steps",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -4601,6 +4713,25 @@
       }
     ],
     "tech_study_series/3ce19946ca76801ab1cdf359ecdcf07e": [
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680568905f9100f8e9192",
+        "title": "Python - NumPy 05. 형태 변경과 결합·분리",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "reshape",
+          "concatenate",
+          "axis"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-reshape",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
+      },
       {
         "category": "tech_study_series",
         "id": "3ce19946ca768071aabfd696b871a6f8",
@@ -4637,86 +4768,28 @@
           "numpy"
         ],
         "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680649261f238b2bc8181",
-        "title": "Python - NumPy 06. 브로드캐스팅",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "broadcasting",
-          "vectorization"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-broadcasting",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
       }
     ],
     "tech_study_series/3ce19946ca76801d914ce5d0c1a9f881": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680f09aade69d51fc4014",
-        "title": "Python - pandas 02. 데이터 입출력 (IO)",
+        "id": "3ce19946ca768075bbfaee5987ee2017",
+        "title": "Python - pandas 08. 그룹 연산 (groupby)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "io",
-          "read-csv",
-          "parquet"
+          "groupby",
+          "split-apply-combine",
+          "aggregation"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-io",
+        "href": "/devlog/tech_study_series/python-pandas-groupby",
         "sharedKeywords": [
           "Python",
           "pandas"
         ],
         "score": 344
       },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca76800cb869e94167204db4",
-        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "inspection",
-          "describe",
-          "eda"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-inspection",
-        "sharedKeywords": [
-          "Python",
-          "pandas"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680f3aab1ed09c080a491",
-        "title": "Python - pandas 07. 정렬과 순위",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "top-n",
-          "rank",
-          "sorting"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-sorting",
-        "sharedKeywords": [
-          "Python",
-          "pandas"
-        ],
-        "score": 344
-      }
-    ],
-    "tech_study_series/3ce19946ca76803b86fbf536ae878dba": [
       {
         "category": "tech_study_series",
         "id": "3ce19946ca768086abc3f701bae8b934",
@@ -4738,17 +4811,57 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680f3aab1ed09c080a491",
-        "title": "Python - pandas 07. 정렬과 순위",
+        "id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
+        "title": "Python - pandas 09. 재구조화 (pivot·melt·stack)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "top-n",
-          "rank",
-          "sorting"
+          "wide-long",
+          "reshaping",
+          "pivot-melt"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-sorting",
+        "href": "/devlog/tech_study_series/python-pandas-reshaping",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
+      }
+    ],
+    "tech_study_series/3ce19946ca76803b86fbf536ae878dba": [
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680f4ad12e64aef10f34c",
+        "title": "Python - pandas 11. 시계열",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "timeseries",
+          "resample",
+          "rolling"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-timeseries",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680b39ad3e58bb37e15b5",
+        "title": "Python - pandas 05. 결측치 처리",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "nullable-dtype",
+          "missing-data",
+          "fillna"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-missing-data",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -4816,18 +4929,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680b48c90fb97102be10c",
-        "title": "Python - Numpy 01. 기초개념",
+        "id": "3ce19946ca76801ab1cdf359ecdcf07e",
+        "title": "Python - NumPy 04. 인덱싱과 슬라이싱",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "ndarray",
-          "vector",
-          "vectorization",
-          "view-copy"
+          "indexinq",
+          "boolean-mask",
+          "fancy-indexing"
         ],
-        "href": "/devlog/tech_study_series/numpy-01-initial-concept",
+        "href": "/devlog/tech_study_series/python-numpy-indexing",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -4858,16 +4970,18 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca768071aabfd696b871a6f8",
-        "title": "Python - NumPy 02. 배열 생성",
+        "id": "3ce19946ca76807faa9def831b4cb504",
+        "title": "Python - NumPy 09. 데이터 전처리 핵심 패턴",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "array-creation",
-          "random"
+          "preprocessing",
+          "normalization",
+          "one-hot",
+          "binning"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-io",
+        "href": "/devlog/tech_study_series/python-numpy-preprocessing-patterns",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -4876,17 +4990,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680b5bd53de660571e6d2",
-        "title": "Python - NumPy 03. 자료형(dtype) 다루기",
+        "id": "3ce19946ca76801ab1cdf359ecdcf07e",
+        "title": "Python - NumPy 04. 인덱싱과 슬라이싱",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "dtype",
-          "type-casting",
-          "nan"
+          "indexinq",
+          "boolean-mask",
+          "fancy-indexing"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-dtype",
+        "href": "/devlog/tech_study_series/python-numpy-indexing",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -4918,25 +5032,6 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680e78c9acb8da7f20f38",
-        "title": "Python - NumPy 10. 선형대수 기초",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "linear-algebra",
-          "matmul",
-          "svd"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-linear-algebra",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
         "id": "3ce19946ca76801ab1cdf359ecdcf07e",
         "title": "Python - NumPy 04. 인덱싱과 슬라이싱",
         "date": "2026-08-30",
@@ -4948,6 +5043,25 @@
           "fancy-indexing"
         ],
         "href": "/devlog/tech_study_series/python-numpy-indexing",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680b5bd53de660571e6d2",
+        "title": "Python - NumPy 03. 자료형(dtype) 다루기",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "dtype",
+          "type-casting",
+          "nan"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-dtype",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -4978,17 +5092,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca768005bc5cc7383a963f96",
-        "title": "Python - NumPy 07. 연산 (ufunc·집계·axis)",
+        "id": "3ce19946ca7680649261f238b2bc8181",
+        "title": "Python - NumPy 06. 브로드캐스팅",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "ufunc",
-          "aggregation",
-          "axis"
+          "broadcasting",
+          "vectorization"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-ufunc-aggregation",
+        "href": "/devlog/tech_study_series/python-numpy-broadcasting",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -5018,137 +5131,17 @@
     "tech_study_series/3ce19946ca768071aabfd696b871a6f8": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680b48c90fb97102be10c",
-        "title": "Python - Numpy 01. 기초개념",
+        "id": "3ce19946ca7680568905f9100f8e9192",
+        "title": "Python - NumPy 05. 형태 변경과 결합·분리",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "ndarray",
-          "vector",
-          "vectorization",
-          "view-copy"
-        ],
-        "href": "/devlog/tech_study_series/numpy-01-initial-concept",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca76807faa9def831b4cb504",
-        "title": "Python - NumPy 09. 데이터 전처리 핵심 패턴",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "preprocessing",
-          "normalization",
-          "one-hot",
-          "binning"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-preprocessing-patterns",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca768063b0e1e8a297019e1e",
-        "title": "Python - NumPy 11. 입출력",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "io",
-          "csv",
-          "pandas"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-array-creation",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      }
-    ],
-    "tech_study_series/3ce19946ca768075bbfaee5987ee2017": [
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680b39ad3e58bb37e15b5",
-        "title": "Python - pandas 05. 결측치 처리",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "nullable-dtype",
-          "missing-data",
-          "fillna"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-missing-data",
-        "sharedKeywords": [
-          "Python",
-          "pandas"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680f09aade69d51fc4014",
-        "title": "Python - pandas 02. 데이터 입출력 (IO)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "io",
-          "read-csv",
-          "parquet"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-io",
-        "sharedKeywords": [
-          "Python",
-          "pandas"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca76803b86fbf536ae878dba",
-        "title": "Python - pandas 10. 결합 (concat·merge·join)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "merge-join",
+          "reshape",
           "concatenate",
-          "sql-join"
+          "axis"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-merge-join",
-        "sharedKeywords": [
-          "Python",
-          "pandas"
-        ],
-        "score": 344
-      }
-    ],
-    "tech_study_series/3ce19946ca7680768ccfde84c5980765": [
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680b5bd53de660571e6d2",
-        "title": "Python - NumPy 03. 자료형(dtype) 다루기",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "dtype",
-          "type-casting",
-          "nan"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-dtype",
+        "href": "/devlog/tech_study_series/python-numpy-reshape",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -5157,57 +5150,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680e78c9acb8da7f20f38",
-        "title": "Python - NumPy 10. 선형대수 기초",
+        "id": "3ce19946ca768005bc5cc7383a963f96",
+        "title": "Python - NumPy 07. 연산 (ufunc·집계·axis)",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "linear-algebra",
-          "matmul",
-          "svd"
+          "ufunc",
+          "aggregation",
+          "axis"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-linear-algebra",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680689d24d8fc50c66587",
-        "title": "Python - NumPy 12. 성능과 함정",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "performance",
-          "pitfalls",
-          "debugging"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-performance",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      }
-    ],
-    "tech_study_series/3ce19946ca76807faa9def831b4cb504": [
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca768063b0e1e8a297019e1e",
-        "title": "Python - NumPy 11. 입출력",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "io",
-          "csv",
-          "pandas"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-array-creation",
+        "href": "/devlog/tech_study_series/python-numpy-ufunc-aggregation",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -5232,7 +5185,123 @@
           "numpy"
         ],
         "score": 344
+      }
+    ],
+    "tech_study_series/3ce19946ca768075bbfaee5987ee2017": [
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
+        "title": "Python - pandas 09. 재구조화 (pivot·melt·stack)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "wide-long",
+          "reshaping",
+          "pivot-melt"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-reshaping",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
       },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca76801d914ce5d0c1a9f881",
+        "title": "Python - pandas 01. 기초 개념과 자료구조",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-series-dataframe",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca768008b586d2599f340817",
+        "title": "Python - pandas 06. 정제와 변환",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "dt-accessor",
+          "str-accessor",
+          "cleaning"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-cleaning-transform",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
+      }
+    ],
+    "tech_study_series/3ce19946ca7680768ccfde84c5980765": [
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680689d24d8fc50c66587",
+        "title": "Python - NumPy 12. 성능과 함정",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "performance",
+          "pitfalls",
+          "debugging"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-performance",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca768071aabfd696b871a6f8",
+        "title": "Python - NumPy 02. 배열 생성",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "array-creation",
+          "random"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-io",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680b5bd53de660571e6d2",
+        "title": "Python - NumPy 03. 자료형(dtype) 다루기",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "dtype",
+          "type-casting",
+          "nan"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-dtype",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
+      }
+    ],
+    "tech_study_series/3ce19946ca76807faa9def831b4cb504": [
       {
         "category": "tech_study_series",
         "id": "3ce19946ca7680568905f9100f8e9192",
@@ -5251,22 +5320,80 @@
           "numpy"
         ],
         "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680b48c90fb97102be10c",
+        "title": "Python - Numpy 01. 기초개념",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "ndarray",
+          "vector",
+          "vectorization",
+          "view-copy"
+        ],
+        "href": "/devlog/tech_study_series/numpy-01-initial-concept",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680e78c9acb8da7f20f38",
+        "title": "Python - NumPy 10. 선형대수 기초",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "linear-algebra",
+          "matmul",
+          "svd"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-linear-algebra",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
       }
     ],
     "tech_study_series/3ce19946ca768086abc3f701bae8b934": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680f09aade69d51fc4014",
-        "title": "Python - pandas 02. 데이터 입출력 (IO)",
+        "id": "3ce19946ca768008b586d2599f340817",
+        "title": "Python - pandas 06. 정제와 변환",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "io",
-          "read-csv",
-          "parquet"
+          "dt-accessor",
+          "str-accessor",
+          "cleaning"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-io",
+        "href": "/devlog/tech_study_series/python-pandas-cleaning-transform",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680b39ad3e58bb37e15b5",
+        "title": "Python - pandas 05. 결측치 처리",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "nullable-dtype",
+          "missing-data",
+          "fillna"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-missing-data",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5291,38 +5418,22 @@
           "pandas"
         ],
         "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca76803b86fbf536ae878dba",
-        "title": "Python - pandas 10. 결합 (concat·merge·join)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "merge-join",
-          "concatenate",
-          "sql-join"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-merge-join",
-        "sharedKeywords": [
-          "Python",
-          "pandas"
-        ],
-        "score": 344
       }
     ],
     "tech_study_series/3ce19946ca7680a58e17e1ef1f5f0bd2": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76801d914ce5d0c1a9f881",
-        "title": "Python - pandas 01. 기초 개념과 자료구조",
+        "id": "3ce19946ca76800cb869e94167204db4",
+        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
         "date": "2026-09-01",
         "tags": [
           "Python",
-          "pandas"
+          "pandas",
+          "inspection",
+          "describe",
+          "eda"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-series-dataframe",
+        "href": "/devlog/tech_study_series/python-pandas-inspection",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5350,17 +5461,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca768008b586d2599f340817",
-        "title": "Python - pandas 06. 정제와 변환",
+        "id": "3ce19946ca7680feb4a3f6dd8439c4b2",
+        "title": "Python - pandas 04. 선택과 인덱싱",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "dt-accessor",
-          "str-accessor",
-          "cleaning"
+          "boolean-indexing",
+          "fancy-indexing",
+          "loc-iloc"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-cleaning-transform",
+        "href": "/devlog/tech_study_series/python-pandas-indexing",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5371,17 +5482,17 @@
     "tech_study_series/3ce19946ca7680b39ad3e58bb37e15b5": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca768086abc3f701bae8b934",
-        "title": "Python - pandas 13. 다음 단계 연결",
+        "id": "3ce19946ca76803b86fbf536ae878dba",
+        "title": "Python - pandas 10. 결합 (concat·merge·join)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "visualization",
-          "next-steps",
-          "scikit-learn"
+          "merge-join",
+          "concatenate",
+          "sql-join"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-next-steps",
+        "href": "/devlog/tech_study_series/python-pandas-merge-join",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5390,14 +5501,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76801d914ce5d0c1a9f881",
-        "title": "Python - pandas 01. 기초 개념과 자료구조",
+        "id": "3ce19946ca7680f7bac7ec38787111f8",
+        "title": "Python - pandas 12. 성능과 함정",
         "date": "2026-09-01",
         "tags": [
           "Python",
-          "pandas"
+          "pandas",
+          "performance",
+          "pitfalls",
+          "method-chaining"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-series-dataframe",
+        "href": "/devlog/tech_study_series/python-pandas-performance",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5406,17 +5520,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680f3aab1ed09c080a491",
-        "title": "Python - pandas 07. 정렬과 순위",
+        "id": "3ce19946ca7680feb4a3f6dd8439c4b2",
+        "title": "Python - pandas 04. 선택과 인덱싱",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "top-n",
-          "rank",
-          "sorting"
+          "boolean-indexing",
+          "fancy-indexing",
+          "loc-iloc"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-sorting",
+        "href": "/devlog/tech_study_series/python-pandas-indexing",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5446,18 +5560,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76807faa9def831b4cb504",
-        "title": "Python - NumPy 09. 데이터 전처리 핵심 패턴",
+        "id": "3ce19946ca768005bc5cc7383a963f96",
+        "title": "Python - NumPy 07. 연산 (ufunc·집계·axis)",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "preprocessing",
-          "normalization",
-          "one-hot",
-          "binning"
+          "ufunc",
+          "aggregation",
+          "axis"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-preprocessing-patterns",
+        "href": "/devlog/tech_study_series/python-numpy-ufunc-aggregation",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -5487,35 +5600,17 @@
     "tech_study_series/3ce19946ca7680b5bd53de660571e6d2": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca768071aabfd696b871a6f8",
-        "title": "Python - NumPy 02. 배열 생성",
+        "id": "3ce19946ca7680689d24d8fc50c66587",
+        "title": "Python - NumPy 12. 성능과 함정",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "array-creation",
-          "random"
+          "performance",
+          "pitfalls",
+          "debugging"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-io",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca768063b0e1e8a297019e1e",
-        "title": "Python - NumPy 11. 입출력",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "io",
-          "csv",
-          "pandas"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-array-creation",
+        "href": "/devlog/tech_study_series/python-numpy-performance",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -5539,9 +5634,47 @@
           "numpy"
         ],
         "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca76807faa9def831b4cb504",
+        "title": "Python - NumPy 09. 데이터 전처리 핵심 패턴",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "preprocessing",
+          "normalization",
+          "one-hot",
+          "binning"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-preprocessing-patterns",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
       }
     ],
     "tech_study_series/3ce19946ca7680e78c9acb8da7f20f38": [
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca7680649261f238b2bc8181",
+        "title": "Python - NumPy 06. 브로드캐스팅",
+        "date": "2026-08-30",
+        "tags": [
+          "Python",
+          "numpy",
+          "broadcasting",
+          "vectorization"
+        ],
+        "href": "/devlog/tech_study_series/python-numpy-broadcasting",
+        "sharedKeywords": [
+          "Python",
+          "numpy"
+        ],
+        "score": 344
+      },
       {
         "category": "tech_study_series",
         "id": "3ce19946ca76801ab1cdf359ecdcf07e",
@@ -5563,36 +5696,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680689d24d8fc50c66587",
-        "title": "Python - NumPy 12. 성능과 함정",
+        "id": "3ce19946ca768005bc5cc7383a963f96",
+        "title": "Python - NumPy 07. 연산 (ufunc·집계·axis)",
         "date": "2026-08-30",
         "tags": [
           "Python",
           "numpy",
-          "performance",
-          "pitfalls",
-          "debugging"
+          "ufunc",
+          "aggregation",
+          "axis"
         ],
-        "href": "/devlog/tech_study_series/python-numpy-performance",
-        "sharedKeywords": [
-          "Python",
-          "numpy"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680b5bd53de660571e6d2",
-        "title": "Python - NumPy 03. 자료형(dtype) 다루기",
-        "date": "2026-08-30",
-        "tags": [
-          "Python",
-          "numpy",
-          "dtype",
-          "type-casting",
-          "nan"
-        ],
-        "href": "/devlog/tech_study_series/python-numpy-dtype",
+        "href": "/devlog/tech_study_series/python-numpy-ufunc-aggregation",
         "sharedKeywords": [
           "Python",
           "numpy"
@@ -5642,17 +5756,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680feb4a3f6dd8439c4b2",
-        "title": "Python - pandas 04. 선택과 인덱싱",
+        "id": "3ce19946ca7680f3aab1ed09c080a491",
+        "title": "Python - pandas 07. 정렬과 순위",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "boolean-indexing",
-          "fancy-indexing",
-          "loc-iloc"
+          "top-n",
+          "rank",
+          "sorting"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-indexing",
+        "href": "/devlog/tech_study_series/python-pandas-sorting",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5663,36 +5777,14 @@
     "tech_study_series/3ce19946ca7680f3aab1ed09c080a491": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680f09aade69d51fc4014",
-        "title": "Python - pandas 02. 데이터 입출력 (IO)",
+        "id": "3ce19946ca76801d914ce5d0c1a9f881",
+        "title": "Python - pandas 01. 기초 개념과 자료구조",
         "date": "2026-09-01",
         "tags": [
-          "Python",
-          "pandas",
-          "io",
-          "read-csv",
-          "parquet"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-io",
-        "sharedKeywords": [
           "Python",
           "pandas"
         ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca7680f4ad12e64aef10f34c",
-        "title": "Python - pandas 11. 시계열",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "timeseries",
-          "resample",
-          "rolling"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-timeseries",
+        "href": "/devlog/tech_study_series/python-pandas-series-dataframe",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5717,19 +5809,41 @@
           "pandas"
         ],
         "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca76800cb869e94167204db4",
+        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "inspection",
+          "describe",
+          "eda"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-inspection",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
       }
     ],
     "tech_study_series/3ce19946ca7680f4ad12e64aef10f34c": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76801d914ce5d0c1a9f881",
-        "title": "Python - pandas 01. 기초 개념과 자료구조",
+        "id": "3ce19946ca7680f7bac7ec38787111f8",
+        "title": "Python - pandas 12. 성능과 함정",
         "date": "2026-09-01",
         "tags": [
           "Python",
-          "pandas"
+          "pandas",
+          "performance",
+          "pitfalls",
+          "method-chaining"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-series-dataframe",
+        "href": "/devlog/tech_study_series/python-pandas-performance",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5757,17 +5871,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680f3aab1ed09c080a491",
-        "title": "Python - pandas 07. 정렬과 순위",
+        "id": "3ce19946ca7680f09aade69d51fc4014",
+        "title": "Python - pandas 02. 데이터 입출력 (IO)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "top-n",
-          "rank",
-          "sorting"
+          "io",
+          "read-csv",
+          "parquet"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-sorting",
+        "href": "/devlog/tech_study_series/python-pandas-io",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5798,14 +5912,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca76801d914ce5d0c1a9f881",
-        "title": "Python - pandas 01. 기초 개념과 자료구조",
+        "id": "3ce19946ca768086abc3f701bae8b934",
+        "title": "Python - pandas 13. 다음 단계 연결",
         "date": "2026-09-01",
         "tags": [
           "Python",
-          "pandas"
+          "pandas",
+          "visualization",
+          "next-steps",
+          "scikit-learn"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-series-dataframe",
+        "href": "/devlog/tech_study_series/python-pandas-next-steps",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5814,17 +5931,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680b39ad3e58bb37e15b5",
-        "title": "Python - pandas 05. 결측치 처리",
+        "id": "3ce19946ca76803b86fbf536ae878dba",
+        "title": "Python - pandas 10. 결합 (concat·merge·join)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "nullable-dtype",
-          "missing-data",
-          "fillna"
+          "merge-join",
+          "concatenate",
+          "sql-join"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-missing-data",
+        "href": "/devlog/tech_study_series/python-pandas-merge-join",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5835,17 +5952,36 @@
     "tech_study_series/3ce19946ca7680feb4a3f6dd8439c4b2": [
       {
         "category": "tech_study_series",
-        "id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
-        "title": "Python - pandas 09. 재구조화 (pivot·melt·stack)",
+        "id": "3ce19946ca768008b586d2599f340817",
+        "title": "Python - pandas 06. 정제와 변환",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "pandas",
-          "wide-long",
-          "reshaping",
-          "pivot-melt"
+          "dt-accessor",
+          "str-accessor",
+          "cleaning"
         ],
-        "href": "/devlog/tech_study_series/python-pandas-reshaping",
+        "href": "/devlog/tech_study_series/python-pandas-cleaning-transform",
+        "sharedKeywords": [
+          "Python",
+          "pandas"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca768086abc3f701bae8b934",
+        "title": "Python - pandas 13. 다음 단계 연결",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "visualization",
+          "next-steps",
+          "scikit-learn"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-next-steps",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5865,25 +6001,6 @@
           "parquet"
         ],
         "href": "/devlog/tech_study_series/python-pandas-io",
-        "sharedKeywords": [
-          "Python",
-          "pandas"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca76800cb869e94167204db4",
-        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "inspection",
-          "describe",
-          "eda"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-inspection",
         "sharedKeywords": [
           "Python",
           "pandas"
@@ -5932,16 +6049,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681979971cbf70e13c58b",
-        "title": "데이터 전처리 이론 03. 이상치 이론",
+        "id": "3cf19946ca768181b844db7274f690fe",
+        "title": "데이터 전처리 이론 05. 변수 변환·특성 공학·차원 축소",
         "date": "2026-09-01",
         "tags": [
           "data-preprocessing",
           "theory",
-          "outliers",
-          "robust-statistics"
+          "feature-engineering",
+          "dimensionality-reduction"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-outlier-theory",
+        "href": "/devlog/tech_study_series/data-preprocessing-feature-engineering",
         "sharedKeywords": [
           "data-preprocessing",
           "theory"
@@ -5952,17 +6069,17 @@
     "tech_study_series/3cf19946ca768109b3a7ffc0316e422b": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681a3a538cb7ae266b519",
-        "title": "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)",
+        "id": "3cf19946ca7681b89728e6ec505da82c",
+        "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "matplotlib",
-          "basic-plots",
-          "line-scatter",
-          "bar-hist"
+          "figure-axes",
+          "pyplot-oo",
+          "backend"
         ],
-        "href": "/devlog/tech_study_series/python-matplotlib-basic-plots",
+        "href": "/devlog/tech_study_series/python-matplotlib-figure-axes",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -5971,17 +6088,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76815babb4da01c6777de4",
-        "title": "Python - matplotlib 06. 주석과 텍스트",
+        "id": "3cf19946ca76813eb32ff2a31c344958",
+        "title": "Python - matplotlib 07. 저장·해상도·백엔드",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "matplotlib",
-          "annotation",
-          "text-mathtext",
-          "hangul-font"
+          "savefig",
+          "dpi-figsize",
+          "backend"
         ],
-        "href": "/devlog/tech_study_series/python-matplotlib-annotation",
+        "href": "/devlog/tech_study_series/python-matplotlib-save-backend",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -5990,17 +6107,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681cbbe26ed818aac5650",
-        "title": "Python - matplotlib 05. 스타일·색상·컬러맵",
+        "id": "3cf19946ca7681b49734d816abd8255d",
+        "title": "Python - matplotlib 04. 축·스케일·틱·범례",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "matplotlib",
-          "style-color",
-          "colormap",
-          "rcparams"
+          "axes-scale",
+          "ticks-legend",
+          "twinx"
         ],
-        "href": "/devlog/tech_study_series/python-matplotlib-style-color",
+        "href": "/devlog/tech_study_series/python-matplotlib-axes-scale",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -6009,6 +6126,24 @@
       }
     ],
     "tech_study_series/3cf19946ca7681169a32f945ea578aa5": [
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca76811dae3ede3a7c8f12db",
+        "title": "데이터 시각화 이론 03. 시각화 원리",
+        "date": "2026-09-01",
+        "tags": [
+          "visualization",
+          "theory",
+          "perception",
+          "gestalt"
+        ],
+        "href": "/devlog/tech_study_series/visualization-perception",
+        "sharedKeywords": [
+          "visualization",
+          "theory"
+        ],
+        "score": 266
+      },
       {
         "category": "tech_study_series",
         "id": "3cf19946ca7681b78d22d1d4fc08a2a2",
@@ -6021,24 +6156,6 @@
           "pie-chart"
         ],
         "href": "/devlog/tech_study_series/visualization-chart-selection",
-        "sharedKeywords": [
-          "visualization",
-          "theory"
-        ],
-        "score": 266
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca76811a9d6de5fbd9f1bb91",
-        "title": "데이터 시각화 이론 04. 색상·축·스케일",
-        "date": "2026-09-01",
-        "tags": [
-          "visualization",
-          "theory",
-          "color",
-          "axis-scale"
-        ],
-        "href": "/devlog/tech_study_series/visualization-color-scale",
         "sharedKeywords": [
           "visualization",
           "theory"
@@ -6068,24 +6185,6 @@
     "tech_study_series/3cf19946ca76811a9d6de5fbd9f1bb91": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76811dae3ede3a7c8f12db",
-        "title": "데이터 시각화 이론 03. 시각화 원리",
-        "date": "2026-09-01",
-        "tags": [
-          "visualization",
-          "theory",
-          "perception",
-          "gestalt"
-        ],
-        "href": "/devlog/tech_study_series/visualization-perception",
-        "sharedKeywords": [
-          "visualization",
-          "theory"
-        ],
-        "score": 266
-      },
-      {
-        "category": "tech_study_series",
         "id": "3cf19946ca7681e2a209d4dd550c41bf",
         "title": "데이터 전처리·시각화 이론 학습 로드맵",
         "date": "2026-09-01",
@@ -6105,24 +6204,22 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681b78d22d1d4fc08a2a2",
-        "title": "데이터 시각화 이론 02. 데이터 타입별 차트 선택",
+        "id": "3cf19946ca76811dae3ede3a7c8f12db",
+        "title": "데이터 시각화 이론 03. 시각화 원리",
         "date": "2026-09-01",
         "tags": [
           "visualization",
           "theory",
-          "chart-selection",
-          "pie-chart"
+          "perception",
+          "gestalt"
         ],
-        "href": "/devlog/tech_study_series/visualization-chart-selection",
+        "href": "/devlog/tech_study_series/visualization-perception",
         "sharedKeywords": [
           "visualization",
           "theory"
         ],
         "score": 266
-      }
-    ],
-    "tech_study_series/3cf19946ca76811dae3ede3a7c8f12db": [
+      },
       {
         "category": "tech_study_series",
         "id": "3cf19946ca7681169a32f945ea578aa5",
@@ -6135,6 +6232,26 @@
           "exploratory-explanatory"
         ],
         "href": "/devlog/tech_study_series/visualization-purpose-grammar",
+        "sharedKeywords": [
+          "visualization",
+          "theory"
+        ],
+        "score": 266
+      }
+    ],
+    "tech_study_series/3cf19946ca76811dae3ede3a7c8f12db": [
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca76811a9d6de5fbd9f1bb91",
+        "title": "데이터 시각화 이론 04. 색상·축·스케일",
+        "date": "2026-09-01",
+        "tags": [
+          "visualization",
+          "theory",
+          "color",
+          "axis-scale"
+        ],
+        "href": "/devlog/tech_study_series/visualization-color-scale",
         "sharedKeywords": [
           "visualization",
           "theory"
@@ -6201,25 +6318,6 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76815babb4da01c6777de4",
-        "title": "Python - matplotlib 06. 주석과 텍스트",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "matplotlib",
-          "annotation",
-          "text-mathtext",
-          "hangul-font"
-        ],
-        "href": "/devlog/tech_study_series/python-matplotlib-annotation",
-        "sharedKeywords": [
-          "Python",
-          "matplotlib"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
         "id": "3cf19946ca768109b3a7ffc0316e422b",
         "title": "Python - matplotlib 03. 여러 서브플롯 배치",
         "date": "2026-09-01",
@@ -6236,21 +6334,40 @@
           "matplotlib"
         ],
         "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681cbbe26ed818aac5650",
+        "title": "Python - matplotlib 05. 스타일·색상·컬러맵",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "style-color",
+          "colormap",
+          "rcparams"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-style-color",
+        "sharedKeywords": [
+          "Python",
+          "matplotlib"
+        ],
+        "score": 344
       }
     ],
     "tech_study_series/3cf19946ca76815aa820cecd0954af15": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681169a32f945ea578aa5",
-        "title": "데이터 시각화 이론 01. 목적과 그래프 문법",
+        "id": "3cf19946ca7681b78d22d1d4fc08a2a2",
+        "title": "데이터 시각화 이론 02. 데이터 타입별 차트 선택",
         "date": "2026-09-01",
         "tags": [
           "visualization",
           "theory",
-          "grammar-of-graphics",
-          "exploratory-explanatory"
+          "chart-selection",
+          "pie-chart"
         ],
-        "href": "/devlog/tech_study_series/visualization-purpose-grammar",
+        "href": "/devlog/tech_study_series/visualization-chart-selection",
         "sharedKeywords": [
           "visualization",
           "theory"
@@ -6259,17 +6376,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681e2a209d4dd550c41bf",
-        "title": "데이터 전처리·시각화 이론 학습 로드맵",
+        "id": "3cf19946ca76811a9d6de5fbd9f1bb91",
+        "title": "데이터 시각화 이론 04. 색상·축·스케일",
         "date": "2026-09-01",
         "tags": [
-          "data-preprocessing",
           "visualization",
           "theory",
-          "eda",
-          "moc"
+          "color",
+          "axis-scale"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-visualization-theory",
+        "href": "/devlog/tech_study_series/visualization-color-scale",
         "sharedKeywords": [
           "visualization",
           "theory"
@@ -6298,25 +6414,6 @@
     "tech_study_series/3cf19946ca76815babb4da01c6777de4": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681b89728e6ec505da82c",
-        "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "matplotlib",
-          "figure-axes",
-          "pyplot-oo",
-          "backend"
-        ],
-        "href": "/devlog/tech_study_series/python-matplotlib-figure-axes",
-        "sharedKeywords": [
-          "Python",
-          "matplotlib"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
         "id": "3cf19946ca7681a3a538cb7ae266b519",
         "title": "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)",
         "date": "2026-09-01",
@@ -6336,17 +6433,36 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681b49734d816abd8255d",
-        "title": "Python - matplotlib 04. 축·스케일·틱·범례",
+        "id": "3cf19946ca7681b89728e6ec505da82c",
+        "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "matplotlib",
-          "axes-scale",
-          "ticks-legend",
-          "twinx"
+          "figure-axes",
+          "pyplot-oo",
+          "backend"
         ],
-        "href": "/devlog/tech_study_series/python-matplotlib-axes-scale",
+        "href": "/devlog/tech_study_series/python-matplotlib-figure-axes",
+        "sharedKeywords": [
+          "Python",
+          "matplotlib"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca768196a258cce5fac24945",
+        "title": "Python - matplotlib 08. pandas·seaborn와의 연계",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "pandas-plot",
+          "seaborn",
+          "axes-level"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-pandas-seaborn",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -6357,17 +6473,17 @@
     "tech_study_series/3cf19946ca76816ebac2efc477794575": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681fcbe3ec8e5f91e745a",
-        "title": "Python - seaborn 02. 분포 시각화 (histplot·kdeplot·ecdfplot)",
+        "id": "3cf19946ca768182b731f659c1d1b08c",
+        "title": "Python - seaborn 05. 회귀와 결합분포 (lmplot·jointplot·pairplot)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "seaborn",
-          "distribution",
-          "histplot",
-          "kdeplot"
+          "regression",
+          "jointplot",
+          "pairplot"
         ],
-        "href": "/devlog/tech_study_series/python-seaborn-distribution",
+        "href": "/devlog/tech_study_series/python-seaborn-regression-joint",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -6395,17 +6511,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76817ebabec10460e7a57f",
-        "title": "Python - seaborn 04. 관계 시각화 (scatterplot·lineplot·relplot)",
+        "id": "3cf19946ca7681718f2cc89aaf11e7b8",
+        "title": "Python - seaborn 01. 개요와 figure-level vs axes-level",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "seaborn",
-          "relational",
-          "scatterplot",
-          "lineplot"
+          "figure-level-axes-level",
+          "tidy-data"
         ],
-        "href": "/devlog/tech_study_series/python-seaborn-relational",
+        "href": "/devlog/tech_study_series/python-seaborn-overview",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -6416,17 +6531,17 @@
     "tech_study_series/3cf19946ca7681718f2cc89aaf11e7b8": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681af988bc22a6d4e44f5",
-        "title": "Python - seaborn 03. 범주형 시각화 (box·violin·bar·strip)",
+        "id": "3cf19946ca76816ebac2efc477794575",
+        "title": "Python - seaborn 06. 행렬·히트맵 (heatmap·clustermap)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "seaborn",
-          "categorical",
-          "boxplot",
-          "barplot"
+          "heatmap",
+          "clustermap",
+          "correlation"
         ],
-        "href": "/devlog/tech_study_series/python-seaborn-categorical",
+        "href": "/devlog/tech_study_series/python-seaborn-heatmap",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -6475,6 +6590,25 @@
     "tech_study_series/3cf19946ca768177b804f1dcf7e634eb": [
       {
         "category": "tech_study_series",
+        "id": "3cf19946ca7681e2a209d4dd550c41bf",
+        "title": "데이터 전처리·시각화 이론 학습 로드맵",
+        "date": "2026-09-01",
+        "tags": [
+          "data-preprocessing",
+          "visualization",
+          "theory",
+          "eda",
+          "moc"
+        ],
+        "href": "/devlog/tech_study_series/data-preprocessing-visualization-theory",
+        "sharedKeywords": [
+          "data-preprocessing",
+          "theory"
+        ],
+        "score": 266
+      },
+      {
+        "category": "tech_study_series",
         "id": "3cf19946ca7681caaf36cee1e0816907",
         "title": "데이터 전처리 이론 02. 결측치 이론 (MCAR·MAR·MNAR)",
         "date": "2026-09-01",
@@ -6493,34 +6627,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76818eadf6ef7898eac0da",
-        "title": "데이터 전처리 이론 06. 불균형·데이터 누수·재현성",
+        "id": "3cf19946ca7681068c0fc2596847fee1",
+        "title": "데이터 전처리 이론 01. 데이터의 척도와 EDA 기초",
         "date": "2026-09-01",
         "tags": [
           "data-preprocessing",
           "theory",
-          "data-leakage",
-          "reproducibility"
+          "scales",
+          "eda"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-leakage-reproducibility",
-        "sharedKeywords": [
-          "data-preprocessing",
-          "theory"
-        ],
-        "score": 266
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca7681979971cbf70e13c58b",
-        "title": "데이터 전처리 이론 03. 이상치 이론",
-        "date": "2026-09-01",
-        "tags": [
-          "data-preprocessing",
-          "theory",
-          "outliers",
-          "robust-statistics"
-        ],
-        "href": "/devlog/tech_study_series/data-preprocessing-outlier-theory",
+        "href": "/devlog/tech_study_series/data-preprocessing-scales-eda",
         "sharedKeywords": [
           "data-preprocessing",
           "theory"
@@ -6569,16 +6685,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681718f2cc89aaf11e7b8",
-        "title": "Python - seaborn 01. 개요와 figure-level vs axes-level",
+        "id": "3cf19946ca76816ebac2efc477794575",
+        "title": "Python - seaborn 06. 행렬·히트맵 (heatmap·clustermap)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "seaborn",
-          "figure-level-axes-level",
-          "tidy-data"
+          "heatmap",
+          "clustermap",
+          "correlation"
         ],
-        "href": "/devlog/tech_study_series/python-seaborn-overview",
+        "href": "/devlog/tech_study_series/python-seaborn-heatmap",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -6587,6 +6704,24 @@
       }
     ],
     "tech_study_series/3cf19946ca768181b844db7274f690fe": [
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681caaf36cee1e0816907",
+        "title": "데이터 전처리 이론 02. 결측치 이론 (MCAR·MAR·MNAR)",
+        "date": "2026-09-01",
+        "tags": [
+          "data-preprocessing",
+          "theory",
+          "missing-data",
+          "imputation"
+        ],
+        "href": "/devlog/tech_study_series/data-preprocessing-missing-mechanisms",
+        "sharedKeywords": [
+          "data-preprocessing",
+          "theory"
+        ],
+        "score": 266
+      },
       {
         "category": "tech_study_series",
         "id": "3cf19946ca7681e2a209d4dd550c41bf",
@@ -6623,40 +6758,22 @@
           "theory"
         ],
         "score": 266
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca76818eadf6ef7898eac0da",
-        "title": "데이터 전처리 이론 06. 불균형·데이터 누수·재현성",
-        "date": "2026-09-01",
-        "tags": [
-          "data-preprocessing",
-          "theory",
-          "data-leakage",
-          "reproducibility"
-        ],
-        "href": "/devlog/tech_study_series/data-preprocessing-leakage-reproducibility",
-        "sharedKeywords": [
-          "data-preprocessing",
-          "theory"
-        ],
-        "score": 266
       }
     ],
     "tech_study_series/3cf19946ca768182b731f659c1d1b08c": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76817ebabec10460e7a57f",
-        "title": "Python - seaborn 04. 관계 시각화 (scatterplot·lineplot·relplot)",
+        "id": "3cf19946ca7681af988bc22a6d4e44f5",
+        "title": "Python - seaborn 03. 범주형 시각화 (box·violin·bar·strip)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "seaborn",
-          "relational",
-          "scatterplot",
-          "lineplot"
+          "categorical",
+          "boxplot",
+          "barplot"
         ],
-        "href": "/devlog/tech_study_series/python-seaborn-relational",
+        "href": "/devlog/tech_study_series/python-seaborn-categorical",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -6742,16 +6859,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681068c0fc2596847fee1",
-        "title": "데이터 전처리 이론 01. 데이터의 척도와 EDA 기초",
+        "id": "3cf19946ca768181b844db7274f690fe",
+        "title": "데이터 전처리 이론 05. 변수 변환·특성 공학·차원 축소",
         "date": "2026-09-01",
         "tags": [
           "data-preprocessing",
           "theory",
-          "scales",
-          "eda"
+          "feature-engineering",
+          "dimensionality-reduction"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-scales-eda",
+        "href": "/devlog/tech_study_series/data-preprocessing-feature-engineering",
         "sharedKeywords": [
           "data-preprocessing",
           "theory"
@@ -6762,36 +6879,16 @@
     "tech_study_series/3cf19946ca768194b117f421e79a1e9c": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76816ebac2efc477794575",
-        "title": "Python - seaborn 06. 행렬·히트맵 (heatmap·clustermap)",
+        "id": "3cf19946ca7681718f2cc89aaf11e7b8",
+        "title": "Python - seaborn 01. 개요와 figure-level vs axes-level",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "seaborn",
-          "heatmap",
-          "clustermap",
-          "correlation"
+          "figure-level-axes-level",
+          "tidy-data"
         ],
-        "href": "/devlog/tech_study_series/python-seaborn-heatmap",
-        "sharedKeywords": [
-          "Python",
-          "seaborn"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca7681af988bc22a6d4e44f5",
-        "title": "Python - seaborn 03. 범주형 시각화 (box·violin·bar·strip)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "seaborn",
-          "categorical",
-          "boxplot",
-          "barplot"
-        ],
-        "href": "/devlog/tech_study_series/python-seaborn-categorical",
+        "href": "/devlog/tech_study_series/python-seaborn-overview",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -6816,22 +6913,60 @@
           "seaborn"
         ],
         "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca76816ebac2efc477794575",
+        "title": "Python - seaborn 06. 행렬·히트맵 (heatmap·clustermap)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "seaborn",
+          "heatmap",
+          "clustermap",
+          "correlation"
+        ],
+        "href": "/devlog/tech_study_series/python-seaborn-heatmap",
+        "sharedKeywords": [
+          "Python",
+          "seaborn"
+        ],
+        "score": 344
       }
     ],
     "tech_study_series/3cf19946ca768196a258cce5fac24945": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681b89728e6ec505da82c",
-        "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
+        "id": "3cf19946ca7681b49734d816abd8255d",
+        "title": "Python - matplotlib 04. 축·스케일·틱·범례",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "matplotlib",
-          "figure-axes",
-          "pyplot-oo",
-          "backend"
+          "axes-scale",
+          "ticks-legend",
+          "twinx"
         ],
-        "href": "/devlog/tech_study_series/python-matplotlib-figure-axes",
+        "href": "/devlog/tech_study_series/python-matplotlib-axes-scale",
+        "sharedKeywords": [
+          "Python",
+          "matplotlib"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681a3a538cb7ae266b519",
+        "title": "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "basic-plots",
+          "line-scatter",
+          "bar-hist"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-basic-plots",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -6856,46 +6991,9 @@
           "matplotlib"
         ],
         "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca76815babb4da01c6777de4",
-        "title": "Python - matplotlib 06. 주석과 텍스트",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "matplotlib",
-          "annotation",
-          "text-mathtext",
-          "hangul-font"
-        ],
-        "href": "/devlog/tech_study_series/python-matplotlib-annotation",
-        "sharedKeywords": [
-          "Python",
-          "matplotlib"
-        ],
-        "score": 344
       }
     ],
     "tech_study_series/3cf19946ca7681979971cbf70e13c58b": [
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca768181b844db7274f690fe",
-        "title": "데이터 전처리 이론 05. 변수 변환·특성 공학·차원 축소",
-        "date": "2026-09-01",
-        "tags": [
-          "data-preprocessing",
-          "theory",
-          "feature-engineering",
-          "dimensionality-reduction"
-        ],
-        "href": "/devlog/tech_study_series/data-preprocessing-feature-engineering",
-        "sharedKeywords": [
-          "data-preprocessing",
-          "theory"
-        ],
-        "score": 266
-      },
       {
         "category": "tech_study_series",
         "id": "3cf19946ca768177b804f1dcf7e634eb",
@@ -6916,17 +7014,34 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681e2a209d4dd550c41bf",
-        "title": "데이터 전처리·시각화 이론 학습 로드맵",
+        "id": "3cf19946ca7681caaf36cee1e0816907",
+        "title": "데이터 전처리 이론 02. 결측치 이론 (MCAR·MAR·MNAR)",
         "date": "2026-09-01",
         "tags": [
           "data-preprocessing",
-          "visualization",
           "theory",
-          "eda",
-          "moc"
+          "missing-data",
+          "imputation"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-visualization-theory",
+        "href": "/devlog/tech_study_series/data-preprocessing-missing-mechanisms",
+        "sharedKeywords": [
+          "data-preprocessing",
+          "theory"
+        ],
+        "score": 266
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca76818eadf6ef7898eac0da",
+        "title": "데이터 전처리 이론 06. 불균형·데이터 누수·재현성",
+        "date": "2026-09-01",
+        "tags": [
+          "data-preprocessing",
+          "theory",
+          "data-leakage",
+          "reproducibility"
+        ],
+        "href": "/devlog/tech_study_series/data-preprocessing-leakage-reproducibility",
         "sharedKeywords": [
           "data-preprocessing",
           "theory"
@@ -6935,25 +7050,6 @@
       }
     ],
     "tech_study_series/3cf19946ca7681a3a538cb7ae266b519": [
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca7681b49734d816abd8255d",
-        "title": "Python - matplotlib 04. 축·스케일·틱·범례",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "matplotlib",
-          "axes-scale",
-          "ticks-legend",
-          "twinx"
-        ],
-        "href": "/devlog/tech_study_series/python-matplotlib-axes-scale",
-        "sharedKeywords": [
-          "Python",
-          "matplotlib"
-        ],
-        "score": 344
-      },
       {
         "category": "tech_study_series",
         "id": "3cf19946ca7681cbbe26ed818aac5650",
@@ -6967,6 +7063,25 @@
           "rcparams"
         ],
         "href": "/devlog/tech_study_series/python-matplotlib-style-color",
+        "sharedKeywords": [
+          "Python",
+          "matplotlib"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca768196a258cce5fac24945",
+        "title": "Python - matplotlib 08. pandas·seaborn와의 연계",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "pandas-plot",
+          "seaborn",
+          "axes-level"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-pandas-seaborn",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -6996,25 +7111,6 @@
     "tech_study_series/3cf19946ca7681af988bc22a6d4e44f5": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681fcbe3ec8e5f91e745a",
-        "title": "Python - seaborn 02. 분포 시각화 (histplot·kdeplot·ecdfplot)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "seaborn",
-          "distribution",
-          "histplot",
-          "kdeplot"
-        ],
-        "href": "/devlog/tech_study_series/python-seaborn-distribution",
-        "sharedKeywords": [
-          "Python",
-          "seaborn"
-        ],
-        "score": 362
-      },
-      {
-        "category": "tech_study_series",
         "id": "3cf19946ca76817ebabec10460e7a57f",
         "title": "Python - seaborn 04. 관계 시각화 (scatterplot·lineplot·relplot)",
         "date": "2026-09-01",
@@ -7034,17 +7130,35 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76816ebac2efc477794575",
-        "title": "Python - seaborn 06. 행렬·히트맵 (heatmap·clustermap)",
+        "id": "3cf19946ca7681fcbe3ec8e5f91e745a",
+        "title": "Python - seaborn 02. 분포 시각화 (histplot·kdeplot·ecdfplot)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "seaborn",
-          "heatmap",
-          "clustermap",
-          "correlation"
+          "distribution",
+          "histplot",
+          "kdeplot"
         ],
-        "href": "/devlog/tech_study_series/python-seaborn-heatmap",
+        "href": "/devlog/tech_study_series/python-seaborn-distribution",
+        "sharedKeywords": [
+          "Python",
+          "seaborn"
+        ],
+        "score": 362
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681718f2cc89aaf11e7b8",
+        "title": "Python - seaborn 01. 개요와 figure-level vs axes-level",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "seaborn",
+          "figure-level-axes-level",
+          "tidy-data"
+        ],
+        "href": "/devlog/tech_study_series/python-seaborn-overview",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -7055,17 +7169,17 @@
     "tech_study_series/3cf19946ca7681b49734d816abd8255d": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681b89728e6ec505da82c",
-        "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
+        "id": "3cf19946ca7681a3a538cb7ae266b519",
+        "title": "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "matplotlib",
-          "figure-axes",
-          "pyplot-oo",
-          "backend"
+          "basic-plots",
+          "line-scatter",
+          "bar-hist"
         ],
-        "href": "/devlog/tech_study_series/python-matplotlib-figure-axes",
+        "href": "/devlog/tech_study_series/python-matplotlib-basic-plots",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -7093,17 +7207,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca76815babb4da01c6777de4",
-        "title": "Python - matplotlib 06. 주석과 텍스트",
+        "id": "3cf19946ca7681cbbe26ed818aac5650",
+        "title": "Python - matplotlib 05. 스타일·색상·컬러맵",
         "date": "2026-09-01",
         "tags": [
           "Python",
           "matplotlib",
-          "annotation",
-          "text-mathtext",
-          "hangul-font"
+          "style-color",
+          "colormap",
+          "rcparams"
         ],
-        "href": "/devlog/tech_study_series/python-matplotlib-annotation",
+        "href": "/devlog/tech_study_series/python-matplotlib-style-color",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -7132,16 +7246,17 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681169a32f945ea578aa5",
-        "title": "데이터 시각화 이론 01. 목적과 그래프 문법",
+        "id": "3cf19946ca7681e2a209d4dd550c41bf",
+        "title": "데이터 전처리·시각화 이론 학습 로드맵",
         "date": "2026-09-01",
         "tags": [
+          "data-preprocessing",
           "visualization",
           "theory",
-          "grammar-of-graphics",
-          "exploratory-explanatory"
+          "eda",
+          "moc"
         ],
-        "href": "/devlog/tech_study_series/visualization-purpose-grammar",
+        "href": "/devlog/tech_study_series/data-preprocessing-visualization-theory",
         "sharedKeywords": [
           "visualization",
           "theory"
@@ -7190,6 +7305,25 @@
       },
       {
         "category": "tech_study_series",
+        "id": "3cf19946ca7681cbbe26ed818aac5650",
+        "title": "Python - matplotlib 05. 스타일·색상·컬러맵",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "style-color",
+          "colormap",
+          "rcparams"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-style-color",
+        "sharedKeywords": [
+          "Python",
+          "matplotlib"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
         "id": "3cf19946ca76815babb4da01c6777de4",
         "title": "Python - matplotlib 06. 주석과 텍스트",
         "date": "2026-09-01",
@@ -7206,40 +7340,21 @@
           "matplotlib"
         ],
         "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca7681b49734d816abd8255d",
-        "title": "Python - matplotlib 04. 축·스케일·틱·범례",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "matplotlib",
-          "axes-scale",
-          "ticks-legend",
-          "twinx"
-        ],
-        "href": "/devlog/tech_study_series/python-matplotlib-axes-scale",
-        "sharedKeywords": [
-          "Python",
-          "matplotlib"
-        ],
-        "score": 344
       }
     ],
     "tech_study_series/3cf19946ca7681caaf36cee1e0816907": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681068c0fc2596847fee1",
-        "title": "데이터 전처리 이론 01. 데이터의 척도와 EDA 기초",
+        "id": "3cf19946ca7681979971cbf70e13c58b",
+        "title": "데이터 전처리 이론 03. 이상치 이론",
         "date": "2026-09-01",
         "tags": [
           "data-preprocessing",
           "theory",
-          "scales",
-          "eda"
+          "outliers",
+          "robust-statistics"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-scales-eda",
+        "href": "/devlog/tech_study_series/data-preprocessing-outlier-theory",
         "sharedKeywords": [
           "data-preprocessing",
           "theory"
@@ -7248,16 +7363,16 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca768177b804f1dcf7e634eb",
-        "title": "데이터 전처리 이론 04. 스케일링과 범주형 인코딩",
+        "id": "3cf19946ca768181b844db7274f690fe",
+        "title": "데이터 전처리 이론 05. 변수 변환·특성 공학·차원 축소",
         "date": "2026-09-01",
         "tags": [
           "data-preprocessing",
           "theory",
-          "scaling",
-          "Encoding"
+          "feature-engineering",
+          "dimensionality-reduction"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-scaling-encoding",
+        "href": "/devlog/tech_study_series/data-preprocessing-feature-engineering",
         "sharedKeywords": [
           "data-preprocessing",
           "theory"
@@ -7287,44 +7402,6 @@
     "tech_study_series/3cf19946ca7681cbbe26ed818aac5650": [
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681b89728e6ec505da82c",
-        "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "matplotlib",
-          "figure-axes",
-          "pyplot-oo",
-          "backend"
-        ],
-        "href": "/devlog/tech_study_series/python-matplotlib-figure-axes",
-        "sharedKeywords": [
-          "Python",
-          "matplotlib"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca7681a3a538cb7ae266b519",
-        "title": "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "matplotlib",
-          "basic-plots",
-          "line-scatter",
-          "bar-hist"
-        ],
-        "href": "/devlog/tech_study_series/python-matplotlib-basic-plots",
-        "sharedKeywords": [
-          "Python",
-          "matplotlib"
-        ],
-        "score": 344
-      },
-      {
-        "category": "tech_study_series",
         "id": "3cf19946ca76815babb4da01c6777de4",
         "title": "Python - matplotlib 06. 주석과 텍스트",
         "date": "2026-09-01",
@@ -7336,6 +7413,44 @@
           "hangul-font"
         ],
         "href": "/devlog/tech_study_series/python-matplotlib-annotation",
+        "sharedKeywords": [
+          "Python",
+          "matplotlib"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca76813eb32ff2a31c344958",
+        "title": "Python - matplotlib 07. 저장·해상도·백엔드",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "savefig",
+          "dpi-figsize",
+          "backend"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-save-backend",
+        "sharedKeywords": [
+          "Python",
+          "matplotlib"
+        ],
+        "score": 344
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681b89728e6ec505da82c",
+        "title": "Python - matplotlib 01. 구조 (Figure·Axes)와 두 인터페이스",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "figure-axes",
+          "pyplot-oo",
+          "backend"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-figure-axes",
         "sharedKeywords": [
           "Python",
           "matplotlib"
@@ -7365,34 +7480,34 @@
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681caaf36cee1e0816907",
-        "title": "데이터 전처리 이론 02. 결측치 이론 (MCAR·MAR·MNAR)",
+        "id": "3cf19946ca7681169a32f945ea578aa5",
+        "title": "데이터 시각화 이론 01. 목적과 그래프 문법",
         "date": "2026-09-01",
         "tags": [
-          "data-preprocessing",
+          "visualization",
           "theory",
-          "missing-data",
-          "imputation"
+          "grammar-of-graphics",
+          "exploratory-explanatory"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-missing-mechanisms",
+        "href": "/devlog/tech_study_series/visualization-purpose-grammar",
         "sharedKeywords": [
-          "data-preprocessing",
+          "visualization",
           "theory"
         ],
         "score": 266
       },
       {
         "category": "tech_study_series",
-        "id": "3cf19946ca7681979971cbf70e13c58b",
-        "title": "데이터 전처리 이론 03. 이상치 이론",
+        "id": "3cf19946ca768177b804f1dcf7e634eb",
+        "title": "데이터 전처리 이론 04. 스케일링과 범주형 인코딩",
         "date": "2026-09-01",
         "tags": [
           "data-preprocessing",
           "theory",
-          "outliers",
-          "robust-statistics"
+          "scaling",
+          "Encoding"
         ],
-        "href": "/devlog/tech_study_series/data-preprocessing-outlier-theory",
+        "href": "/devlog/tech_study_series/data-preprocessing-scaling-encoding",
         "sharedKeywords": [
           "data-preprocessing",
           "theory"
@@ -7401,25 +7516,6 @@
       }
     ],
     "tech_study_series/3cf19946ca7681fcbe3ec8e5f91e745a": [
-      {
-        "category": "tech_study_series",
-        "id": "3cf19946ca7681af988bc22a6d4e44f5",
-        "title": "Python - seaborn 03. 범주형 시각화 (box·violin·bar·strip)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "seaborn",
-          "categorical",
-          "boxplot",
-          "barplot"
-        ],
-        "href": "/devlog/tech_study_series/python-seaborn-categorical",
-        "sharedKeywords": [
-          "Python",
-          "seaborn"
-        ],
-        "score": 362
-      },
       {
         "category": "tech_study_series",
         "id": "3cf19946ca76817ebabec10460e7a57f",
@@ -7433,6 +7529,25 @@
           "lineplot"
         ],
         "href": "/devlog/tech_study_series/python-seaborn-relational",
+        "sharedKeywords": [
+          "Python",
+          "seaborn"
+        ],
+        "score": 362
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681af988bc22a6d4e44f5",
+        "title": "Python - seaborn 03. 범주형 시각화 (box·violin·bar·strip)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "seaborn",
+          "categorical",
+          "boxplot",
+          "barplot"
+        ],
+        "href": "/devlog/tech_study_series/python-seaborn-categorical",
         "sharedKeywords": [
           "Python",
           "seaborn"
@@ -7458,6 +7573,91 @@
         "score": 344
       }
     ],
+    "tech_study_series/3d119946ca76801ab530e98417a23d86": [
+      {
+        "category": "education",
+        "id": "35e19946ca76807b9fe4f64d17b2e1b6",
+        "title": "Java 환경 구축 및 기본 문법",
+        "date": "2026-05-12",
+        "tags": [
+          "eclipse 설치",
+          "변수",
+          "java설치"
+        ],
+        "href": "/devlog/education/java-development-environment-and-basic-syntax",
+        "sharedKeywords": [],
+        "score": 54
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681a3a538cb7ae266b519",
+        "title": "Python - matplotlib 02. 기본 플롯 (line·scatter·bar·hist)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "basic-plots",
+          "line-scatter",
+          "bar-hist"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-basic-plots",
+        "sharedKeywords": [],
+        "score": 48
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3d119946ca7680fc8dead72943e68907",
+        "title": "Java 문법 01. 프로그램 구조와 실행",
+        "date": "2026-09-04",
+        "tags": [],
+        "href": "/devlog/tech_study_series/java-syntax-program-structure",
+        "sharedKeywords": [],
+        "score": 48
+      }
+    ],
+    "tech_study_series/3d119946ca7680fc8dead72943e68907": [
+      {
+        "category": "tech_study_series",
+        "id": "3d119946ca76801ab530e98417a23d86",
+        "title": "Java 문법 02. 변수와 기본 타입, 형 변환",
+        "date": "2026-09-04",
+        "tags": [],
+        "href": "/devlog/tech_study_series/java-syntax-variables-types",
+        "sharedKeywords": [],
+        "score": 48
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca7681169a32f945ea578aa5",
+        "title": "데이터 시각화 이론 01. 목적과 그래프 문법",
+        "date": "2026-09-01",
+        "tags": [
+          "visualization",
+          "theory",
+          "grammar-of-graphics",
+          "exploratory-explanatory"
+        ],
+        "href": "/devlog/tech_study_series/visualization-purpose-grammar",
+        "sharedKeywords": [],
+        "score": 48
+      },
+      {
+        "category": "tech_study",
+        "id": "3ce19946ca7680c3bf5ada32fda9842c",
+        "title": "Java : 가비지 컬렉션(GC) 한 페이지 정리",
+        "date": "2026-09-01",
+        "tags": [
+          "java",
+          "gc",
+          "jvm",
+          "memory-management",
+          "overview"
+        ],
+        "href": "/devlog/tech_study/java-gc-guide",
+        "sharedKeywords": [],
+        "score": 42
+      }
+    ],
     "tech_study/3b019946ca76801cb6dac264f9d0c0e1": [
       {
         "category": "tech_study",
@@ -7474,6 +7674,21 @@
       },
       {
         "category": "tech_study",
+        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
+        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
+        "date": "2026-06-15",
+        "tags": [
+          "scope",
+          "job",
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "sharedKeywords": [],
+        "score": 54
+      },
+      {
+        "category": "tech_study",
         "id": "3b019946ca7680f084e0f0a43ef7f1cd",
         "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
         "date": "2026-07-06",
@@ -7482,19 +7697,6 @@
           "SpringBoot"
         ],
         "href": "/devlog/tech_study/spring-batch-exception-status",
-        "sharedKeywords": [],
-        "score": 54
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca768023920bc0535a88d2ae",
-        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-performance-tuning",
         "sharedKeywords": [],
         "score": 54
       }
@@ -7570,22 +7772,6 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768060a97ee328eea5a576",
-        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-scaling",
-        "sharedKeywords": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "score": 230
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca768094a4c9f440ffdf6bfd",
         "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
         "date": "2026-07-06",
@@ -7594,6 +7780,22 @@
           "SpringBoot"
         ],
         "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
+        "sharedKeywords": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "score": 230
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-scaling",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -7635,15 +7837,16 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680a2b04ec92e293b2af4",
-        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
-        "date": "2026-05-02",
+        "id": "3b019946ca7680e290cdf2a3101148a4",
+        "title": "Docker 저장소(Storage) 및 데이터 영속화 세팅 가이드",
+        "date": "2026-05-04",
         "tags": [
           "Container",
-          "Command",
-          "DevOps"
+          "Storage",
+          "Volume",
+          "NAS"
         ],
-        "href": "/devlog/tech_study/essential-docker-commands",
+        "href": "/devlog/tech_study/docker-storage-data-persistence",
         "sharedKeywords": [
           "Container"
         ],
@@ -7688,14 +7891,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768060a97ee328eea5a576",
-        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-scaling",
+        "href": "/devlog/tech_study/spring-batch-performance-tuning",
         "sharedKeywords": [
           "SpringBoot"
         ],
@@ -7737,16 +7940,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
-        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
-        "date": "2026-06-15",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "date": "2026-07-06",
         "tags": [
-          "scope",
-          "job",
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "href": "/devlog/tech_study/spring-batch-exception-status",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -7826,23 +8027,6 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680a2b04ec92e293b2af4",
-        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
-        "date": "2026-05-02",
-        "tags": [
-          "Container",
-          "Command",
-          "DevOps"
-        ],
-        "href": "/devlog/tech_study/essential-docker-commands",
-        "sharedKeywords": [
-          "Container",
-          "DevOps"
-        ],
-        "score": 236
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca7680e4a56dcbcd708153c3",
         "title": "컨테이너 보안과 K8s의 다중 레이어 방어(Defense in Depth)",
         "date": "2026-05-31",
@@ -7855,6 +8039,23 @@
         "sharedKeywords": [
           "DevOps",
           "Container"
+        ],
+        "score": 236
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680a2b04ec92e293b2af4",
+        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
+        "date": "2026-05-02",
+        "tags": [
+          "Container",
+          "Command",
+          "DevOps"
+        ],
+        "href": "/devlog/tech_study/essential-docker-commands",
+        "sharedKeywords": [
+          "Container",
+          "DevOps"
         ],
         "score": 236
       }
@@ -8037,14 +8238,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
-        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-exception-status",
+        "href": "/devlog/tech_study/spring-batch-scaling",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -8053,14 +8254,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768094a4c9f440ffdf6bfd",
-        "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
+        "href": "/devlog/tech_study/spring-batch-exception-status",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -8143,22 +8344,6 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
-        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-exception-status",
-        "sharedKeywords": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "score": 230
-      },
-      {
-        "category": "tech_study",
         "id": "3b019946ca768023920bc0535a88d2ae",
         "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
         "date": "2026-07-06",
@@ -8172,9 +8357,45 @@
           "SpringBoot"
         ],
         "score": 230
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
+        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
+        "date": "2026-06-15",
+        "tags": [
+          "scope",
+          "job",
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "sharedKeywords": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "score": 230
       }
     ],
     "tech_study/3b019946ca76809c936cd86896eb38db": [
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca76800cb869e94167204db4",
+        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "inspection",
+          "describe",
+          "eda"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-inspection",
+        "sharedKeywords": [
+          "Python"
+        ],
+        "score": 142
+      },
       {
         "category": "tech_study_series",
         "id": "3ce19946ca7680f09aade69d51fc4014",
@@ -8207,24 +8428,6 @@
           "binning"
         ],
         "href": "/devlog/tech_study_series/python-numpy-preprocessing-patterns",
-        "sharedKeywords": [
-          "Python"
-        ],
-        "score": 142
-      },
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca76800cb869e94167204db4",
-        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "inspection",
-          "describe",
-          "eda"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-inspection",
         "sharedKeywords": [
           "Python"
         ],
@@ -8319,16 +8522,15 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca76802cab88d54846776de9",
-        "title": "Docker Image 생성법: Commit과 Dockerfile (entry.sh 활용)",
-        "date": "2026-05-14",
+        "id": "3b019946ca7680a2b04ec92e293b2af4",
+        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
+        "date": "2026-05-02",
         "tags": [
-          "Dockerfile",
-          "Entrypoint",
-          "Image",
-          "Container"
+          "Container",
+          "Command",
+          "DevOps"
         ],
-        "href": "/devlog/tech_study/docker-image-dockerfile-entrypoint",
+        "href": "/devlog/tech_study/essential-docker-commands",
         "sharedKeywords": [
           "Container"
         ],
@@ -8354,14 +8556,16 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768023920bc0535a88d2ae",
-        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
-        "date": "2026-07-06",
+        "id": "3b019946ca76801cb6dac264f9d0c0e1",
+        "title": "파트 1. Spring Batch 핵심 아키텍처와 사용",
+        "date": "2026-06-14",
         "tags": [
-          "Spring",
-          "SpringBoot"
+          "META-DATA",
+          "주기성",
+          "대용량",
+          "spring batch"
         ],
-        "href": "/devlog/tech_study/spring-batch-performance-tuning",
+        "href": "/devlog/tech_study/spring-batch-core-architecture",
         "sharedKeywords": [],
         "score": 30
       },
@@ -8415,15 +8619,15 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca7680aab42be44f7d069738",
-        "title": "Docker 네트워크 세팅: Inbound/Outbound 제어 및 포트 연결",
-        "date": "2026-05-06",
+        "id": "3b019946ca7680a2b04ec92e293b2af4",
+        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
+        "date": "2026-05-02",
         "tags": [
           "Container",
-          "Network",
-          "Port"
+          "Command",
+          "DevOps"
         ],
-        "href": "/devlog/tech_study/docker-network-inbound-outbound",
+        "href": "/devlog/tech_study/essential-docker-commands",
         "sharedKeywords": [
           "Container"
         ],
@@ -8538,6 +8742,24 @@
     "tech_study/3b019946ca7680f084e0f0a43ef7f1cd": [
       {
         "category": "tech_study",
+        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
+        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
+        "date": "2026-06-15",
+        "tags": [
+          "scope",
+          "job",
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "sharedKeywords": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "score": 230
+      },
+      {
+        "category": "tech_study",
         "id": "3b019946ca768094a4c9f440ffdf6bfd",
         "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
         "date": "2026-07-06",
@@ -8554,32 +8776,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768023920bc0535a88d2ae",
-        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-performance-tuning",
-        "sharedKeywords": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "score": 230
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca7680809e0fcf7c0f56c7bb",
-        "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
-        "date": "2026-06-15",
-        "tags": [
-          "scope",
-          "job",
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-job-step-scope",
+        "href": "/devlog/tech_study/spring-batch-scaling",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -8646,6 +8850,22 @@
     "tech_study/3b019946ca7680ff9877e74515176168": [
       {
         "category": "tech_study",
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-performance-tuning",
+        "sharedKeywords": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "score": 212
+      },
+      {
+        "category": "tech_study",
         "id": "3b019946ca7680809e0fcf7c0f56c7bb",
         "title": "파트 2. 배치 실행 순서와 Scope 환경 프로세스",
         "date": "2026-06-15",
@@ -8664,30 +8884,14 @@
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768094a4c9f440ffdf6bfd",
-        "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
+        "id": "3b019946ca768060a97ee328eea5a576",
+        "title": "파트 5. 대용량 데이터 처리 최적화 및 확장 (Scaling)",
         "date": "2026-07-06",
         "tags": [
           "Spring",
           "SpringBoot"
         ],
-        "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
-        "sharedKeywords": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "score": 212
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
-        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
-        "date": "2026-07-06",
-        "tags": [
-          "Spring",
-          "SpringBoot"
-        ],
-        "href": "/devlog/tech_study/spring-batch-exception-status",
+        "href": "/devlog/tech_study/spring-batch-scaling",
         "sharedKeywords": [
           "Spring",
           "SpringBoot"
@@ -8713,6 +8917,22 @@
         "score": 166
       },
       {
+        "category": "blog",
+        "id": "3c819946ca76800686abe41d9548e8b9",
+        "title": "LLM의 개별 wiki 구조 이후에, 통합관리",
+        "date": "2026-08-26",
+        "tags": [
+          "ai agent",
+          "wiki",
+          "link"
+        ],
+        "href": "/devlog/blog/ai-agent-linked-wiki",
+        "sharedKeywords": [
+          "ai agent"
+        ],
+        "score": 100
+      },
+      {
         "category": "competition_event",
         "id": "3b019946ca7680c8836dcb0ed7e63c69",
         "title": "2026 천하제일 입코딩 대회(with GitHub Copilot) 참가 회고",
@@ -8727,22 +8947,6 @@
         "href": "/devlog/competition_event/github-copilot-hackathon-retrospective",
         "sharedKeywords": [
           "AI Agent"
-        ],
-        "score": 100
-      },
-      {
-        "category": "blog",
-        "id": "3c819946ca76800686abe41d9548e8b9",
-        "title": "LLM의 개별 wiki 구조 이후에, 통합관리",
-        "date": "2026-08-26",
-        "tags": [
-          "ai agent",
-          "wiki",
-          "link"
-        ],
-        "href": "/devlog/blog/ai-agent-linked-wiki",
-        "sharedKeywords": [
-          "ai agent"
         ],
         "score": 100
       }
@@ -8877,14 +9081,15 @@
       },
       {
         "category": "tech_study",
-        "id": "3c819946ca7680ae8b31f2d87255a3fb",
-        "title": "Python이 AI 생태계의 표준이 된 이유 - 언어의 역사, 하드웨어 아키텍처 및 데이터 파이프라인",
-        "date": "2026-08-26",
+        "id": "3c719946ca76806daa29f22dc447a502",
+        "title": "RDB(SQL)에서 정규화란? : 정규화의 정의와 비정규화(반정규화)는 언제 쓰는지에 대한 고찰",
+        "date": "2026-08-25",
         "tags": [
-          "Python",
-          "history"
+          "sql",
+          "정규화",
+          "비정규화"
         ],
-        "href": "/devlog/tech_study/ai-python-history-data-pipeline",
+        "href": "/devlog/tech_study/rdb-sql-denormalization-normalization",
         "sharedKeywords": [],
         "score": 30
       }
@@ -8906,6 +9111,20 @@
         "score": 30
       },
       {
+        "category": "blog",
+        "id": "3c819946ca76800686abe41d9548e8b9",
+        "title": "LLM의 개별 wiki 구조 이후에, 통합관리",
+        "date": "2026-08-26",
+        "tags": [
+          "ai agent",
+          "wiki",
+          "link"
+        ],
+        "href": "/devlog/blog/ai-agent-linked-wiki",
+        "sharedKeywords": [],
+        "score": 18
+      },
+      {
         "category": "problem_solving",
         "id": "3b019946ca768008beced8b682cac597",
         "title": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선",
@@ -8921,62 +9140,45 @@
         "href": "/devlog/problem_solving/aop-exception-handling-common-response",
         "sharedKeywords": [],
         "score": 18
-      },
-      {
-        "category": "blog",
-        "id": "3c819946ca76800686abe41d9548e8b9",
-        "title": "LLM의 개별 wiki 구조 이후에, 통합관리",
-        "date": "2026-08-26",
-        "tags": [
-          "ai agent",
-          "wiki",
-          "link"
-        ],
-        "href": "/devlog/blog/ai-agent-linked-wiki",
-        "sharedKeywords": [],
-        "score": 18
       }
     ],
     "tech_study/3c619946ca7680a396e8dde2dccbfac3": [
       {
         "category": "tech_study",
-        "id": "3ce19946ca7680c19677fb9fa7f3dea7",
-        "title": "Java : Override와 Overload는 어떻게 구분할까?",
-        "date": "2026-09-01",
+        "id": "3d419946ca7680348ce9f0d7a948b55c",
+        "title": "여러 스레드에서 하나의 객체를 공유 할 때 발생할 수 있는 문제는?",
+        "date": "2026-09-07",
         "tags": [
-          "override",
-          "overload",
-          "OOP",
-          "polymorphism"
+          "thread",
+          "object"
         ],
-        "href": "/devlog/tech_study/java-oop-override-overload",
+        "href": "/devlog/tech_study/java-concurrency-shared-mutable-state",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "tech_study",
+        "id": "3b919946ca7680d9a4f3c5389ea08e85",
+        "title": "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
+        "date": "2026-08-11",
+        "tags": [
+          "LLM",
+          "Storage",
+          "WIKI"
+        ],
+        "href": "/devlog/tech_study/ai-llm-rag-andrej-karpathy-thesis",
         "sharedKeywords": [],
         "score": 12
       },
       {
         "category": "tech_study",
-        "id": "3b019946ca768094a4c9f440ffdf6bfd",
-        "title": "파트 3. Step 구현 방식: Tasklet과 Chunk 지향 처리",
-        "date": "2026-07-06",
+        "id": "3c619946ca768049bdcbd2e3b6ccbc70",
+        "title": "객체지향 언어(OOP)의 정의와 Java가 객체지향 언어인 이유",
+        "date": "2026-08-24",
         "tags": [
-          "Spring",
-          "SpringBoot"
+          "객체지향언어"
         ],
-        "href": "/devlog/tech_study/spring-batch-tasklet-chunk",
-        "sharedKeywords": [],
-        "score": 12
-      },
-      {
-        "category": "tech_study",
-        "id": "3b019946ca7680a2b04ec92e293b2af4",
-        "title": "자주 사용하는 필수 Docker Command 상세 가이드",
-        "date": "2026-05-02",
-        "tags": [
-          "Container",
-          "Command",
-          "DevOps"
-        ],
-        "href": "/devlog/tech_study/essential-docker-commands",
+        "href": "/devlog/tech_study/java-oop",
         "sharedKeywords": [],
         "score": 12
       }
@@ -9096,6 +9298,21 @@
       },
       {
         "category": "tech_study",
+        "id": "3d419946ca768006b012ce7fe9ab675f",
+        "title": "스레드 풀 : 스레드 풀을 이용하는 이유?",
+        "date": "2026-09-07",
+        "tags": [
+          "thread",
+          "pool",
+          "SpringBoot",
+          "java"
+        ],
+        "href": "/devlog/tech_study/java-concurrency-thread-pool",
+        "sharedKeywords": [],
+        "score": 36
+      },
+      {
+        "category": "tech_study",
         "id": "3b019946ca76806eb6e9e090b639ab4b",
         "title": "Java 코드 퀄리티를 높이는 개인 컨벤션과 유지보수 전략",
         "date": "2026-05-31",
@@ -9106,42 +9323,9 @@
         "href": "/devlog/tech_study/java-code-convention-maintainability",
         "sharedKeywords": [],
         "score": 30
-      },
-      {
-        "category": "tech_study",
-        "id": "3ce19946ca7680c19677fb9fa7f3dea7",
-        "title": "Java : Override와 Overload는 어떻게 구분할까?",
-        "date": "2026-09-01",
-        "tags": [
-          "override",
-          "overload",
-          "OOP",
-          "polymorphism"
-        ],
-        "href": "/devlog/tech_study/java-oop-override-overload",
-        "sharedKeywords": [],
-        "score": 30
       }
     ],
     "tech_study/3c819946ca7680ae8b31f2d87255a3fb": [
-      {
-        "category": "tech_study_series",
-        "id": "3ce19946ca76800cb869e94167204db4",
-        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
-        "date": "2026-09-01",
-        "tags": [
-          "Python",
-          "pandas",
-          "inspection",
-          "describe",
-          "eda"
-        ],
-        "href": "/devlog/tech_study_series/python-pandas-inspection",
-        "sharedKeywords": [
-          "Python"
-        ],
-        "score": 142
-      },
       {
         "category": "tech_study_series",
         "id": "3ce19946ca7680f09aade69d51fc4014",
@@ -9155,6 +9339,24 @@
           "parquet"
         ],
         "href": "/devlog/tech_study_series/python-pandas-io",
+        "sharedKeywords": [
+          "Python"
+        ],
+        "score": 142
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3ce19946ca76800cb869e94167204db4",
+        "title": "Python - pandas 03. 데이터 살펴보기 (탐색)",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "pandas",
+          "inspection",
+          "describe",
+          "eda"
+        ],
+        "href": "/devlog/tech_study_series/python-pandas-inspection",
         "sharedKeywords": [
           "Python"
         ],
@@ -9248,18 +9450,20 @@
       },
       {
         "category": "tech_study",
-        "id": "3ce19946ca7680c19677fb9fa7f3dea7",
-        "title": "Java : Override와 Overload는 어떻게 구분할까?",
-        "date": "2026-09-01",
+        "id": "3d419946ca768006b012ce7fe9ab675f",
+        "title": "스레드 풀 : 스레드 풀을 이용하는 이유?",
+        "date": "2026-09-07",
         "tags": [
-          "override",
-          "overload",
-          "OOP",
-          "polymorphism"
+          "thread",
+          "pool",
+          "SpringBoot",
+          "java"
         ],
-        "href": "/devlog/tech_study/java-oop-override-overload",
-        "sharedKeywords": [],
-        "score": 54
+        "href": "/devlog/tech_study/java-concurrency-thread-pool",
+        "sharedKeywords": [
+          "java"
+        ],
+        "score": 136
       },
       {
         "category": "tech_study",
@@ -9273,6 +9477,106 @@
         "href": "/devlog/tech_study/java-code-convention-maintainability",
         "sharedKeywords": [],
         "score": 54
+      }
+    ],
+    "tech_study/3d419946ca768006b012ce7fe9ab675f": [
+      {
+        "category": "tech_study",
+        "id": "3ce19946ca7680c3bf5ada32fda9842c",
+        "title": "Java : 가비지 컬렉션(GC) 한 페이지 정리",
+        "date": "2026-09-01",
+        "tags": [
+          "java",
+          "gc",
+          "jvm",
+          "memory-management",
+          "overview"
+        ],
+        "href": "/devlog/tech_study/java-gc-guide",
+        "sharedKeywords": [
+          "java"
+        ],
+        "score": 136
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca768023920bc0535a88d2ae",
+        "title": "파트 6. 실무 배치 개발을 위한 성능 튜닝",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-performance-tuning",
+        "sharedKeywords": [
+          "SpringBoot"
+        ],
+        "score": 112
+      },
+      {
+        "category": "tech_study",
+        "id": "3b019946ca7680f084e0f0a43ef7f1cd",
+        "title": "파트 4. 예외 처리와 안정성 확보 및 메타데이터 제어 (Robustness & Status)",
+        "date": "2026-07-06",
+        "tags": [
+          "Spring",
+          "SpringBoot"
+        ],
+        "href": "/devlog/tech_study/spring-batch-exception-status",
+        "sharedKeywords": [
+          "SpringBoot"
+        ],
+        "score": 112
+      }
+    ],
+    "tech_study/3d419946ca7680348ce9f0d7a948b55c": [
+      {
+        "category": "tech_study",
+        "id": "3d419946ca768006b012ce7fe9ab675f",
+        "title": "스레드 풀 : 스레드 풀을 이용하는 이유?",
+        "date": "2026-09-07",
+        "tags": [
+          "thread",
+          "pool",
+          "SpringBoot",
+          "java"
+        ],
+        "href": "/devlog/tech_study/java-concurrency-thread-pool",
+        "sharedKeywords": [
+          "thread"
+        ],
+        "score": 112
+      },
+      {
+        "category": "tech_study",
+        "id": "3c619946ca7680a396e8dde2dccbfac3",
+        "title": "자바와 파이썬에서 함수에 객체를 인자로 넘겼을 때 원본 객체가 변경 될 수 있는가?",
+        "date": "2026-08-24",
+        "tags": [
+          "참조",
+          "원시",
+          "불변",
+          "가변"
+        ],
+        "href": "/devlog/tech_study/java-primitive-reference-object-mutable",
+        "sharedKeywords": [],
+        "score": 30
+      },
+      {
+        "category": "tech_study_series",
+        "id": "3cf19946ca768109b3a7ffc0316e422b",
+        "title": "Python - matplotlib 03. 여러 서브플롯 배치",
+        "date": "2026-09-01",
+        "tags": [
+          "Python",
+          "matplotlib",
+          "subplots",
+          "gridspec",
+          "layout"
+        ],
+        "href": "/devlog/tech_study_series/python-matplotlib-subplots",
+        "sharedKeywords": [],
+        "score": 18
       }
     ]
   }

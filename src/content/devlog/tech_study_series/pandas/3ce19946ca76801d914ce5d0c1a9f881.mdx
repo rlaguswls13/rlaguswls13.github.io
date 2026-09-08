@@ -34,11 +34,11 @@ notionUrl: "https://app.notion.com/p/Python-pandas-01-3ce19946ca76801d914ce5d0c1
 
 ## 핵심 요약
 
-pandas의 모든 것은 **`Series`(1차원)** 와 **`DataFrame`(2차원)**, 그리고 두 구조의 행·열에 붙는 **`Index`(라벨)** 위에 세워집니다.
+pandas의 모든 것은 <strong>`Series`(1차원)</strong> 와 <strong>`DataFrame`(2차원)</strong>, 그리고 두 구조의 행·열에 붙는 <strong>`Index`(라벨)</strong> 위에 세워집니다.
 
 `DataFrame`은 "같은 길이의 `Series` 여러 개를 열로 묶고, 공통 행 라벨(Index)을 공유"하는 구조입니다.
 
-NumPy `ndarray`가 "위치(0,1,2)로만 접근하는 균일 dtype 블록"이라면, pandas는 그 위에 **의미 있는 라벨**과 **열별 dtype**, **결측 표현**을 얹은 계층입니다.
+NumPy `ndarray`가 "위치(0,1,2)로만 접근하는 균일 dtype 블록"이라면, pandas는 그 위에 <strong>의미 있는 라벨</strong>과 <strong>열별 dtype</strong>, <strong>결측 표현</strong>을 얹은 계층입니다.
 
 
 ```python
@@ -60,11 +60,11 @@ import numpy as np
   <tbody>
     <tr><td>계층</td><td>자료구조</td><td>접근 방식</td><td>결측</td></tr>
     <tr><td>NumPy</td><td>`ndarray`</td><td>위치(정수 인덱스)만</td><td>`np.nan`(float 전용)</td></tr>
-    <tr><td>pandas</td><td>`Series` / `DataFrame`</td><td>위치 + **라벨(Index)**</td><td>`NaN` / `None` / `pd.NA` / `NaT`</td></tr>
+    <tr><td>pandas</td><td>`Series` / `DataFrame`</td><td>위치 + <strong>라벨(Index)</strong></td><td>`NaN` / `None` / `pd.NA` / `NaT`</td></tr>
   </tbody>
 </NotionTable>
 
-pandas는 내부적으로 열 데이터를 NumPy 배열(또는 pandas 확장 배열)로 보관합니다. 그래서 벡터화·브로드캐스팅은 그대로 쓰되, 추가로 **Index 기반 자동 정렬(alignment)**이 붙습니다.
+pandas는 내부적으로 열 데이터를 NumPy 배열(또는 pandas 확장 배열)로 보관합니다. 그래서 벡터화·브로드캐스팅은 그대로 쓰되, 추가로 <strong>Index 기반 자동 정렬(alignment)</strong>이 붙습니다.
 
 
 ```python
@@ -77,7 +77,7 @@ a + b
 # z    23.0   ← 라벨이 일치하는 것끼리만 더하고, 없는 라벨은 NaN
 ```
 
-> 💡 **이럴 때**: 서로 다른 소스에서 온 두 시계열/표를 합칠 때. 위치가 아니라 라벨로 맞춰지므로 순서가 달라도 안전하지만, 라벨이 어긋나면 조용히 `NaN`이 생깁니다.
+> 💡 <strong>이럴 때</strong>: 서로 다른 소스에서 온 두 시계열/표를 합칠 때. 위치가 아니라 라벨로 맞춰지므로 순서가 달라도 안전하지만, 라벨이 어긋나면 조용히 `NaN`이 생깁니다.
 
 
 <NotionDivider />
@@ -131,11 +131,11 @@ df[["name", "age"]]   # 열 여러 개 → DataFrame
 
 ## 4. Index — 데이터가 아니라 "주소"
 
-`Index`는 값이 아니라 **행·열의 이름표**입니다. 다음 기능의 핵심입니다.
+`Index`는 값이 아니라 <strong>행·열의 이름표</strong>입니다. 다음 기능의 핵심입니다.
 
-- **정렬(alignment)**: 연산·결합 시 라벨 기준으로 맞춤 (2절).
-- **조회 속도**: 해시 기반 조회(`.loc`)를 O(1)로 만듦.
-- **재구조화**: `set_index`/`reset_index`로 열↔인덱스 전환, `MultiIndex`로 계층 구성.
+- <strong>정렬(alignment)</strong>: 연산·결합 시 라벨 기준으로 맞춤 (2절).
+- <strong>조회 속도</strong>: 해시 기반 조회(`.loc`)를 O(1)로 만듦.
+- <strong>재구조화</strong>: `set_index`/`reset_index`로 열↔인덱스 전환, `MultiIndex`로 계층 구성.
 
 ```python
 df2 = df.set_index("name")      # name 열을 행 인덱스로
@@ -186,12 +186,12 @@ s2.dtype                      # Int64     ← 결측을 담고도 정수 유지
 s2 + 1                        # [2, 3, <NA>]
 ```
 
-> 💡 **이럴 때**: ID·개수처럼 정수여야 하는 열에 결측이 섞여 있을 때 `Int64`(nullable)로 지정하면 `1.0`, `2.0` 같은 float 표기를 피할 수 있습니다.
+> 💡 <strong>이럴 때</strong>: ID·개수처럼 정수여야 하는 열에 결측이 섞여 있을 때 `Int64`(nullable)로 지정하면 `1.0`, `2.0` 같은 float 표기를 피할 수 있습니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 도시·등급·상태값처럼 값의 종류가 적은 문자열 열은 `astype("category")`로 바꾸면 메모리와 `groupby` 속도가 크게 개선됩니다.
+💡 <strong>이럴 때</strong>: 도시·등급·상태값처럼 값의 종류가 적은 문자열 열은 `astype("category")`로 바꾸면 메모리와 `groupby` 속도가 크게 개선됩니다.
 
 
 </NotionIndent>
@@ -203,7 +203,7 @@ s2 + 1                        # [2, 3, <NA>]
 
 ## 6. view vs copy와 SettingWithCopyWarning
 
-NumPy처럼 pandas도 인덱싱 결과가 **view일 수도, copy일 수도** 있습니다. 게다가 어느 쪽인지 **버전·연산에 따라 달라져** 예측이 어렵습니다. 그래서 pandas는 **연쇄 인덱싱(chained indexing) 대입**에 경고를 띄웁니다.
+NumPy처럼 pandas도 인덱싱 결과가 <strong>view일 수도, copy일 수도</strong> 있습니다. 게다가 어느 쪽인지 <strong>버전·연산에 따라 달라져</strong> 예측이 어렵습니다. 그래서 pandas는 <strong>연쇄 인덱싱(chained indexing) 대입</strong>에 경고를 띄웁니다.
 
 
 ```python
@@ -215,9 +215,9 @@ df[df["age"] > 28]["city"] = "Unknown"
 df.loc[df["age"] > 28, "city"] = "Unknown"
 ```
 
-**규칙**:
+<strong>규칙</strong>:
 
-- 선택과 대입을 **한 개의 `.loc`/`.iloc`** 로 끝냅니다 (`[]` 를 두 번 겹치지 않음).
+- 선택과 대입을 <strong>한 개의 `.loc`/`.iloc`</strong> 로 끝냅니다 (`[]` 를 두 번 겹치지 않음).
 - 원본에서 파생한 부분집합을 이후에 독립적으로 수정할 거라면 명시적으로 `.copy()` 합니다.
 
 ```python
@@ -225,5 +225,5 @@ sub = df[df["city"] == "Seoul"].copy()   # 명시적 복사본
 sub["age"] += 1                           # 원본 df는 그대로
 ```
 
-> **참고**: pandas 3.0부터는 **Copy-on-Write(CoW)**가 기본이 되어, 모든 인덱싱이 "복사처럼" 동작하고 실제 복사는 수정 시점에만 일어납니다. 이때 `SettingWithCopyWarning`은 사라지고, 대신 "원본을 바꾸려면 반드시 `.loc` 대입"이라는 규칙이 더 명확해집니다.
+> <strong>참고</strong>: pandas 3.0부터는 <strong>Copy-on-Write(CoW)</strong>가 기본이 되어, 모든 인덱싱이 "복사처럼" 동작하고 실제 복사는 수정 시점에만 일어납니다. 이때 `SettingWithCopyWarning`은 사라지고, 대신 "원본을 바꾸려면 반드시 `.loc` 대입"이라는 규칙이 더 명확해집니다.
 

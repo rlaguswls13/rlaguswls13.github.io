@@ -35,45 +35,45 @@ notionUrl: "https://app.notion.com/p/java-36819946ca7680ad822eeb9d40d24cdb"
 
 <a id="구성-클래스-및-패키지-구조"></a>
 
-#### **구성 클래스 및 패키지 구조**
+#### <strong>구성 클래스 및 패키지 구조</strong>
 
 Shape
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `type` : `int` → 도형 타입 번호 (예: 3 = 삼각형, 4 = 사각형)
 - `height` : `double` → 높이
 - `width` : `double` → 너비
 - `color` : `String` → 색상 (기본값 `"white"`)
 
-- **생성자**
+- <strong>생성자</strong>
 - `Shape()` → 기본 생성자
 - `Shape(int type, double height, double width)` → 필드 초기화 생성자
 
-- **메서드**
+- <strong>메서드</strong>
 - getter/setter 메서드 직접 구현
 - `information()` : `String` → `"높이 너비 색상"` 형식의 문자열 반환
 
 
 </NotionIndent>
 
-**SquareController**
+<strong>SquareController</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `s` : `Shape` 객체 (기본 생성자로 생성)
 
-- **메서드**
+- <strong>메서드</strong>
 - `calcPerimeter(double height, double width)` : `double`
-→ `s`를 매개변수 있는 생성자로 초기화한 후, **둘레**(`width*2 + height*2`) 반환
+→ `s`를 매개변수 있는 생성자로 초기화한 후, <strong>둘레</strong>(`width*2 + height*2`) 반환
 
 
 - `calcArea(double height, double width)` : `double`
-→ `s`를 매개변수 있는 생성자로 초기화한 후, **넓이**(`width * height`) 반환
+→ `s`를 매개변수 있는 생성자로 초기화한 후, <strong>넓이</strong>(`width * height`) 반환
 
 
 - `paintColor(String color)` : `void`
@@ -88,17 +88,17 @@ Shape
 
 </NotionIndent>
 
-**TriangleController**
+<strong>TriangleController</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `s` : `Shape` 객체 (기본 생성자로 생성)
 
-- **메서드**
+- <strong>메서드</strong>
 - `calcArea(double height, double width)` : `double`
-→ `s`를 매개변수 있는 생성자로 초기화한 후, **넓이**(`width * height / 2`) 반환
+→ `s`를 매개변수 있는 생성자로 초기화한 후, <strong>넓이</strong>(`width * height / 2`) 반환
 
 
 - `paintColor(String color)` : `void`
@@ -113,17 +113,17 @@ Shape
 
 </NotionIndent>
 
-**ShapeMenu**
+<strong>ShapeMenu</strong>
 
 
 <NotionIndent>
 
-- **필드**
+- <strong>필드</strong>
 - `sc` : `Scanner` 객체
 - `scr` : `SquareController` 객체
 - `tc` : `TriangleController` 객체
 
-- **메서드**
+- <strong>메서드</strong>
 - `inputMenu()` : `void`
 → 메인 메뉴 출력 (삼각형, 사각형, 종료 선택)
 
@@ -148,12 +148,12 @@ Shape
 
 </NotionIndent>
 
-**Run**
+<strong>Run</strong>
 
 
 <NotionIndent>
 
-- **main(String[] args)** : 프로그램 시작
+- <strong>main(String[] args)</strong> : 프로그램 시작
 - `ShapeMenu` 객체 생성 후 `inputMenu()` 호출
 
 </NotionIndent>
@@ -163,7 +163,7 @@ Shape
 
 <a id="구현-조건"></a>
 
-#### **구현 조건**
+#### <strong>구현 조건</strong>
 
 - 클래스명·메서드명은 변경하지 않는다.
 - 모든 필드의 getter/setter 메서드는 작성한다.
@@ -175,7 +175,7 @@ Shape
 
 <a id="실행-예시"></a>
 
-#### **실행 예시**
+#### <strong>실행 예시</strong>
 
 
 ```text
@@ -794,19 +794,19 @@ public class ShapeMenu {
 
 <NotionToggle title="Snack">
 
-- **필드**
+- <strong>필드</strong>
 - `kind:String` — 종류
 - `name:String` — 이름
 - `flavor:String` — 맛
 - `numOf:int` — 개수
 - `price:int` — 가격
 
-- **생성자**
+- <strong>생성자</strong>
 - `Snack()` — 기본 생성자
 - `Snack(String kind, String name, String flavor, int numOf, int price)` — 모든 필드를 매개변수로 초기화
 
-- **메서드**
-- 각 필드별 **getter / setter** 직접 구현
+- <strong>메서드</strong>
+- 각 필드별 <strong>getter / setter</strong> 직접 구현
 - `information():String` — 담긴 데이터를 한 줄 문자열로 반환
 - 예) `빵(케이크 - 블루베리) 1개 15000원`
 
@@ -817,15 +817,15 @@ public class ShapeMenu {
 
 <NotionToggle title="SnackController">
 
-- **필드**
+- <strong>필드</strong>
 - `s:Snack = new Snack()` — 내부 보관용 스낵 객체
 
-- **생성자**
+- <strong>생성자</strong>
 - `SnackController()` — 기본 생성자
 
-- **메서드**
+- <strong>메서드</strong>
 - `saveData(String kind, String name, String flavor, int numOf, int price):String`
-- 전달받은 값들을 **setter**로 `s`에 저장
+- 전달받은 값들을 <strong>setter</strong>로 `s`에 저장
 - 저장 완료 메시지 문자열을 반환 (예: `"저장 완료되었습니다."`)
 
 - `confirmData():String`
@@ -838,13 +838,13 @@ public class ShapeMenu {
 
 <NotionToggle title="SnackMenu">
 
-- **필드**
+- <strong>필드</strong>
 - `sc:Scanner = new Scanner(System.in)`
 - `scr:SnackController = new SnackController()`
 
-- **메서드**
+- <strong>메서드</strong>
 - `menu():void`
-- 사용자로부터 **종류/이름/맛/개수/가격**을 순서대로 입력받아 `saveData(...)` 호출
+- 사용자로부터 <strong>종류/이름/맛/개수/가격</strong>을 순서대로 입력받아 `saveData(...)` 호출
 - `"저장 완료되었습니다."` 메시지를 출력
 - 이어서 `"저장한 정보를 확인하시겠습니까?(y/n) : "` 질의
 - `y`(또는 `Y`)면 `confirmData()` 결과 문자열을 출력
@@ -858,7 +858,7 @@ public class ShapeMenu {
 
 <NotionToggle title="Run">
 
-- **메서드**
+- <strong>메서드</strong>
 - `main(String[] args):void`
 - `SnackMenu` 객체 생성 후 `menu()` 실행
 

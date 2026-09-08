@@ -34,11 +34,11 @@ notionUrl: "https://app.notion.com/p/Python-pandas-08-groupby-3ce19946ca768075bb
 
 ## 핵심 요약
 
-`groupby`는 **split(키로 쪼갬) → apply(각 조각에 함수) → combine(결과 합침)** 3단계입니다.
+`groupby`는 <strong>split(키로 쪼갬) → apply(각 조각에 함수) → combine(결과 합침)</strong> 3단계입니다.
 
-조각에 적용하는 함수는 성격에 따라 4가지로 갈립니다: **`agg`(그룹당 스칼라), `transform`(원본과 같은 shape), `filter`(그룹 통째로 포함/제외), `apply`(가장 유연, 가장 느림)**.
+조각에 적용하는 함수는 성격에 따라 4가지로 갈립니다: <strong>`agg`(그룹당 스칼라), `transform`(원본과 같은 shape), `filter`(그룹 통째로 포함/제외), `apply`(가장 유연, 가장 느림)</strong>.
 
-`df.groupby(...)`는 즉시 계산하지 않는 **지연 객체**이며, 뒤에 오는 연산에서 실제로 평가됩니다.
+`df.groupby(...)`는 즉시 계산하지 않는 <strong>지연 객체</strong>이며, 뒤에 오는 연산에서 실제로 평가됩니다.
 
 
 ```python
@@ -61,9 +61,9 @@ df.groupby("city")["amount"].sum()
 # Seoul    45000
 ```
 
-- **split**: `city` 값이 같은 행끼리 묶음.
-- **apply**: 각 묶음의 `amount`에 `sum`.
-- **combine**: 그룹 키를 인덱스로 하는 Series로 합침.
+- <strong>split</strong>: `city` 값이 같은 행끼리 묶음.
+- <strong>apply</strong>: 각 묶음의 `amount`에 `sum`.
+- <strong>combine</strong>: 그룹 키를 인덱스로 하는 Series로 합침.
 
 ```python
 gb = df.groupby("city")     # DataFrameGroupBy - 아직 계산 안 함(지연)
@@ -95,12 +95,12 @@ df.groupby("city").agg(
 df.groupby("city")["amount"].agg(lambda s: s.max() - s.min())   # 커스텀
 ```
 
-> 💡 **이럴 때**: 대시보드용 요약표(그룹별 합계·평균·건수). **named aggregation**을 쓰면 결과 열 이름이 깔끔해 이후 처리가 쉽습니다.
+> 💡 <strong>이럴 때</strong>: 대시보드용 요약표(그룹별 합계·평균·건수). <strong>named aggregation</strong>을 쓰면 결과 열 이름이 깔끔해 이후 처리가 쉽습니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 다중 키 집계 — `groupby(["city", "category"])`. 결과는 MultiIndex이며, `reset_index()`로 평평한 표로 되돌립니다.
+💡 <strong>이럴 때</strong>: 다중 키 집계 — `groupby(["city", "category"])`. 결과는 MultiIndex이며, `reset_index()`로 평평한 표로 되돌립니다.
 
 
 </NotionIndent>
@@ -124,9 +124,9 @@ df["amount_z"] = df.groupby("city")["amount"].transform(lambda s: (s - s.mean())
 df["amount"] = df["amount"].fillna(df.groupby("city")["amount"].transform("mean"))
 ```
 
-`agg`는 그룹당 1개 값으로 줄이지만, `transform`은 **그룹 통계를 원래 행 위치에 다시 펼칩니다**. 파생 열 만들 때 필수.
+`agg`는 그룹당 1개 값으로 줄이지만, `transform`은 <strong>그룹 통계를 원래 행 위치에 다시 펼칩니다</strong>. 파생 열 만들 때 필수.
 
-> 💡 **이럴 때**: "각 매장 평균 대비 이 주문이 얼마나 큰가", "그룹 내 비중(`x / group_sum`)" 같은 상대 지표 열을 만들 때.
+> 💡 <strong>이럴 때</strong>: "각 매장 평균 대비 이 주문이 얼마나 큰가", "그룹 내 비중(`x / group_sum`)" 같은 상대 지표 열을 만들 때.
 
 
 <NotionDivider />
@@ -144,7 +144,7 @@ df.groupby("city").filter(lambda g: len(g) >= 10)
 df.groupby("city").filter(lambda g: g["amount"].mean() > 1000)
 ```
 
-조건을 만족하는 **그룹의 모든 행**을 통째로 유지/제거합니다.
+조건을 만족하는 <strong>그룹의 모든 행</strong>을 통째로 유지/제거합니다.
 
 
 <NotionDivider />
@@ -183,7 +183,7 @@ df.groupby("city").apply(summary)
     <tr><td>옵션</td><td>효과</td></tr>
     <tr><td>`as_index=False`</td><td>그룹 키를 인덱스가 아닌 열로 (`reset_index` 생략)</td></tr>
     <tr><td>`sort=False`</td><td>그룹 키 정렬 안 함 → 속도 개선</td></tr>
-    <tr><td>`observed=True`</td><td>`category` 키에서 **실제 등장한 조합만** (기본 False면 모든 조합 → 폭발)</td></tr>
+    <tr><td>`observed=True`</td><td>`category` 키에서 <strong>실제 등장한 조합만</strong> (기본 False면 모든 조합 → 폭발)</td></tr>
     <tr><td>`dropna=False`</td><td>그룹 키의 결측도 하나의 그룹으로</td></tr>
     <tr><td>`group_keys=False`</td><td>`apply` 결과에 그룹 키를 중복으로 붙이지 않음</td></tr>
   </tbody>
@@ -194,7 +194,7 @@ df.groupby("city").apply(summary)
 df.groupby(["city", "grade"], observed=True, as_index=False)["amount"].sum()
 ```
 
-> 💡 **이럴 때**: `category` 열로 groupby 하는데 결과 행이 이상하게 많으면 `observed=True`를 빠뜨린 것입니다 (없는 조합까지 0으로 생성).
+> 💡 <strong>이럴 때</strong>: `category` 열로 groupby 하는데 결과 행이 이상하게 많으면 `observed=True`를 빠뜨린 것입니다 (없는 조합까지 0으로 생성).
 
 
 <NotionDivider />

@@ -34,9 +34,9 @@ notionUrl: "https://app.notion.com/p/Python-matplotlib-04-3cf19946ca7681b49734d8
 
 ## 핵심 요약
 
-Axes 하나를 발표 수준으로 다듬는 작업은 **범위(`set_xlim`)·라벨(`set_xlabel`)·제목(`set_title`)**, **스케일(`set_xscale('log')`)**, **눈금(tick)과 눈금 포맷**, **범례(`legend`)** 네 가지로 나뉩니다.
-눈금 위치는 **Locator**, 눈금 표시 문자열은 **Formatter**가 담당하며, `MaxNLocator`·`FuncFormatter`로 세밀하게 제어합니다.
-서로 다른 단위의 두 지표를 한 그림에 겹치는 **`twinx()`(이중 축)**는 상관 착시를 일으키기 쉬워 신중해야 합니다.
+Axes 하나를 발표 수준으로 다듬는 작업은 <strong>범위(`set_xlim`)·라벨(`set_xlabel`)·제목(`set_title`)</strong>, <strong>스케일(`set_xscale('log')`)</strong>, <strong>눈금(tick)과 눈금 포맷</strong>, <strong>범례(`legend`)</strong> 네 가지로 나뉩니다.
+눈금 위치는 <strong>Locator</strong>, 눈금 표시 문자열은 <strong>Formatter</strong>가 담당하며, `MaxNLocator`·`FuncFormatter`로 세밀하게 제어합니다.
+서로 다른 단위의 두 지표를 한 그림에 겹치는 <strong>`twinx()`(이중 축)</strong>는 상관 착시를 일으키기 쉬워 신중해야 합니다.
 
 
 ```python
@@ -85,9 +85,9 @@ ax.set_yscale("log")           # y축을 로그 스케일로
 # ax.set_yscale("symlog")      # 0과 음수를 포함하는 로그
 ```
 
-- 로그 스케일은 **배수 변화**나 **여러 자릿수에 걸친 값**을 볼 때 씁니다. 로그축에서 직선은 거듭제곱/지수 관계를 뜻합니다.
+- 로그 스케일은 <strong>배수 변화</strong>나 <strong>여러 자릿수에 걸친 값</strong>을 볼 때 씁니다. 로그축에서 직선은 거듭제곱/지수 관계를 뜻합니다.
 - 0이나 음수가 섞이면 `"log"`는 에러 또는 값 누락이 나므로 `"symlog"`(선형+로그 혼합)를 씁니다.
-> 💡 **이럴 때**: 데이터가 몇 개 큰 값에 눌려 나머지가 바닥에 깔려 보이면 y축 로그 스케일을 먼저 시도합니다. 단, 막대그래프는 로그축과 궁합이 나쁩니다(길이 비교가 왜곡됨). → 데이터 전처리·시각화 이론 학습 로드맵 2.6
+> 💡 <strong>이럴 때</strong>: 데이터가 몇 개 큰 값에 눌려 나머지가 바닥에 깔려 보이면 y축 로그 스케일을 먼저 시도합니다. 단, 막대그래프는 로그축과 궁합이 나쁩니다(길이 비교가 왜곡됨). → 데이터 전처리·시각화 이론 학습 로드맵 2.6
 
 
 <NotionDivider />
@@ -96,7 +96,7 @@ ax.set_yscale("log")           # y축을 로그 스케일로
 
 ## 3. 눈금(tick) -Locator와 Formatter
 
-논의 계층을 나눕니다. 눈금은 **"어디에 찍을지"(Locator)**와 **"어떻게 쓸지"(Formatter)**가 분리되어 있습니다.
+논의 계층을 나눕니다. 눈금은 <strong>"어디에 찍을지"(Locator)</strong>와 <strong>"어떻게 쓸지"(Formatter)</strong>가 분리되어 있습니다.
 
 
 ```python
@@ -137,9 +137,9 @@ ax.ticklabel_format(style="plain", axis="y")          # 지수표기(1e6) 끄기
 ax.ticklabel_format(style="sci", scilimits=(0, 0))     # 강제 지수표기
 ```
 
-> 💡 **이럴 때**: 축에 `1e7` 같은 지수 표기나 `+2.024e3` 같은 오프셋이 떠서 헷갈리면 `ax.ticklabel_format(style="plain")` 또는 `FuncFormatter`로 실제 값을 그대로 씁니다.
+> 💡 <strong>이럴 때</strong>: 축에 `1e7` 같은 지수 표기나 `+2.024e3` 같은 오프셋이 떠서 헷갈리면 `ax.ticklabel_format(style="plain")` 또는 `FuncFormatter`로 실제 값을 그대로 씁니다.
 
-💡 **이럴 때**: 날짜축이 겹쳐 읽히면 `matplotlib.dates`의 `AutoDateLocator`/`ConciseDateFormatter`를 쓰거나 `fig.autofmt_xdate()`로 라벨을 기울입니다.
+💡 <strong>이럴 때</strong>: 날짜축이 겹쳐 읽히면 `matplotlib.dates`의 `AutoDateLocator`/`ConciseDateFormatter`를 쓰거나 `fig.autofmt_xdate()`로 라벨을 기울입니다.
 
 
 <NotionDivider />
@@ -172,7 +172,7 @@ fig.tight_layout()   # 또는 constrained_layout
 
 - `bbox_to_anchor`는 Axes 좌표(0~1) 기준 기준점입니다. `(1.02, 1)`은 "Axes 오른쪽 바깥, 위 정렬".
 - 여러 칸이 같은 범례를 공유하면 `fig.legend(...)`로 Figure 수준에 하나만 둡니다.
-> 💡 **이럴 때**: 범례가 데이터를 가리면 `loc="best"`로 두거나, 계열이 많을 때는 그림 밖(`bbox_to_anchor`)으로 빼고 `ncol=`로 여러 열로 나눕니다.
+> 💡 <strong>이럴 때</strong>: 범례가 데이터를 가리면 `loc="best"`로 두거나, 계열이 많을 때는 그림 밖(`bbox_to_anchor`)으로 빼고 `ncol=`로 여러 열로 나눕니다.
 
 
 <NotionDivider />
@@ -194,15 +194,15 @@ ax2.plot(months, temperature, color="C1")
 ax2.set_ylabel("temperature", color="C1")
 ```
 
-**위험**:
+<strong>위험</strong>:
 
 - 두 y축의 스케일과 0 위치를 임의로 맞추면, 실제로 무관한 두 계열이 "같이 움직이는 것처럼" 보입니다(상관 착시).
 - 어느 선이 어느 축인지 즉시 읽기 어렵습니다.
-**대안**:
+<strong>대안</strong>:
 
 - 위아래로 나눈 `subplots(2, 1, sharex=True)` -대개 이쪽이 더 정직합니다.
-- 두 계열을 각각 정규화(예: 첫 값=100 지수)해 **하나의 축**에 그리기.
-> 💡 **이럴 때**: "두 지표의 추세가 비슷한지"만 보고 싶다면 `twinx` 대신 각 계열을 지수화(첫 값 기준 %)해 한 축에 겹칩니다. 축 눈금 조작으로 만든 유사성은 근거가 되지 않습니다. → 데이터 전처리·시각화 이론 학습 로드맵 2.6
+- 두 계열을 각각 정규화(예: 첫 값=100 지수)해 <strong>하나의 축</strong>에 그리기.
+> 💡 <strong>이럴 때</strong>: "두 지표의 추세가 비슷한지"만 보고 싶다면 `twinx` 대신 각 계열을 지수화(첫 값 기준 %)해 한 축에 겹칩니다. 축 눈금 조작으로 만든 유사성은 근거가 되지 않습니다. → 데이터 전처리·시각화 이론 학습 로드맵 2.6
 
 
 <NotionDivider />

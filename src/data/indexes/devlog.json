@@ -24,12 +24,31 @@
   ],
   "problem_solving": [
     {
+      "id": "3d419946ca76809a9589dc1c6e4b7cdb",
+      "slug": "kafka-partition-concurrency-solve",
+      "sourceId": "3d419946-ca76-809a-9589-dc1c6e4b7cdb",
+      "source_id": "3d419946ca76809a9589dc1c6e4b7cdb",
+      "page_id": "3d419946-ca76-809a-9589-dc1c6e4b7cdb",
+      "last_edited_time": "2026-09-07T07:01:00.000Z",
+      "title": "Apache Kafka 동시성 문제에 따른 파티셔닝 조절",
+      "date": "2026.09.07",
+      "tags": [
+        "Kafka",
+        "Partition",
+        "Concurrency"
+      ],
+      "description": "Kafaka로 동일 action을 실행할때, 파티셔닝을 과도하게 나눠서 동시 실행을 하다보면, sequncail 작업이 꼬이는 경험을 할  수 있습니다. 이때, 이행했던 작업과 고민했던 작업에 대해서 작성해봤습니다.",
+      "subcategory": "messaging",
+      "package": "messaging",
+      "notionUrl": "https://app.notion.com/p/Apache-Kafka-3d419946ca76809a9589dc1c6e4b7cdb"
+    },
+    {
       "id": "3b019946ca768008beced8b682cac597",
       "slug": "aop-exception-handling-common-response",
       "sourceId": "3b019946-ca76-8008-bece-d8b682cac597",
       "source_id": "3b019946ca768008beced8b682cac597",
       "page_id": "3b019946-ca76-8008-bece-d8b682cac597",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-07T05:56:00.000Z",
       "title": "레거시 커스텀 Exception 혼재로 인한 AOP 예외 처리 및 공통 응답 구조 개선",
       "date": "2026.06.01",
       "tags": [
@@ -51,7 +70,7 @@
       "sourceId": "3b019946-ca76-808e-9f6e-c9aec83dbaaf",
       "source_id": "3b019946ca76808e9f6ec9aec83dbaaf",
       "page_id": "3b019946-ca76-808e-9f6e-c9aec83dbaaf",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-07T06:12:00.000Z",
       "title": "WAS 이중화 환경에서의 세션 불일치 문제와 해결 방안",
       "date": "2026.05.26",
       "tags": [
@@ -75,7 +94,7 @@
       "sourceId": "3b019946-ca76-8062-aeb4-e0e781ed366a",
       "source_id": "3b019946ca768062aeb4e0e781ed366a",
       "page_id": "3b019946-ca76-8062-aeb4-e0e781ed366a",
-      "last_edited_time": "2026-09-01T00:24:00.000Z",
+      "last_edited_time": "2026-09-07T05:38:00.000Z",
       "title": "대용량 비동기 API 처리 아키텍처 및 해결 전략",
       "date": "2026.05.26",
       "tags": [
@@ -95,7 +114,7 @@
       "sourceId": "3b019946-ca76-80b5-84e1-c59c19e022a9",
       "source_id": "3b019946ca7680b584e1c59c19e022a9",
       "page_id": "3b019946-ca76-80b5-84e1-c59c19e022a9",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-07T06:20:00.000Z",
       "title": "Spring Quartz 분산 환경 최적화 및 HA 아키텍처 고려한 문제 해결",
       "date": "2026.05.15",
       "tags": [
@@ -116,7 +135,7 @@
       "sourceId": "3b019946-ca76-802d-9983-cc6f0ad5b494",
       "source_id": "3b019946ca76802d9983cc6f0ad5b494",
       "page_id": "3b019946-ca76-802d-9983-cc6f0ad5b494",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-07T05:44:00.000Z",
       "title": "Java 8 환경에서 10MB 거대 객체 처리와 G1GC 최적화 전략",
       "date": "2026.05.15",
       "tags": [
@@ -137,7 +156,7 @@
       "sourceId": "3b019946-ca76-8059-b91c-c1de8dbbe8f7",
       "source_id": "3b019946ca768059b91cc1de8dbbe8f7",
       "page_id": "3b019946-ca76-8059-b91c-c1de8dbbe8f7",
-      "last_edited_time": "2026-08-26T02:26:00.000Z",
+      "last_edited_time": "2026-09-07T06:53:00.000Z",
       "title": "ActiveMQ KahaDB 디스크 고갈 문제와 발송 속도 제어(Rate Limit) 전략",
       "date": "2026.05.15",
       "tags": [
@@ -154,6 +173,44 @@
     }
   ],
   "tech_study": [
+    {
+      "id": "3d419946ca768006b012ce7fe9ab675f",
+      "slug": "java-concurrency-thread-pool",
+      "sourceId": "3d419946-ca76-8006-b012-ce7fe9ab675f",
+      "source_id": "3d419946ca768006b012ce7fe9ab675f",
+      "page_id": "3d419946-ca76-8006-b012-ce7fe9ab675f",
+      "last_edited_time": "2026-09-07T07:42:00.000Z",
+      "title": "스레드 풀 : 스레드 풀을 이용하는 이유?",
+      "date": "2026.09.07",
+      "tags": [
+        "thread",
+        "pool",
+        "SpringBoot",
+        "java"
+      ],
+      "description": "스레드 풀은 재사용 스레드 집합, 대기 작업 큐, 스케일링·거절 정책 세 부분으로 이루어진 관리 추상화이며, 비싼 자원을 생성·소멸의 대상이 아니라 빌리고 반납하는 대상으로 취급합니다. 스레드를 매번 만들고 없애며 적정 개수를 사람이 계속 조정하는 것은 불가능하므로, corePoolSize·maximumPoolSize·큐 용량·keepAliveTime·거절 정책을 한 번 계약으로 정해 두면 풀이 core → queue → max 순으로 확장하고 유휴 시 keepAlive로 축소합니다. 특히 큐 종류가 스케일링 성격을 좌우해서 무제한 LinkedBlockingQueue를 쓰면 maximumPoolSize가 무의미해지고, Executors 팩토리 메서드에는 이런 숨은 무제한이 있어 운영에서는 ThreadPoolExecutor를 직접 구성하고 다운스트림 커넥션 풀 상한과 정합시켜야 합니다.",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/3d419946ca768006b012ce7fe9ab675f"
+    },
+    {
+      "id": "3d419946ca7680348ce9f0d7a948b55c",
+      "slug": "java-concurrency-shared-mutable-state",
+      "sourceId": "3d419946-ca76-8034-8ce9-f0d7a948b55c",
+      "source_id": "3d419946ca7680348ce9f0d7a948b55c",
+      "page_id": "3d419946-ca76-8034-8ce9-f0d7a948b55c",
+      "last_edited_time": "2026-09-07T07:42:00.000Z",
+      "title": "여러 스레드에서 하나의 객체를 공유 할 때 발생할 수 있는 문제는?",
+      "date": "2026.09.07",
+      "tags": [
+        "thread",
+        "object"
+      ],
+      "description": "\"공유·가변·최소 1개의 쓰기\" 세 조건이 동시에 성립할 때만 스레드 안전 문제가 생기며, 증상은 데이터 오염(갱신 유실·찢어진 상태·컬렉션 파손·dirty read), 가시성 부재(캐시·재정렬로 변경이 다른 스레드에 안 보임), 순서 재정렬(DCL 붕괴)의 세 갈래로 나타납니다. 이를 Lock으로 막으면 이번에는 경합으로 병렬성이 사라지고(암달의 법칙), 획득 순서 불일치로 데드락이 생기며, 기아·잘못된 락 객체·임계 구역 안 외부 호출 같은 새로운 문제가 따라옵니다. JMM은 synchronized·volatile·java.util.concurrent가 만드는 happens-before 관계로만 보장을 제공하므로 동기화가 하나도 없으면 아무것도 보장되지 않으며, 해결은 공유 제거 → 원자 도구 → 락 최소화 순으로 접근합니다.",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/3d419946ca7680348ce9f0d7a948b55c"
+    },
     {
       "id": "3ce19946ca7680c3bf5ada32fda9842c",
       "slug": "java-gc-guide",
@@ -852,6 +909,36 @@
     }
   ],
   "tech_study_series": [
+    {
+      "id": "3d119946ca7680fc8dead72943e68907",
+      "slug": "java-syntax-program-structure",
+      "sourceId": "3d119946-ca76-80fc-8dea-d72943e68907",
+      "source_id": "3d119946ca7680fc8dead72943e68907",
+      "page_id": "3d119946-ca76-80fc-8dea-d72943e68907",
+      "last_edited_time": "2026-09-04T01:13:00.000Z",
+      "title": "Java 문법 01. 프로그램 구조와 실행",
+      "date": "2026.09.04",
+      "tags": [],
+      "description": "Java 문법 01. 프로그램 구조와 실행",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/Java-01-3d119946ca7680fc8dead72943e68907"
+    },
+    {
+      "id": "3d119946ca76801ab530e98417a23d86",
+      "slug": "java-syntax-variables-types",
+      "sourceId": "3d119946-ca76-801a-b530-e98417a23d86",
+      "source_id": "3d119946ca76801ab530e98417a23d86",
+      "page_id": "3d119946-ca76-801a-b530-e98417a23d86",
+      "last_edited_time": "2026-09-04T01:14:00.000Z",
+      "title": "Java 문법 02. 변수와 기본 타입, 형 변환",
+      "date": "2026.09.04",
+      "tags": [],
+      "description": "Java 문법 02. 변수와 기본 타입, 형 변환",
+      "subcategory": "java",
+      "package": "java",
+      "notionUrl": "https://app.notion.com/p/Java-02-3d119946ca76801ab530e98417a23d86"
+    },
     {
       "id": "3ce19946ca7680a58e17e1ef1f5f0bd2",
       "slug": "python-pandas-reshaping",

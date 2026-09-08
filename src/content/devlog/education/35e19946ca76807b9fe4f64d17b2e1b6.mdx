@@ -62,21 +62,21 @@ notionUrl: "https://app.notion.com/p/Java-35e19946ca76807b9fe4f64d17b2e1b6"
 
 ### Java 설치 및 환경 변수 등록
 
-- **설치 방식**
+- <strong>설치 방식</strong>
 Java 설치 패키지(.exe)를 실행하는 대신 binary 파일을 다운로드하여 원하는 경로에 압축 해제 후 관리.
-- **환경 변수 설정**
-- **JAVA_HOME**: JDK가 설치된 경로를 시스템 변수로 지정.
-- **Path (environment-path)**: `%JAVA_HOME%\bin`을 등록하여 어디서든 Java 명령어를 사용할 수 있게 함.
-- **CLASSPATH**: Java 클래스 라이브러리를 참조하기 위한 경로 설정.
+- <strong>환경 변수 설정</strong>
+- <strong>JAVA_HOME</strong>: JDK가 설치된 경로를 시스템 변수로 지정.
+- <strong>Path (environment-path)</strong>: `%JAVA_HOME%\bin`을 등록하여 어디서든 Java 명령어를 사용할 수 있게 함.
+- <strong>CLASSPATH</strong>: Java 클래스 라이브러리를 참조하기 위한 경로 설정.
 
-- **설정 목적**: 특정 버전에 종속되지 않고, 사용자가 원하는 Java 버전을 직접 등록하여 유연하게 사용하기 위함.
+- <strong>설정 목적</strong>: 특정 버전에 종속되지 않고, 사용자가 원하는 Java 버전을 직접 등록하여 유연하게 사용하기 위함.
 
 <a id="eclipse-ide-설치-및-세팅"></a>
 
 ### Eclipse IDE 설치 및 세팅
 
-- **패키지** : `Eclipse IDE for Enterprise Java and Web Developers` (Web Developer 기준) 설치.
-- **환경설정** :  워크스페이스 인코딩(UTF-8) 설정 및 컴파일러 환경 세팅 완료.
+- <strong>패키지</strong> : `Eclipse IDE for Enterprise Java and Web Developers` (Web Developer 기준) 설치.
+- <strong>환경설정</strong> :  워크스페이스 인코딩(UTF-8) 설정 및 컴파일러 환경 세팅 완료.
 
 <NotionDivider />
 
@@ -88,8 +88,8 @@ Java 설치 패키지(.exe)를 실행하는 대신 binary 파일을 다운로드
 
 ### 개념 확인
 
-- **Compile (컴파일)**: 개발자가 작성한 `.java` 소스 코드를 컴퓨터(JVM)가 이해할 수 있는 `.class` (바이트코드) 파일로 변환하는 과정.
-- **Runtime (런타임)**: 컴파일된 파일을 실제 실행 환경(JVM)에서 메모리에 올려 프로그램을 구동하는 단계.
+- <strong>Compile (컴파일)</strong>: 개발자가 작성한 `.java` 소스 코드를 컴퓨터(JVM)가 이해할 수 있는 `.class` (바이트코드) 파일로 변환하는 과정.
+- <strong>Runtime (런타임)</strong>: 컴파일된 파일을 실제 실행 환경(JVM)에서 메모리에 올려 프로그램을 구동하는 단계.
 <a id="helloworldjava-실행-예시"></a>
 
 ### HelloWorld.java 실행 예시
@@ -103,7 +103,7 @@ public class HelloWorld {
 }
 ```
 
-**[터미널 실행 명령어]**
+<strong>[터미널 실행 명령어]</strong>
 
 
 ```bash
@@ -121,8 +121,8 @@ java -cp . HelloWorld
 
 ## 3. 변수(Variable)와 타입(Type)
 
-- **변수**: 데이터를 저장하기 위해 할당받은 메모리 공간의 이름.
-- **타입**: 변수에 저장할 데이터의 종류와 크기를 결정 (예: 정수형 int, 실수형 double, 문자열 String 등).
+- <strong>변수</strong>: 데이터를 저장하기 위해 할당받은 메모리 공간의 이름.
+- <strong>타입</strong>: 변수에 저장할 데이터의 종류와 크기를 결정 (예: 정수형 int, 실수형 double, 문자열 String 등).
 
 <NotionDivider />
 
@@ -163,7 +163,7 @@ public class OutputExample {
 
 ## 5. 특수 문자 표기 방법 (Escape Sequence)
 
-문자열 내에서 특수한 기능을 수행하거나 따옴표 등을 표현할 때 사용하는 **Escape 문자** 예시입니다.
+문자열 내에서 특수한 기능을 수행하거나 따옴표 등을 표현할 때 사용하는 <strong>Escape 문자</strong> 예시입니다.
 
 
 ```java
@@ -351,8 +351,8 @@ public class MutableImmutableTest {
 
 ### 성능과 가독성의 균형
 
-- 비즈니스 로직의 대부분에서는 **불변 객체와 래퍼 클래스를 사용하여 데이터의 안정성을 높이는 것이 유리**합니다.
-- 그러나 **대규모 트래픽을 처리하거나 실시간 연산이 핵심인 모듈에서는 의도적으로 가변 객체와 기본형**을 사용하여 시스템 부하를 최소화하는 전략이 필요합니다.
+- 비즈니스 로직의 대부분에서는 <strong>불변 객체와 래퍼 클래스를 사용하여 데이터의 안정성을 높이는 것이 유리</strong>합니다.
+- 그러나 <strong>대규모 트래픽을 처리하거나 실시간 연산이 핵심인 모듈에서는 의도적으로 가변 객체와 기본형</strong>을 사용하여 시스템 부하를 최소화하는 전략이 필요합니다.
 
 *msi : 마이크로소프트 인스톨러(Microsoft Installer)
 

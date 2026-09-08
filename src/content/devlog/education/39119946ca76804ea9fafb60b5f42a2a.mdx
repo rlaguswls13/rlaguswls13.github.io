@@ -55,10 +55,10 @@ jQuery는 브라우저 간의 악명 높은 크로스 브라우징(Cross Browsin
 
 ### 3) 현대 프런트엔드 프레임워크와의 충돌 메커니즘
 
-리액트(React)나 뷰(Vue) 같은 현대적 프레임워크와 jQuery는 **DOM을 제어하는 근본적인 메커니즘이 정반대**이기 때문에 심각한 충돌을 유반한다.
+리액트(React)나 뷰(Vue) 같은 현대적 프레임워크와 jQuery는 <strong>DOM을 제어하는 근본적인 메커니즘이 정반대</strong>이기 때문에 심각한 충돌을 유반한다.
 
 - 리액트는 데이터 상태를 기준으로 가상 DOM(Virtual DOM)을 생성하고 이전 스냅샷과 비교하여 화면을 변경하는 규칙을 따른다.
-- 반면 jQuery는 실제 물리적 DOM을 **직접 타격하여 강제로 조작**한다.
+- 반면 jQuery는 실제 물리적 DOM을 <strong>직접 타격하여 강제로 조작</strong>한다.
 리액트가 관리하는 컴포넌트 내부를 jQuery가 임의로 조작해 버리면, 리액트 엔진의 상태 스냅샷과 실제 브라우저 DOM 트리 사이에 불일치가 발생한다. 이로 인해 프레임워크의 상태 변경에 따른 재렌더링 메커니즘이 오작동하거나 데이터 바인딩이 깨지는 치명적인 에러가 발생하게 된다.
 
 <a id="4-그렇다면-jquery는-언제-사용하면-좋은가"></a>
@@ -76,14 +76,14 @@ jQuery는 브라우저 간의 악명 높은 크로스 브라우징(Cross Browsin
 
 <NotionTable>
   <tbody>
-    <tr><td>**Feature**</td><td>**AJAX (via Legacy jQuery)**</td><td>**Fetch API (Native Browser)**</td><td>**Axios (Third-Party Library)**</td></tr>
-    <tr><td>**Installation**</td><td>jQuery CDN 또는 파일 별도 로드 필요</td><td>없음 (브라우저 내장 표준 API)</td><td>npm install 또는 CDN 로드 필요</td></tr>
-    <tr><td>**Base Architecture**</td><td>콜백 함수(Callback) 기반 구조</td><td>프로미스(Promise) 기반 구조</td><td>프로미스(Promise) 기반 구조</td></tr>
-    <tr><td>**JSON Handling**</td><td>설정에 따라 수동 혹은 자동 파싱 수행</td><td>`JSON.stringify()` 및 `.json()` 수동 변환 필요</td><td>자동 직렬화 및 파싱(Serialization) 지원</td></tr>
-    <tr><td>**HTTP Error Catching**</td><td>내장된 error 콜백 함수로 감지 가능</td><td>404, 500 에러도 정상 Resolved 상태로 처리</td><td>status 코드가 2xx를 벗어나면 자동으로 Error 발생</td></tr>
-    <tr><td>**Request Timeout**</td><td>`timeout` 속성으로 명확히 지원</td><td>자체 타임아웃 없음 (`AbortSignal` 우회 필요)</td><td>자체 내장 옵션으로 깔끔하게 지원</td></tr>
-    <tr><td>**Interceptors**</td><td>글로벌 AJAX 셋업을 통해 유사하게 구현</td><td>네이티브 레벨에서 지원하지 않음</td><td>요청/응답 단계를 가로채는 인터셉터 내장</td></tr>
-    <tr><td>**Environment**</td><td>브라우저(Browser) 환경에서만 작동</td><td>현대적인 브라우저 및 최신 Node.js 환경</td><td>브라우저 및 모든 버전의 Node.js 환경 호환</td></tr>
+    <tr><td><strong>Feature</strong></td><td><strong>AJAX (via Legacy jQuery)</strong></td><td><strong>Fetch API (Native Browser)</strong></td><td><strong>Axios (Third-Party Library)</strong></td></tr>
+    <tr><td><strong>Installation</strong></td><td>jQuery CDN 또는 파일 별도 로드 필요</td><td>없음 (브라우저 내장 표준 API)</td><td>npm install 또는 CDN 로드 필요</td></tr>
+    <tr><td><strong>Base Architecture</strong></td><td>콜백 함수(Callback) 기반 구조</td><td>프로미스(Promise) 기반 구조</td><td>프로미스(Promise) 기반 구조</td></tr>
+    <tr><td><strong>JSON Handling</strong></td><td>설정에 따라 수동 혹은 자동 파싱 수행</td><td>`JSON.stringify()` 및 `.json()` 수동 변환 필요</td><td>자동 직렬화 및 파싱(Serialization) 지원</td></tr>
+    <tr><td><strong>HTTP Error Catching</strong></td><td>내장된 error 콜백 함수로 감지 가능</td><td>404, 500 에러도 정상 Resolved 상태로 처리</td><td>status 코드가 2xx를 벗어나면 자동으로 Error 발생</td></tr>
+    <tr><td><strong>Request Timeout</strong></td><td>`timeout` 속성으로 명확히 지원</td><td>자체 타임아웃 없음 (`AbortSignal` 우회 필요)</td><td>자체 내장 옵션으로 깔끔하게 지원</td></tr>
+    <tr><td><strong>Interceptors</strong></td><td>글로벌 AJAX 셋업을 통해 유사하게 구현</td><td>네이티브 레벨에서 지원하지 않음</td><td>요청/응답 단계를 가로채는 인터셉터 내장</td></tr>
+    <tr><td><strong>Environment</strong></td><td>브라우저(Browser) 환경에서만 작동</td><td>현대적인 브라우저 및 최신 Node.js 환경</td><td>브라우저 및 모든 버전의 Node.js 환경 호환</td></tr>
   </tbody>
 </NotionTable>
 
@@ -113,10 +113,10 @@ Bootstrap은 트위터에서 개발한 오픈소스 CSS 프레임워크로, 개�
 
 ### 4) 현대 프런트엔드 시장에서의 대표적인 대체제
 
-- **Tailwind CSS (Utility-First)**
+- <strong>Tailwind CSS (Utility-First)</strong>
 부트스트랩처럼 만들어진 컴포넌트를 주는 것이 아니라, `flex`, `pt-4`, `text-center` 같은 원시 CSS 속성 클래스를 조합해 화면을 만든다. 디자인 제약이 전혀 없어 커스텀 디자인에 최적화되어 있으며, 빌드 시 사용하지 않는 클래스는 완전히 제거되므로 배포 파일이 극도로 가벼워진다.
-- **Material UI (MUI - React 기반)**
+- <strong>Material UI (MUI - React 기반)</strong>
 구글의 매content리얼 디자인 지침을 철저하게 따르는 리액트 전용 컴포넌트 라이브러리다. 컴포넌트 내부의 상태 관리 메커니즘이 리액트와 완벽히 융합되어 있어, 대규모 백오피스나 어드민 대시보드처럼 일관되고 고도화된 기능 중심의 컴포넌트가 필요할 때 압도적인 생산성을 보여준다.
-- **Shoelace (Framework-Agnostic Web Components)**
+- <strong>Shoelace (Framework-Agnostic Web Components)</strong>
 리액트, 뷰, 스벨트 등 어떤 프레임워크 환경이든 상관없이 바닐라 웹 컴포넌트(Web Components) 표준을 기반으로 동작하는 라이브러리다. 매우 가볍고 사용성이 뛰어나며, 프레임워크의 변화에 종속되지 않는 영속적인 UI 시스템을 구축하고 싶을 때 훌륭한 대안이 된다.
 

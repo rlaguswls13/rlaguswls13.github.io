@@ -36,9 +36,9 @@ notionUrl: "https://app.notion.com/p/Python-pandas-10-concat-merge-join-3ce19946
 
 표를 합치는 방법은 3가지입니다.
 
-- **`concat`**: 위/아래(또는 옆) 로 **쌓기** (같은 스키마 이어 붙이기).
-- **`merge`**: 공통 **키(열)** 기준 관계형 조인 (SQL JOIN).
-- **`join`**: `merge`의 편의 버전으로 **인덱스** 기준 결합에 최적.`merge`에서 사고를 예방하는 핵심 옵션은 **`how`, `validate`, `indicator`, `suffixes`** 입니다.
+- <strong>`concat`</strong>: 위/아래(또는 옆) 로 <strong>쌓기</strong> (같은 스키마 이어 붙이기).
+- <strong>`merge`</strong>: 공통 <strong>키(열)</strong> 기준 관계형 조인 (SQL JOIN).
+- <strong>`join`</strong>: `merge`의 편의 버전으로 <strong>인덱스</strong> 기준 결합에 최적.`merge`에서 사고를 예방하는 핵심 옵션은 <strong>`how`, `validate`, `indicator`, `suffixes`</strong> 입니다.
 
 ```python
 import pandas as pd
@@ -61,7 +61,7 @@ pd.concat([df_a, df_b], join="inner")                      # 공통 열만
 
 - 기본은 `axis=0`(세로), `join="outer"`(합집합 열, 없는 값 `NaN`).
 - `ignore_index=True`로 인덱스를 0부터 재부여 (안 하면 인덱스 중복).
-> 💡 **이럴 때**: 월별/일별로 나뉜 같은 형식의 파일을 하나로 합칠 때. `keys`로 원본 구분자를 남기면 나중에 출처별 집계가 쉽습니다.
+> 💡 <strong>이럴 때</strong>: 월별/일별로 나뉜 같은 형식의 파일을 하나로 합칠 때. `keys`로 원본 구분자를 남기면 나중에 출처별 집계가 쉽습니다.
 
 
 <NotionDivider />
@@ -109,14 +109,14 @@ pd.merge(
 )
 ```
 
-- **`validate`**: `"one_to_one"`, `"one_to_many"`, `"many_to_one"`, `"many_to_many"`. 키가 예상과 달리 중복이면 **행이 폭증**하는데, 이걸 조기에 잡아 줍니다.
-- **`indicator`**: 조인 후 매칭 안 된 행이 얼마나 되는지 `_merge.value_counts()`로 점검.
-> 💡 **이럴 때**: `merge` 후 행 수가 갑자기 늘었다면 오른쪽 키에 중복이 있는 것입니다. `validate="many_to_one"`을 걸어 원인을 명확히 합니다.
+- <strong>`validate`</strong>: `"one_to_one"`, `"one_to_many"`, `"many_to_one"`, `"many_to_many"`. 키가 예상과 달리 중복이면 <strong>행이 폭증</strong>하는데, 이걸 조기에 잡아 줍니다.
+- <strong>`indicator`</strong>: 조인 후 매칭 안 된 행이 얼마나 되는지 `_merge.value_counts()`로 점검.
+> 💡 <strong>이럴 때</strong>: `merge` 후 행 수가 갑자기 늘었다면 오른쪽 키에 중복이 있는 것입니다. `validate="many_to_one"`을 걸어 원인을 명확히 합니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: `left` 조인 후 `indicator`로 `left_only` 비율을 확인해 "매칭 실패(마스터에 없는 코드)"를 조기에 발견합니다.
+💡 <strong>이럴 때</strong>: `left` 조인 후 `indicator`로 `left_only` 비율을 확인해 "매칭 실패(마스터에 없는 코드)"를 조기에 발견합니다.
 
 
 </NotionIndent>
@@ -155,9 +155,9 @@ pd.merge_asof(
 )
 ```
 
-정확히 일치하는 키가 아니라 **"가장 가까운 이전/이후 시각"**으로 붙입니다. 거래 체결가에 직전 호가 붙이기, 로그에 직전 배포 버전 붙이기 등.
+정확히 일치하는 키가 아니라 <strong>"가장 가까운 이전/이후 시각"</strong>으로 붙입니다. 거래 체결가에 직전 호가 붙이기, 로그에 직전 배포 버전 붙이기 등.
 
-> 💡 **이럴 때**: 두 시계열의 타임스탬프가 정확히 일치하지 않을 때(센서 A는 1초, 센서 B는 1.3초). 양쪽 모두 정렬돼 있어야 합니다.
+> 💡 <strong>이럴 때</strong>: 두 시계열의 타임스탬프가 정확히 일치하지 않을 때(센서 A는 1초, 센서 B는 1.3초). 양쪽 모두 정렬돼 있어야 합니다.
 
 
 <NotionDivider />

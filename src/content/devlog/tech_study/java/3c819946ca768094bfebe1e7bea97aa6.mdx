@@ -34,10 +34,10 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 ## 핵심 요약
 
-- **JDK (Java Development Kit)**: Java 프로그램을 **개발(Development) 및 실행**하기 위한 종합 도구 모음으로, 컴파일러(`javac`), 패키징(`jar`), 디버거(`jdb`), 문서 생성기(`javadoc`) 등의 개발 툴체인과 런타임 환경(JRE/JVM)을 모두 포함합니다.
-- **JRE (Java Runtime Environment)**: 이미 컴파일된 Java 프로그램을 **실행(Runtime)만** 하기 위한 환경으로, JVM(가상 머신)과 Java 표준 클래스 라이브러리(Java API)로 구성됩니다.
-- **구조적 핵심 차이**: JRE와 JDK의 본질적인 차이는 JVM 자체가 아니라 **개발 툴체인(Toolchain)의 포함 여부**입니다.
-- **Java 9 이후의 진화**: Java 9 모듈 시스템(Project Jigsaw, JEP 220/261) 도입 이후 전통적인 모놀리식 독립 JRE 배포판이 사라졌으며, `jlink` 도구를 통해 필요한 모듈만 조합한 경량 커스텀 런타임을 생성하는 패러다임으로 전환되었습니다.
+- <strong>JDK (Java Development Kit)</strong>: Java 프로그램을 <strong>개발(Development) 및 실행</strong>하기 위한 종합 도구 모음으로, 컴파일러(`javac`), 패키징(`jar`), 디버거(`jdb`), 문서 생성기(`javadoc`) 등의 개발 툴체인과 런타임 환경(JRE/JVM)을 모두 포함합니다.
+- <strong>JRE (Java Runtime Environment)</strong>: 이미 컴파일된 Java 프로그램을 <strong>실행(Runtime)만</strong> 하기 위한 환경으로, JVM(가상 머신)과 Java 표준 클래스 라이브러리(Java API)로 구성됩니다.
+- <strong>구조적 핵심 차이</strong>: JRE와 JDK의 본질적인 차이는 JVM 자체가 아니라 <strong>개발 툴체인(Toolchain)의 포함 여부</strong>입니다.
+- <strong>Java 9 이후의 진화</strong>: Java 9 모듈 시스템(Project Jigsaw, JEP 220/261) 도입 이후 전통적인 모놀리식 독립 JRE 배포판이 사라졌으며, `jlink` 도구를 통해 필요한 모듈만 조합한 경량 커스텀 런타임을 생성하는 패러다임으로 전환되었습니다.
 
 <NotionDivider />
 
@@ -45,8 +45,8 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 ## 0. 추상화 계층 구분선 (Scoping Boundary)
 
-- **개발 계층 (Toolchain Layer)**: 소스 코드 작성, 바이트코드 컴파일, 디버깅 및 패키징을 담당하는 도구 영역 (JDK 전용).
-- **실행 계층 (Runtime/Execution Layer)**: 컴파일된 바이트코드를 메모리에 적재하고 표준 API를 제공하여 프로그램을 구동하는 환경 영역 (JRE / JVM 공통).
+- <strong>개발 계층 (Toolchain Layer)</strong>: 소스 코드 작성, 바이트코드 컴파일, 디버깅 및 패키징을 담당하는 도구 영역 (JDK 전용).
+- <strong>실행 계층 (Runtime/Execution Layer)</strong>: 컴파일된 바이트코드를 메모리에 적재하고 표준 API를 제공하여 프로그램을 구동하는 환경 영역 (JRE / JVM 공통).
 
 <NotionDivider />
 
@@ -58,13 +58,13 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 <NotionTable>
   <tbody>
     <tr><td>Java 구성</td><td>일상(요리) 비유</td><td>핵심 역할</td></tr>
-    <tr><td>**JVM**</td><td>**오븐 (조리 기계)**</td><td>준비된 반죽(바이트코드)을 직접 구워 최종 결과물을 만들어내는 핵심 실행 기계</td></tr>
-    <tr><td>**JRE**</td><td>**주방 (조리 환경)**</td><td>오븐(JVM) + 조리에 필요한 기본 식재료/조미료 도구(표준 런타임 라이브러리)</td></tr>
-    <tr><td>**JDK**</td><td>**요리사의 전문 작업실**</td><td>주방(JRE) + 칼, 레시피북, 계량도구 등 음식을 새로 만들기 위한 전문 제작 도구(개발 툴체인)</td></tr>
+    <tr><td><strong>JVM</strong></td><td><strong>오븐 (조리 기계)</strong></td><td>준비된 반죽(바이트코드)을 직접 구워 최종 결과물을 만들어내는 핵심 실행 기계</td></tr>
+    <tr><td><strong>JRE</strong></td><td><strong>주방 (조리 환경)</strong></td><td>오븐(JVM) + 조리에 필요한 기본 식재료/조미료 도구(표준 런타임 라이브러리)</td></tr>
+    <tr><td><strong>JDK</strong></td><td><strong>요리사의 전문 작업실</strong></td><td>주방(JRE) + 칼, 레시피북, 계량도구 등 음식을 새로 만들기 위한 전문 제작 도구(개발 툴체인)</td></tr>
   </tbody>
 </NotionTable>
 
-> **개념 요약**:
+> <strong>개념 요약</strong>:
 
 
 <NotionIndent>
@@ -102,11 +102,11 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 ### 대표 개발 툴체인 구성
 
-- **`javac`**: `.java` 소스 코드를 JVM이 읽을 수 있는 `.class` 바이트코드로 컴파일.
-- **`jar`**: 여러 `.class` 파일과 리소스, 메타데이터(`MANIFEST.MF`)를 단일 압축 아카이브로 패키징.
-- **`javadoc`**: 소스 코드 주석으로부터 표준 HTML API 명세 문서 생성.
-- **`jdb`**: Java 애플리케이션의 런타임 버그 추적을 위한 명령줄 디버거.
-- **`javap`**: 컴파일된 바이트코드를 역어셈블(Disassemble)하여 분석하는 도구.
+- <strong>`javac`</strong>: `.java` 소스 코드를 JVM이 읽을 수 있는 `.class` 바이트코드로 컴파일.
+- <strong>`jar`</strong>: 여러 `.class` 파일과 리소스, 메타데이터(`MANIFEST.MF`)를 단일 압축 아카이브로 패키징.
+- <strong>`javadoc`</strong>: 소스 코드 주석으로부터 표준 HTML API 명세 문서 생성.
+- <strong>`jdb`</strong>: Java 애플리케이션의 런타임 버그 추적을 위한 명령줄 디버거.
+- <strong>`javap`</strong>: 컴파일된 바이트코드를 역어셈블(Disassemble)하여 분석하는 도구.
 
 <NotionDivider />
 
@@ -118,10 +118,10 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 <NotionTable>
   <tbody>
     <tr><td>비교 항목</td><td>JDK (Java Development Kit)</td><td>JRE (Java Runtime Environment)</td></tr>
-    <tr><td>**주 목적**</td><td>Java 애플리케이션 개발, 컴파일, 디버깅, 빌드</td><td>이미 빌드된 Java 프로그램의 단순 실행</td></tr>
-    <tr><td>**주 사용자**</td><td>소프트웨어 엔지니어, DevOps 빌드 파이프라인</td><td>일반 사용자, 배포 전용 레거시 서버</td></tr>
-    <tr><td>**핵심 포함물**</td><td>JRE 전체 + `javac`, `jar`, `jdb`, `javadoc` 등</td><td>JVM + Java Core API 라이브러리</td></tr>
-    <tr><td>**컴파일 기능**</td><td>`javac`를 통한 직접 컴파일 가능</td><td>소스 코드(`.java`) 컴파일 불가 (단, ECJ 내장 WAS 제외)</td></tr>
+    <tr><td><strong>주 목적</strong></td><td>Java 애플리케이션 개발, 컴파일, 디버깅, 빌드</td><td>이미 빌드된 Java 프로그램의 단순 실행</td></tr>
+    <tr><td><strong>주 사용자</strong></td><td>소프트웨어 엔지니어, DevOps 빌드 파이프라인</td><td>일반 사용자, 배포 전용 레거시 서버</td></tr>
+    <tr><td><strong>핵심 포함물</strong></td><td>JRE 전체 + `javac`, `jar`, `jdb`, `javadoc` 등</td><td>JVM + Java Core API 라이브러리</td></tr>
+    <tr><td><strong>컴파일 기능</strong></td><td>`javac`를 통한 직접 컴파일 가능</td><td>소스 코드(`.java`) 컴파일 불가 (단, ECJ 내장 WAS 제외)</td></tr>
   </tbody>
 </NotionTable>
 
@@ -132,17 +132,17 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 ## 4. Java 9 이후 모듈화와 JRE의 진화 (JEP 220 & JEP 261)
 
-전통적인 Java 8 시절에는 웹사이트에서 **JRE 단독 설치 파일**과 **JDK 설치 파일**을 별도로 다운로드받았습니다. 그러나 **Java 9 (Project Jigsaw)**부터는 배포 체계가 완전히 개편되었습니다.
+전통적인 Java 8 시절에는 웹사이트에서 <strong>JRE 단독 설치 파일</strong>과 <strong>JDK 설치 파일</strong>을 별도로 다운로드받았습니다. 그러나 <strong>Java 9 (Project Jigsaw)</strong>부터는 배포 체계가 완전히 개편되었습니다.
 
-1. **거대한 `rt.jar`의 분해**:
+1. <strong>거대한 `rt.jar`의 분해</strong>:
 - 과거에는 `rt.jar`라는 약 60MB 이상의 거대 단일 파일에 모든 표준 라이브러리가 포함되어 있어 불필요한 메모리를 낭비했습니다.
 - Java 9부터 전체 플랫폼이 모듈(`java.base`, `java.sql`, `java.desktop` 등) 단위로 세분화되었습니다.
 
-1. **독립 JRE 배포판 중단**:
-- Oracle 및 OpenJDK 벤더는 Java 11부터 독립적인 JRE 다운로드를 공식 중단하고 **JDK 단일 배포**로 전환했습니다.
+1. <strong>독립 JRE 배포판 중단</strong>:
+- Oracle 및 OpenJDK 벤더는 Java 11부터 독립적인 JRE 다운로드를 공식 중단하고 <strong>JDK 단일 배포</strong>로 전환했습니다.
 
-1. **`jlink` 맞춤형 런타임 이미지**:
-- 이제 개발자는 JDK에 포함된 `jlink` 도구를 사용하여 자신의 애플리케이션이 실제로 사용하는 Java 모듈만 선택적으로 묶은 수십 MB 수준의 **초경량 커스텀 런타임 이미지**를 직접 생성하여 컨테이너에 배포합니다.
+1. <strong>`jlink` 맞춤형 런타임 이미지</strong>:
+- 이제 개발자는 JDK에 포함된 `jlink` 도구를 사용하여 자신의 애플리케이션이 실제로 사용하는 Java 모듈만 선택적으로 묶은 수십 MB 수준의 <strong>초경량 커스텀 런타임 이미지</strong>를 직접 생성하여 컨테이너에 배포합니다.
 
 
 <NotionDivider />
@@ -153,19 +153,19 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 <a id="1-핵심-개념-및-구성-요소의-본질"></a>
 
-#### **1) 핵심 개념 및 구성 요소의 본질**
+#### <strong>1) 핵심 개념 및 구성 요소의 본질</strong>
 
-- **JVM (Java Virtual Machine: 실행 엔진)**
+- <strong>JVM (Java Virtual Machine: 실행 엔진)</strong>
 - 자바 바이트코드(`.class`)를 운영체제에 종속되지 않고 실행할 수 있도록 변환해 주는 가상머신입니다.
-- 단순히 코드를 해석하는 인터프리터를 넘어, 자주 실행되는 핫스팟 코드를 기계어로 컴파일하는 **JIT(Just-In-Time) 컴파일러**와 메모리를 자동 관리하는 **GC(Garbage Collector)**가 핵심 엔진 역할을 합니다.
-- 대표적인 구현체로는 오라클과 오픈소스 진영의 표준인 **HotSpot JVM**이 있으며, 최근에는 빠른 기동 속도(Cold Start 개선)와 AOT(Ahead-Of-Time) 네이티브 바이너리 빌드를 지원하는 **GraalVM**, 메모리 효율에 특화된 **Eclipse OpenJ9** 등으로 워크로드에 맞춰 대체할 수 있습니다.
+- 단순히 코드를 해석하는 인터프리터를 넘어, 자주 실행되는 핫스팟 코드를 기계어로 컴파일하는 <strong>JIT(Just-In-Time) 컴파일러</strong>와 메모리를 자동 관리하는 <strong>GC(Garbage Collector)</strong>가 핵심 엔진 역할을 합니다.
+- 대표적인 구현체로는 오라클과 오픈소스 진영의 표준인 <strong>HotSpot JVM</strong>이 있으며, 최근에는 빠른 기동 속도(Cold Start 개선)와 AOT(Ahead-Of-Time) 네이티브 바이너리 빌드를 지원하는 <strong>GraalVM</strong>, 메모리 효율에 특화된 <strong>Eclipse OpenJ9</strong> 등으로 워크로드에 맞춰 대체할 수 있습니다.
 
-- **JRE (Java Runtime Environment: 실행 환경)**
+- <strong>JRE (Java Runtime Environment: 실행 환경)</strong>
 - *JVM + Java 표준 라이브러리(Java Core API)**로 구성됩니다.
 - `java.util`, `java.lang(System 등)`, `java.io`와 같은 필수 런타임 클래스 라이브러리와 구동 환경을 제공하여, 이미 컴파일된 애플리케이션을 실행하기 위한 최소한의 패키지입니다.
 
-- **JDK (Java Development Kit: 개발 및 진단 도구 모음)**
-- **JRE + 개발/컴파일/진단 툴**의 완전체입니다.
+- <strong>JDK (Java Development Kit: 개발 및 진단 도구 모음)</strong>
+- <strong>JRE + 개발/컴파일/진단 툴</strong>의 완전체입니다.
 - 자바 소스코드를 바이트코드로 변환하는 컴파일러(`javac`)뿐만 아니라, 실행 중인 프로세스의 상태를 추적하고 트러블슈팅할 수 있는 프로파일링 및 진단 도구(`jcmd`, `jstat`, `jstack`, `jmap` 등)를 모두 포함합니다.
 
 
@@ -173,32 +173,32 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 <a id="2-개발-및-실운영-환경-구성-전략"></a>
 
-#### **2.) 개발 및 실운영 환경 구성 전략**
+#### <strong>2.) 개발 및 실운영 환경 구성 전략</strong>
 
-- **개발 환경: 무조건 JDK 채택**
+- <strong>개발 환경: 무조건 JDK 채택</strong>
 - 소스코드 컴파일(`javac`), 디버깅, IDE 연동 및 로컬 성능 측정을 위해 필수적으로 JDK를 설치하여 활용해야 합니다.
 
-- **운영 환경: 보안과 유지보수성 사이의 최적화**
-- **보안 및 경량화(권장):** 운영 환경에서는 공격 표면(Attack Surface)을 최소화하고 이미지 크기를 줄이기 위해 컴파일러나 불필요한 바이너리가 없는 **JRE 또는 `jlink` 기반의 커스텀 경량 런타임 이미지**를 사용하는 것이 원칙입니다.
-- **트러블슈팅 및 모니터링:** 다만, 실운영 중 발생하는 메모리 릭, CPU 스파이크, 스레드 데드락 등을 분석하기 위해 `jcmd`, `jstack` 같은 진단 도구가 필요한 경우가 많습니다. 이에 따라 실무에서는 진단 도구가 포함된 최소 JDK 환경을 구성하거나, APM(Application Performance Monitoring) 에이전트 및 디버그용 사이드카 컨테이너를 함께 운용하는 방식을 채택합니다.
+- <strong>운영 환경: 보안과 유지보수성 사이의 최적화</strong>
+- <strong>보안 및 경량화(권장):</strong> 운영 환경에서는 공격 표면(Attack Surface)을 최소화하고 이미지 크기를 줄이기 위해 컴파일러나 불필요한 바이너리가 없는 <strong>JRE 또는 `jlink` 기반의 커스텀 경량 런타임 이미지</strong>를 사용하는 것이 원칙입니다.
+- <strong>트러블슈팅 및 모니터링:</strong> 다만, 실운영 중 발생하는 메모리 릭, CPU 스파이크, 스레드 데드락 등을 분석하기 위해 `jcmd`, `jstack` 같은 진단 도구가 필요한 경우가 많습니다. 이에 따라 실무에서는 진단 도구가 포함된 최소 JDK 환경을 구성하거나, APM(Application Performance Monitoring) 에이전트 및 디버그용 사이드카 컨테이너를 함께 운용하는 방식을 채택합니다.
 
 
 <NotionDivider />
 
 <a id="3-성능과-아키텍처-관점의-jvm-선택-가이드"></a>
 
-#### **3) 성능과 아키텍처 관점의 JVM 선택 가이드**
+#### <strong>3) 성능과 아키텍처 관점의 JVM 선택 가이드</strong>
 
-애플리케이션의 응답 속도, 처리량(Throughput), 동시성 처리 및 리소스 효율성을 극대화하려면 **어떤 JVM 구현체와 튜닝 전략을 사용할지** 검토해야 합니다.
+애플리케이션의 응답 속도, 처리량(Throughput), 동시성 처리 및 리소스 효율성을 극대화하려면 <strong>어떤 JVM 구현체와 튜닝 전략을 사용할지</strong> 검토해야 합니다.
 
-- **대규모 엔터프라이즈 / 고처리량 서버:**
-- 장시간 가동되며 안정적인 최적화와 대용량 힙 메모리 제어가 필요한 경우, **HotSpot JVM**(OpenJDK 기반의 Eclipse Temurin, Amazon Corretto 등)에 **G1GC** 또는 **ZGC**를 조합하여 레이턴시를 최소화합니다.
+- <strong>대규모 엔터프라이즈 / 고처리량 서버:</strong>
+- 장시간 가동되며 안정적인 최적화와 대용량 힙 메모리 제어가 필요한 경우, <strong>HotSpot JVM</strong>(OpenJDK 기반의 Eclipse Temurin, Amazon Corretto 등)에 <strong>G1GC</strong> 또는 <strong>ZGC</strong>를 조합하여 레이턴시를 최소화합니다.
 
-- **마이크로서비스(MSA) / 서버리스(Serverless) / 클라우드 네이티브:**
-- 컨테이너의 즉각적인 기동(Sub-second Startup)과 최소한의 메모리 점유가 핵심인 환경에서는 **GraalVM Native Image**를 채택하여 네이티브 머신 코드로 빌드·구동하는 것이 효과적입니다.
+- <strong>마이크로서비스(MSA) / 서버리스(Serverless) / 클라우드 네이티브:</strong>
+- 컨테이너의 즉각적인 기동(Sub-second Startup)과 최소한의 메모리 점유가 핵심인 환경에서는 <strong>GraalVM Native Image</strong>를 채택하여 네이티브 머신 코드로 빌드·구동하는 것이 효과적입니다.
 
 
 <NotionDivider />
 
-**결론적으로**, 개발 단계에서는 풍부한 도구를 제공하는 **JDK**를 기본으로 활용하고, 운영 단계에서는 **보안과 경량화**를 고려한 런타임을 구성하되, 서비스의 부하 특성과 클라우드 아키텍처에 맞춰 **최적의 JVM(HotSpot vs GraalVM 등)**을 선별하는 것이 가장 이상적인 엔지니어링 접근 방식입니다.
+<strong>결론적으로</strong>, 개발 단계에서는 풍부한 도구를 제공하는 <strong>JDK</strong>를 기본으로 활용하고, 운영 단계에서는 <strong>보안과 경량화</strong>를 고려한 런타임을 구성하되, 서비스의 부하 특성과 클라우드 아키텍처에 맞춰 <strong>최적의 JVM(HotSpot vs GraalVM 등)</strong>을 선별하는 것이 가장 이상적인 엔지니어링 접근 방식입니다.
 

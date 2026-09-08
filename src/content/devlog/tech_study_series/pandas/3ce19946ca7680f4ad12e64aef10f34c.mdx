@@ -35,7 +35,7 @@ notionUrl: "https://app.notion.com/p/Python-pandas-11-3ce19946ca7680f4ad12e64aef
 
 ## 핵심 요약
 
-시계열 전처리의 뼈대는 **`DatetimeIndex`로 만들기 → `resample`로 빈도 바꾸기 → `rolling`/`shift`로 파생 만들기** 입니다.
+시계열 전처리의 뼈대는 <strong>`DatetimeIndex`로 만들기 → `resample`로 빈도 바꾸기 → `rolling`/`shift`로 파생 만들기</strong> 입니다.
 
 `resample`은 시간 축 전용 `groupby`이고, `rolling`은 이동 창(window) 집계, `shift`/`diff`/`pct_change`는 "이전 값과의 관계"를 만듭니다.
 
@@ -62,8 +62,8 @@ pd.date_range("2026-01-01", "2026-12-31", freq="D")  # 매일
 pd.period_range("2026-01", periods=12, freq="M")     # Period(구간)
 ```
 
-- **Timestamp**: 특정 시점(`2026-01-01 00:00`).
-- **Period**: 구간(`2026-01` = 1월 한 달). `to_period("M")` / `to_timestamp()`로 오갑니다.
+- <strong>Timestamp</strong>: 특정 시점(`2026-01-01 00:00`).
+- <strong>Period</strong>: 구간(`2026-01` = 1월 한 달). `to_period("M")` / `to_timestamp()`로 오갑니다.
 - 주요 `freq` 별칭: `D`(일), `W`(주), `MS`/`ME`(월초/월말), `QS`/`QE`(분기), `YS`/`YE`(연), `h`, `min`, `s`, `B`(영업일).
 <a id="부분-문자열-인덱싱"></a>
 
@@ -107,9 +107,9 @@ s.resample("h").interpolate()             # 선형 보간
 s.resample("h").asfreq()                  # 빈칸은 NaN 그대로
 ```
 
-- `asfreq`는 집계 없이 **빈도만** 바꿉니다 (누락은 `NaN`).
+- `asfreq`는 집계 없이 <strong>빈도만</strong> 바꿉니다 (누락은 `NaN`).
 - `resample`은 `DatetimeIndex`/`PeriodIndex`가 있어야 합니다. 열 기준이면 `on="ts"`.
-> 💡 **이럴 때**: 초 단위 로그를 "분당 요청 수", "일별 매출"로 요약할 때 다운샘플링. 일별 데이터를 시간별 모델에 맞출 때 업샘플링 + 보간.
+> 💡 <strong>이럴 때</strong>: 초 단위 로그를 "분당 요청 수", "일별 매출"로 요약할 때 다운샘플링. 일별 데이터를 시간별 모델에 맞출 때 업샘플링 + 보간.
 
 
 <NotionDivider />
@@ -130,7 +130,7 @@ df["ma7_grp"] = df.groupby("store")["amount"].rolling(7).mean().reset_index(0, d
 
 - `rolling(7)`은 앞 6개가 `NaN`(창이 안 참). `min_periods=1`로 완화.
 - `ewm`은 오래된 값을 지수적으로 감쇠 — 추세 변화에 더 민감.
-> 💡 **이럴 때**: 노이즈 많은 지표를 매끄럽게(이동평균), 이상 급등 탐지(이동표준편차 대비 편차), 최근 흐름 강조(`ewm`).
+> 💡 <strong>이럴 때</strong>: 노이즈 많은 지표를 매끄럽게(이동평균), 이상 급등 탐지(이동표준편차 대비 편차), 최근 흐름 강조(`ewm`).
 
 
 <NotionDivider />
@@ -149,7 +149,7 @@ df["prev_by_store"] = df.groupby("store")["amount"].shift(1)   # 그룹별 lag
 df["lag7"] = df["amount"].shift(7, freq="D")   # 시간 기준 시프트
 ```
 
-> 💡 **이럴 때**: 전일 대비 증감률, lag 피처(어제·지난주 값), 이벤트 전후 비교. 그룹 시계열은 반드시 `groupby(...).shift()`로 (그룹 경계 넘는 오염 방지).
+> 💡 <strong>이럴 때</strong>: 전일 대비 증감률, lag 피처(어제·지난주 값), 이벤트 전후 비교. 그룹 시계열은 반드시 `groupby(...).shift()`로 (그룹 경계 넘는 오염 방지).
 
 
 <NotionDivider />
@@ -168,5 +168,5 @@ s.tz_localize(None)                     # tz 제거
 - `tz_localize`: 벽시계 시각에 "이건 서울 시각"이라고 라벨링.
 - `tz_convert`: 같은 순간을 다른 지역 시각 표기로.
 - 서로 다른 tz(또는 naive/aware 혼합) 시계열은 연산 전에 하나로 통일합니다.
-> 💡 **이럴 때**: 글로벌 서비스 로그를 분석할 때 전부 UTC로 모아 계산하고, 리포트 단계에서만 지역 시각으로 변환합니다.
+> 💡 <strong>이럴 때</strong>: 글로벌 서비스 로그를 분석할 때 전부 UTC로 모아 계산하고, 리포트 단계에서만 지역 시각으로 변환합니다.
 

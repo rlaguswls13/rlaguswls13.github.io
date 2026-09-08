@@ -32,12 +32,12 @@ notionUrl: "https://app.notion.com/p/Python-seaborn-05-lmplot-jointplot-pairplot
 
 ## 핵심 요약
 
-산점도에 **모델·요약을 겹쳐** 관계를 더 읽는 도구입니다.
+산점도에 <strong>모델·요약을 겹쳐</strong> 관계를 더 읽는 도구입니다.
 
-- **`regplot`(axes) / `lmplot`(figure)**: 산점도 + 회귀선 + 신뢰구간. `order`(다항), `logistic`, `lowess`로 모델 종류를 바꿈.
-- **`residplot`**: 잔차 산점도. 회귀 가정(선형성·등분산) 위반을 눈으로 확인.
-- **`jointplot`**: 가운데 이변량 플롯 + 위·오른쪽에 주변(marginal) 분포. `kind`로 종류 선택.
-- **`pairplot`**: 여러 변수의 산점도 행렬(scatter matrix) + 대각선 분포. `hue`로 그룹, `corner`로 절반만.
+- <strong>`regplot`(axes) / `lmplot`(figure)</strong>: 산점도 + 회귀선 + 신뢰구간. `order`(다항), `logistic`, `lowess`로 모델 종류를 바꿈.
+- <strong>`residplot`</strong>: 잔차 산점도. 회귀 가정(선형성·등분산) 위반을 눈으로 확인.
+- <strong>`jointplot`</strong>: 가운데 이변량 플롯 + 위·오른쪽에 주변(marginal) 분포. `kind`로 종류 선택.
+- <strong>`pairplot`</strong>: 여러 변수의 산점도 행렬(scatter matrix) + 대각선 분포. `hue`로 그룹, `corner`로 절반만.
 `jointplot`/`pairplot`은 각각 `JointGrid`/`PairGrid`라는 전용 격자 객체를 반환하는 figure-level 함수입니다.
 
 
@@ -80,10 +80,10 @@ sns.regplot(data=tips, x="size", y="tip", x_estimator=np.mean)  # x값별 평균
 </NotionTable>
 
 - `lmplot`은 `regplot`을 `FacetGrid`로 감싼 것입니다. `hue`/`col`/`row`가 필요하면 `lmplot`, 서브플롯 합성이 필요하면 `regplot`.
-- 회귀선은 **탐색용 참고선**입니다. 계수·유의성이 필요하면 `statsmodels`/`scikit-learn`으로 별도 적합합니다.
-**그림에서 보이는 것**: `total_bill`–`tip` 산점도에 우상향 직선과 그를 감싼 반투명 신뢰구간 띠가 그려집니다. 띠는 데이터가 적은 양 끝에서 넓어집니다. `order=2`로 바꾸면 직선이 완만한 곡선이 되지만 형태는 크게 다르지 않습니다.
+- 회귀선은 <strong>탐색용 참고선</strong>입니다. 계수·유의성이 필요하면 `statsmodels`/`scikit-learn`으로 별도 적합합니다.
+<strong>그림에서 보이는 것</strong>: `total_bill`–`tip` 산점도에 우상향 직선과 그를 감싼 반투명 신뢰구간 띠가 그려집니다. 띠는 데이터가 적은 양 끝에서 넓어집니다. `order=2`로 바꾸면 직선이 완만한 곡선이 되지만 형태는 크게 다르지 않습니다.
 
-> 💡 **이럴 때**: 관계가 곡선처럼 보이면 `order=2`나 `lowess=True`로 먼저 확인합니다. lowess 곡선이 직선과 크게 다르면 선형 회귀 가정이 약하다는 신호입니다.
+> 💡 <strong>이럴 때</strong>: 관계가 곡선처럼 보이면 `order=2`나 `lowess=True`로 먼저 확인합니다. lowess 곡선이 직선과 크게 다르면 선형 회귀 가정이 약하다는 신호입니다.
 
 
 <NotionDivider />
@@ -97,12 +97,12 @@ sns.regplot(data=tips, x="size", y="tip", x_estimator=np.mean)  # x값별 평균
 sns.residplot(data=tips, x="total_bill", y="tip", lowess=True)
 ```
 
-회귀선을 뺀 **잔차(residual)**를 y축에, x를 그대로 x축에 그립니다.
+회귀선을 뺀 <strong>잔차(residual)</strong>를 y축에, x를 그대로 x축에 그립니다.
 
-- 잔차가 0 주위에 **무작위로** 흩어지면: 선형 모델이 적절.
-- 잔차에 **곡선 패턴**(U자, 역U자)이 보이면: 비선형 항 필요.
-- x가 커질수록 잔차 **퍼짐이 커지면**(깔때기 모양): 등분산 가정 위반(이분산).
-> 💡 **이럴 때**: `regplot`으로 직선을 그었는데 적합이 애매하면 `residplot`을 같이 봅니다. 원래 산점도에서는 안 보이던 곡률·이분산이 잔차 평면에서는 뚜렷하게 드러납니다.
+- 잔차가 0 주위에 <strong>무작위로</strong> 흩어지면: 선형 모델이 적절.
+- 잔차에 <strong>곡선 패턴</strong>(U자, 역U자)이 보이면: 비선형 항 필요.
+- x가 커질수록 잔차 <strong>퍼짐이 커지면</strong>(깔때기 모양): 등분산 가정 위반(이분산).
+> 💡 <strong>이럴 때</strong>: `regplot`으로 직선을 그었는데 적합이 애매하면 `residplot`을 같이 봅니다. 원래 산점도에서는 안 보이던 곡률·이분산이 잔차 평면에서는 뚜렷하게 드러납니다.
 
 
 <NotionDivider />
@@ -137,9 +137,9 @@ sns.jointplot(data=tips, x="total_bill", y="tip", kind="reg")   # 산점도 + �
 
 - 반환값은 `JointGrid`. `g.plot_joint(...)`, `g.plot_marginals(...)`로 세부 조정.
 - 주변 분포 덕에 "각 변수 단독 분포"와 "둘의 결합"을 한 그림에서 봅니다.
-**그림에서 보이는 것**: 가운데 산점도에 세 종이 별개 덩어리로 갈라지고, 위쪽 주변 히스토그램에서 `bill_length_mm`가 이봉, 오른쪽 주변에서 `flipper_length_mm`도 이봉이라 두 변수 모두 종을 가른다는 것이 보입니다.
+<strong>그림에서 보이는 것</strong>: 가운데 산점도에 세 종이 별개 덩어리로 갈라지고, 위쪽 주변 히스토그램에서 `bill_length_mm`가 이봉, 오른쪽 주변에서 `flipper_length_mm`도 이봉이라 두 변수 모두 종을 가른다는 것이 보입니다.
 
-> 💡 **이럴 때**: 점이 수천 개라 산점도가 새까매지면 `kind="hex"`나 `kind="kde"`로 바꿉니다. 밀집 구조가 색 농도/등고선으로 드러납니다.
+> 💡 <strong>이럴 때</strong>: 점이 수천 개라 산점도가 새까매지면 `kind="hex"`나 `kind="kde"`로 바꿉니다. 밀집 구조가 색 농도/등고선으로 드러납니다.
 
 
 <NotionDivider />
@@ -171,9 +171,9 @@ sns.pairplot(penguins, kind="reg")            # 비대각 칸에 회귀선
 
 - 반환값은 `PairGrid`. `g.map_upper` / `g.map_lower` / `g.map_diag`로 칸별 커스텀.
 - 수치 열이 많으면(10개 이상) 행렬이 너무 커집니다. `vars=`로 3~6개만 고릅니다.
-**그림에서 보이는 것**: 4x4 격자의 비대각 칸마다 종별로 색이 갈린 산점도가 나타나며, `bill_length` vs `bill_depth` 칸에서 전체로는 음의 관계로 보이지만 종별로 쪼개 보면 각 종 안에서는 양의 관계인 심슨의 역설 패턴이 드러납니다.
+<strong>그림에서 보이는 것</strong>: 4x4 격자의 비대각 칸마다 종별로 색이 갈린 산점도가 나타나며, `bill_length` vs `bill_depth` 칸에서 전체로는 음의 관계로 보이지만 종별로 쪼개 보면 각 종 안에서는 양의 관계인 심슨의 역설 패턴이 드러납니다.
 
-> 💡 **이럴 때**: 모델링 전 특징(feature) 간 상관·분리도를 빠르게 훑을 때 `pairplot(hue="타깃")`이 가장 빠릅니다. 상관이 강한 변수쌍은 6장의 `heatmap`으로 수치까지 확인합니다.
+> 💡 <strong>이럴 때</strong>: 모델링 전 특징(feature) 간 상관·분리도를 빠르게 훑을 때 `pairplot(hue="타깃")`이 가장 빠릅니다. 상관이 강한 변수쌍은 6장의 `heatmap`으로 수치까지 확인합니다.
 
 
 <NotionDivider />

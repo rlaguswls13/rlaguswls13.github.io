@@ -68,9 +68,9 @@ public class OrderService {
 }
 ```
 
-- **강한 결합도:** 기획 변경으로 `GeneralLogger` 클래스를 삭제하거나 인터페이스를 변경하면, 이를 호출하던 수십 개의 비즈니스 서비스 코드에서 즉각 **컴파일 에러**가 발생 위험성이 있습니다.
-- **응답 지연(Blocking):** 메인 스레드가 메인 비지니스 로직을 끝날때까지 기다립니다.
-- **트랜잭션 꼬임:** 로그기록은 성공했는데 메인 비즈니스 로직(DB 저장)이 롤백될 경우, 데이터 정합성이 깨집니다.
+- <strong>강한 결합도:</strong> 기획 변경으로 `GeneralLogger` 클래스를 삭제하거나 인터페이스를 변경하면, 이를 호출하던 수십 개의 비즈니스 서비스 코드에서 즉각 <strong>컴파일 에러</strong>가 발생 위험성이 있습니다.
+- <strong>응답 지연(Blocking):</strong> 메인 스레드가 메인 비지니스 로직을 끝날때까지 기다립니다.
+- <strong>트랜잭션 꼬임:</strong> 로그기록은 성공했는데 메인 비즈니스 로직(DB 저장)이 롤백될 경우, 데이터 정합성이 깨집니다.
 
 <NotionDivider />
 
@@ -208,11 +208,11 @@ public class GeneralLoggingSubscriber {
 
 순수 자바 환경에서는 Guava EventBus가 훌륭한 대안이지만, Spring 생태계 내부에서는 다음과 같은 이유로 내장 이벤트를 사용하는 것이 압도적으로 유리합니다.
 
-- **트랜잭션 인지 (`@TransactionalEventListener`)**
+- <strong>트랜잭션 인지 (`@TransactionalEventListener`)</strong>
 Guava는 DB 트랜잭션 개념이 없어 메인 로직이 롤백되어도 이벤트를 처리해버립니다. Spring은 커밋/롤백 상태에 맞춰 이벤트를 제어할 수 있습니다.
-- **자동 의존성 주입 (Zero Configuration)**
+- <strong>자동 의존성 주입 (Zero Configuration)</strong>
 Guava는 `eventBus.register()`를 통해 구독자를 수동으로 묶어줘야 하지만, Spring은 `@Component`와 `@EventListener`만 선언하면 프레임워크가 자동으로 연결해 줍니다.
-- **유지보수성**
+- <strong>유지보수성</strong>
 Guava 팀은 현재 EventBus에 대한 신규 기능 추가를 중단하고 다른 리액티브 도구 사용을 권장하고 있습니다. ()
 
 <NotionDivider />

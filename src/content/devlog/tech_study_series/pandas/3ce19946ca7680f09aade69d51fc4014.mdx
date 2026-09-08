@@ -35,7 +35,7 @@ notionUrl: "https://app.notion.com/p/Python-pandas-02-IO-3ce19946ca7680f09aade69
 
 pandas 전처리는 대부분 `read_csv`로 시작해 `to_parquet`/`to_csv`로 끝납니다.
 
-`read_csv`는 옵션이 수십 개지만, 실무에서 반복적으로 쓰는 것은 **`dtype`, `parse_dates`, `na_values`, `usecols`, `nrows`/`chunksize`, `encoding`** 정도입니다.
+`read_csv`는 옵션이 수십 개지만, 실무에서 반복적으로 쓰는 것은 <strong>`dtype`, `parse_dates`, `na_values`, `usecols`, `nrows`/`chunksize`, `encoding`</strong> 정도입니다.
 
 "읽을 때 형을 제대로 지정"하는 것이 이후 모든 정제 비용을 줄입니다.
 
@@ -81,14 +81,14 @@ df = pd.read_csv(
   </tbody>
 </NotionTable>
 
-> 💡 **이럴 때**: 파일이 크면 먼저 `nrows=1000`으로 읽어 `dtypes`·`isna()`를 확인하고, 확정한 `dtype`·`usecols`를 전체 로드에 적용합니다.
+> 💡 <strong>이럴 때</strong>: 파일이 크면 먼저 `nrows=1000`으로 읽어 `dtypes`·`isna()`를 확인하고, 확정한 `dtype`·`usecols`를 전체 로드에 적용합니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 한글 CSV가 깨지면 `encoding="cp949"`(엑셀 저장본) 또는 `encoding="utf-8-sig"`(BOM 포함)를 시도합니다.
+💡 <strong>이럴 때</strong>: 한글 CSV가 깨지면 `encoding="cp949"`(엑셀 저장본) 또는 `encoding="utf-8-sig"`(BOM 포함)를 시도합니다.
 
-💡 **이럴 때**: 숫자가 `object`로 읽히면 `thousands=","`, 통화기호·공백, `na_values` 누락을 의심합니다. `pd.to_numeric(s, errors="coerce")`로 사후 변환도 가능합니다.
+💡 <strong>이럴 때</strong>: 숫자가 `object`로 읽히면 `thousands=","`, 통화기호·공백, `na_values` 누락을 의심합니다. `pd.to_numeric(s, errors="coerce")`로 사후 변환도 가능합니다.
 
 
 </NotionIndent>
@@ -121,7 +121,7 @@ pd.read_html("https://example.com/table")       # 페이지 내 <table> 리스�
   </tbody>
 </NotionTable>
 
-> 💡 **이럴 때**: 중간 산출물을 저장할 때는 CSV 대신 **Parquet**을 씁니다. dtype(범주·날짜·nullable)이 그대로 보존되어 다시 읽을 때 정제가 필요 없습니다.
+> 💡 <strong>이럴 때</strong>: 중간 산출물을 저장할 때는 CSV 대신 <strong>Parquet</strong>을 씁니다. dtype(범주·날짜·nullable)이 그대로 보존되어 다시 읽을 때 정제가 필요 없습니다.
 
 
 ```python
@@ -180,5 +180,5 @@ df = pd.read_csv(
 
 - `category`·`float32`·`Int32` 지정으로 메모리를 절반 이하로.
 - `engine="pyarrow"`는 CSV 파싱을 병렬화합니다 (`pyarrow` 설치 필요).
-> 💡 **이럴 때**: 메모리 부족(`MemoryError`)이 나면 ① `usecols`로 열 축소 → ② `dtype`으로 형 축소(`category`, `float32`) → ③ `chunksize` 분할 → ④ Parquet 전환 순으로 시도합니다.
+> 💡 <strong>이럴 때</strong>: 메모리 부족(`MemoryError`)이 나면 ① `usecols`로 열 축소 → ② `dtype`으로 형 축소(`category`, `float32`) → ③ `chunksize` 분할 → ④ Parquet 전환 순으로 시도합니다.
 

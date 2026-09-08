@@ -35,7 +35,7 @@ notionUrl: "https://app.notion.com/p/Python-NumPy-10-3ce19946ca7680e78c9acb8da7f
 ## 핵심 요약
 
 전처리·머신러닝에 필요한 만큼의 선형대수만 다룹니다.
-핵심은 **`@`(행렬곱)와 `*`(원소별 곱)의 구분**, 그리고 `np.linalg`의 `inv`/`norm`/`eig`/`svd`입니다.
+핵심은 <strong>`@`(행렬곱)와 `*`(원소별 곱)의 구분</strong>, 그리고 `np.linalg`의 `inv`/`norm`/`eig`/`svd`입니다.
 
 PCA·차원축소·정규방정식이 전부 이 함수들 위에 있습니다.
 
@@ -67,10 +67,10 @@ A @ B      # 행렬곱
 #  [43 50]]
 ```
 
-- `*`는 **원소별**입니다. shape가 같거나 브로드캐스팅 가능해야 합니다.
-- `@`는 **행렬곱**입니다. `(m, k) @ (k, n) → (m, n)`. 안쪽 차원 `k`가 일치해야 합니다.
+- `*`는 <strong>원소별</strong>입니다. shape가 같거나 브로드캐스팅 가능해야 합니다.
+- `@`는 <strong>행렬곱</strong>입니다. `(m, k) @ (k, n) → (m, n)`. 안쪽 차원 `k`가 일치해야 합니다.
 - `np.dot(A, B)`는 `A @ B`와 (2차원에서) 동일합니다. `np.matmul`도 마찬가지입니다.
-> **조용한 버그 1순위**: 행렬곱을 하려다 `*`를 써도 shape가 우연히 맞으면 에러 없이 틀린 값이 나옵니다.
+> <strong>조용한 버그 1순위</strong>: 행렬곱을 하려다 `*`를 써도 shape가 우연히 맞으면 에러 없이 틀린 값이 나옵니다.
 
 
 <NotionDivider />
@@ -91,7 +91,7 @@ v @ A          # array([4., 6.])   - (2,) @ (2,2) → (2,)  (왼쪽 곱)
 A.T @ A        # (2,2) - "그람 행렬", 공분산·정규방정식에서 등장
 ```
 
-> 💡 **이럴 때**: 공분산 행렬이나 선형회귀 정규방정식의 그람 행렬이 필요할 때.
+> 💡 <strong>이럴 때</strong>: 공분산 행렬이나 선형회귀 정규방정식의 그람 행렬이 필요할 때.
 
 
 <NotionDivider />
@@ -117,12 +117,12 @@ b = np.array([1., 2.])
 x = np.linalg.solve(A, b)   # inv(A) @ b 보다 빠르고 수치적으로 안정
 ```
 
-> **`solve` vs `inv`**: `x = inv(A) @ b`보다 `x = np.linalg.solve(A, b)`가 더 정확하고 빠릅니다. 역행렬을 명시적으로 구할 이유는 거의 없습니다.
+> <strong>`solve` vs `inv`</strong>: `x = inv(A) @ b`보다 `x = np.linalg.solve(A, b)`가 더 정확하고 빠릅니다. 역행렬을 명시적으로 구할 이유는 거의 없습니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 선형회귀 정규방정식 등 `Ax = b`를 풀 때 `inv` 대신 `solve`를 씁니다.
+💡 <strong>이럴 때</strong>: 선형회귀 정규방정식 등 `Ax = b`를 풀 때 `inv` 대신 `solve`를 씁니다.
 
 
 </NotionIndent>
@@ -151,7 +151,7 @@ eigvals, eigvecs = np.linalg.eig(A)
 eigvals, eigvecs = np.linalg.eigh(A)
 ```
 
-> 💡 **이럴 때**: 공분산처럼 대칭행렬의 고윳값이 필요할 때는 `eig`가 아니라 `eigh`를 씁니다.
+> 💡 <strong>이럴 때</strong>: 공분산처럼 대칭행렬의 고윳값이 필요할 때는 `eig`가 아니라 `eigh`를 씁니다.
 
 <a id="특이값-분해-svd-pca의-실제-구현"></a>
 
@@ -180,7 +180,7 @@ X_reduced = Xc @ Vt[:k].T        # (4, k)로 투영
 
 <NotionIndent>
 
-💡 **이럴 때**: 차원축소(PCA)를 직접 구현하거나 노이즈 성분을 잘라낼 때. 중심화 후 SVD가 표준 절차입니다.
+💡 <strong>이럴 때</strong>: 차원축소(PCA)를 직접 구현하거나 노이즈 성분을 잘라낼 때. 중심화 후 SVD가 표준 절차입니다.
 
 
 </NotionIndent>

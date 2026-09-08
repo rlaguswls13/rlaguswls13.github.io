@@ -39,10 +39,10 @@ notionUrl: "https://app.notion.com/p/Python-pandas-09-pivot-melt-stack-3ce19946c
 
 ## 핵심 요약
 
-같은 데이터도 **wide(넓은) 포맷**과 **long(긴/tidy) 포맷**으로 표현할 수 있습니다.
+같은 데이터도 <strong>wide(넓은) 포맷</strong>과 <strong>long(긴/tidy) 포맷</strong>으로 표현할 수 있습니다.
 
-- **long → wide**: `pivot`, `pivot_table` (집계 포함), `unstack`
-- **wide → long**: `melt`, `stack`
+- <strong>long → wide</strong>: `pivot`, `pivot_table` (집계 포함), `unstack`
+- <strong>wide → long</strong>: `melt`, `stack`
 분석·집계에는 long, 사람이 보는 표·시각화 입력에는 wide가 유리합니다. 두 방향을 자유롭게 오가는 것이 목표입니다.
 
 ```python
@@ -66,8 +66,8 @@ Busan  01     80
 Busan  02     90
 ```
 
-- **long**: "관측 1개 = 행 1개". `groupby`·`merge`·플로팅 라이브러리(seaborn)에 적합.
-- **wide**: "엔티티 1개 = 행 1개, 변수 = 열". 사람이 읽는 리포트·엑셀·히트맵에 적합.
+- <strong>long</strong>: "관측 1개 = 행 1개". `groupby`·`merge`·플로팅 라이브러리(seaborn)에 적합.
+- <strong>wide</strong>: "엔티티 1개 = 행 1개, 변수 = 열". 사람이 읽는 리포트·엑셀·히트맵에 적합.
 
 <NotionDivider />
 
@@ -104,7 +104,7 @@ df.pivot_table(
 df.pivot_table(index="city", values=["amount", "qty"], aggfunc={"amount": "sum", "qty": "mean"})
 ```
 
-> 💡 **이럴 때**: "도시 × 등급별 매출 합계표"처럼 교차 요약이 필요할 때. 엑셀 피벗테이블과 같은 사고방식입니다.
+> 💡 <strong>이럴 때</strong>: "도시 × 등급별 매출 합계표"처럼 교차 요약이 필요할 때. 엑셀 피벗테이블과 같은 사고방식입니다.
 
 <a id="unstack-multiindex-레벨을-열로"></a>
 
@@ -147,7 +147,7 @@ wide.melt(
 wide.set_index("city").stack().rename("sales").reset_index()
 ```
 
-> 💡 **이럴 때**: 엑셀에서 받은 "연도별 열이 옆으로 퍼진" 표를 분석·시각화하려면 `melt`로 long 포맷으로 되돌립니다.
+> 💡 <strong>이럴 때</strong>: 엑셀에서 받은 "연도별 열이 옆으로 퍼진" 표를 분석·시각화하려면 `melt`로 long 포맷으로 되돌립니다.
 
 
 <NotionDivider />
@@ -167,7 +167,7 @@ df.explode("items")
 # 2     d
 ```
 
-> 💡 **이럴 때**: 한 셀에 콤마로 묶인 태그/상품 목록이 들어 있을 때. `.str.split(",")` 후 `explode`로 정규화합니다.
+> 💡 <strong>이럴 때</strong>: 한 셀에 콤마로 묶인 태그/상품 목록이 들어 있을 때. `.str.split(",")` 후 `explode`로 정규화합니다.
 
 
 <NotionDivider />
@@ -217,5 +217,5 @@ p.reset_index()                  # 평평한 열로
 p.columns = ["_".join(map(str, c)) for c in p.columns]   # MultiIndex 열 평탄화
 ```
 
-> 💡 **이럴 때**: pivot 결과를 CSV로 내보내거나 merge 하려면 MultiIndex를 `reset_index()`·열 평탄화로 단순화합니다.
+> 💡 <strong>이럴 때</strong>: pivot 결과를 CSV로 내보내거나 merge 하려면 MultiIndex를 `reset_index()`·열 평탄화로 단순화합니다.
 

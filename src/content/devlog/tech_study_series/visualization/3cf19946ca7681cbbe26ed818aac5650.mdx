@@ -32,9 +32,9 @@ notionUrl: "https://app.notion.com/p/Python-matplotlib-05-3cf19946ca7681cbbe26ed
 
 ## 핵심 요약
 
-그림의 일관된 외형은 세 계층으로 관리합니다. **스타일시트(`plt.style.use(...)`)**로 전체 톤을 한 번에 바꾸고, **`rcParams`**로 개별 기본값(폰트 크기, 선 굵기 등)을 조정하며, 각 플롯 호출에서 **색을 직접 지정**합니다.
-색을 값에 매핑할 때는 **컬러맵(colormap)**을 쓰며, 데이터 성격에 따라 **순차형(`viridis`)·발산형(`coolwarm`)·범주형(`tab10`)**을 구분해 골라야 합니다.
-연속값→색 변환은 **`Normalize`**가 담당하고, 그 대응표를 **`colorbar`**로 보여줍니다.
+그림의 일관된 외형은 세 계층으로 관리합니다. <strong>스타일시트(`plt.style.use(...)`)</strong>로 전체 톤을 한 번에 바꾸고, <strong>`rcParams`</strong>로 개별 기본값(폰트 크기, 선 굵기 등)을 조정하며, 각 플롯 호출에서 <strong>색을 직접 지정</strong>합니다.
+색을 값에 매핑할 때는 <strong>컬러맵(colormap)</strong>을 쓰며, 데이터 성격에 따라 <strong>순차형(`viridis`)·발산형(`coolwarm`)·범주형(`tab10`)</strong>을 구분해 골라야 합니다.
+연속값→색 변환은 <strong>`Normalize`</strong>가 담당하고, 그 대응표를 <strong>`colorbar`</strong>로 보여줍니다.
 
 
 ```python
@@ -65,7 +65,7 @@ with plt.style.context("dark_background"):   # 이 블록에서만 적용
 - 스타일시트는 배경색·격자·색 순환(cycle)·폰트 등을 묶어 놓은 설정 세트입니다.
 - 여러 개를 리스트로 겹쳐 적용할 수 있습니다: `plt.style.use(["seaborn-v0_8", {"figure.dpi": 120}])`.
 - 최신 matplotlib에서 seaborn 스타일 이름은 `seaborn-v0_8-*` 형태입니다(구버전 `seaborn-*`은 제거됨).
-> 💡 **이럴 때**: 발표용·논문용·다크모드용 설정을 각각 `.mplstyle` 파일로 저장해 두고 `plt.style.use("mystyle.mplstyle")`로 전환하면 그림마다 손볼 필요가 없습니다.
+> 💡 <strong>이럴 때</strong>: 발표용·논문용·다크모드용 설정을 각각 `.mplstyle` 파일로 저장해 두고 `plt.style.use("mystyle.mplstyle")`로 전환하면 그림마다 손볼 필요가 없습니다.
 
 
 <NotionDivider />
@@ -123,15 +123,15 @@ ax.plot(x, y2, color="C1", alpha=0.6)
 
 ## 4. 컬러맵 -값을 색으로
 
-컬러맵은 **스칼라 값 → 색**의 함수입니다. 데이터 성격에 맞춰 골라야 오해가 없습니다.
+컬러맵은 <strong>스칼라 값 → 색</strong>의 함수입니다. 데이터 성격에 맞춰 골라야 오해가 없습니다.
 
 
 <NotionTable>
   <tbody>
     <tr><td>유형</td><td>대표 컬러맵</td><td>언제</td><td>특징</td></tr>
-    <tr><td>순차형(sequential)</td><td>`viridis`, `magma`, `Blues`</td><td>0→최대처럼 **한 방향 크기**</td><td>명도가 단조 증가, 색맹·흑백 안전(`viridis` 계열)</td></tr>
-    <tr><td>발산형(diverging)</td><td>`coolwarm`, `RdBu`, `PiYG`</td><td>**기준값(0) 중심**의 +/- (상관계수, 편차)</td><td>가운데가 중립색, 양끝이 대비색</td></tr>
-    <tr><td>범주형(qualitative)</td><td>`tab10`, `tab20`, `Set2`</td><td>**순서 없는 분류** (그룹 이름)</td><td>서로 구분되는 색, 개수 제한적</td></tr>
+    <tr><td>순차형(sequential)</td><td>`viridis`, `magma`, `Blues`</td><td>0→최대처럼 <strong>한 방향 크기</strong></td><td>명도가 단조 증가, 색맹·흑백 안전(`viridis` 계열)</td></tr>
+    <tr><td>발산형(diverging)</td><td>`coolwarm`, `RdBu`, `PiYG`</td><td><strong>기준값(0) 중심</strong>의 +/- (상관계수, 편차)</td><td>가운데가 중립색, 양끝이 대비색</td></tr>
+    <tr><td>범주형(qualitative)</td><td>`tab10`, `tab20`, `Set2`</td><td><strong>순서 없는 분류</strong> (그룹 이름)</td><td>서로 구분되는 색, 개수 제한적</td></tr>
   </tbody>
 </NotionTable>
 
@@ -151,9 +151,9 @@ for i, (name, g) in enumerate(groups.items()):
     ax.plot(g["x"], g["y"], color=cmap(i), label=name)
 ```
 
-> 💡 **이럴 때**: 무지개(`jet`) 컬러맵은 명도가 들쭉날쭉해 실제 없는 경계를 만들고 흑백 인쇄·색맹에서 무너집니다. 크기 데이터는 `viridis` 계열을 기본으로 씁니다.
+> 💡 <strong>이럴 때</strong>: 무지개(`jet`) 컬러맵은 명도가 들쭉날쭉해 실제 없는 경계를 만들고 흑백 인쇄·색맹에서 무너집니다. 크기 데이터는 `viridis` 계열을 기본으로 씁니다.
 
-💡 **이럴 때**: 상관계수·증감률처럼 0을 기준으로 부호가 갈리는 값은 발산형(`coolwarm`)에 `vmin=-max, vmax=+max`로 중심을 0에 맞춥니다. 안 그러면 0이 중립색에 오지 않아 왜곡됩니다.
+💡 <strong>이럴 때</strong>: 상관계수·증감률처럼 0을 기준으로 부호가 갈리는 값은 발산형(`coolwarm`)에 `vmin=-max, vmax=+max`로 중심을 0에 맞춥니다. 안 그러면 0이 중립색에 오지 않아 왜곡됩니다.
 
 
 <NotionDivider />
@@ -162,7 +162,7 @@ for i, (name, g) in enumerate(groups.items()):
 
 ## 5. `Normalize`와 `colorbar`
 
-연속값을 컬러맵에 넘기기 전, **어떤 값 범위를 [0, 1]로 볼지** 정하는 것이 `Normalize`입니다.
+연속값을 컬러맵에 넘기기 전, <strong>어떤 값 범위를 [0, 1]로 볼지</strong> 정하는 것이 `Normalize`입니다.
 
 
 ```python
@@ -180,7 +180,7 @@ cbar.set_ticks([0, 25, 50, 75, 100])
 - `vmin`/`vmax`를 고정하면 여러 그림의 색 기준이 통일되어 비교가 가능합니다(고정 안 하면 그림마다 자동 범위가 달라짐).
 - `colorbar`는 `scatter`/`imshow`가 반환한 매핑 객체(`ScalarMappable`)를 받아 색↔값 눈금자를 그립니다.
 - 여러 subplot이 색 기준을 공유하면 `fig.colorbar(sc, ax=axes.ravel().tolist())`로 하나만 그립니다.
-> 💡 **이럴 때**: 시점별로 여러 히트맵을 나열해 변화를 보여줄 때는 모든 그림에 같은 `vmin`/`vmax`를 줘야 색이 같은 값을 뜻합니다.
+> 💡 <strong>이럴 때</strong>: 시점별로 여러 히트맵을 나열해 변화를 보여줄 때는 모든 그림에 같은 `vmin`/`vmax`를 줘야 색이 같은 값을 뜻합니다.
 
 
 <NotionDivider />

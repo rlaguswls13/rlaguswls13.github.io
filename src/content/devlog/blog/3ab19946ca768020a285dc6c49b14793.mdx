@@ -50,13 +50,13 @@ git 브랜치가 갈라졌습니다(diverged). 로컬과 원격, 통합 브랜�
 
 ## 만들었던 구조 (기억나는 대로)
 
-역할을 **발송 / 컨텍스트 / 설정** 세 개로 나눴습니다. 스택은 Java 21, Spring Boot WebFlux(논블로킹), Spring Batch, 그리고 `ThreadPoolExecutor`를 여기저기 썼습니다.
+역할을 <strong>발송 / 컨텍스트 / 설정</strong> 세 개로 나눴습니다. 스택은 Java 21, Spring Boot WebFlux(논블로킹), Spring Batch, 그리고 `ThreadPoolExecutor`를 여기저기 썼습니다.
 
-**발송 모듈**은 DB를 아예 안 타는 순수 발송 계층으로 잡았습니다. 전송할 데이터를 TCP로 바로 받거나 MQ를 거쳐서 받고, Push면 FCM·APNs로, Email이면 SMTPS(587·465)나 표준 25 포트로 메일 서버에 던졌습니다. 메일은 Gmail과 Naver 기준으로 테스트했습니다.
+<strong>발송 모듈</strong>은 DB를 아예 안 타는 순수 발송 계층으로 잡았습니다. 전송할 데이터를 TCP로 바로 받거나 MQ를 거쳐서 받고, Push면 FCM·APNs로, Email이면 SMTPS(587·465)나 표준 25 포트로 메일 서버에 던졌습니다. 메일은 Gmail과 Naver 기준으로 테스트했습니다.
 
-**컨텍스트 모듈**은 보낼 메시지의 형태(템플릿)를 만드는 쪽입니다. Push는 Pushwoosh 템플릿 종류를 참고해서 알림형·캐러셀·버튼형 같은 걸 세분화해 봤고, 도움을 받아 실제 안드로이드 단말에서 받아 보는 것까지 확인했습니다. Email은 RFC 5321을 AI에게 학습시키고 그동안 다뤄 봤던 걸 살려서 SSL, DKIM, DMARC, canonicalization 같은 걸 붙였습니다.
+<strong>컨텍스트 모듈</strong>은 보낼 메시지의 형태(템플릿)를 만드는 쪽입니다. Push는 Pushwoosh 템플릿 종류를 참고해서 알림형·캐러셀·버튼형 같은 걸 세분화해 봤고, 도움을 받아 실제 안드로이드 단말에서 받아 보는 것까지 확인했습니다. Email은 RFC 5321을 AI에게 학습시키고 그동안 다뤄 봤던 걸 살려서 SSL, DKIM, DMARC, canonicalization 같은 걸 붙였습니다.
 
-**설정 모듈**은 각 모듈이 설정 파일에 박아 두던 값을 실행 중에도 바꿀 수 있게 하고 싶어서, Spring Cloud Config 서버를 세워 봤습니다. JVM이 뜰 때 고정되던 걸 동적 설정 서버로 뺀 셈입니다.
+<strong>설정 모듈</strong>은 각 모듈이 설정 파일에 박아 두던 값을 실행 중에도 바꿀 수 있게 하고 싶어서, Spring Cloud Config 서버를 세워 봤습니다. JVM이 뜰 때 고정되던 걸 동적 설정 서버로 뺀 셈입니다.
 
 이 셋을 각각 docker-compose로 컨테이너를 띄워서 테스트했을 때 실제로 발송 성공까지 확인했는데 — 스크린샷이든 로그든 증빙을 안 남겨 둔 게 지금 제일 아쉽습니다. 다음에 다시 돌릴 땐 성공 로그와 수신 화면을 꼭 저장해 둬야겠습니다.
 

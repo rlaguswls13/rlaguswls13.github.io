@@ -32,9 +32,9 @@ notionUrl: "https://app.notion.com/p/Python-matplotlib-08-pandas-seaborn-3cf1994
 
 ## 핵심 요약
 
-pandas의 `df.plot(...)`과 seaborn의 대부분 함수는 **내부적으로 matplotlib Axes에 그립니다**. 즉 1~7장에서 배운 `ax` 조작이 그대로 통합니다.
-`df.plot(ax=ax)`는 **그린 Axes를 반환**하므로 이후 `ax.set_title(...)` 등으로 다듬을 수 있습니다.
-seaborn 함수는 **axes-level**(`histplot`, `scatterplot` -`ax=` 인자를 받아 한 Axes에 그림)과 **figure-level**(`displot`, `relplot` -자체적으로 Figure와 격자를 생성)로 갈리며, 이 구분이 커스터마이징 방법을 결정합니다.
+pandas의 `df.plot(...)`과 seaborn의 대부분 함수는 <strong>내부적으로 matplotlib Axes에 그립니다</strong>. 즉 1~7장에서 배운 `ax` 조작이 그대로 통합니다.
+`df.plot(ax=ax)`는 <strong>그린 Axes를 반환</strong>하므로 이후 `ax.set_title(...)` 등으로 다듬을 수 있습니다.
+seaborn 함수는 <strong>axes-level</strong>(`histplot`, `scatterplot` -`ax=` 인자를 받아 한 Axes에 그림)과 <strong>figure-level</strong>(`displot`, `relplot` -자체적으로 Figure와 격자를 생성)로 갈리며, 이 구분이 커스터마이징 방법을 결정합니다.
 
 
 ```python
@@ -65,9 +65,9 @@ ax.set_ylabel("KRW (백만)")
 ax.set_title("월별 매출과 비용")
 ```
 
-- `df.plot(ax=ax)`에 **`ax`를 넘기면** 그 Axes에 그립니다. 넘기지 않으면 새 Figure/Axes를 만들고 그 Axes를 반환합니다.
+- `df.plot(ax=ax)`에 <strong>`ax`를 넘기면</strong> 그 Axes에 그립니다. 넘기지 않으면 새 Figure/Axes를 만들고 그 Axes를 반환합니다.
 - `kind=` 인자로 종류를 바꿉니다: `"line"`(기본), `"bar"`, `"barh"`, `"hist"`, `"box"`, `"scatter"`, `"area"`, `"kde"`.
-- `df.plot(subplots=True, layout=(2, 2))`는 열마다 별도 Axes를 자동 생성하고 **Axes 배열을 반환**합니다.
+- `df.plot(subplots=True, layout=(2, 2))`는 열마다 별도 Axes를 자동 생성하고 <strong>Axes 배열을 반환</strong>합니다.
 
 ```python
 axes = df.plot(subplots=True, layout=(1, 2), figsize=(10, 4))
@@ -75,7 +75,7 @@ axes[0, 0].set_title("sales")
 ```
 
 - pandas가 만든 Axes도 결국 matplotlib Axes이므로, 4~7장의 `set_xscale`, `legend`, `annotate`, `savefig`가 모두 적용됩니다.
-> 💡 **이럴 때**: 탐색 단계에서는 `df.plot()`으로 빠르게 확인하고, 발표용으로 다듬을 때 `fig, ax = plt.subplots()` → `df.plot(ax=ax)` → `ax.` 메서드로 제목·축·주석을 정리합니다. → Python - pandas 13. 다음 단계 연결
+> 💡 <strong>이럴 때</strong>: 탐색 단계에서는 `df.plot()`으로 빠르게 확인하고, 발표용으로 다듬을 때 `fig, ax = plt.subplots()` → `df.plot(ax=ax)` → `ax.` 메서드로 제목·축·주석을 정리합니다. → Python - pandas 13. 다음 단계 연결
 
 
 <NotionDivider />
@@ -84,7 +84,7 @@ axes[0, 0].set_title("sales")
 
 ## 2. seaborn은 matplotlib 위에 있다
 
-seaborn은 "통계 그래프를 적은 코드로" 그리는 고수준 라이브러리이며, **렌더링은 matplotlib이 합니다**. 따라서:
+seaborn은 "통계 그래프를 적은 코드로" 그리는 고수준 라이브러리이며, <strong>렌더링은 matplotlib이 합니다</strong>. 따라서:
 
 - seaborn 그림도 `fig.savefig(...)`로 저장합니다.
 - 색·폰트는 `sns.set_theme(...)`가 matplotlib `rcParams`를 조정하는 방식입니다.
@@ -102,7 +102,7 @@ sns.set_theme(style="whitegrid")
 
 ## 3. axes-level 함수 -`ax=` 인자
 
-`histplot`, `kdeplot`, `scatterplot`, `lineplot`, `boxplot`, `barplot`, `countplot` 등은 **하나의 Axes에 그리며 `ax=`를 받습니다**.
+`histplot`, `kdeplot`, `scatterplot`, `lineplot`, `boxplot`, `barplot`, `countplot` 등은 <strong>하나의 Axes에 그리며 `ax=`를 받습니다</strong>.
 
 
 ```python
@@ -118,7 +118,7 @@ axes[1].axline((0, 0), slope=0.15, color="gray", linestyle="--")   # matplotlib 
 
 - 내가 만든 `subplots` 격자에 원하는 위치를 골라 그릴 수 있습니다(3장과 그대로 결합).
 - 반환값은 그린 `Axes`입니다.
-> 💡 **이럴 때**: 여러 seaborn 그래프를 한 Figure에 배치하려면 axes-level 함수 + 직접 만든 `plt.subplots` 격자를 씁니다. figure-level 함수는 이 조합이 불가능합니다.
+> 💡 <strong>이럴 때</strong>: 여러 seaborn 그래프를 한 Figure에 배치하려면 axes-level 함수 + 직접 만든 `plt.subplots` 격자를 씁니다. figure-level 함수는 이 조합이 불가능합니다.
 
 
 <NotionDivider />
@@ -127,7 +127,7 @@ axes[1].axline((0, 0), slope=0.15, color="gray", linestyle="--")   # matplotlib 
 
 ## 4. figure-level 함수 -자체 Figure 생성
 
-`displot`, `relplot`, `catplot`, `lmplot`, `jointplot`, `pairplot`은 **스스로 Figure를 만들고, 필요하면 격자(FacetGrid)를 구성**합니다. `ax=` 인자를 **받지 않습니다**.
+`displot`, `relplot`, `catplot`, `lmplot`, `jointplot`, `pairplot`은 <strong>스스로 Figure를 만들고, 필요하면 격자(FacetGrid)를 구성</strong>합니다. `ax=` 인자를 <strong>받지 않습니다</strong>.
 
 
 ```python
@@ -153,9 +153,9 @@ g.savefig("dist.png", dpi=150)
   </tbody>
 </NotionTable>
 
-> 💡 **이럴 때**: 같은 그래프의 axes-level과 figure-level이 헷갈리면 이름으로 구분합니다. `-plot`으로 끝나면(예: `histplot`, `boxplot`) axes-level, `displot`/`relplot`/`catplot`은 figure-level입니다.
+> 💡 <strong>이럴 때</strong>: 같은 그래프의 axes-level과 figure-level이 헷갈리면 이름으로 구분합니다. `-plot`으로 끝나면(예: `histplot`, `boxplot`) axes-level, `displot`/`relplot`/`catplot`은 figure-level입니다.
 
-💡 **이럴 때**: figure-level 함수로 그린 뒤 특정 칸만 손보려면 `g.axes.flat`을 순회하거나 `g.axes_dict`(facet 이름 → Axes)를 씁니다.
+💡 <strong>이럴 때</strong>: figure-level 함수로 그린 뒤 특정 칸만 손보려면 `g.axes.flat`을 순회하거나 `g.axes_dict`(facet 이름 → Axes)를 씁니다.
 
 
 <NotionDivider />

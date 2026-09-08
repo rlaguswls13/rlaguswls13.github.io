@@ -39,7 +39,7 @@ notionUrl: "https://app.notion.com/p/Python-NumPy-09-3ce19946ca76807faa9def831b4
 
 앞 챕터들(브로드캐스팅, 집계, 인덱싱)을 조합해 실제 전처리 작업을 수행하는 관용구 모음입니다.
 
-**정규화/표준화**, **원-핫 인코딩**, **구간화(binning)**, **중복 제거**, **정렬**, **그룹 집계**를 다룹니다. scikit-learn이 내부적으로 하는 일이기도 합니다.
+<strong>정규화/표준화</strong>, <strong>원-핫 인코딩</strong>, <strong>구간화(binning)</strong>, <strong>중복 제거</strong>, <strong>정렬</strong>, <strong>그룹 집계</strong>를 다룹니다. scikit-learn이 내부적으로 하는 일이기도 합니다.
 
 
 ```python
@@ -53,7 +53,7 @@ import numpy as np
 
 ## 1. 정규화 / 표준화
 
-데이터가 `(샘플 수, 특징 수)` 형태이므로 **열별(`axis=0`) 통계**를 씁니다.
+데이터가 `(샘플 수, 특징 수)` 형태이므로 <strong>열별(`axis=0`) 통계</strong>를 씁니다.
 
 <a id="min-max-스케일링-0-1"></a>
 
@@ -70,7 +70,7 @@ denom[denom == 0] = 1               # 상수 열(3번째)은 0 나눗셈 → nan
 x_norm = (x - x.min(axis=0)) / denom
 ```
 
-> 💡 **이럴 때**: 이미지 픽셀을 `[0, 1]`로, 또는 상·하한이 분명한 특징을 고정 범위로 정규화할 때.
+> 💡 <strong>이럴 때</strong>: 이미지 픽셀을 `[0, 1]`로, 또는 상·하한이 분명한 특징을 고정 범위로 정규화할 때.
 
 <a id="z-score-표준화-평균-0-표준편차-1"></a>
 
@@ -84,9 +84,9 @@ std[std == 0] = 1                   # 상수 열 보호
 x_std = (x - mean) / std
 ```
 
-> 💡 **이럴 때**: 선형모델·신경망·거리 기반 알고리즘처럼 스케일에 민감한 모델의 입력을 준비할 때.
+> 💡 <strong>이럴 때</strong>: 선형모델·신경망·거리 기반 알고리즘처럼 스케일에 민감한 모델의 입력을 준비할 때.
 
-> **중요**: 학습 데이터에서 계산한 `mean`/`std`(또는 `min`/`max`)를 **저장**해 두고, 테스트 데이터에도 **같은 값**을 적용해야 합니다. 테스트 데이터로 새로 통계를 내면 데이터 누수(leakage)입니다.
+> <strong>중요</strong>: 학습 데이터에서 계산한 `mean`/`std`(또는 `min`/`max`)를 <strong>저장</strong>해 두고, 테스트 데이터에도 <strong>같은 값</strong>을 적용해야 합니다. 테스트 데이터로 새로 통계를 내면 데이터 누수(leakage)입니다.
 
 
 <NotionDivider />
@@ -112,7 +112,7 @@ onehot = np.eye(n_class, dtype=np.int8)[labels]   # np.eye 기본 dtype은 float
 
 원리: `np.eye(3)`은 3x3 단위행렬이고, `[labels]`(팬시 인덱싱)로 각 레이블에 해당하는 행을 뽑습니다. 레이블 `0` → 0행 `[1,0,0]`, 레이블 `2` → 2행 `[0,0,1]`.
 
-> 💡 **이럴 때**: 순서 없는 범주형 변수를 더미변수로 펼칠 때. 트리 기반 모델에는 불필요할 수 있습니다.
+> 💡 <strong>이럴 때</strong>: 순서 없는 범주형 변수를 더미변수로 펼칠 때. 트리 기반 모델에는 불필요할 수 있습니다.
 
 
 <NotionDivider />
@@ -138,12 +138,12 @@ counts, edges = np.histogram(x, bins=bins)
 #   - "0-based" 구간별 개수, 마지막 구간만 우측 끝 포함
 ```
 
-> `digitize`와 `histogram`은 **인덱스 기준과 경계 포함 규칙이 다릅니다.** 둘을 섞어 쓰면 off-by-one 버그가 생기므로, 한 작업에서는 하나만 씁니다.
+> `digitize`와 `histogram`은 <strong>인덱스 기준과 경계 포함 규칙이 다릅니다.</strong> 둘을 섞어 쓰면 off-by-one 버그가 생기므로, 한 작업에서는 하나만 씁니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 연속 변수를 구간 범주로 바꾸거나(연령 → 연령대), 분포를 히스토그램으로 볼 때.
+💡 <strong>이럴 때</strong>: 연속 변수를 구간 범주로 바꾸거나(연령 → 연령대), 분포를 히스토그램으로 볼 때.
 
 
 </NotionIndent>
@@ -170,7 +170,7 @@ _, inverse = np.unique(a, return_inverse=True) # 원본을 고유값 인덱스�
 
 `return_counts`는 클래스 불균형 확인에, `return_inverse`는 범주형 인코딩에 씁니다.
 
-> 💡 **이럴 때**: 클래스 불균형을 확인하거나 범주별 빈도표를 만들 때 `return_counts=True`.
+> 💡 <strong>이럴 때</strong>: 클래스 불균형을 확인하거나 범주별 빈도표를 만들 때 `return_counts=True`.
 
 
 <NotionDivider />
@@ -189,7 +189,7 @@ a[np.argsort(a)]        # array([1, 2, 3])   - argsort로 실제 정렬 (다른 
 a.sort()               # a 자체를 제자리 정렬 (반환값 None) - 마지막에 호출
 ```
 
-**다중 키 정렬 — `np.lexsort`**:
+<strong>다중 키 정렬 — `np.lexsort`</strong>:
 
 
 ```python
@@ -202,7 +202,7 @@ list(zip(name[order], age[order]))
 # [('A', 25), ('A', 40), ('B', 20), ('B', 30)]
 ```
 
-> `lexsort`는 **키 순서가 거꾸로**입니다 (마지막 인자가 primary). 가장 자주 틀리는 부분입니다.
+> `lexsort`는 <strong>키 순서가 거꾸로</strong>입니다 (마지막 인자가 primary). 가장 자주 틀리는 부분입니다.
 
 
 <NotionDivider />
@@ -229,7 +229,7 @@ np.bincount(groups)                     # array([2, 2, 1])  - 그룹별 개수
 
 ### `np.add.at` — 중복 인덱스 누적
 
-일반 팬시 인덱싱 대입은 **중복 인덱스에서 마지막 값만** 남깁니다. 누적하려면 `np.add.at`을 씁니다.
+일반 팬시 인덱싱 대입은 <strong>중복 인덱스에서 마지막 값만</strong> 남깁니다. 누적하려면 `np.add.at`을 씁니다.
 
 
 ```python
@@ -240,5 +240,5 @@ out = np.zeros(3)
 np.add.at(out, groups, values) # ✓ array([40., 60., 50.])  - 제대로 누적
 ```
 
-> 💡 **이럴 때**: 정수 그룹 키로 그룹별 합계·개수를 pandas 없이 빠르게 구할 때(대용량 집계, 히스토그램 누적).
+> 💡 <strong>이럴 때</strong>: 정수 그룹 키로 그룹별 합계·개수를 pandas 없이 빠르게 구할 때(대용량 집계, 히스토그램 누적).
 

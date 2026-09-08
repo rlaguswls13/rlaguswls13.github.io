@@ -35,39 +35,39 @@ notionUrl: "https://app.notion.com/p/37919946ca7680d68411e998f7cd476c"
 
 <a id="1-윈도우-함수window-function"></a>
 
-## **1.  윈도우 함수(Window Function)**
+## <strong>1.  윈도우 함수(Window Function)</strong>
 
 <a id="1-윈도우-함수의-정의"></a>
 
 ### 1) 윈도우 함수의 정의
 
- 윈도우 함수는 행과 행 간의 관계를 정의하여 **성적의 순위(Rank), 누적 합계(Running Total), 혹은 이전/다음 행의 데이터(Lag/Lead)** 등을 쉽게 계산할 수 있도록 지원하는 특수한 SQL 함수입니다.
+ 윈도우 함수는 행과 행 간의 관계를 정의하여 <strong>성적의 순위(Rank), 누적 합계(Running Total), 혹은 이전/다음 행의 데이터(Lag/Lead)</strong> 등을 쉽게 계산할 수 있도록 지원하는 특수한 SQL 함수입니다.
 
-일반적인 `GROUP BY` 집계 함수는 데이터를 그룹핑하면서 기존 행들의 상세 정보가 손실되고 압축되지만, 윈도우 함수는 **기존 행의 상세 내역을 그대로 유지한 채** 연산 결과만 별도의 열(Column)로 추가해 주는 결정적인 차이점을 가집니다.
+일반적인 `GROUP BY` 집계 함수는 데이터를 그룹핑하면서 기존 행들의 상세 정보가 손실되고 압축되지만, 윈도우 함수는 <strong>기존 행의 상세 내역을 그대로 유지한 채</strong> 연산 결과만 별도의 열(Column)로 추가해 주는 결정적인 차이점을 가집니다.
 
 <a id="2-윈도우-함수와-루틴routines의-차이점"></a>
 
-### **2)  윈도우 함수와 루틴(Routines)의 차이점**
+### <strong>2)  윈도우 함수와 루틴(Routines)의 차이점</strong>
 
-윈도우 함수와 루틴(프로시저/함수)은 DB 내부에서 무언가를 계산한다는 점에서 혼동하기 쉽지만, **작동하는 레이어와 내부 메커니즘**이 완전히 다릅니다.
+윈도우 함수와 루틴(프로시저/함수)은 DB 내부에서 무언가를 계산한다는 점에서 혼동하기 쉽지만, <strong>작동하는 레이어와 내부 메커니즘</strong>이 완전히 다릅니다.
 
 
 <NotionTable>
   <tbody>
-    <tr><td>**비교 기준**</td><td>**윈도우 함수 (Window Function)**</td><td>**루틴 (Routines - Procedure, Function)**</td></tr>
-    <tr><td>**개념적 정의**</td><td>SQL 문장 내에서 행 간 연산을 수행하는 **선언적 쿼리 컴포넌트**</td><td>사용자가 직접 구현하여 내장하는 **절차적 프로그램 블록**</td></tr>
-    <tr><td>**동작 레이어**</td><td>SQL **엔진 내부**에서 질의 처리(Query Processing) 흐름을 타며 직접 계산</td><td>엔진 외부의 **절차적 실행 환경**에서 스크립트 기반으로 동작</td></tr>
-    <tr><td>**리턴 구조**</td><td>기존의 모든 결과 행(Row)을 유지하며 **열(Column) 단위로 데이터 추가**</td><td>단일 값(Function)을 반환하거나, 독립적인 결과 집합(Procedure)을 반환</td></tr>
-    <tr><td>**트랜잭션/DML**</td><td>데이터의 단순 '조회(SELECT)' 흐름 내에서만 연산 가능</td><td>내부에서 `INSERT`, `UPDATE` 및 `COMMIT`/`ROLLBACK` 제어 가능</td></tr>
-    <tr><td>**성능 최적화**</td><td>데이터베이스 **옵티마이저의 실행 계획과 인덱스 최적화** 영역에 포함</td><td>로직이 블랙박스화되어 있어 실행 계획 분석 및 최적화가 까다로움</td></tr>
+    <tr><td><strong>비교 기준</strong></td><td><strong>윈도우 함수 (Window Function)</strong></td><td><strong>루틴 (Routines - Procedure, Function)</strong></td></tr>
+    <tr><td><strong>개념적 정의</strong></td><td>SQL 문장 내에서 행 간 연산을 수행하는 <strong>선언적 쿼리 컴포넌트</strong></td><td>사용자가 직접 구현하여 내장하는 <strong>절차적 프로그램 블록</strong></td></tr>
+    <tr><td><strong>동작 레이어</strong></td><td>SQL <strong>엔진 내부</strong>에서 질의 처리(Query Processing) 흐름을 타며 직접 계산</td><td>엔진 외부의 <strong>절차적 실행 환경</strong>에서 스크립트 기반으로 동작</td></tr>
+    <tr><td><strong>리턴 구조</strong></td><td>기존의 모든 결과 행(Row)을 유지하며 <strong>열(Column) 단위로 데이터 추가</strong></td><td>단일 값(Function)을 반환하거나, 독립적인 결과 집합(Procedure)을 반환</td></tr>
+    <tr><td><strong>트랜잭션/DML</strong></td><td>데이터의 단순 '조회(SELECT)' 흐름 내에서만 연산 가능</td><td>내부에서 `INSERT`, `UPDATE` 및 `COMMIT`/`ROLLBACK` 제어 가능</td></tr>
+    <tr><td><strong>성능 최적화</strong></td><td>데이터베이스 <strong>옵티마이저의 실행 계획과 인덱스 최적화</strong> 영역에 포함</td><td>로직이 블랙박스화되어 있어 실행 계획 분석 및 최적화가 까다로움</td></tr>
   </tbody>
 </NotionTable>
 
 <a id="3-윈도우-함수의-예시"></a>
 
-### **3) 윈도우 함수의 예시**
+### <strong>3) 윈도우 함수의 예시</strong>
 
-- **예시:** 부서별(`dept_id`)로 직원의 급여(`salary`)가 높은 순서대로 순위를 매겨 조회하는 쿼리입니다.
+- <strong>예시:</strong> 부서별(`dept_id`)로 직원의 급여(`salary`)가 높은 순서대로 순위를 매겨 조회하는 쿼리입니다.
 
 ```sql
 SELECT
@@ -84,15 +84,15 @@ FROM employees;
 - `ORDER BY`: 정렬 기준을 정의하며, 순위나 누적 합의 계산 방향을 결정합니다.
 <a id="4-윈도우-함수를-활용하기-위한-인덱스index-처리"></a>
 
-### **4) 윈도우 함수를 활용하기 위한 인덱스(Index) 처리**
+### <strong>4) 윈도우 함수를 활용하기 위한 인덱스(Index) 처리</strong>
 
 윈도우 함수는 테이블 전체 데이터를 메모리에 올려 정렬(Filesort)하는 작업이 동반되므로, 트래픽이 높은 OLTP 환경에서는 심각한 병목을 유발할 수 있습니다. 이를 최적화하기 위해서는 `OVER()` 절에 지정된 컬럼들을 기준으로 복합 인덱스(Composite Index)를 정교하게 구성해야 합니다.
 
-- **핵심 규칙: 인덱스 구성 전략**
-윈도우 함수가 인덱스를 타고 곧바로 정렬을 생략하기 위해서는 **`PARTITION BY` 컬럼 + `ORDER BY` 컬럼** 순서로 구성된 복합 인덱스가 필요합니다.
+- <strong>핵심 규칙: 인덱스 구성 전략</strong>
+윈도우 함수가 인덱스를 타고 곧바로 정렬을 생략하기 위해서는 <strong>`PARTITION BY` 컬럼 + `ORDER BY` 컬럼</strong> 순서로 구성된 복합 인덱스가 필요합니다.
 
 
-- **인덱스 설계 예시**
+- <strong>인덱스 설계 예시</strong>
 위의 예시 쿼리를 최적화하기 위한 가장 이상적인 인덱스는 다음과 같습니다.
 
 
@@ -103,42 +103,42 @@ CREATE INDEX idx_dept_salary ON employees (dept_id, salary DESC);
 
 <a id="2-참고1-mysql-oracle-기준-인덱스-고려-시-주의점"></a>
 
-## **2. [참고1] MySQL / Oracle 기준 인덱스 고려 시 주의점**
+## <strong>2. [참고1] MySQL / Oracle 기준 인덱스 고려 시 주의점</strong>
 
 두 RDBMS는 인덱스를 다루는 내부 최적화 메커니즘과 저장 아키텍처 관점에서 다음과 같은 뚜렷한 차이점과 주의점을 가집니다.
 
-- **MySQL (InnoDB 엔진 기준)**
-- **Clustered Index 구조의 영향**
+- <strong>MySQL (InnoDB 엔진 기준)</strong>
+- <strong>Clustered Index 구조의 영향</strong>
 InnoDB는 기본 키(PK)를 기준으로 데이터가 물리적으로 정렬되어 저장되는 클러스터형 인덱스 구조를 취합니다. 이로 인해 보조 인덱스(Secondary Index)를 생성할 때 PK 컬럼이 인덱스 레코드 뒤에 자동으로 포함되는 내부 메커니즘을 이해해야 합니다. 만약 지나치게 무겁거나 과도한 복합 인덱스를 남용하면 버퍼 풀(Buffer Pool) 메모리를 불필요하게 점유하여 쓰기 성능 저하를 초래할 수 있습니다.
-- **버전별 정렬 제한 확인**
+- <strong>버전별 정렬 제한 확인</strong>
 MySQL 8.0 이전 버전에서는 인덱스 생성 시 `DESC` 정렬을 물리적으로 지원하지 않아 역순 정렬 윈도우 함수 사용 시 무조건 내부 정렬(Filesort) 병목이 발생했습니다. 8.0 버전부터는 하향식 내림차순 인덱스를 공식 지원하므로, 사용 중인 버전의 아키텍처 한계를 명확히 파악하고 윈도우 함수 최적화를 진행해야 합니다.
 
-- **Oracle**
-- **비용 기반 옵티마이저(CBO)의 유연성과 변수**
+- <strong>Oracle</strong>
+- <strong>비용 기반 옵티마이저(CBO)의 유연성과 변수</strong>
 Oracle은 정교한 통계 정보를 기반으로 인덱스를 타는 것이 유리한지, 아니면 테이블 전체를 읽어 메모리(PGA) 영역에서 해시/정렬(Hash/Sort Window)하는 것이 유리한지 자율적으로 계산합니다. 따라서 데이터의 분포도(데이터가 골고루 섞여 있는지 여부)가 깨지면 인덱스가 존재하더라도 옵티마이저에 의해 무시될 수 있으므로 주기적인 통계 정보 갱신이 수반되어야 합니다.
-- **Global / Local 인덱스의 명확한 구분**
+- <strong>Global / Local 인덱스의 명확한 구분</strong>
 파티셔닝 구조와 결합할 때, 특정 파티션에 종속되어 독립적으로 관리되는 `Local Index`와 파티션 범위를 넘어서는 전체 테이블 대상의 `Global Index`를 명확히 구분해야 합니다. 윈도우 함수의 `PARTITION BY` 기준 컬럼과 테이블의 파티션 키가 일치한다면 Local 인덱스를 활용하는 것이 관리와 성능 면에서 압도적으로 유리합니다.
 
 <a id="3-참고2-파티셔닝partitioning-및-관리-전략"></a>
 
-## **3. [참고2] 파티셔닝(Partitioning) 및 관리 전략**
+## <strong>3. [참고2] 파티셔닝(Partitioning) 및 관리 전략</strong>
 
 <a id="1-파티셔닝partitioning의-본질"></a>
 
-### **1) 파티셔닝(Partitioning)의 본질**
+### <strong>1) 파티셔닝(Partitioning)의 본질</strong>
 
-파티셔닝은 하나의 거대한 논리적 테이블을 물리적으로 분할된 **여러 개의 작은 독립 파일(파티션)로 쪼개어 저장하는 성능 최적화 기술**입니다.
+파티셔닝은 하나의 거대한 논리적 테이블을 물리적으로 분할된 <strong>여러 개의 작은 독립 파일(파티션)로 쪼개어 저장하는 성능 최적화 기술</strong>입니다.
 
-애플리케이션 레이어에서는 단일 테이블을 조회하는 것처럼 투명하게 동작하지만, DB 엔진 내부에서는 검색 조건에 부합하는 특정 파티션 파일만 선별적으로 접근하는 파티션 프루닝(Partition Pruning)이 작동합니다. 이를 통해 **대용량 데이터 조회 시 디스크 I/O 부하를 획기적으로 줄일 수 있으며,** 비즈니스 성격에 따라 범위(Range), 리스트(List), 해시(Hash) 기준으로 데이터를 분할합니다.
+애플리케이션 레이어에서는 단일 테이블을 조회하는 것처럼 투명하게 동작하지만, DB 엔진 내부에서는 검색 조건에 부합하는 특정 파티션 파일만 선별적으로 접근하는 파티션 프루닝(Partition Pruning)이 작동합니다. 이를 통해 <strong>대용량 데이터 조회 시 디스크 I/O 부하를 획기적으로 줄일 수 있으며,</strong> 비즈니스 성격에 따라 범위(Range), 리스트(List), 해시(Hash) 기준으로 데이터를 분할합니다.
 
 <a id="2-파티셔닝-데이터-생명주기-관리-data-lifecycle-management"></a>
 
-### **2) 파티셔닝 데이터 생명주기 관리 (Data Lifecycle Management)**
+### <strong>2) 파티셔닝 데이터 생명주기 관리 (Data Lifecycle Management)</strong>
 
-파티셔닝은 설계 단계보다 **지속적인 운영 환경에서의 관리 자동화**가 핵심입니다. 실무에서 가장 많이 활용되는 날짜 기준의 Range 파티셔닝을 안정적으로 운영하기 위해서는 다음과 같은 전략이 필수적입니다.
+파티셔닝은 설계 단계보다 <strong>지속적인 운영 환경에서의 관리 자동화</strong>가 핵심입니다. 실무에서 가장 많이 활용되는 날짜 기준의 Range 파티셔닝을 안정적으로 운영하기 위해서는 다음과 같은 전략이 필수적입니다.
 
-- **슬라이딩 윈도우(Sliding Window) 전략의 자동화**
-- 트래픽과 데이터가 지속적으로 누적됨에 따라 미래 시점의 **새로운 파티션을 미리 열어주고(Add), 보존 기간이 지나 쓰이지 않는 과거의 데이터 파티션은 분리하여 백업하거나 제거(Drop/Truncate)하는 주기적인 관리**가 필요합니다.
+- <strong>슬라이딩 윈도우(Sliding Window) 전략의 자동화</strong>
+- 트래픽과 데이터가 지속적으로 누적됨에 따라 미래 시점의 <strong>새로운 파티션을 미리 열어주고(Add), 보존 기간이 지나 쓰이지 않는 과거의 데이터 파티션은 분리하여 백업하거나 제거(Drop/Truncate)하는 주기적인 관리</strong>가 필요합니다.
 <a id="예시코드1"></a>
 
 #### 예시코드1
@@ -238,7 +238,7 @@ DELIMITER ;
 </NotionIndent>
 
 
-- **메타데이터 락(Metadata Lock) 및 다운타임 제어**
+- <strong>메타데이터 락(Metadata Lock) 및 다운타임 제어</strong>
 - 파티션을 생성, 삭제, 혹은 쪼개는(Split) 행위는 데이터베이스 입장에서 테이블 구조를 변경하는 DDL(Data Definition Language) 작업에 해당합니다.
 - 서비스 운영 중에 대량의 데이터가 적재된 파티션을 조작하면 순간적으로 메타데이터 락(Metadata Lock)이 발생하여 테이블 전체의 동시성 트래픽이 마비될 수 있습니다. 따라서 실무에서는 반드시 트래픽이 가장 적은 새벽 시간대에 작업을 배치하거나, 무중단 구조를 지원하는 온라인 DDL 옵션을 정밀하게 검토한 후 실행해야 시스템의 안정성을 확보할 수 있습니다.
 예시코드

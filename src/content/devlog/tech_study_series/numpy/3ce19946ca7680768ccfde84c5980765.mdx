@@ -61,16 +61,16 @@ np.isinf(a)      # array([False, False, False,  True, False])
 np.isfinite(a)   # array([ True, False,  True, False,  True])  ← nan도 inf도 아닌 정상값
 ```
 
-- `== np.nan`은 **항상 False**입니다. 반드시 `np.isnan()`을 사용합니다.
+- `== np.nan`은 <strong>항상 False</strong>입니다. 반드시 `np.isnan()`을 사용합니다.
 - 정상값만 걸러낼 때는 `np.isfinite()`가 가장 편합니다 (nan과 inf를 한 번에 배제).
 
 ```python
 clean = a[np.isfinite(a)]        # array([1., 3., 5.])
 ```
 
-> 💡 **이럴 때**: nan과 inf를 한 번에 걸러 깨끗한 값만 남길 때(집계·모델 입력 직전 정제).
+> 💡 <strong>이럴 때</strong>: nan과 inf를 한 번에 걸러 깨끗한 값만 남길 때(집계·모델 입력 직전 정제).
 
-**2차원에서 결측이 있는 행/열 찾기**:
+<strong>2차원에서 결측이 있는 행/열 찾기</strong>:
 
 
 ```python
@@ -109,12 +109,12 @@ np.nanmean(np.array([1., np.nan, 3.])) # 2.0   ← nan을 빼고 계산
   </tbody>
 </NotionTable>
 
-> **주의**: `nan*` 함수는 `inf`는 무시하지 않습니다. `inf`가 섞여 있으면 `np.isfinite`로 먼저 걸러야 합니다.
+> <strong>주의</strong>: `nan*` 함수는 `inf`는 무시하지 않습니다. `inf`가 섞여 있으면 `np.isfinite`로 먼저 걸러야 합니다.
 
 
 <NotionIndent>
 
-💡 **이럴 때**: 결측을 포함한 채로 열별 평균·표준편차 등 통계를 내야 할 때(대체값 계산, 분포 요약).
+💡 <strong>이럴 때</strong>: 결측을 포함한 채로 열별 평균·표준편차 등 통계를 내야 할 때(대체값 계산, 분포 요약).
 
 
 </NotionIndent>
@@ -161,7 +161,7 @@ X[idx] = np.take(col_mean, idx[1])        # 각 결측 위치에 해당 열 평�
 
 <NotionIndent>
 
-💡 **이럴 때**: 결측을 평균·중앙값·상수로 채워 모델 입력의 빈칸을 없앨 때. 학습 데이터 통계를 저장해 테스트에도 같은 값을 씁니다.
+💡 <strong>이럴 때</strong>: 결측을 평균·중앙값·상수로 채워 모델 입력의 빈칸을 없앨 때. 학습 데이터 통계를 저장해 테스트에도 같은 값을 씁니다.
 
 
 </NotionIndent>
@@ -187,7 +187,7 @@ lo, hi = np.percentile(a, [1, 99])
 a_clipped = np.clip(a, lo, hi)   # 1퍼센타일 미만/99퍼센타일 초과를 경계로 대체
 ```
 
-> 💡 **이럴 때**: 이상치를 제거하면 샘플이 줄어 곤란할 때, 분위수 경계로 눌러 분포만 안정화합니다.
+> 💡 <strong>이럴 때</strong>: 이상치를 제거하면 샘플이 줄어 곤란할 때, 분위수 경계로 눌러 분포만 안정화합니다.
 
 <a id="4-2-iqr-규칙으로-이상치-마스킹"></a>
 
@@ -204,7 +204,7 @@ outlier_mask = (a < lower) | (a > upper)   # array([..., True])  - 100이 이상
 a_no_outlier = a[~outlier_mask]            # 이상치 제거
 ```
 
-> 💡 **이럴 때**: 분포 가정 없이 이상치를 탐지·제거할 때. 이상치가 많아 평균이 왜곡되는 상황에서 z-score보다 견고합니다.
+> 💡 <strong>이럴 때</strong>: 분포 가정 없이 이상치를 탐지·제거할 때. 이상치가 많아 평균이 왜곡되는 상황에서 z-score보다 견고합니다.
 
 <a id="4-3-z-score-기반"></a>
 

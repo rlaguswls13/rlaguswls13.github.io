@@ -80,9 +80,9 @@ notionUrl: "https://app.notion.com/p/RDB-SQL-3c719946ca76806daa29f22dc447a502"
 
 ### 1) "데이터 효율을 위한 중복 제거"라는 설명의 한계
 
-필자 역시 정규화의 학술적 정의(1NF~5NF)를 무작정 달달 외우기보다는 `데이터 효율`, `중복 제거`, `관계 중시` 같은 직관적인 키워드로 기억하다 보니, 누군가에게 설명할 때도 흔히 *"데이터를 효율적으로 쓰기 위한 중복 제거 작업"* 정도로 축약해 설명할 때가 많았다.
+필자 역시 정규화의 학술적 정의(1NF~5NF)를 무작정 달달 외우기보다는 `데이터 효율`, `중복 제거`, `관계 중시` 같은 직관적인 키워드로 기억하다 보니, 누군가에게 설명할 때도 흔히 <em>"데이터를 효율적으로 쓰기 위한 중복 제거 작업"</em> 정도로 축약해 설명할 때가 많았다.
 
-하지만 이러한 설명은 데이터베이스에 대한 **충분한 배경지식이 이미 갖춰진 사람에게만 납득될 뿐**, 실제 데이터 모델링의 본질을 관통하는 온전한 설명이 되기는 어렵다.
+하지만 이러한 설명은 데이터베이스에 대한 <strong>충분한 배경지식이 이미 갖춰진 사람에게만 납득될 뿐</strong>, 실제 데이터 모델링의 본질을 관통하는 온전한 설명이 되기는 어렵다.
 
 
 <NotionDivider />
@@ -91,7 +91,7 @@ notionUrl: "https://app.notion.com/p/RDB-SQL-3c719946ca76806daa29f22dc447a502"
 
 ### 2) 억지스러운 교과서적 테이블 예시가 낳는 오해
 
-1NF부터 5NF까지 각각의 단계에 딱 들어맞는 교과서적이고 인위적인 테이블 예시를 억지로 만들다 보면, 실제 실무 도메인과 괴리가 생겨 오히려 **설명의 난해함과 오해를 초래**하기 십상이다.
+1NF부터 5NF까지 각각의 단계에 딱 들어맞는 교과서적이고 인위적인 테이블 예시를 억지로 만들다 보면, 실제 실무 도메인과 괴리가 생겨 오히려 <strong>설명의 난해함과 오해를 초래</strong>하기 십상이다.
 
 
 <NotionDivider />
@@ -100,18 +100,18 @@ notionUrl: "https://app.notion.com/p/RDB-SQL-3c719946ca76806daa29f22dc447a502"
 
 ### 3) RDB와 정규화의 진정한 본질 (핵심 강조)
 
-> 🌟 **정규화의 본질적 정의**:
+> 🌟 <strong>정규화의 본질적 정의</strong>:
 
 
 <NotionIndent>
 
-**"RDB(관계형 데이터베이스)는 데이터 간의 관계성(Relationship)을 정의하여 정리하기로 약속된 체계이며,
-그 약속에 따라 데이터의 책임과 경계를 짓고 올바르게 구분·관리(Data Governance)하는 작업을 정규화라 할 수 있다."**
+<strong>"RDB(관계형 데이터베이스)는 데이터 간의 관계성(Relationship)을 정의하여 정리하기로 약속된 체계이며,
+그 약속에 따라 데이터의 책임과 경계를 짓고 올바르게 구분·관리(Data Governance)하는 작업을 정규화라 할 수 있다."</strong>
 
 
 </NotionIndent>
 
-따라서 실무에서는 정규화의 수식이나 학술적 정의에 얽매이기보다, **"이 컬럼은 누구의 속성인가?"**, **"이 관계는 어떤 외래키(FK)로 맺어지고 어떻게 JOIN으로 복원되는가?"**라는 관점으로 테이블을 바라볼 때 가장 명쾌하게 데이터 구조를 설계할 수 있다.
+따라서 실무에서는 정규화의 수식이나 학술적 정의에 얽매이기보다, <strong>"이 컬럼은 누구의 속성인가?"</strong>, <strong>"이 관계는 어떤 외래키(FK)로 맺어지고 어떻게 JOIN으로 복원되는가?"</strong>라는 관점으로 테이블을 바라볼 때 가장 명쾌하게 데이터 구조를 설계할 수 있다.
 
 
 <NotionDivider />
@@ -153,7 +153,7 @@ order_id = 1001
 
 ## 2. 1NF (제1정규형): 컬럼의 원자값(Atomic Value) 확보
 
-> 💡 **핵심 규칙**: **하나의 컬럼에는 더 이상 쪼갤 수 없는 단 하나의 값(원자값)만 저장한다.**
+> 💡 <strong>핵심 규칙</strong>: <strong>하나의 컬럼에는 더 이상 쪼갤 수 없는 단 하나의 값(원자값)만 저장한다.</strong>
 
 
 <NotionIndent>
@@ -169,14 +169,14 @@ order_id = 1001
 <NotionTable>
   <tbody>
     <tr><td>`order_id` (PK)</td><td>`product_id` (PK)</td><td>`user_id`</td><td>`user_name`</td><td>`product_name`</td><td>`quantity`</td></tr>
-    <tr><td>**1001**</td><td>**P01**</td><td>U01</td><td>김철수</td><td>키보드</td><td>1</td></tr>
-    <tr><td>**1001**</td><td>**P02**</td><td>U01</td><td>김철수</td><td>마우스</td><td>2</td></tr>
-    <tr><td>**1002**</td><td>**P01**</td><td>U02</td><td>이영희</td><td>키보드</td><td>1</td></tr>
+    <tr><td><strong>1001</strong></td><td><strong>P01</strong></td><td>U01</td><td>김철수</td><td>키보드</td><td>1</td></tr>
+    <tr><td><strong>1001</strong></td><td><strong>P02</strong></td><td>U01</td><td>김철수</td><td>마우스</td><td>2</td></tr>
+    <tr><td><strong>1002</strong></td><td><strong>P01</strong></td><td>U02</td><td>이영희</td><td>키보드</td><td>1</td></tr>
   </tbody>
 </NotionTable>
 
-- **기본키(PK)**: `PRIMARY KEY (order_id, product_id)` 복합키 구성.
-- **남아있는 문제**: 한 셀에 여러 상품이 들어가는 문제는 해결되었으나, `product_name`은 사실 `order_id`와는 무관하며 오직 `product_id`에 의해서만 결정된다 (product\_id \rightarrow product\_name).
+- <strong>기본키(PK)</strong>: `PRIMARY KEY (order_id, product_id)` 복합키 구성.
+- <strong>남아있는 문제</strong>: 한 셀에 여러 상품이 들어가는 문제는 해결되었으나, `product_name`은 사실 `order_id`와는 무관하며 오직 `product_id`에 의해서만 결정된다 (product\_id \rightarrow product\_name).
 
 <NotionDivider />
 
@@ -184,7 +184,7 @@ order_id = 1001
 
 ## 3. 2NF (제2정규형): 복합 PK의 부분 함수 종속성 제거
 
-> 💡 **핵심 규칙**: **복합 PK를 사용하는 테이블에서, PK의 일부분에만 종속되는 속성을 별도 테이블로 분리한다 (완전 함수 종속화).**
+> 💡 <strong>핵심 규칙</strong>: <strong>복합 PK를 사용하는 테이블에서, PK의 일부분에만 종속되는 속성을 별도 테이블로 분리한다 (완전 함수 종속화).</strong>
 
 
 <NotionIndent>
@@ -202,8 +202,8 @@ order_id = 1001
 <NotionTable>
   <tbody>
     <tr><td>`product_id` (PK)</td><td>`product_name`</td><td>`price`</td></tr>
-    <tr><td>**P01**</td><td>키보드</td><td>50,000</td></tr>
-    <tr><td>**P02**</td><td>마우스</td><td>30,000</td></tr>
+    <tr><td><strong>P01</strong></td><td>키보드</td><td>50,000</td></tr>
+    <tr><td><strong>P02</strong></td><td>마우스</td><td>30,000</td></tr>
   </tbody>
 </NotionTable>
 
@@ -215,9 +215,9 @@ order_id = 1001
 <NotionTable>
   <tbody>
     <tr><td>`order_id` (PK, FK)</td><td>`product_id` (PK, FK)</td><td>`quantity`</td></tr>
-    <tr><td>**1001**</td><td>**P01**</td><td>1</td></tr>
-    <tr><td>**1001**</td><td>**P02**</td><td>2</td></tr>
-    <tr><td>**1002**</td><td>**P01**</td><td>1</td></tr>
+    <tr><td><strong>1001</strong></td><td><strong>P01</strong></td><td>1</td></tr>
+    <tr><td><strong>1001</strong></td><td><strong>P02</strong></td><td>2</td></tr>
+    <tr><td><strong>1002</strong></td><td><strong>P01</strong></td><td>1</td></tr>
   </tbody>
 </NotionTable>
 
@@ -238,7 +238,7 @@ JOIN product p
     ON oi.product_id = p.product_id;
 ```
 
-> 🎯 **실무 포인트**: 2NF는 복합 PK를 사용하는 **N:M 상세/매핑 테이블(`ORDER_ITEM`, `USER_ROLE`, `STUDENT_COURSE`)** 설계 시 필수적으로 점검하는 단계이다.
+> 🎯 <strong>실무 포인트</strong>: 2NF는 복합 PK를 사용하는 <strong>N:M 상세/매핑 테이블(`ORDER_ITEM`, `USER_ROLE`, `STUDENT_COURSE`)</strong> 설계 시 필수적으로 점검하는 단계이다.
 
 
 <NotionDivider />
@@ -247,7 +247,7 @@ JOIN product p
 
 ## 4. 3NF (제3정규형): 일반 속성 간의 이행적 함수 종속성 제거
 
-> 💡 **핵심 규칙 (실무 최다 발생)**: **PK가 아닌 일반 속성이 다른 일반 속성을 결정(X \rightarrow Y \rightarrow Z)하면 분리한다.**
+> 💡 <strong>핵심 규칙 (실무 최다 발생)</strong>: <strong>PK가 아닌 일반 속성이 다른 일반 속성을 결정(X \rightarrow Y \rightarrow Z)하면 분리한다.</strong>
 
 
 <NotionIndent>
@@ -265,9 +265,9 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`order_id` (PK)</td><td>`user_id`</td><td>`user_name`</td><td>`user_phone`</td><td>`order_date`</td></tr>
-    <tr><td>**1001**</td><td>U01</td><td>김철수</td><td>010-1111-2222</td><td>2026-08-25</td></tr>
-    <tr><td>**1002**</td><td>U01</td><td>김철수</td><td>010-1111-2222</td><td>2026-08-26</td></tr>
-    <tr><td>**1003**</td><td>U02</td><td>이영희</td><td>010-2222-3333</td><td>2026-08-26</td></tr>
+    <tr><td><strong>1001</strong></td><td>U01</td><td>김철수</td><td>010-1111-2222</td><td>2026-08-25</td></tr>
+    <tr><td><strong>1002</strong></td><td>U01</td><td>김철수</td><td>010-1111-2222</td><td>2026-08-26</td></tr>
+    <tr><td><strong>1003</strong></td><td>U02</td><td>이영희</td><td>010-2222-3333</td><td>2026-08-26</td></tr>
   </tbody>
 </NotionTable>
 
@@ -283,8 +283,8 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`user_id` (PK)</td><td>`user_name`</td><td>`user_phone`</td></tr>
-    <tr><td>**U01**</td><td>김철수</td><td>010-1111-2222</td></tr>
-    <tr><td>**U02**</td><td>이영희</td><td>010-2222-3333</td></tr>
+    <tr><td><strong>U01</strong></td><td>김철수</td><td>010-1111-2222</td></tr>
+    <tr><td><strong>U02</strong></td><td>이영희</td><td>010-2222-3333</td></tr>
   </tbody>
 </NotionTable>
 
@@ -296,9 +296,9 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`order_id` (PK)</td><td>`user_id` (FK)</td><td>`order_date`</td></tr>
-    <tr><td>**1001**</td><td>U01</td><td>2026-08-25</td></tr>
-    <tr><td>**1002**</td><td>U01</td><td>2026-08-26</td></tr>
-    <tr><td>**1003**</td><td>U02</td><td>2026-08-26</td></tr>
+    <tr><td><strong>1001</strong></td><td>U01</td><td>2026-08-25</td></tr>
+    <tr><td><strong>1002</strong></td><td>U01</td><td>2026-08-26</td></tr>
+    <tr><td><strong>1003</strong></td><td>U02</td><td>2026-08-26</td></tr>
   </tbody>
 </NotionTable>
 
@@ -318,7 +318,7 @@ JOIN user u
     ON o.user_id = u.user_id;
 ```
 
-> 🎯 **실무 효과**: 회원의 전화번호나 이름이 변경되어도 수천 건의 주문 데이터를 수정할 필요 없이 **`USER` 테이블 단 1곳만 `UPDATE`**하면 되므로 데이터 갱신 이상을 완벽히 차단한다.
+> 🎯 <strong>실무 효과</strong>: 회원의 전화번호나 이름이 변경되어도 수천 건의 주문 데이터를 수정할 필요 없이 <strong>`USER` 테이블 단 1곳만 `UPDATE`</strong>하면 되므로 데이터 갱신 이상을 완벽히 차단한다.
 
 
 <NotionDivider />
@@ -386,12 +386,12 @@ JOIN product p
     ON oi.product_id = p.product_id;
 ```
 
-> 🔑 **정규화와 조회의 핵심 진리**:
+> 🔑 <strong>정규화와 조회의 핵심 진리</strong>:
 
 
 <NotionIndent>
 
-**"정규화할수록 데이터를 저장하는 테이블은 책임 단위로 분리되고, 화면/API에서 조회할 때는 `JOIN`으로 다시 합친다."**
+<strong>"정규화할수록 데이터를 저장하는 테이블은 책임 단위로 분리되고, 화면/API에서 조회할 때는 `JOIN`으로 다시 합친다."</strong>
 
 
 </NotionIndent>
@@ -403,7 +403,7 @@ JOIN product p
 
 ## 6. BCNF (보이스-코드 정규형): 결정자의 후보키화
 
-> 💡 **핵심 규칙**: **모든 결정자(Determinant, 다른 속성을 결정하는 컬럼)는 반드시 후보키(Candidate Key)여야 한다.**
+> 💡 <strong>핵심 규칙</strong>: <strong>모든 결정자(Determinant, 다른 속성을 결정하는 컬럼)는 반드시 후보키(Candidate Key)여야 한다.</strong>
 
 <a id="분리-전-courseteacher-bcnf-위반"></a>
 
@@ -413,7 +413,7 @@ JOIN product p
 - `(student_id, course_id) -> teacher_id` (학생과 과목을 알면 담당 교수가 결정됨)
 - `teacher_id -> course_id` (교수는 오직 1개 과목만 전담함)
 
-- **문제점**: `teacher_id`가 결정자이지만 기본키/후보키가 아님.
+- <strong>문제점</strong>: `teacher_id`가 결정자이지만 기본키/후보키가 아님.
 
 <NotionTable>
   <tbody>
@@ -436,8 +436,8 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`teacher_id` (PK)</td><td>`course_id` (FK)</td></tr>
-    <tr><td>**T01**</td><td>JAVA</td></tr>
-    <tr><td>**T02**</td><td>DB</td></tr>
+    <tr><td><strong>T01</strong></td><td>JAVA</td></tr>
+    <tr><td><strong>T02</strong></td><td>DB</td></tr>
   </tbody>
 </NotionTable>
 
@@ -449,9 +449,9 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`student_id` (PK, FK)</td><td>`teacher_id` (PK, FK)</td></tr>
-    <tr><td>**S01**</td><td>**T01**</td></tr>
-    <tr><td>**S02**</td><td>**T01**</td></tr>
-    <tr><td>**S01**</td><td>**T02**</td></tr>
+    <tr><td><strong>S01</strong></td><td><strong>T01</strong></td></tr>
+    <tr><td><strong>S02</strong></td><td><strong>T01</strong></td></tr>
+    <tr><td><strong>S01</strong></td><td><strong>T02</strong></td></tr>
   </tbody>
 </NotionTable>
 
@@ -462,7 +462,7 @@ JOIN product p
 
 ## 7. 4NF (제4정규형): 독립적인 다치 종속(Multi-valued) 분리
 
-> 💡 **핵심 규칙**: **하나의 엔티티에 서로 독립적인 다중값(N:M 속성)이 2개 이상 존재하면 분리한다.**
+> 💡 <strong>핵심 규칙</strong>: <strong>하나의 엔티티에 서로 독립적인 다중값(N:M 속성)이 2개 이상 존재하면 분리한다.</strong>
 
 <a id="잘못된-설계-developerinfo-카테시안-곱-발생"></a>
 
@@ -493,8 +493,8 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`developer_id` (PK, FK)</td><td>`language_id` (PK, FK)</td></tr>
-    <tr><td>**U01**</td><td>**JAVA**</td></tr>
-    <tr><td>**U01**</td><td>**PYTHON**</td></tr>
+    <tr><td><strong>U01</strong></td><td><strong>JAVA</strong></td></tr>
+    <tr><td><strong>U01</strong></td><td><strong>PYTHON</strong></td></tr>
   </tbody>
 </NotionTable>
 
@@ -506,12 +506,12 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`developer_id` (PK, FK)</td><td>`certificate_id` (PK, FK)</td></tr>
-    <tr><td>**U01**</td><td>**CERT01 (정보처리기사)**</td></tr>
-    <tr><td>**U01**</td><td>**CERT02 (SQLD)**</td></tr>
+    <tr><td><strong>U01</strong></td><td><strong>CERT01 (정보처리기사)</strong></td></tr>
+    <tr><td><strong>U01</strong></td><td><strong>CERT02 (SQLD)</strong></td></tr>
   </tbody>
 </NotionTable>
 
-> 🎯 **실무 형태**: `USER_ROLE`, `PRODUCT_CATEGORY`, `EMPLOYEE_SKILL` 등 독립적인 N:M 관계를 각각의 매핑 테이블로 분리하는 패턴이 4NF에 해당한다.
+> 🎯 <strong>실무 형태</strong>: `USER_ROLE`, `PRODUCT_CATEGORY`, `EMPLOYEE_SKILL` 등 독립적인 N:M 관계를 각각의 매핑 테이블로 분리하는 패턴이 4NF에 해당한다.
 
 
 <NotionDivider />
@@ -520,7 +520,7 @@ JOIN product p
 
 ## 8. 5NF (제5정규형): 조인 종속성(Join Dependency) 분리
 
-> 💡 **핵심 규칙**: **3개 이상의 엔티티가 N:M:K 복합 관계를 가질 때, 더 작은 2개짜리 관계로 무손실 분해할 수 있다면 분리하고 JOIN으로 복원한다.**
+> 💡 <strong>핵심 규칙</strong>: <strong>3개 이상의 엔티티가 N:M:K 복합 관계를 가질 때, 더 작은 2개짜리 관계로 무손실 분해할 수 있다면 분리하고 JOIN으로 복원한다.</strong>
 
 <a id="분리-전-supply-거대-복합-관계-테이블"></a>
 
@@ -548,8 +548,8 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`supplier_id` (PK, FK)</td><td>`product_id` (PK, FK)</td></tr>
-    <tr><td>**S01**</td><td>**P01**</td></tr>
-    <tr><td>**S01**</td><td>**P02**</td></tr>
+    <tr><td><strong>S01</strong></td><td><strong>P01</strong></td></tr>
+    <tr><td><strong>S01</strong></td><td><strong>P02</strong></td></tr>
   </tbody>
 </NotionTable>
 
@@ -561,8 +561,8 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`supplier_id` (PK, FK)</td><td>`region_id` (PK, FK)</td></tr>
-    <tr><td>**S01**</td><td>**SEOUL**</td></tr>
-    <tr><td>**S01**</td><td>**BUSAN**</td></tr>
+    <tr><td><strong>S01</strong></td><td><strong>SEOUL</strong></td></tr>
+    <tr><td><strong>S01</strong></td><td><strong>BUSAN</strong></td></tr>
   </tbody>
 </NotionTable>
 
@@ -574,9 +574,9 @@ JOIN product p
 <NotionTable>
   <tbody>
     <tr><td>`product_id` (PK, FK)</td><td>`region_id` (PK, FK)</td></tr>
-    <tr><td>**P01**</td><td>**SEOUL**</td></tr>
-    <tr><td>**P01**</td><td>**BUSAN**</td></tr>
-    <tr><td>**P02**</td><td>**SEOUL**</td></tr>
+    <tr><td><strong>P01</strong></td><td><strong>SEOUL</strong></td></tr>
+    <tr><td><strong>P01</strong></td><td><strong>BUSAN</strong></td></tr>
+    <tr><td><strong>P02</strong></td><td><strong>SEOUL</strong></td></tr>
   </tbody>
 </NotionTable>
 
@@ -613,12 +613,12 @@ JOIN product_region pr
 <NotionTable>
   <tbody>
     <tr><td>단계</td><td>제거하려는 문제</td><td>속성 판단 기준 (질문)</td><td>PK / FK 설계 관점</td><td>실무 빈도</td></tr>
-    <tr><td>**1NF**</td><td>컬럼 내 다중값/배열</td><td>"속성 하나에 값 하나가 들어있는가?"</td><td>PK로 각 행 식별</td><td>**매우 높음**</td></tr>
-    <tr><td>**2NF**</td><td>부분 함수 종속</td><td>"복합 PK의 일부 컬럼만 보고 결정되는 속성이 있는가?"</td><td>복합 PK 매핑 테이블 분리</td><td>**높음**</td></tr>
-    <tr><td>**3NF**</td><td>이행 함수 종속</td><td>"일반 컬럼이 다른 일반 컬럼을 결정하고 있는가?"</td><td>별도 엔티티 PK 분리 + FK 연결</td><td>**매우 높음**</td></tr>
-    <tr><td>**BCNF**</td><td>비후보키 결정자</td><td>"어떤 속성을 결정하는 주체가 후보키가 아닌가?"</td><td>결정자 단독 테이블 분리</td><td>중간</td></tr>
-    <tr><td>**4NF**</td><td>독립적 다치 종속</td><td>"서로 상관없는 N:M 속성이 곱해지고 있는가?"</td><td>독립 매핑 테이블 분리</td><td>**높음**</td></tr>
-    <tr><td>**5NF**</td><td>3항 조인 종속</td><td>"3개 이상의 복합 관계를 더 작은 관계로 쪼갤 수 있는가?"</td><td>관계 테이블 분해</td><td>매우 낮음</td></tr>
+    <tr><td><strong>1NF</strong></td><td>컬럼 내 다중값/배열</td><td>"속성 하나에 값 하나가 들어있는가?"</td><td>PK로 각 행 식별</td><td><strong>매우 높음</strong></td></tr>
+    <tr><td><strong>2NF</strong></td><td>부분 함수 종속</td><td>"복합 PK의 일부 컬럼만 보고 결정되는 속성이 있는가?"</td><td>복합 PK 매핑 테이블 분리</td><td><strong>높음</strong></td></tr>
+    <tr><td><strong>3NF</strong></td><td>이행 함수 종속</td><td>"일반 컬럼이 다른 일반 컬럼을 결정하고 있는가?"</td><td>별도 엔티티 PK 분리 + FK 연결</td><td><strong>매우 높음</strong></td></tr>
+    <tr><td><strong>BCNF</strong></td><td>비후보키 결정자</td><td>"어떤 속성을 결정하는 주체가 후보키가 아닌가?"</td><td>결정자 단독 테이블 분리</td><td>중간</td></tr>
+    <tr><td><strong>4NF</strong></td><td>독립적 다치 종속</td><td>"서로 상관없는 N:M 속성이 곱해지고 있는가?"</td><td>독립 매핑 테이블 분리</td><td><strong>높음</strong></td></tr>
+    <tr><td><strong>5NF</strong></td><td>3항 조인 종속</td><td>"3개 이상의 복합 관계를 더 작은 관계로 쪼갤 수 있는가?"</td><td>관계 테이블 분해</td><td>매우 낮음</td></tr>
   </tbody>
 </NotionTable>
 
@@ -655,7 +655,7 @@ JOIN product_region pr
 
 정규화는 데이터 무결성과 CUD(생성·수정·삭제) 안정성을 극대화하지만, 대규모 트래픽 환경에서는 치명적인 조회 부하를 낳는다.
 
-- 데이터를 한 번 조회할 때 5~10개의 테이블을 `JOIN`해야 함 ➔ **Disk I/O 폭증, 버퍼 풀 고갈, CPU 부하로 인한 슬로우 쿼리**.
+- 데이터를 한 번 조회할 때 5~10개의 테이블을 `JOIN`해야 함 ➔ <strong>Disk I/O 폭증, 버퍼 풀 고갈, CPU 부하로 인한 슬로우 쿼리</strong>.
 <a id="2-비정규화-도입-기준-및-3대-기법"></a>
 
 ### ② 비정규화 도입 기준 및 3대 기법
@@ -668,17 +668,17 @@ JOIN product_region pr
  3. 대규모 실시간 집계(통계, 카운트, 총액) 연산이 빈번한 구간
 ```
 
-1. **중복 컬럼 역정규화**: `ORDERS` 테이블에 `product_name`을 복제하여 목록 조회 시 `JOIN` 제거.
-1. **파생/집계 컬럼 추가**: `POST` 테이블에 `comment_count`, `like_count` 컬럼을 두고 댓글 작성 시마다 +1 갱신 (O(1) 조회).
-1. **통계/히스토리 요약 테이블**: 매일 밤 정산 배치로 `DAILY_SETTLEMENT_SUMMARY` 요약 테이블 생성.
+1. <strong>중복 컬럼 역정규화</strong>: `ORDERS` 테이블에 `product_name`을 복제하여 목록 조회 시 `JOIN` 제거.
+1. <strong>파생/집계 컬럼 추가</strong>: `POST` 테이블에 `comment_count`, `like_count` 컬럼을 두고 댓글 작성 시마다 +1 갱신 (O(1) 조회).
+1. <strong>통계/히스토리 요약 테이블</strong>: 매일 밤 정산 배치로 `DAILY_SETTLEMENT_SUMMARY` 요약 테이블 생성.
 <a id="3-비정규화의-트레이드오프-데이터-정합성-방어-전략"></a>
 
 ### ③ 비정규화의 트레이드오프: 데이터 정합성 방어 전략
 
-- **비용**: 조회 속도를 얻는 대신, **데이터 불일치(Inconsistency) 위험과 CUD 성능 저하**를 감수해야 함.
-- **방어책**:
-- 원본 갱신 시 중복 컬럼을 동기화하는 **애플리케이션 이벤트 / 트랜잭션 파이프라인(CDC)** 구축.
-- 주기적인 데이터 불일치를 교정하는 **정합성 검증 배치(Reconciliation Batch)** 운영.
+- <strong>비용</strong>: 조회 속도를 얻는 대신, <strong>데이터 불일치(Inconsistency) 위험과 CUD 성능 저하</strong>를 감수해야 함.
+- <strong>방어책</strong>:
+- 원본 갱신 시 중복 컬럼을 동기화하는 <strong>애플리케이션 이벤트 / 트랜잭션 파이프라인(CDC)</strong> 구축.
+- 주기적인 데이터 불일치를 교정하는 <strong>정합성 검증 배치(Reconciliation Batch)</strong> 운영.
 
 
 <NotionDivider />
@@ -687,12 +687,12 @@ JOIN product_region pr
 
 ## 11. 최종 결론 및 데이터 아키텍트의 원칙
 
-> 💡 **데이터 모델링의 황금률**:
+> 💡 <strong>데이터 모델링의 황금률</strong>:
 
 
 <NotionIndent>
 
-**"설계는 3NF 및 N:M 매핑(4NF)까지 철저하게 정규화(Normalize First)하고, 최적화는 실제 트래픽과 슬로우 쿼리 메트릭에 근거하여 신중하게 비정규화(Denormalize by Metrics)하라."**
+<strong>"설계는 3NF 및 N:M 매핑(4NF)까지 철저하게 정규화(Normalize First)하고, 최적화는 실제 트래픽과 슬로우 쿼리 메트릭에 근거하여 신중하게 비정규화(Denormalize by Metrics)하라."</strong>
 
 
 </NotionIndent>

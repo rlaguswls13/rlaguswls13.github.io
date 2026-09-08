@@ -35,18 +35,18 @@ notionUrl: "https://app.notion.com/p/3c019946ca7680f5aa3ef175479b1dba"
 
 <a id="핵심-요약"></a>
 
-## **핵심 요약**
+## <strong>핵심 요약</strong>
 
-파이썬(Python)은 문법이 간결하고 가독성이 뛰어난 **인터프리터 방식의 동적 타이핑(Dynamic Typing) 고급 프로그래밍 언어**다. 코드 블록을 중괄호(`{}`) 대신 **들여쓰기(Indentation)**로 구분한다.
+파이썬(Python)은 문법이 간결하고 가독성이 뛰어난 <strong>인터프리터 방식의 동적 타이핑(Dynamic Typing) 고급 프로그래밍 언어</strong>다. 코드 블록을 중괄호(`{}`) 대신 <strong>들여쓰기(Indentation)</strong>로 구분한다.
 
 
 <NotionDivider />
 
 <a id="1-변수와-동적-타이핑-dynamic-typing"></a>
 
-## **1. 변수와 동적 타이핑 (Dynamic Typing)**
+## <strong>1. 변수와 동적 타이핑 (Dynamic Typing)</strong>
 
-파이썬에서는 변수의 타입을 명시적으로 선언하지 않으며, **대입되는 객체(Object)에 따라 변수의 타입이 동적으로 결정**된다.
+파이썬에서는 변수의 타입을 명시적으로 선언하지 않으며, <strong>대입되는 객체(Object)에 따라 변수의 타입이 동적으로 결정</strong>된다.
 
 
 ```python
@@ -67,12 +67,12 @@ print(id(name))   # 객체 메모리 주소 출력
 
 <a id="2-주요-연산자"></a>
 
-## **2. 주요 연산자**
+## <strong>2. 주요 연산자</strong>
 
-- **산술 연산자**: `+`, `-`,`*` , `/` (실수 나눗셈), `//` (정수 몫), `%` (나머지), `**` (거듭제곱)
-- **비교 연산자**: `==`, `!=`, `>`, `<`, `>=`, `<=`
-- **논리 연산자**: `and`, `or`, `not`
-- **멤버십 연산자**: `in`, `not in` (리스트, 튜플, 문자열 내부 포함 여부 확인)
+- <strong>산술 연산자</strong>: `+`, `-`,`*` , `/` (실수 나눗셈), `//` (정수 몫), `%` (나머지), `**` (거듭제곱)
+- <strong>비교 연산자</strong>: `==`, `!=`, `>`, `<`, `>=`, `<=`
+- <strong>논리 연산자</strong>: `and`, `or`, `not`
+- <strong>멤버십 연산자</strong>: `in`, `not in` (리스트, 튜플, 문자열 내부 포함 여부 확인)
 
 ```python
 # 멤버십 연산자 예시
@@ -85,11 +85,11 @@ print("banana" in fruits)  # True
 
 <a id="3-제어문-control-flow"></a>
 
-## **3. 제어문 (Control Flow)**
+## <strong>3. 제어문 (Control Flow)</strong>
 
 <a id="1-조건문-if-elif-else"></a>
 
-### **1) 조건문 (`if - elif - else`)**
+### <strong>1) 조건문 (`if - elif - else`)</strong>
 
 
 ```python
@@ -104,7 +104,7 @@ else:
 
 <a id="2-반복문-for-while"></a>
 
-### **2) 반복문 (`for`, `while`)**
+### <strong>2) 반복문 (`for`, `while`)</strong>
 
 
 ```python
@@ -129,11 +129,11 @@ while count < 5:
 
 <a id="4-들여쓰기indentation와-코드-블록-java-와의-차이점"></a>
 
-## **4. 들여쓰기(Indentation)와 코드 블록 (Java `{}`와의 차이점)**
+## <strong>4. 들여쓰기(Indentation)와 코드 블록 (Java `{}`와의 차이점)</strong>
 
 파이썬은 Java나 C 계열 언어와 달리 중괄호(`{}`)로 코드 블록(Block Scope)을 나누지 않는다.
 
-대신 **콜론(`:`)과 들여쓰기(Indentation)**를 사용하여 코드의 제어 범위와 블록 구획을 나눈다.
+대신 <strong>콜론(`:`)과 들여쓰기(Indentation)</strong>를 사용하여 코드의 제어 범위와 블록 구획을 나눈다.
 
 
 ```python
@@ -151,16 +151,16 @@ if score >= 90:
 
 <a id="5-파이썬-들여쓰기-작성-수칙-pep-8-표준"></a>
 
-## **5. 파이썬 들여쓰기 작성 수칙 (PEP 8 표준)**
+## <strong>5. 파이썬 들여쓰기 작성 수칙 (PEP 8 표준)</strong>
 
-1. **공백(Space) 4칸 권장 (PEP 8 표준)**:
-- 파이썬 공식 스타일 가이드(PEP 8)에서는 코드 블록 1단계당 **스페이스 4칸(4 Spaces)** 사용을 표준으로 정의한다.
+1. <strong>공백(Space) 4칸 권장 (PEP 8 표준)</strong>:
+- 파이썬 공식 스타일 가이드(PEP 8)에서는 코드 블록 1단계당 <strong>스페이스 4칸(4 Spaces)</strong> 사용을 표준으로 정의한다.
 
-1. **Tab과 Space 혼용 금지**:
+1. <strong>Tab과 Space 혼용 금지</strong>:
 - 탭(Tab)과 스페이스(Space)를 같은 파일 안에서 혼용하면 **`TabError`*가 발생한다. 대부분의 현대 IDE(VS Code, PyCharm)는 Tab 키를 누르면 자동으로 공백 4칸으로 변환해 준다.
 
-1. **빈 블록 처리 키워드 (`pass`)**:
-- 콜론(`:`) 뒤에 구문상 들여써야 하지만 아직 구현할 내용이 없는 경우 **`pass`** 키워드를 써서 에러를 방지한다.
+1. <strong>빈 블록 처리 키워드 (`pass`)</strong>:
+- 콜론(`:`) 뒤에 구문상 들여써야 하지만 아직 구현할 내용이 없는 경우 <strong>`pass`</strong> 키워드를 써서 에러를 방지한다.
 
 
 ```python
@@ -178,14 +178,14 @@ def process_data(data):
 
 <a id="6-자주-발생하는-들여쓰기-에러-troubleshooting"></a>
 
-## **6. 자주 발생하는 들여쓰기 에러 (Troubleshooting)**
+## <strong>6. 자주 발생하는 들여쓰기 에러 (Troubleshooting)</strong>
 
-- **`IndentationError: expected an indented block`**:
+- <strong>`IndentationError: expected an indented block`</strong>:
 - `if`, `for`, `def`, `class` 등 콜론(`:`)이 나온 다음 줄에 들여쓰기가 누락되었을 때 발생.
 
-- **`IndentationError: unexpected indent`**:
+- <strong>`IndentationError: unexpected indent`</strong>:
 - 들여쓰지 말아야 할 위치에 불필요한 공백이 들어갔을 때 발생.
 
-- **`TabError: inconsistent use of tabs and spaces in indentation`**:
+- <strong>`TabError: inconsistent use of tabs and spaces in indentation`</strong>:
 - 탭 문자(Tab)와 공백(Space)이 섞여서 사용되었을 때 발생.
 

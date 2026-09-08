@@ -1,0 +1,284 @@
+---
+category: "tech_study_series"
+created_date: "2026-09-04"
+tag: []
+slug: "java-syntax-program-structure"
+subcategory: "java"
+status: "publish"
+description: "Java 문법 01. 프로그램 구조와 실행"
+title: "Java 문법 01. 프로그램 구조와 실행"
+page_id: "3d119946-ca76-80fc-8dea-d72943e68907"
+source_id: "3d119946ca7680fc8dead72943e68907"
+last_edited_time: "2026-09-04T01:13:00.000Z"
+notion_url: "https://app.notion.com/p/Java-01-3d119946ca7680fc8dead72943e68907"
+id: "3d119946ca7680fc8dead72943e68907"
+sourceId: "3d119946-ca76-80fc-8dea-d72943e68907"
+date: "2026-09-04"
+tags: []
+package: "java"
+notionUrl: "https://app.notion.com/p/Java-01-3d119946ca7680fc8dead72943e68907"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [0. 추상화 계층 구분선 (Scoping Boundary)](#0-추상화-계층-구분선-scoping-boundary)
+- [1. 가장 작은 Java 프로그램](#1-가장-작은-java-프로그램)
+- [2. 소스 파일의 구성 요소와 순서](#2-소스-파일의-구성-요소와-순서)
+  - [① 패키지 선언 (package)](#1-패키지-선언-package)
+  - [② import 선언](#2-import-선언)
+  - [③ 타입 선언](#3-타입-선언)
+- [3. 클래스명과 파일명 규칙](#3-클래스명과-파일명-규칙)
+- [4. main 메서드 — 시그니처의 의미](#4-main-메서드-시그니처의-의미)
+- [5. 컴파일과 실행](#5-컴파일과-실행)
+  - [표준 2단계](#표준-2단계)
+  - [단일 파일 실행 모드 (Java 11+, JEP 330)](#단일-파일-실행-모드-java-11-jep-330)
+- [6. 문장, 블록, 세미콜론, 화이트스페이스](#6-문장-블록-세미콜론-화이트스페이스)
+- [7. 주석과 Javadoc](#7-주석과-javadoc)
+- [8. 패키지와 디렉터리 구조](#8-패키지와-디렉터리-구조)
+
+이 시리즈의 첫 장입니다. 클래스 하나, 메서드 하나를 짜서 실행하기까지 <strong>소스 파일이 어떤 순서로 구성되는지</strong>, <strong>`javac`와 `java`가 각각 무엇을 하는지</strong>, 그리고 <strong>파일명·문장·주석 같은 겉보기 규칙이 왜 그렇게 정해졌는지</strong>를 다룹니다.
+
+<a id="핵심-요약"></a>
+
+## 핵심 요약
+
+- Java 소스 파일(`.java`)은 <strong>① 패키지 선언 → ② import 선언 → ③ 타입 선언(class/interface/enum/record)</strong> 순서로 작성합니다. 이 순서는 문법상 강제입니다.
+- 한 파일에 `public` 타입은 <strong>최대 하나</strong>만 둘 수 있고, 그 타입의 이름은 <strong>파일명과 정확히 일치</strong>해야 합니다(대소문자 포함).
+- 프로그램의 시작점은 `public static void main(String[] args)` 메서드입니다. 이름·제어자·매개변수 형태가 약속돼 있어 JVM이 이 시그니처를 찾아 호출합니다.
+- 빌드는 두 단계입니다. `javac`가 `.java` → `.class`(바이트코드)로 <strong>컴파일</strong>하고, `java`가 그 `.class`를 JVM에 올려 <strong>실행</strong>합니다.
+- 문장은 세미콜론(`;`)으로 끝나고, 블록은 중괄호(`{}`)로 묶으며, 줄바꿈·들여쓰기는 문법적 의미가 없습니다(파이썬과 반대).
+
+<NotionDivider />
+
+<a id="0-추상화-계층-구분선-scoping-boundary"></a>
+
+## 0. 추상화 계층 구분선 (Scoping Boundary)
+
+이 장은 세 계층 중 주로 <strong>①</strong>을 다루고, 컴파일·실행을 설명할 때만 ②③을 언급합니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>계층</td><td>이 장에서 다루는 것</td></tr>
+    <tr><td>① 소스 문법 (Java Language Specification)</td><td>파일 구성 순서, 파일명 규칙, `main` 시그니처, 문장·블록·주석</td></tr>
+    <tr><td>② 컴파일러 (`javac`)</td><td>`.java` → `.class` 변환, 파일당 산출물, 클래스패스</td></tr>
+    <tr><td>③ 실행 엔진 (JVM)</td><td>`.class` 로딩과 `main` 호출</td></tr>
+  </tbody>
+</NotionTable>
+
+`.class` 바이트코드가 JVM에서 해석·JIT 컴파일되는 하이브리드 실행 구조 자체는 [Java는 컴파일 언어인가 인터프리터 언어인가 - 하이브리드 실행 구조 분석](https://app.notion.com/p/Java%EB%8A%94%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%20%EC%96%B8%EC%96%B4%EC%9D%B8%EA%B0%80%20%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0%20%EC%96%B8%EC%96%B4%EC%9D%B8%EA%B0%80%20-%20%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C%20%EC%8B%A4%ED%96%89%20%EA%B5%AC%EC%A1%B0%20%EB%B6%84%EC%84%9D)에서 다룹니다.
+
+
+<NotionDivider />
+
+<a id="1-가장-작은-java-프로그램"></a>
+
+## 1. 가장 작은 Java 프로그램
+
+`Hello.java`:
+
+
+```java
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java");
+    }
+}
+```
+
+- `public class Hello` — `Hello`라는 이름의 클래스를 선언합니다. `public`이므로 파일명은 반드시 `Hello.java`입니다.
+- `public static void main(String[] args)` — 실행 진입점. 3절에서 각 키워드의 의미를 봅니다.
+- `System.out.println(...)` — 표준 출력 스트림(`System.out`)에 문자열과 줄바꿈을 씁니다.
+- 모든 실행 코드는 <strong>메서드 안</strong>에, 모든 메서드는 <strong>타입(클래스 등) 안</strong>에 있어야 합니다. 파이썬·자바스크립트와 달리 최상위(top-level)에 바로 문장을 쓸 수 없습니다.
+
+<NotionDivider />
+
+<a id="2-소스-파일의-구성-요소와-순서"></a>
+
+## 2. 소스 파일의 구성 요소와 순서
+
+완전한 형태의 소스 파일은 다음 세 부분으로 이뤄지며, <strong>이 순서를 지켜야 컴파일됩니다</strong>.
+
+
+```java
+// ① 패키지 선언 — 있다면 반드시 첫 줄(주석·공백 제외)
+package com.example.app;
+
+// ② import 선언 — 패키지 선언 다음, 타입 선언 앞
+import java.util.List;
+import java.util.ArrayList;
+import static java.lang.Math.max;   // static import: 정적 멤버를 이름만으로 사용
+
+// ③ 타입 선언 — class / interface / enum / record / @interface
+public class App {
+    // 필드, 메서드, 중첩 타입 ...
+}
+```
+
+<a id="1-패키지-선언-package"></a>
+
+### ① 패키지 선언 (`package`)
+
+- 이 파일의 타입들이 속할 <strong>네임스페이스</strong>를 지정합니다. 생략하면 "이름 없는 패키지(unnamed package)"에 속하며, 학습용 외에는 권장되지 않습니다.
+- 파일에 있다면 <strong>주석과 공백을 제외한 첫 문장</strong>이어야 합니다. 파일당 최대 1개.
+- 관례상 소문자, 소유 도메인 역순(`com.example.project`)을 씁니다. 8절에서 디렉터리 구조와의 관계를 봅니다.
+<a id="2-import-선언"></a>
+
+### ② import 선언
+
+- 다른 패키지의 타입을 <strong>짧은 이름(simple name)</strong>으로 쓰기 위한 선언입니다. `import` 없이도 <strong>완전한 이름(fully-qualified name)</strong> `java.util.List`를 매번 써서 쓸 수는 있습니다.
+- `java.lang` 패키지(`String`, `System`, `Integer`, `Math` 등)는 <strong>자동 import</strong>되므로 선언이 필요 없습니다.
+- `import java.util.*;`는 해당 패키지의 타입들을 한꺼번에 가져오는 <strong>on-demand import</strong>입니다. 런타임 성능에는 영향이 없지만, 어느 패키지에서 온 타입인지 모호해질 수 있어 명시적 import를 선호하는 편입니다.
+- `import static ...`는 <strong>정적 멤버</strong>(정적 메서드·상수)를 클래스명 없이 쓰게 합니다. `Math.max(a, b)` → `max(a, b)`. 남용하면 출처가 흐려집니다.
+<a id="3-타입-선언"></a>
+
+### ③ 타입 선언
+
+- `class`, `interface`, `enum`, `record`, 애너테이션 타입(`@interface`) 중 하나 이상.
+- 한 파일에 여러 타입을 둘 수 있으나 <strong>`public`은 최대 하나</strong>이며, 나머지는 접근 제어자 없는(package-private) 타입이어야 합니다.
+
+<NotionDivider />
+
+<a id="3-클래스명과-파일명-규칙"></a>
+
+## 3. 클래스명과 파일명 규칙
+
+- 파일에 `public` 최상위 타입이 있으면 <strong>파일명 = 그 타입명 + `.java`</strong>. `public class Hello`는 `Hello.java`에만 있을 수 있습니다. 어기면 컴파일 에러입니다.
+
+```text
+error: class Hello is public, should be declared in a file named Hello.java
+```
+
+
+- `public` 타입이 없다면 파일명은 자유지만, 관례상 "그 파일의 대표 타입명"을 씁니다.
+- 이 규칙 덕분에 컴파일러와 IDE는 <strong>타입 이름만으로 소스 파일 위치를 계산</strong>할 수 있습니다.
+- 타입 이름은 관례상 <strong>UpperCamelCase</strong>(`OrderService`), 패키지는 소문자, 상수는 `UPPER_SNAKE_CASE`입니다. 문법이 강제하진 않지만 표준 라이브러리와 도구가 이 관례를 전제합니다.
+
+<NotionDivider />
+
+<a id="4-main-메서드-시그니처의-의미"></a>
+
+## 4. `main` 메서드 — 시그니처의 의미
+
+
+```java
+public static void main(String[] args) { ... }
+```
+
+
+<NotionTable>
+  <tbody>
+    <tr><td>요소</td><td>의미</td><td>왜 이 형태인가</td></tr>
+    <tr><td>`public`</td><td>외부(JVM 런처)에서 호출 가능</td><td>JVM이 클래스 밖에서 이 메서드를 호출해야 함</td></tr>
+    <tr><td>`static`</td><td>객체를 만들지 않고 클래스만으로 호출</td><td>진입점 실행에 인스턴스가 없어야 함(닭-달걀 문제 회피)</td></tr>
+    <tr><td>`void`</td><td>반환값 없음</td><td>종료 코드는 `System.exit(int)`로 따로 전달</td></tr>
+    <tr><td>`main`</td><td>JVM이 찾는 약속된 이름</td><td>런처가 이 이름을 하드코딩해 탐색</td></tr>
+    <tr><td>`String[] args`</td><td>명령행 인자 배열</td><td>`java App a b c` → `args = ["a","b","c"]`</td></tr>
+  </tbody>
+</NotionTable>
+
+- `String... args`(가변 인자)로 써도 됩니다. 배열과 동등하게 취급됩니다.
+- `args`는 프로그램 이름을 포함하지 않습니다. C의 `argv[0]`와 다릅니다.
+- 매개변수 이름은 `args`가 관례일 뿐 무엇이든 됩니다. <strong>타입과 형태</strong>(`String[]`)만 맞으면 됩니다.
+- Java 21에서는 인스턴스 `main`, 매개변수 없는 `main`, 클래스 선언 없는 소스 파일을 허용하는 <strong>간이 진입점</strong>이 프리뷰(JEP 445)로 들어왔습니다. 정식 문법이 아니므로 이 시리즈는 표준 형태만 씁니다.
+
+<NotionDivider />
+
+<a id="5-컴파일과-실행"></a>
+
+## 5. 컴파일과 실행
+
+<a id="표준-2단계"></a>
+
+### 표준 2단계
+
+
+```text
+$ javac Hello.java      # Hello.java -> Hello.class (바이트코드)
+$ java Hello            # Hello.class를 JVM에 로딩하고 main() 호출  (.class 확장자는 붙이지 않음)
+Hello, Java
+```
+
+- `javac`는 <strong>파일당 `.class`를 하나씩</strong> 만듭니다. 중첩 타입은 `Outer$Inner.class`처럼 별도 파일이 됩니다.
+- `java`의 인자는 <strong>파일 경로가 아니라 클래스의 완전한 이름</strong>입니다. 패키지가 있으면 `java com.example.app.App`이고, 이때 현재 디렉터리 기준으로 `com/example/app/App.class`가 있어야 합니다.
+- `cp`(classpath) 옵션으로 `.class`와 라이브러리(`.jar`)를 찾을 위치를 지정합니다.
+<a id="단일-파일-실행-모드-java-11-jep-330"></a>
+
+### 단일 파일 실행 모드 (Java 11+, JEP 330)
+
+
+```text
+$ java Hello.java       # 컴파일 결과를 디스크에 남기지 않고 메모리에서 바로 실행
+```
+
+- 학습·스크립트용입니다. `.java`를 직접 넘기면 내부적으로 컴파일 후 실행합니다.
+- 조건: 단일 소스 파일, 외부 의존성 없음(또는 `-class-path`로 해결 가능).
+
+<NotionDivider />
+
+<a id="6-문장-블록-세미콜론-화이트스페이스"></a>
+
+## 6. 문장, 블록, 세미콜론, 화이트스페이스
+
+- <strong>문장(statement)</strong>은 세미콜론 `;`으로 끝납니다. 줄바꿈이 아니라 세미콜론이 경계입니다.
+
+```java
+int a = 1; int b = 2;              // 한 줄에 두 문장 — 합법
+int c =
+    a + b;                        // 여러 줄에 걸친 한 문장 — 합법
+```
+
+
+- <strong>블록(block)</strong>은 `{ ... }`로 묶은 문장 묶음이며, 하나의 문장처럼 취급됩니다. `if`, `for`, 메서드 본문 등에 씁니다.
+- <strong>줄바꿈·들여쓰기·공백은 문법적 의미가 없습니다.</strong> 가독성을 위한 관례일 뿐입니다. 파이썬의 들여쓰기 구획, C의 전처리기 지시문 같은 "줄 단위 규칙"이 Java에는 없습니다.
+- 빈 문장(`;` 하나)도 문법적으로 유효하지만 대개 실수입니다. `while (cond);`처럼 의도치 않은 무한 루프를 만들 수 있습니다.
+
+<NotionDivider />
+
+<a id="7-주석과-javadoc"></a>
+
+## 7. 주석과 Javadoc
+
+
+```java
+// 한 줄 주석
+
+/*
+   여러 줄 주석. 중첩되지 않음.
+*/
+
+/**
+ * Javadoc 주석. 타입·메서드·필드 선언 바로 위에 두면
+ * javadoc 도구가 API 문서(HTML)로 추출한다.
+ *
+ * @param name 인사할 대상
+ * @return 완성된 인사말
+ */
+public String greet(String name) { ... }
+```
+
+- `//`, `/* */`는 컴파일 시 제거됩니다.
+- `/** */`(Javadoc)는 <strong>선언 바로 앞</strong>에 있을 때만 의미가 있으며, `@param`·`@return`·`@throws`·`{@link ...}` 같은 태그를 씁니다. IDE의 호버 도움말도 이 주석을 읽습니다.
+
+<NotionDivider />
+
+<a id="8-패키지와-디렉터리-구조"></a>
+
+## 8. 패키지와 디렉터리 구조
+
+- <strong>패키지 이름의 점(`.`)은 디렉터리 계층에 대응</strong>합니다. `package com.example.app;`인 소스는 소스 루트 기준 `com/example/app/` 아래에 있어야 하고, 컴파일된 `.class`도 같은 구조로 놓입니다.
+
+```text
+src/
+└─ com/
+   └─ example/
+      └─ app/
+         ├─ App.java        // package com.example.app;
+         └─ OrderService.java
+```
+
+
+- 패키지는 ① 이름 충돌 방지(네임스페이스), ② 접근 경계(`public`이 아닌 멤버는 같은 패키지에서만 보임)의 두 역할을 합니다. 접근 제어는 06장에서 자세히 다룹니다.
+- 빌드 도구(Gradle·Maven)는 `src/main/java`를 소스 루트로 약속하고 이 구조를 강제합니다
+

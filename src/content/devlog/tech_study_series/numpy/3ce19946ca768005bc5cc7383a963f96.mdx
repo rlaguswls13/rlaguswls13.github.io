@@ -34,7 +34,7 @@ notionUrl: "https://app.notion.com/p/Python-NumPy-07-ufunc-axis-3ce19946ca768005
 ## 핵심 요약
 
 NumPy 연산은 3층입니다
-**① 원소별 연산**(`+`, `*`, `>`), **② 유니버설 함수(ufunc)**(`np.sqrt`, `np.exp` — 배열 전체에 함수 적용), **③ 집계 함수**(`sum`, `mean`, `std` — 축을 따라 값을 요약).
+<strong>① 원소별 연산</strong>(`+`, `*`, `>`), <strong>② 유니버설 함수(ufunc)</strong>(`np.sqrt`, `np.exp` — 배열 전체에 함수 적용), <strong>③ 집계 함수</strong>(`sum`, `mean`, `std` — 축을 따라 값을 요약).
 
 가장 헷갈리는 건 집계 함수의 `axis` 인자입니다. "`axis`로 지정한 축이 사라진다"만 기억하면 됩니다.
 
@@ -50,7 +50,7 @@ import numpy as np
 
 ## 1. 원소별 연산
 
-같은 위치의 원소끼리 연산합니다. `*`는 **원소별 곱**이지 행렬곱이 아닙니다 (행렬곱은 `@`, → [Python - NumPy 10. 선형대수 기초](https://app.notion.com/p/Python%20-%20NumPy%2010.%20%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98%20%EA%B8%B0%EC%B4%88)).
+같은 위치의 원소끼리 연산합니다. `*`는 <strong>원소별 곱</strong>이지 행렬곱이 아닙니다 (행렬곱은 `@`, → [Python - NumPy 10. 선형대수 기초](https://app.notion.com/p/Python%20-%20NumPy%2010.%20%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98%20%EA%B8%B0%EC%B4%88)).
 
 
 ```python
@@ -94,7 +94,7 @@ np.round([1.24, 1.36], 1)   # array([1.2, 1.4])  - 자리수 반올림
 # np.round(0.5) → 0.0,  np.round(1.5) → 2.0,  np.round(2.5) → 2.0
 ```
 
-**`np.maximum` vs `np.max` 구분** (자주 틀림):
+<strong>`np.maximum` vs `np.max` 구분</strong> (자주 틀림):
 
 
 ```python
@@ -102,7 +102,7 @@ np.maximum(a, b)    # 두 배열의 "원소별" 최댓값 → 배열 반환
 np.max(a)           # 한 배열 "안에서" 최댓값 → 스칼라 반환
 ```
 
-> 💡 **이럴 때**: 두 배열을 원소별로 비교해 큰 값을 취할 때(하한 적용)는 `np.maximum`, 한 배열의 최댓값 하나가 필요하면 `np.max`.
+> 💡 <strong>이럴 때</strong>: 두 배열을 원소별로 비교해 큰 값을 취할 때(하한 적용)는 `np.maximum`, 한 배열의 최댓값 하나가 필요하면 `np.max`.
 
 
 <NotionDivider />
@@ -136,9 +136,9 @@ a.sum(axis=1).shape   # (2,)
 a.sum(axis=0, keepdims=True).shape   # (1, 3)  - 축을 없애지 않고 1로 유지 (브로드캐스팅용)
 ```
 
-> 💡 **이럴 때**: 집계 결과를 원본에 broadcast로 되돌려 뺄 때 씁니다(`x - x.mean(axis=0, keepdims=True)` 정규화).
+> 💡 <strong>이럴 때</strong>: 집계 결과를 원본에 broadcast로 되돌려 뺄 때 씁니다(`x - x.mean(axis=0, keepdims=True)` 정규화).
 
-> **전처리 관용구**: "열별(feature별) 통계"는 거의 항상 `axis=0`입니다. 데이터가 `(샘플 수, 특징 수)`로 놓이기 때문입니다.
+> <strong>전처리 관용구</strong>: "열별(feature별) 통계"는 거의 항상 `axis=0`입니다. 데이터가 `(샘플 수, 특징 수)`로 놓이기 때문입니다.
 
 <a id="주요-집계-함수"></a>
 
@@ -160,7 +160,7 @@ np.quantile(a, 0.75, axis=0)   # 동일 (0~1 스케일)
 
 <NotionIndent>
 
-💡 **이럴 때**: 표본 통계로 보고하거나 pandas 계산 결과와 값을 맞춰야 하면 `ddof=1`을 명시합니다.
+💡 <strong>이럴 때</strong>: 표본 통계로 보고하거나 pandas 계산 결과와 값을 맞춰야 하면 `ddof=1`을 명시합니다.
 
 
 </NotionIndent>
@@ -190,5 +190,5 @@ a[np.argsort(a)]    # array([1, 1, 3, 4, 5])   - argsort로 실제 정렬
 
 `argmax`는 분류 모델의 예측 클래스를 뽑을 때(`probs.argmax(axis=1)`) 필수입니다.
 
-> 💡 **이럴 때**: 분류 모델의 확률 출력에서 예측 클래스 인덱스를 뽑을 때 `probs.argmax(axis=1)`.
+> 💡 <strong>이럴 때</strong>: 분류 모델의 확률 출력에서 예측 클래스 인덱스를 뽑을 때 `probs.argmax(axis=1)`.
 

@@ -33,11 +33,11 @@ notionUrl: "https://app.notion.com/p/Python-seaborn-07-3cf19946ca768194b117f421e
 
 ## 핵심 요약
 
-seaborn은 그림의 **외형**을 세 축으로 나눠 통제합니다.
+seaborn은 그림의 <strong>외형</strong>을 세 축으로 나눠 통제합니다.
 
-- **스타일(style)**: 배경·격자·축선. `set_style`로 5종 프리셋(`darkgrid`, `whitegrid`, `dark`, `white`, `ticks`).
-- **컨텍스트(context)**: 요소 크기(글꼴·선·마커) 스케일. `set_context`로 4종(`paper` &lt; `notebook` &lt; `talk` &lt; `poster`).
-- **팔레트(palette)**: 색. `color_palette`로 범주형(`deep`)·순차(`viridis`)·발산(`coolwarm`)을 구분해서 씀.
+- <strong>스타일(style)</strong>: 배경·격자·축선. `set_style`로 5종 프리셋(`darkgrid`, `whitegrid`, `dark`, `white`, `ticks`).
+- <strong>컨텍스트(context)</strong>: 요소 크기(글꼴·선·마커) 스케일. `set_context`로 4종(`paper` &lt; `notebook` &lt; `talk` &lt; `poster`).
+- <strong>팔레트(palette)</strong>: 색. `color_palette`로 범주형(`deep`)·순차(`viridis`)·발산(`coolwarm`)을 구분해서 씀.
 `set_theme()` 한 번으로 위 셋 + 폰트가 한꺼번에 설정됩니다. 팔레트 선택은 "데이터가 범주냐, 크기 순서가 있냐, 0 기준 양방향이냐"로 결정합니다.
 
 
@@ -63,7 +63,7 @@ sns.set_theme(rc={"figure.figsize": (8, 5), "axes.spines.top": False})
 - 내부적으로 `set_style` + `set_context` + `set_palette` + matplotlib `rcParams`를 한 번에 적용합니다.
 - `rc=`로 임의의 matplotlib 파라미터를 덮어씁니다.
 - 예전 코드의 `sns.set()`은 `set_theme()`의 옛 이름입니다(동일 기능).
-> 💡 **이럴 때**: 노트북 맨 위에서 `sns.set_theme(context="notebook")`로 한 번 잡아 두면 이후 모든 그림이 일관된 크기·색으로 나옵니다. 발표 자료를 만들 때만 `context="talk"`로 바꿔 다시 실행합니다.
+> 💡 <strong>이럴 때</strong>: 노트북 맨 위에서 `sns.set_theme(context="notebook")`로 한 번 잡아 두면 이후 모든 그림이 일관된 크기·색으로 나옵니다. 발표 자료를 만들 때만 `context="talk"`로 바꿔 다시 실행합니다.
 
 
 <NotionDivider />
@@ -120,9 +120,9 @@ with sns.plotting_context("poster"):
   </tbody>
 </NotionTable>
 
-- 스타일(색/격자)은 그대로 두고 **요소 크기만** 바꿉니다.
+- 스타일(색/격자)은 그대로 두고 <strong>요소 크기만</strong> 바꿉니다.
 - `font_scale`로 글꼴만 따로 키울 수 있습니다.
-> 💡 **이럴 때**: 같은 그림을 블로그와 발표에 모두 써야 하면, 코드는 그대로 두고 저장 직전에 `set_context`만 바꿔 두 번 렌더링합니다. 크기를 손으로 조정할 필요가 없습니다.
+> 💡 <strong>이럴 때</strong>: 같은 그림을 블로그와 발표에 모두 써야 하면, 코드는 그대로 두고 저장 직전에 `set_context`만 바꿔 두 번 렌더링합니다. 크기를 손으로 조정할 필요가 없습니다.
 
 
 <NotionDivider />
@@ -131,15 +131,15 @@ with sns.plotting_context("poster"):
 
 ## 4. 팔레트 — 데이터 유형에 맞추기
 
-색 선택의 원칙은 **데이터의 성질**에 컬러맵 종류를 맞추는 것입니다.
+색 선택의 원칙은 <strong>데이터의 성질</strong>에 컬러맵 종류를 맞추는 것입니다.
 
 
 <NotionTable>
   <tbody>
     <tr><td>데이터 유형</td><td>팔레트 종류</td><td>예</td><td>seaborn 지정</td></tr>
-    <tr><td>순서 없는 범주</td><td>**정성(qualitative)**</td><td>부서, 지역, 종</td><td>`"deep"`, `"muted"`, `"colorblind"`, `"Set2"`</td></tr>
-    <tr><td>크기 순서가 있음 (낮음→높음)</td><td>**순차(sequential)**</td><td>인구 밀도, 매출</td><td>`"viridis"`, `"rocket"`, `"mako"`, `"Blues"`</td></tr>
-    <tr><td>0(또는 기준값) 중심 양방향</td><td>**발산(diverging)**</td><td>상관계수, 증감률</td><td>`"vlag"`, `"icefire"`, `"coolwarm"`, `"RdBu_r"`</td></tr>
+    <tr><td>순서 없는 범주</td><td><strong>정성(qualitative)</strong></td><td>부서, 지역, 종</td><td>`"deep"`, `"muted"`, `"colorblind"`, `"Set2"`</td></tr>
+    <tr><td>크기 순서가 있음 (낮음→높음)</td><td><strong>순차(sequential)</strong></td><td>인구 밀도, 매출</td><td>`"viridis"`, `"rocket"`, `"mako"`, `"Blues"`</td></tr>
+    <tr><td>0(또는 기준값) 중심 양방향</td><td><strong>발산(diverging)</strong></td><td>상관계수, 증감률</td><td>`"vlag"`, `"icefire"`, `"coolwarm"`, `"RdBu_r"`</td></tr>
   </tbody>
 </NotionTable>
 
@@ -157,9 +157,9 @@ sns.diverging_palette(220, 20, as_cmap=True)   # 두 색상(hue) 사이 발산
 sns.cubehelix_palette(8)                        # 흑백 인쇄에도 단조 증가
 ```
 
-- `hue`에 넘긴 변수가 **수치형**이면 seaborn이 자동으로 순차 컬러맵을 씁니다. **범주형**이면 정성 팔레트.
+- `hue`에 넘긴 변수가 <strong>수치형</strong>이면 seaborn이 자동으로 순차 컬러맵을 씁니다. <strong>범주형</strong>이면 정성 팔레트.
 - 상관행렬(6장)에 순차 컬러맵을 쓰면 음/양 상관이 안 갈립니다 → 발산 + `center=0`.
-**그림에서 보이는 것**: 같은 산점도라도 `palette="deep"`이면 채도 있는 파랑·주황·초록으로 그룹이 또렷이 갈리고, `palette="pastel"`이면 색이 흐려 겹친 영역 구분이 어려워집니다.
+<strong>그림에서 보이는 것</strong>: 같은 산점도라도 `palette="deep"`이면 채도 있는 파랑·주황·초록으로 그룹이 또렷이 갈리고, `palette="pastel"`이면 색이 흐려 겹친 영역 구분이 어려워집니다.
 
 
 <NotionDivider />
@@ -178,7 +178,7 @@ sns.husl_palette(8)
 
 - 범주가 많아(8개 이상) 기본 팔레트가 부족할 때, 색상환을 등간격으로 잘라 씁니다.
 - `hls`는 수학적으로 등간격이지만 노랑·초록이 유독 밝아 보입니다. `husl`은 이를 지각적으로 보정합니다.
-> 💡 **이럴 때**: 범주가 6개를 넘어가면 색만으로 구분이 어려워집니다. `husl`로 늘리기보다, 격자(`col=`)로 쪼개거나 상위 몇 개만 남기고 나머지를 "기타"로 묶는 편이 더 잘 읽힙니다.
+> 💡 <strong>이럴 때</strong>: 범주가 6개를 넘어가면 색만으로 구분이 어려워집니다. `husl`로 늘리기보다, 격자(`col=`)로 쪼개거나 상위 몇 개만 남기고 나머지를 "기타"로 묶는 편이 더 잘 읽힙니다.
 
 
 <NotionDivider />
@@ -187,9 +187,9 @@ sns.husl_palette(8)
 
 ## 6. 색맹(color vision deficiency) 고려
 
-- 인구의 약 8%(남성)가 적록 색각 이상입니다. **빨강↔초록 대비**로만 그룹을 구분하면 상당수가 못 읽습니다.
+- 인구의 약 8%(남성)가 적록 색각 이상입니다. <strong>빨강↔초록 대비</strong>로만 그룹을 구분하면 상당수가 못 읽습니다.
 - `palette="colorblind"`: seaborn이 제공하는 색각 이상 친화 정성 팔레트.
-- 순차/발산은 `"viridis"`, `"cividis"`, `"vlag"`, `"mako"`처럼 **밝기가 단조 변화**하는 것을 씁니다. 밝기 차이는 대부분의 색각 이상에서도 보존됩니다.
+- 순차/발산은 `"viridis"`, `"cividis"`, `"vlag"`, `"mako"`처럼 <strong>밝기가 단조 변화</strong>하는 것을 씁니다. 밝기 차이는 대부분의 색각 이상에서도 보존됩니다.
 - 색에만 의존하지 말고 `style=`(마커 모양), 라벨, 직접 주석을 병행합니다.
 - 흑백 인쇄 대비가 필요하면 `cubehelix_palette`(밝기가 나선형으로 단조 증가).
 
@@ -198,7 +198,7 @@ sns.set_theme(palette="colorblind")
 sns.scatterplot(data=tips, x="total_bill", y="tip", hue="time", style="time")  # 색+모양 이중 인코딩
 ```
 
-> 💡 **이럴 때**: 발표·배포용 그림은 `palette="colorblind"` 또는 `viridis` 계열을 기본으로 삼습니다. "예뻐서" 고른 빨강-초록 팔레트는 접근성 문제를 만듭니다.
+> 💡 <strong>이럴 때</strong>: 발표·배포용 그림은 `palette="colorblind"` 또는 `viridis` 계열을 기본으로 삼습니다. "예뻐서" 고른 빨강-초록 팔레트는 접근성 문제를 만듭니다.
 
 
 <NotionDivider />

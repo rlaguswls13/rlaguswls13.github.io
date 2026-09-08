@@ -37,9 +37,9 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 ## 핵심 요약
 
-웹 서버의 대표 주자인 **Nginx, Apache HTTPD, IIS(Internet Information Services)**는 정적 콘텐츠(HTML, CSS, JS, 이미지)를 처리하고 배포하는 내부 아키텍처와 구동 메커니즘에서 뚜렷한 차이를 보인다.
+웹 서버의 대표 주자인 <strong>Nginx, Apache HTTPD, IIS(Internet Information Services)</strong>는 정적 콘텐츠(HTML, CSS, JS, 이미지)를 처리하고 배포하는 내부 아키텍처와 구동 메커니즘에서 뚜렷한 차이를 보인다.
 
-본 가이드는 각 웹 서버 엔진의 **핵심 아키텍처(이벤트 기반 vs 프로세스/스레드 기반 vs 커널 모드 밀착형), 장단점, 실무 시나리오별 대응 방식, 그리고 비즈니스 인프라 성격에 따른 최적의 엔진 선택 기준**을 종합 비교하여 정리한다.
+본 가이드는 각 웹 서버 엔진의 <strong>핵심 아키텍처(이벤트 기반 vs 프로세스/스레드 기반 vs 커널 모드 밀착형), 장단점, 실무 시나리오별 대응 방식, 그리고 비즈니스 인프라 성격에 따른 최적의 엔진 선택 기준</strong>을 종합 비교하여 정리한다.
 
 
 <NotionDivider />
@@ -62,14 +62,14 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 <NotionTable>
   <tbody>
     <tr><td>비교 항목</td><td>Nginx</td><td>Apache HTTPD</td><td>IIS (Internet Information Services)</td></tr>
-    <tr><td>**핵심 강점**</td><td>**초고속 정적 파일 처리**, 극도의 경량화, **리버스 프록시 및 로드 밸런싱 가속**</td><td>**수백 개의 풍부한 서드파티 모듈**, **디렉터리별 개별 제어(`.htaccess`)**</td><td>**Windows Server / Active Directory(AD) 및 .NET 생태계 완벽 통합**</td></tr>
-    <tr><td>**핵심 아키텍처**</td><td>**비동기 이벤트 기반 (Event-Driven / Non-Blocking)**</td><td>**프로세스 / 스레드 기반 (MPM - Prefork, Worker, Event)**</td><td>**Windows OS 커널 모드 드라이버 (`HTTP.sys`) 밀착형**</td></tr>
-    <tr><td>**동시 접속 처리 (C10K)**</td><td>**매우 뛰어남** (소수 작업 스레드로 수만 커넥션 처리)</td><td>보통 (스레드/프로세스 생성 오버헤드로 고트래픽 시 리소스 증가)</td><td>뛰어남 (Windows 커널 레벨 캐싱 가속 지원)</td></tr>
-    <tr><td>**모듈 확장성**</td><td>정적 컴파일 위주 (동적 모듈 설정이 상대적으로 복잡)</td><td>**매우 뛰어남** (모듈 동적 로딩 및 플러그인 생태계 방대)</td><td>Windows 컴포넌트 및 IIS 확장 모듈 기반</td></tr>
-    <tr><td>**개별 디렉터리 제어**</td><td>미지원 (메인 설정 파일 수정 후 reload 필수)</td><td>**지원 (`.htaccess`로 서버 재시작 없이 즉시 반영)**</td><td>지원 (`web.config` 기반 분리 제어)</td></tr>
-    <tr><td>**관리 인터페이스**</td><td>CLI (텍스트 설정 파일: `nginx.conf`)</td><td>CLI (텍스트 설정 파일: `httpd.conf`)</td><td>**직관적인 GUI 관리자 콘솔 (IIS Manager)** + PowerShell</td></tr>
-    <tr><td>**지원 운영체제**</td><td>Linux, Unix, macOS, Windows (Linux 최적화)</td><td>Linux, Unix, Windows (크로스 플랫폼)</td><td>**Windows Server 전용** (OS 종속적)</td></tr>
-    <tr><td>**추천 인프라 환경**</td><td>**고트래픽 분산 서비스, MSA 리버스 프록시 대문, Linux/Container**</td><td>**전통적인 웹 호스팅 환경, 다기능 보안 커스텀 서버, Linux**</td><td>**Microsoft 인프라 표준화 기업, C#/.NET 프레임워크 기반 서비스**</td></tr>
+    <tr><td><strong>핵심 강점</strong></td><td><strong>초고속 정적 파일 처리</strong>, 극도의 경량화, <strong>리버스 프록시 및 로드 밸런싱 가속</strong></td><td><strong>수백 개의 풍부한 서드파티 모듈</strong>, <strong>디렉터리별 개별 제어(`.htaccess`)</strong></td><td><strong>Windows Server / Active Directory(AD) 및 .NET 생태계 완벽 통합</strong></td></tr>
+    <tr><td><strong>핵심 아키텍처</strong></td><td><strong>비동기 이벤트 기반 (Event-Driven / Non-Blocking)</strong></td><td><strong>프로세스 / 스레드 기반 (MPM - Prefork, Worker, Event)</strong></td><td><strong>Windows OS 커널 모드 드라이버 (`HTTP.sys`) 밀착형</strong></td></tr>
+    <tr><td><strong>동시 접속 처리 (C10K)</strong></td><td><strong>매우 뛰어남</strong> (소수 작업 스레드로 수만 커넥션 처리)</td><td>보통 (스레드/프로세스 생성 오버헤드로 고트래픽 시 리소스 증가)</td><td>뛰어남 (Windows 커널 레벨 캐싱 가속 지원)</td></tr>
+    <tr><td><strong>모듈 확장성</strong></td><td>정적 컴파일 위주 (동적 모듈 설정이 상대적으로 복잡)</td><td><strong>매우 뛰어남</strong> (모듈 동적 로딩 및 플러그인 생태계 방대)</td><td>Windows 컴포넌트 및 IIS 확장 모듈 기반</td></tr>
+    <tr><td><strong>개별 디렉터리 제어</strong></td><td>미지원 (메인 설정 파일 수정 후 reload 필수)</td><td><strong>지원 (`.htaccess`로 서버 재시작 없이 즉시 반영)</strong></td><td>지원 (`web.config` 기반 분리 제어)</td></tr>
+    <tr><td><strong>관리 인터페이스</strong></td><td>CLI (텍스트 설정 파일: `nginx.conf`)</td><td>CLI (텍스트 설정 파일: `httpd.conf`)</td><td><strong>직관적인 GUI 관리자 콘솔 (IIS Manager)</strong> + PowerShell</td></tr>
+    <tr><td><strong>지원 운영체제</strong></td><td>Linux, Unix, macOS, Windows (Linux 최적화)</td><td>Linux, Unix, Windows (크로스 플랫폼)</td><td><strong>Windows Server 전용</strong> (OS 종속적)</td></tr>
+    <tr><td><strong>추천 인프라 환경</strong></td><td><strong>고트래픽 분산 서비스, MSA 리버스 프록시 대문, Linux/Container</strong></td><td><strong>전통적인 웹 호스팅 환경, 다기능 보안 커스텀 서버, Linux</strong></td><td><strong>Microsoft 인프라 표준화 기업, C#/.NET 프레임워크 기반 서비스</strong></td></tr>
   </tbody>
 </NotionTable>
 
@@ -84,7 +84,7 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 ### ① Nginx: 고성능, 경량화, 리버스 프록시의 최강자
 
-대규모 동시 접속(C10K 문제)을 해결하기 위해 탄생한 **비동기 이벤트 주도(Event-Driven) 아키텍처**의 대표 주자이다.
+대규모 동시 접속(C10K 문제)을 해결하기 위해 탄생한 <strong>비동기 이벤트 주도(Event-Driven) 아키텍처</strong>의 대표 주자이다.
 
 
 ```text
@@ -95,16 +95,16 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
                                   └── Socket I/O Multiplexing (epoll/kqueue)
 ```
 
-- **장점**:
-1. **압도적인 정적 파일 서빙 성능**: 극도로 적은 메모리 점유율만으로도 수만 개의 동시 커넥션을 가볍고 빠르게 처리.
-1. **비동기 논블로킹 I/O**: 요청마다 스레드를 생성하지 않고, 소수의 워커 프로세스가 `epoll`/`kqueue` 이벤트 루프로 여러 요청을 처리하여 **CPU 컨텍스트 스위칭(Context Switching) 오버헤드가 거의 없음**.
-1. **강력한 리버스 프록시 & 로드 밸런서**: 백엔드(WAS: Tomcat, Spring Boot, Node.js) 앞단에서 SSL 종단(SSL Termination), 캐싱, L4/L7 트래픽 분산 수행에 최적화.
+- <strong>장점</strong>:
+1. <strong>압도적인 정적 파일 서빙 성능</strong>: 극도로 적은 메모리 점유율만으로도 수만 개의 동시 커넥션을 가볍고 빠르게 처리.
+1. <strong>비동기 논블로킹 I/O</strong>: 요청마다 스레드를 생성하지 않고, 소수의 워커 프로세스가 `epoll`/`kqueue` 이벤트 루프로 여러 요청을 처리하여 <strong>CPU 컨텍스트 스위칭(Context Switching) 오버헤드가 거의 없음</strong>.
+1. <strong>강력한 리버스 프록시 & 로드 밸런서</strong>: 백엔드(WAS: Tomcat, Spring Boot, Node.js) 앞단에서 SSL 종단(SSL Termination), 캐싱, L4/L7 트래픽 분산 수행에 최적화.
 
-- **단점**:
-- **모듈 추가의 복잡성**: 서드파티 모듈을 결합할 때 코어 소스를 다시 컴파일해야 하는 경우가 많음.
-- **디렉터리별 개별 제어 불가**: Apache의 `.htaccess`와 같은 독립 설정이 불가능하여, 설정 변경 시마다 메인 `nginx.conf`를 수정하고 `nginx -s reload`를 실행해야 함.
+- <strong>단점</strong>:
+- <strong>모듈 추가의 복잡성</strong>: 서드파티 모듈을 결합할 때 코어 소스를 다시 컴파일해야 하는 경우가 많음.
+- <strong>디렉터리별 개별 제어 불가</strong>: Apache의 `.htaccess`와 같은 독립 설정이 불가능하여, 설정 변경 시마다 메인 `nginx.conf`를 수정하고 `nginx -s reload`를 실행해야 함.
 
-- **도입 적합 상황**: **트래픽이 폭발적으로 몰리는 대규모 분산 서비스의 최전선(Frontend) 대문 서버 및 MSA API 게이트웨이**.
+- <strong>도입 적합 상황</strong>: <strong>트래픽이 폭발적으로 몰리는 대규모 분산 서비스의 최전선(Frontend) 대문 서버 및 MSA API 게이트웨이</strong>.
 
 <NotionDivider />
 
@@ -112,17 +112,17 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 ### ② Apache HTTPD: 검증된 안정성, 풍부한 기능, 높은 확장성
 
-1990년대부터 인터넷의 표준으로 군림해 온 전통의 강자로, **MPM(Multi-Processing Module) 기반의 프로세스/스레드 모델**을 채택한다.
+1990년대부터 인터넷의 표준으로 군림해 온 전통의 강자로, <strong>MPM(Multi-Processing Module) 기반의 프로세스/스레드 모델</strong>을 채택한다.
 
-- **장점**:
-1. **방대한 모듈 생태계**: 인증, 보안 필터링, URL 재작성(`mod_rewrite`), 프록시 등 수백 개의 서드파티 모듈이 성숙해 있으며 동적 로딩이 용이.
-1. **디렉터리별 유연한 제어 (`.htaccess`)**: 메인 서버를 재시작하지 않고도 개별 디렉터리 내에 `.htaccess` 파일을 두어 접근 제어 및 리다이렉트를 실시간 독립 적용 가능.
-1. **수십 년간 검증된 호환성**: 다양한 레거시 시스템, 이기종 OS, PHP/CGI 모듈(`mod_php` 등)과의 호환성이 탁월함.
+- <strong>장점</strong>:
+1. <strong>방대한 모듈 생태계</strong>: 인증, 보안 필터링, URL 재작성(`mod_rewrite`), 프록시 등 수백 개의 서드파티 모듈이 성숙해 있으며 동적 로딩이 용이.
+1. <strong>디렉터리별 유연한 제어 (`.htaccess`)</strong>: 메인 서버를 재시작하지 않고도 개별 디렉터리 내에 `.htaccess` 파일을 두어 접근 제어 및 리다이렉트를 실시간 독립 적용 가능.
+1. <strong>수십 년간 검증된 호환성</strong>: 다양한 레거시 시스템, 이기종 OS, PHP/CGI 모듈(`mod_php` 등)과의 호환성이 탁월함.
 
-- **단점**:
-- **높은 리소스 소모량**: 연결마다 프로세스나 스레드를 할당하는 전통적 모델(Prefork/Worker) 특성상 동시 접속자가 급증하면 메모리 점유율과 CPU 부하가 가파르게 상승 (Event MPM으로 일부 보완 가능).
+- <strong>단점</strong>:
+- <strong>높은 리소스 소모량</strong>: 연결마다 프로세스나 스레드를 할당하는 전통적 모델(Prefork/Worker) 특성상 동시 접속자가 급증하면 메모리 점유율과 CPU 부하가 가파르게 상승 (Event MPM으로 일부 보완 가능).
 
-- **도입 적합 상황**: **호스팅 환경(고객사별 설정 격리 필요 시), 복잡한 비즈니스 보안 모듈이 결합된 기업형 웹 애플리케이션**.
+- <strong>도입 적합 상황</strong>: <strong>호스팅 환경(고객사별 설정 격리 필요 시), 복잡한 비즈니스 보안 모듈이 결합된 기업형 웹 애플리케이션</strong>.
 
 <NotionDivider />
 
@@ -130,18 +130,18 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 ### ③ IIS (Internet Information Services): Windows 환경에 최적화된 엔터프라이즈 웹 서버
 
-마이크로소프트가 제공하는 **Windows OS 전용 엔터프라이즈 웹 서버**로, OS 커널과 긴밀하게 통합되어 있다.
+마이크로소프트가 제공하는 <strong>Windows OS 전용 엔터프라이즈 웹 서버</strong>로, OS 커널과 긴밀하게 통합되어 있다.
 
-- **장점**:
-1. **Windows & .NET 생태계 완벽 결합**: Active Directory(AD) 통합 인증 및 Windows Server 인프라와 완벽하게 융합.
-1. **커널 모드 드라이버 (`HTTP.sys`) 가속**: Windows OS 커널 레벨에서 HTTP 요청을 직접 가로채어 정적 콘텐츠를 서빙하므로 윈도우 환경에서 매우 빠른 속도 보장.
-1. **직관적인 GUI 관리 도구 (IIS Manager)**: GUI 환경에서 마우스 클릭 몇 번으로 가상 호스트, SSL 바인딩, 애플리케이션 풀(AppPool) 격리를 손쉽게 설정.
+- <strong>장점</strong>:
+1. <strong>Windows & .NET 생태계 완벽 결합</strong>: Active Directory(AD) 통합 인증 및 Windows Server 인프라와 완벽하게 융합.
+1. <strong>커널 모드 드라이버 (`HTTP.sys`) 가속</strong>: Windows OS 커널 레벨에서 HTTP 요청을 직접 가로채어 정적 콘텐츠를 서빙하므로 윈도우 환경에서 매우 빠른 속도 보장.
+1. <strong>직관적인 GUI 관리 도구 (IIS Manager)</strong>: GUI 환경에서 마우스 클릭 몇 번으로 가상 호스트, SSL 바인딩, 애플리케이션 풀(AppPool) 격리를 손쉽게 설정.
 
-- **단점**:
-- **OS 종속성 (Windows 전용)**: Linux 컨테이너(Docker/K8s) 기반의 모던 클라우드 환경에서는 적용이 사실상 불가능함.
-- **Windows OS 오버헤드**: Linux 기반 경량 OS 대비 Windows Server 자체의 리소스 소모량이 큼.
+- <strong>단점</strong>:
+- <strong>OS 종속성 (Windows 전용)</strong>: Linux 컨테이너(Docker/K8s) 기반의 모던 클라우드 환경에서는 적용이 사실상 불가능함.
+- <strong>Windows OS 오버헤드</strong>: Linux 기반 경량 OS 대비 Windows Server 자체의 리소스 소모량이 큼.
 
-- **도입 적합 상황**: **사내 인프라가 Active Directory로 구축되어 있거나 C#/.NET 기반 웹 서비스를 운영하는 윈도우 중심 기업 환경**.
+- <strong>도입 적합 상황</strong>: <strong>사내 인프라가 Active Directory로 구축되어 있거나 C#/.NET 기반 웹 서비스를 운영하는 윈도우 중심 기업 환경</strong>.
 
 <NotionDivider />
 
@@ -153,26 +153,26 @@ notionUrl: "https://app.notion.com/p/Nginx-vs-Apache-HTTPD-vs-IIS-3b019946ca7680
 
 ### ① 시나리오 A: 3대 서버 로드밸런싱 + 복잡한 Path 라우팅 + 세션 유지 (Sticky Session)
 
-- **과제**: 프론트엔드 대문에서 `/api`, `/static`, `/auth` 등 경로별로 트래픽을 분기하고, 특정 WAS로 세션을 고정(Sticky Session)해야 하는 상황.
-- **최적 선택**: **Nginx (강력 추천)**
+- <strong>과제</strong>: 프론트엔드 대문에서 `/api`, `/static`, `/auth` 등 경로별로 트래픽을 분기하고, 특정 WAS로 세션을 고정(Sticky Session)해야 하는 상황.
+- <strong>최적 선택</strong>: <strong>Nginx (강력 추천)</strong>
 - `upstream` 블록과 `ip_hash` 또는 `sticky cookie` 모듈을 통해 극도의 가벼움과 무중단 트래픽 분산 제공. Apache 역시 `mod_proxy_balancer`로 안정적 대처 가능.
 
 <a id="2-시나리오-b-접근-path별-보안-격리-및-ip-화이트리스트-제어"></a>
 
 ### ② 시나리오 B: 접근 Path별 보안 격리 및 IP 화이트리스트 제어
 
-- **과제**: `/admin`, `/internal` 경로에 대해 사내 특정 IP 대역만 접근을 허용하고 외부 접근을 즉시 차단해야 하는 보안 시나리오.
-- **대응 방식**:
-- **Nginx**: `location /admin { allow 10.0.0.0/8; deny all; }` 블록으로 최전선에서 고속 차단.
-- **Apache**: `.htaccess` 파일을 관리자 디렉터리에 배치하여 서버 재시작 없이 즉시 제어.
-- **IIS**: 'IP 및 도메인 제한' GUI 기능으로 인가 규칙 바인딩.
+- <strong>과제</strong>: `/admin`, `/internal` 경로에 대해 사내 특정 IP 대역만 접근을 허용하고 외부 접근을 즉시 차단해야 하는 보안 시나리오.
+- <strong>대응 방식</strong>:
+- <strong>Nginx</strong>: `location /admin { allow 10.0.0.0/8; deny all; }` 블록으로 최전선에서 고속 차단.
+- <strong>Apache</strong>: `.htaccess` 파일을 관리자 디렉터리에 배치하여 서버 재시작 없이 즉시 제어.
+- <strong>IIS</strong>: 'IP 및 도메인 제한' GUI 기능으로 인가 규칙 바인딩.
 
 <a id="3-시나리오-c-windows-server-기반-사내-전사-인프라-환경"></a>
 
 ### ③ 시나리오 C: Windows Server 기반 사내 전사 인프라 환경
 
-- **과제**: Active Directory(AD) 계정으로 싱글 사인온(SSO)을 연동하고, GUI를 통해 다수의 사이트를 관리해야 하는 사내 인트라넷.
-- **최적 선택**: **IIS (독보적 최적)**
+- <strong>과제</strong>: Active Directory(AD) 계정으로 싱글 사인온(SSO)을 연동하고, GUI를 통해 다수의 사이트를 관리해야 하는 사내 인트라넷.
+- <strong>최적 선택</strong>: <strong>IIS (독보적 최적)</strong>
 - Windows 인증(NTLM/Kerberos) 모듈이 기본 탑재되어 별도 복잡한 설정 없이 AD 계정 인가 완료.
 
 

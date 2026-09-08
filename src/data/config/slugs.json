@@ -35,7 +35,9 @@
     "3c819946ca7680ae8b31f2d87255a3fb": "ai-python-history-data-pipeline",
     "3c819946ca768094bfebe1e7bea97aa6": "java-jre-jdk-jvm-diff",
     "3ce19946ca7680c3bf5ada32fda9842c": "java-gc-guide",
-    "3ce19946ca7680c19677fb9fa7f3dea7": "java-oop-override-overload"
+    "3ce19946ca7680c19677fb9fa7f3dea7": "java-oop-override-overload",
+    "3d419946ca768006b012ce7fe9ab675f": "java-concurrency-thread-pool",
+    "3d419946ca7680348ce9f0d7a948b55c": "java-concurrency-shared-mutable-state"
   },
   "tech_study_series": {
     "3ce19946ca7680a58e17e1ef1f5f0bd2": "python-pandas-reshaping",
@@ -89,7 +91,9 @@
     "3cf19946ca7681068c0fc2596847fee1": "data-preprocessing-scales-eda",
     "3cf19946ca7681169a32f945ea578aa5": "visualization-purpose-grammar",
     "3cf19946ca7681718f2cc89aaf11e7b8": "python-seaborn-overview",
-    "3cf19946ca7681979971cbf70e13c58b": "data-preprocessing-outlier-theory"
+    "3cf19946ca7681979971cbf70e13c58b": "data-preprocessing-outlier-theory",
+    "3d119946ca7680fc8dead72943e68907": "java-syntax-program-structure",
+    "3d119946ca76801ab530e98417a23d86": "java-syntax-variables-types"
   },
   "problem_solving": {
     "3b019946ca7680b584e1c59c19e022a9": "spring-quartz-ha-optimization",
@@ -97,7 +101,8 @@
     "3b019946ca76808e9f6ec9aec83dbaaf": "was-session-consistency",
     "3b019946ca768008beced8b682cac597": "aop-exception-handling-common-response",
     "3b019946ca768059b91cc1de8dbbe8f7": "activemq-kahadb-disk-rate-limit",
-    "3b019946ca768062aeb4e0e781ed366a": "async-api-processing-architecture"
+    "3b019946ca768062aeb4e0e781ed366a": "async-api-processing-architecture",
+    "3d419946ca76809a9589dc1c6e4b7cdb": "kafka-partition-concurrency-solve"
   },
   "competition_event": {
     "3b019946ca7680c8836dcb0ed7e63c69": "github-copilot-hackathon-retrospective"

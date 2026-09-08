@@ -39,7 +39,7 @@ notionUrl: "https://app.notion.com/p/Apache-Tomcat-SSL-3b019946ca7680f69492e6e87
 
 아파치 톰캣(Apache Tomcat)은 설정 파일 관리 방식에 따라 시스템 업데이트 생산성과 인프라 운영 안정성이 크게 좌우된다.
 
-본 가이드는 톰캣 `conf/` 디렉터리의 **5대 핵심 설정 파일(server.xml, web.xml, context.xml, logging.properties, tomcat-users.xml)**의 역할 및 보안 관리 포인트, 원본 `catalina.sh`를 보존하고 설정을 완벽히 격리하는 **`setenv.sh` 운영 및 `CATALINA_OPTS` 분리 이유**, 그리고 최신 **Tomcat 9/10 기반 OpenSSL 및 TLSv1.2/1.3 SSL(HTTPS) 튜닝 방법**을 정리한다.
+본 가이드는 톰캣 `conf/` 디렉터리의 <strong>5대 핵심 설정 파일(server.xml, web.xml, context.xml, logging.properties, tomcat-users.xml)</strong>의 역할 및 보안 관리 포인트, 원본 `catalina.sh`를 보존하고 설정을 완벽히 격리하는 <strong>`setenv.sh` 운영 및 `CATALINA_OPTS` 분리 이유</strong>, 그리고 최신 <strong>Tomcat 9/10 기반 OpenSSL 및 TLSv1.2/1.3 SSL(HTTPS) 튜닝 방법</strong>을 정리한다.
 
 
 <NotionDivider />
@@ -62,11 +62,11 @@ tomcat/conf/
 <NotionTable>
   <tbody>
     <tr><td>설정 파일명</td><td>핵심 역할</td><td>중요 관리 포인트 (보안 및 운영)</td></tr>
-    <tr><td><CodePopup name="server.xml" /></td><td>**톰캣 서버 주 설정 파일**</td><td>• **포트 관리**: 서비스 포트(HTTP: `8080`, HTTPS: `443`) 및 종료 포트(Shutdown: `8005`) 보안 설정<br />• **성능 최적화**: `Connector` 내 `maxThreads`(최대 스레드), `acceptCount`(대기 큐) 튜닝<br />• **보안 강화**: Server 토큰 숨김(버전 노출 방지) 및 취약 프로토콜 차단</td></tr>
-    <tr><td><CodePopup name="web.xml" /></td><td>**전역 웹 애플리케이션 설정**</td><td>• **디렉터리 리스팅 차단**: `listings`를 `false`로 유지하여 내부 파일 노출 방지<br />• **세션 타임아웃**: `session-timeout` 전역 설정으로 유휴 세션 자동 만료<br />• **공통 에러 페이지**: 404, 500 발생 시 WAS 버전 노출 방지 공통 에러 페이지 지정</td></tr>
-    <tr><td><CodePopup name="context.xml" /></td><td>**웹 앱 컨텍스트 설정**</td><td>• **자원 관리**: DB 커넥션 풀(DataSource)이나 JNDI 리소스를 전역/로컬 정의<br />• **자동 리로드 감시**: `WatchedResource` 감시 설정 (운영 환경에서는 성능 저하 주의)</td></tr>
-    <tr><td><CodePopup name="logging.properties" /></td><td>**톰캣 자체 로그 제어**</td><td>• **디스크 풀(Full) 예방**: 카탈리나/로컬호스트 로그 레벨(`INFO`, `DEBUG`) 및 보관 주기 관리<br />• **중복 로깅 방지**: 앱 내부 Logback/Log4j2와 톰캣 로그의 중복 출력 최적화</td></tr>
-    <tr><td><CodePopup name="tomcat-users.xml" /></td><td>**관리자 콘솔 권한 제어**</td><td>• **무단 접근 차단**: 운영 서버에서는 기본 계정 주석/삭제 및 매니저 앱(`manager`, `host-manager`) 삭제 원칙</td></tr>
+    <tr><td><strong>`server.xml`</strong></td><td><strong>톰캣 서버 주 설정 파일</strong></td><td>• <strong>포트 관리</strong>: 서비스 포트(HTTP: `8080`, HTTPS: `443`) 및 종료 포트(Shutdown: `8005`) 보안 설정<br />• <strong>성능 최적화</strong>: `Connector` 내 `maxThreads`(최대 스레드), `acceptCount`(대기 큐) 튜닝<br />• <strong>보안 강화</strong>: Server 토큰 숨김(버전 노출 방지) 및 취약 프로토콜 차단</td></tr>
+    <tr><td><strong>`web.xml`</strong></td><td><strong>전역 웹 애플리케이션 설정</strong></td><td>• <strong>디렉터리 리스팅 차단</strong>: `listings`를 `false`로 유지하여 내부 파일 노출 방지<br />• <strong>세션 타임아웃</strong>: `session-timeout` 전역 설정으로 유휴 세션 자동 만료<br />• <strong>공통 에러 페이지</strong>: 404, 500 발생 시 WAS 버전 노출 방지 공통 에러 페이지 지정</td></tr>
+    <tr><td><strong>`context.xml`</strong></td><td><strong>웹 앱 컨텍스트 설정</strong></td><td>• <strong>자원 관리</strong>: DB 커넥션 풀(DataSource)이나 JNDI 리소스를 전역/로컬 정의<br />• <strong>자동 리로드 감시</strong>: `WatchedResource` 감시 설정 (운영 환경에서는 성능 저하 주의)</td></tr>
+    <tr><td><strong>`logging.properties`</strong></td><td><strong>톰캣 자체 로그 제어</strong></td><td>• <strong>디스크 풀(Full) 예방</strong>: 카탈리나/로컬호스트 로그 레벨(`INFO`, `DEBUG`) 및 보관 주기 관리<br />• <strong>중복 로깅 방지</strong>: 앱 내부 Logback/Log4j2와 톰캣 로그의 중복 출력 최적화</td></tr>
+    <tr><td><strong>`tomcat-users.xml`</strong></td><td><strong>관리자 콘솔 권한 제어</strong></td><td>• <strong>무단 접근 차단</strong>: 운영 서버에서는 기본 계정 주석/삭제 및 매니저 앱(`manager`, `host-manager`) 삭제 원칙</td></tr>
   </tbody>
 </NotionTable>
 
@@ -75,7 +75,7 @@ tomcat/conf/
 ### 💡 실무 설계 패턴: Spring 기반 처리 권장
 
 - 현대 엔터프라이즈 환경에서는 인프라 이식성과 환경 독립성을 위해 톰캣 전역 `web.xml`과 `context.xml`을 거의 수정하지 않고 유지한다.
-- DataSource, 세션, 에러 핸들링 등은 프로젝트 내부의 **Spring Java Config** 또는 **Spring Boot `application.yml`**에서 선언하고 직접 제어하는 것이 표준 아키텍처 모델이다.
+- DataSource, 세션, 에러 핸들링 등은 프로젝트 내부의 <strong>Spring Java Config</strong> 또는 <strong>Spring Boot `application.yml`</strong>에서 선언하고 직접 제어하는 것이 표준 아키텍처 모델이다.
 
 <NotionDivider />
 
@@ -97,7 +97,7 @@ if [ -r "$CATALINA_BASE/bin/setenv.sh" ]; then
 fi
 ```
 
-- **유지보수 및 버전 마이그레이션 안정성**:
+- <strong>유지보수 및 버전 마이그레이션 안정성</strong>:
 - `catalina.sh`를 직접 수정하면 톰캣 버전 패치나 바이너리 교체 시 커스텀 설정이 덮어쓰기되어 증발하거나 꼬이게 됨.
 - `setenv.sh`로 설정을 격리하면 톰캣 버전이 변경되어도 `setenv.sh` 파일 하나만 복사하면 되므로 인프라 관리가 극도로 안전해짐.
 
@@ -118,9 +118,9 @@ fi
 <NotionTable>
   <tbody>
     <tr><td>구분</td><td>`JAVA_OPTS`</td><td>`CATALINA_OPTS` (권장)</td></tr>
-    <tr><td>**적용 범위**</td><td>톰캣 `start`, `stop`, 기타 외부 자바 도구 전역</td><td>오직 톰캣 **`start` / `run` 구동 시에만 격리 적용**</td></tr>
-    <tr><td>**종료(stop) 시 동작**</td><td>톰캣을 끌 때도 대용량 힙을 할당하려다 OOM 발생 가능</td><td>톰캣 종료나 기타 명령어에 간섭하지 않음</td></tr>
-    <tr><td>**사이드 이펙트**</td><td>같은 서버 내 다른 자바 프로세스에 영향 미침</td><td>**사이드 이펙트 전혀 없음 (Zero Side-Effects)**</td></tr>
+    <tr><td><strong>적용 범위</strong></td><td>톰캣 `start`, `stop`, 기타 외부 자바 도구 전역</td><td>오직 톰캣 <strong>`start` / `run` 구동 시에만 격리 적용</strong></td></tr>
+    <tr><td><strong>종료(stop) 시 동작</strong></td><td>톰캣을 끌 때도 대용량 힙을 할당하려다 OOM 발생 가능</td><td>톰캣 종료나 기타 명령어에 간섭하지 않음</td></tr>
+    <tr><td><strong>사이드 이펙트</strong></td><td>같은 서버 내 다른 자바 프로세스에 영향 미침</td><td><strong>사이드 이펙트 전혀 없음 (Zero Side-Effects)</strong></td></tr>
   </tbody>
 </NotionTable>
 
@@ -185,8 +185,9 @@ Tomcat 9.x / 10.x 이상에서는 느린 Java JSSE 대신 리눅스 자체 OpenS
 
 ### ③ 보안 튜닝 포인트
 
-1. **`protocols="TLSv1.2+TLSv1.3"`**:
+1. <strong>`protocols="TLSv1.2+TLSv1.3"`</strong>:
 - 보안 취약점이 존재하는 구형 프로토콜(TLSv1.0, TLSv1.1)을 명시적으로 차단하고, 최신 보안 규격만 허용.
 
-1. **`ciphers="..."`**:
+1. <strong>`ciphers="..."`</strong>:
 - 순방향 비밀성(Forward Secrecy)을 보장하는 고강도 GCM 계열 Cipher Suite만 매핑하여 금융권 및 엔터프라이즈 보안 감사 요구사항 충족.
+
