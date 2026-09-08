@@ -11,11 +11,10 @@ describe("list route default rendering characterization", () => {
     it(`pins ${contract.route} default visible count, order, and card contract`, async () => {
       // Given: the route's unchanged static index and current six-card page size.
       const raw = JSON.parse(await readFile(path.join("src/data/indexes", `${contract.route}.json`), "utf8"));
-      const indexedItems = contract.route === "devlog"
-        ? Object.entries(raw).flatMap(([category, entries]) => entries.map((entry) => ({ ...entry, category })))
-        : contract.route === "journal"
-          ? Object.entries(raw).flatMap(([journalCategory, entries]) => entries.map((entry) => ({ ...entry, journalCategory })))
-          : raw.projects;
+      const keyName = contract.route === "devlog" ? "category" : "journalCategory";
+      const indexedItems = contract.categoryOrder
+        ? contract.categoryOrder.flatMap((key) => (raw[key] ?? []).map((entry) => ({ ...entry, [keyName]: key })))
+        : raw.projects;
 
       // When: the same stable date ordering used by each default route is applied.
       const firstPage = sortByDateDesc(indexedItems).slice(0, contract.visibleCount);

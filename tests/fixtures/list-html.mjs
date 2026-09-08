@@ -7,7 +7,12 @@ export const listRouteContracts = [
     gridClass: "devlog-grid",
     cardClass: "devlog-card",
     linkClass: "devlog-card-link",
-    firstTitle: "개인 프로젝트 RAG 세팅 : Andrej Karpathy가 제안한 LLM Wiki",
+    // The /devlog page flattens categories in this fixed order before the
+    // stable date sort, so same-date entries tie-break by it (see
+    // src/app/devlog/page.tsx). The characterization test must replay the
+    // same order or it disagrees with the exported HTML on ties.
+    categoryOrder: ["tech_study", "tech_study_series", "problem_solving", "competition_event"],
+    firstTitle: "스레드 풀 : 스레드 풀을 이용하는 이유?",
     visibleCount: 6,
   },
   {
@@ -19,7 +24,9 @@ export const listRouteContracts = [
     // modal trigger + a separate `education-blog-link`), so there is no
     // `devlog-card-link` anchor wrapping the card.
     linkClass: null,
-    firstTitle: "Messaging platform 통합 모듈 생성하다가, 기존소스 날리고 복구중",
+    // Matches the category order in src/app/journal/page.tsx.
+    categoryOrder: ["personal", "education"],
+    firstTitle: "초보에서 주니어로 - 개발하는 습관에 대한 견해",
     visibleCount: 6,
   },
   {
@@ -28,7 +35,7 @@ export const listRouteContracts = [
     gridClass: "projects-grid",
     cardClass: "project-card",
     linkClass: null,
-    firstTitle: "클라우드 관리 포털 개발 및 DevOps 자동화 체계 구축",
+    firstTitle: "[JAVA] 레거시 코드로 인한 메모리 누수 해결 : 싱글톤 미적용, 병렬 스레드의 전역변수 사용",
     visibleCount: 6,
   },
 ];
