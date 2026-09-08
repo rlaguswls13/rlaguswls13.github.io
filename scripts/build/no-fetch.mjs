@@ -12,6 +12,7 @@ const commands = [
   ["scripts/recommendations/generate.mjs"],
   ["scripts/engagement/fetch.mjs"],
   ["node_modules/next/dist/bin/next", "build"],
+  ["scripts/export/materialize-rsc-prefetch.mjs"],
 ];
 
 for (const [script, ...args] of commands) {

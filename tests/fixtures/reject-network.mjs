@@ -8,9 +8,16 @@ import tls from "node:tls";
 
 const originalNetConnect = net.connect.bind(net);
 const originalNetCreateConnection = net.createConnection.bind(net);
+const originalFetch = globalThis.fetch.bind(globalThis);
 
 function blocked() {
   throw new Error("OUTBOUND_NETWORK_BLOCKED: build:local is network-free");
+}
+
+function guardedFetch(input, init) {
+  const url = input instanceof Request ? input.url : String(input);
+  if (url.startsWith("data:")) return originalFetch(input, init);
+  return blocked();
 }
 
 function isLocalSocket(args) {
@@ -39,7 +46,7 @@ function guardedCreateConnection(...args) {
   return originalNetCreateConnection(...args);
 }
 
-globalThis.fetch = blocked;
+globalThis.fetch = guardedFetch;
 http.request = blocked;
 http.get = blocked;
 https.request = blocked;
