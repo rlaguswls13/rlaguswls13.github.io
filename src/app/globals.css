@@ -1,21 +1,6 @@
 /* globals.css — Design Token Architecture */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&display=swap');
 @import "tailwindcss";
-
-@font-face {
-  font-family: "Noto Sans KR";
-  src: url("../assets/og-fonts/NotoSansKR-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: block;
-}
-
-@font-face {
-  font-family: "Noto Sans KR";
-  src: url("../assets/og-fonts/NotoSansKR-Bold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700 900;
-  font-display: block;
-}
 
 
 /* ================================================================
