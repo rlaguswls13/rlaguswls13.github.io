@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { acquireContentLock } from "../../scripts/notion/connect/content-transaction.mjs";
 import { main } from "../../scripts/notion/connect/fetch.mjs";
 import { syncPageContent } from "../../scripts/notion/connect/sync-pages.mjs";
@@ -173,6 +173,93 @@ describe("Notion fetch orchestration", () => {
     await expect(action).rejects.toThrow();
     expect(writerCalls).toBe(0);
     expect(oldManifest(root)).toEqual(before);
+  });
+
+  it("Given a previously indexed page is absent When remaining rows sync Then a warning is emitted and the transaction continues", async () => {
+    // Given
+    const root = fixtureRoot();
+    const missingId = "44444444444444444444444444444444";
+    const warnings = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    try {
+      // When
+      const result = await main({
+        root,
+        env: configuredEnv(),
+        previousRowsByGroup: {
+          journal: [page(ids.journal), page(missingId)],
+          devlog: [page(ids.devlog)],
+          project: [page(ids.project)],
+        },
+        createClient: () => ({ queryCollection: async (sourceId) => [page(sourceId)] }),
+        syncPageContentFn: async () => ({ managedPaths: [] }),
+        generateContent: writeGenerated,
+        validateContent() {},
+      });
+
+      // Then
+      expect(result.state).toBe("committed");
+      expect(warnings).toHaveBeenCalledWith(expect.stringContaining(missingId));
+    } finally {
+      warnings.mockRestore();
+    }
+  });
+
+  it("Given required values are missing When one page has prior data and one does not Then prior manifest data is preserved and healthy rows sync", async () => {
+    // Given
+    const root = fixtureRoot();
+    const preservedId = "44444444444444444444444444444444";
+    const skippedId = "55555555555555555555555555555555";
+    const syncedIds = [];
+    const warnings = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const missingCreatedDatePage = (pageId) => ({
+      id: pageId,
+      properties: {
+        title: { type: "title", title: [{ plain_text: "Missing date fixture" }] },
+        category: { type: "select", select: { name: "tech_study" } },
+        created_date: { type: "date", date: null },
+      },
+    });
+
+    try {
+      // When
+      const result = await main({
+        root,
+        env: configuredEnv(),
+        persistManifest: true,
+        previousRowsByGroup: {
+          journal: [{ page_id: ids.journal, source_id: ids.journal, last_edited_time: "2026-08-05T00:00:00.000Z" }],
+          devlog: [
+            { page_id: ids.devlog, source_id: ids.devlog, last_edited_time: "2026-08-05T00:00:00.000Z" },
+            { page_id: preservedId, source_id: preservedId, last_edited_time: "2026-08-05T00:00:00.000Z" },
+          ],
+          project: [{ page_id: ids.project, source_id: ids.project, last_edited_time: "2026-08-05T00:00:00.000Z" }],
+        },
+        createClient: () => ({
+          queryCollection: async (sourceId) => sourceId === ids.devlog
+            ? [page(sourceId), missingCreatedDatePage(preservedId), missingCreatedDatePage(skippedId)]
+            : [page(sourceId)],
+        }),
+        syncPageContentFn: async (_client, _group, rows) => {
+          syncedIds.push(...rows.map((row) => row.source_id));
+          return { managedPaths: [] };
+        },
+        generateContent: writeGenerated,
+        validateContent() {},
+      });
+
+      // Then
+      expect(result.state).toBe("committed");
+      expect(syncedIds).toContain(ids.devlog);
+      expect(syncedIds).not.toContain(preservedId);
+      expect(syncedIds).not.toContain(skippedId);
+      const manifest = JSON.parse(fs.readFileSync(path.join(root, "src/data/config/notion-manifest.json"), "utf8"));
+      expect(manifest.groups.devlog.map((row) => row.source_id)).toContain(preservedId);
+      expect(manifest.groups.devlog.map((row) => row.source_id)).not.toContain(skippedId);
+      expect(warnings).toHaveBeenCalledTimes(2);
+    } finally {
+      warnings.mockRestore();
+    }
   });
 
   it("Given CI and allow-empty When fetch starts Then it fails before client construction", async () => {

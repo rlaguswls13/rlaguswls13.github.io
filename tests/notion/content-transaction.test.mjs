@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   acquireContentLock,
   promoteContentTransaction,
@@ -193,6 +193,44 @@ describe("content transaction", () => {
     expect(content).toContain('description: "Description fallback fixture"');
     expect(content).toContain('slug: "ai-agent-basic-tech"');
     expect(content).not.toContain("작성된 내용이 없습니다.");
+  });
+
+  it("Given cached and uncached Notion pages return 404 When sync continues Then cache is preserved and later pages are written", async () => {
+    // Given
+    const root = fixtureRoot();
+    const cachedPath = path.join(root, "src/content/devlog/fixture/general/aabbcc.mdx");
+    const uncachedPath = path.join(root, "src/content/devlog/fixture/general/ddeeff.mdx");
+    const healthyPath = path.join(root, "src/content/devlog/fixture/general/112233.mdx");
+    fs.mkdirSync(path.dirname(cachedPath), { recursive: true });
+    fs.writeFileSync(cachedPath, "---\ntitle: Cached fixture\n---\n\nCached body\n", "utf8");
+    const missingError = new Error('Notion API error (404): {"code":"object_not_found"}');
+    const client = {
+      async getBlockChildren(pageId) {
+        if (pageId !== "11-22-33") throw missingError;
+        return [];
+      },
+    };
+    const warnings = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    try {
+      // When
+      const result = await syncPageContent(client, "devlog", [
+        { page_id: "aa-bb-cc", source_id: "aabbcc", title: "Cached fixture", category: "fixture" },
+        { page_id: "dd-ee-ff", source_id: "ddeeff", title: "Uncached fixture", category: "fixture" },
+        { page_id: "11-22-33", source_id: "112233", title: "Healthy fixture", category: "fixture" },
+      ], { root, force: true, requireThumbnails: true });
+
+      // Then
+      expect(fs.readFileSync(cachedPath, "utf8")).toContain("Cached body");
+      expect(fs.existsSync(uncachedPath)).toBe(false);
+      expect(fs.existsSync(path.join(root, "public/thumnail/devlog/fixture/ddeeff.webp"))).toBe(false);
+      expect(fs.readFileSync(healthyPath, "utf8")).toContain("Healthy fixture");
+      expect(result).toMatchObject({ init: 1, skip: 2, missing: 2, preserved: 1 });
+      expect(warnings).toHaveBeenCalledTimes(2);
+    } finally {
+      warnings.mockRestore();
+      fs.rmSync(root, { force: true, recursive: true });
+    }
   });
 
   it("Given a Notion image When sync-pages stages content Then MDX and downloaded asset are emitted as managed paths", async () => {

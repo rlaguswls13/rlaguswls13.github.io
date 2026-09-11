@@ -109,43 +109,72 @@ async function validateMdxDocument(document, label) {
   }
 }
 
+function isMissingNotionDataError(error) {
+  return error instanceof Error && /Notion API error \(404\):/u.test(error.message);
+}
+
+function ensureRequiredThumbnail(root, pageName, row) {
+  if (row.status === "temp") return;
+  const sourceId = normalizeSourceId(row.source_id || row.page_id);
+  const category = pageName === "journal" && row.category === "personal" ? "blog" : String(row.category || "uncategorized");
+  const thumbnailPath = requiredThumbnailPath(pageName === "project" ? "projects" : "devlog", category, sourceId);
+  const absoluteThumbnailPath = path.join(root, ...thumbnailPath.split("/"));
+  const thumbnailExists = fs.existsSync(absoluteThumbnailPath);
+  const thumbnail = thumbnailExists ? fs.readFileSync(absoluteThumbnailPath) : null;
+  const inspection = inspectThumbnail(thumbnail, thumbnailPath);
+  if (inspection.valid) return;
+  if (thumbnailExists) {
+    throw new Error(`Thumbnail contract failed for ${sourceId}: ${inspection.issues.join(", ")}; action=${inspection.action}.`);
+  }
+  fs.mkdirSync(path.dirname(absoluteThumbnailPath), { recursive: true });
+  fs.copyFileSync(PLACEHOLDER_THUMBNAIL_PATH, absoluteThumbnailPath);
+  console.log(`[notion] ${pageName} thumbnail missing for ${sourceId}; using placeholder`);
+}
+
 export async function syncPageContent(client, pageName, rows, options = {}) {
-  const counts = { init: 0, update: 0, skip: 0, invalid: 0 };
+  const counts = { init: 0, update: 0, skip: 0, invalid: 0, missing: 0, preserved: 0 };
   const root = path.resolve(options.root || process.cwd());
   const managedPaths = new Set();
   for (const row of rows) {
     const filePath = contentPathFor(pageName, row, root);
-    if (options.requireThumbnails && row.status !== "temp") {
-      const sourceId = normalizeSourceId(row.source_id || row.page_id);
-      const category = pageName === "journal" && row.category === "personal" ? "blog" : String(row.category || "uncategorized");
-      const thumbnailPath = requiredThumbnailPath(pageName === "project" ? "projects" : "devlog", category, sourceId);
-      const absoluteThumbnailPath = path.join(root, ...thumbnailPath.split("/"));
-      const thumbnailExists = fs.existsSync(absoluteThumbnailPath);
-      const thumbnail = thumbnailExists ? fs.readFileSync(absoluteThumbnailPath) : null;
-      const inspection = inspectThumbnail(thumbnail, thumbnailPath);
-      if (!inspection.valid) {
-        if (thumbnailExists) {
-          throw new Error(`Thumbnail contract failed for ${sourceId}: ${inspection.issues.join(", ")}; action=${inspection.action}.`);
-        }
-        fs.mkdirSync(path.dirname(absoluteThumbnailPath), { recursive: true });
-        fs.copyFileSync(PLACEHOLDER_THUMBNAIL_PATH, absoluteThumbnailPath);
-        managedPaths.add(thumbnailPath);
-        console.log(`[notion] ${pageName} thumbnail missing for ${sourceId}; using placeholder`);
-      }
-    }
-
     const revision = String(row.last_edited_time || "");
     if (!options.force && fs.existsSync(filePath) && revision && currentRevision(filePath) === revision) {
+      if (options.requireThumbnails && row.status !== "temp") {
+        ensureRequiredThumbnail(root, pageName, row);
+        const sourceId = normalizeSourceId(row.source_id || row.page_id);
+        const category = pageName === "journal" && row.category === "personal" ? "blog" : String(row.category || "uncategorized");
+        managedPaths.add(requiredThumbnailPath(pageName === "project" ? "projects" : "devlog", category, sourceId));
+      }
       counts.skip += 1;
       continue;
     }
 
     const operation = fs.existsSync(filePath) ? "update" : "init";
-    const body = await pageToMdxBody(client, row.page_id, {
-      pageName,
-      root,
-      onAsset: (relativePath) => managedPaths.add(relativePath),
-    });
+    const pageManagedPaths = new Set();
+    let body;
+    try {
+      body = await pageToMdxBody(client, row.page_id, {
+        pageName,
+        root,
+        onAsset: (relativePath) => pageManagedPaths.add(relativePath),
+      });
+    } catch (error) {
+      if (!isMissingNotionDataError(error)) throw error;
+      const hasCachedContent = fs.existsSync(filePath);
+      counts.skip += 1;
+      counts.missing += 1;
+      if (hasCachedContent) counts.preserved += 1;
+      console.warn(
+        `[notion] ${pageName} page missing for ${normalizeSourceId(row.source_id || row.page_id)}; ${hasCachedContent ? "preserving cached content" : "skipping without cache"}`,
+      );
+      continue;
+    }
+    if (options.requireThumbnails && row.status !== "temp") {
+      ensureRequiredThumbnail(root, pageName, row);
+      const sourceId = normalizeSourceId(row.source_id || row.page_id);
+      const category = pageName === "journal" && row.category === "personal" ? "blog" : String(row.category || "uncategorized");
+      managedPaths.add(requiredThumbnailPath(pageName === "project" ? "projects" : "devlog", category, sourceId));
+    }
     const document = buildMdxDocument(frontmatterFor(pageName, row), body, { pageName });
     if (!await validateMdxDocument(document, row.title || row.source_id)) {
       const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
@@ -158,12 +187,13 @@ export async function syncPageContent(client, pageName, rows, options = {}) {
     }
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, document, "utf8");
+    for (const relativePath of pageManagedPaths) managedPaths.add(relativePath);
     managedPaths.add(path.relative(root, filePath).replaceAll("\\", "/"));
     counts[operation] += 1;
     console.log(`[notion] ${pageName} ${operation}: ${row.title || row.source_id}`);
   }
   console.log(
-    `[notion] ${pageName} MDX: ${counts.init} init, ${counts.update} update, ${counts.skip} skip, ${counts.invalid} invalid preserved`,
+    `[notion] ${pageName} MDX: ${counts.init} init, ${counts.update} update, ${counts.skip} skip, ${counts.invalid} invalid preserved, ${counts.missing} missing, ${counts.preserved} cached preserved`,
   );
   return { ...counts, managedPaths: [...managedPaths].sort() };
 }

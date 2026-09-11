@@ -64,33 +64,62 @@ function validPage(page) {
     && !Array.isArray(page.properties);
 }
 
+function stableRowId(row) {
+  return String(row?.page_id || row?.source_id || row?.id || "").replaceAll("-", "").trim();
+}
+
 async function fetchRows(client, configuration, adapters) {
   const fetchedGroups = await Promise.all(SOURCE_GROUPS.map(async (group) => {
     const sources = configuration.groups[group];
-    if (sources.length === 0) return [group, null];
+    if (sources.length === 0) return [group, { rows: null, manifestRows: null }];
     const pageGroups = await Promise.all(sources.map((source) => adapters.querySourcePages(client, source)));
     if (pageGroups.some((pages) => !Array.isArray(pages) || pages.some((page) => !validPage(page)))) {
       throw new Error(`Malformed Notion response for ${group}.`);
     }
     const uniquePages = new Map(pageGroups.flat().map((page) => [page.id, page]));
     if (uniquePages.size === 0 && !adapters.allowEmpty) throw new Error(`Notion source group returned zero rows: ${group}.`);
-    const violations = [...uniquePages.values()]
+    const validations = [...uniquePages.values()]
       .map((page) => ({ page, result: validateNotionPage(group, page) }))
       .filter(({ result }) => !result.valid);
-    if (violations.length > 0) {
+    const blockingViolations = validations.filter(({ result }) => result.violations.some(({ reason }) => reason !== "required"));
+    if (blockingViolations.length > 0) {
       const error = new Error(`Notion schema quarantine required for ${group}.`);
-      error.quarantine = { group, entries: violations.map(({ page, result }) => ({ pageId: page.id, group, violations: result.violations })) };
+      error.quarantine = { group, entries: blockingViolations.map(({ page, result }) => ({ pageId: page.id, group, violations: result.violations })) };
       throw error;
     }
+    const recoverablePageIds = new Set(validations.map(({ page }) => stableRowId(page)));
     const rows = [...uniquePages.values()]
+      .filter((page) => !recoverablePageIds.has(stableRowId(page)))
       .map((page) => adapters.pageToIndexRow(group, page))
       .sort((left, right) => String(right.created_date || "").localeCompare(String(left.created_date || "")));
     const previousRows = adapters.previousRowsByGroup?.[group] || [];
-    const diff = classifyNotionPages(rows, previousRows);
+    const previousById = new Map(previousRows.map((row) => [stableRowId(row), row]));
+    const preservedRows = [];
+    for (const { page, result } of validations) {
+      const sourceId = stableRowId(page);
+      const previous = previousById.get(sourceId);
+      const columns = result.violations.map(({ column }) => column).join(", ");
+      console.warn(`[notion] ${group} page missing required data (${columns}): ${sourceId}; ${previous ? "preserving previous data" : "skipping without previous data"}`);
+      if (previous) preservedRows.push(previous);
+    }
+    const currentRows = [...rows, ...preservedRows];
+    const diff = classifyNotionPages(currentRows, previousRows);
+    for (const sourceId of diff.deleted) {
+      console.warn(`[notion] ${group} page missing from source: ${sourceId}; preserving existing content when available`);
+    }
     console.log(`[notion] ${group} diff: ${diff.new.length} new, ${diff.updated.length} updated, ${diff.deleted.length} deleted, ${diff.unchanged.length} unchanged`);
-    return [group, rows];
+    const manifestRows = new Map(currentRows.map((row) => [stableRowId(row), row]));
+    for (const sourceId of diff.deleted) {
+      const previous = previousById.get(stableRowId({ page_id: sourceId }));
+      if (previous) manifestRows.set(stableRowId(previous), previous);
+    }
+    return [group, { rows, manifestRows: [...manifestRows.values()] }];
   }));
-  return Object.fromEntries(fetchedGroups);
+  const groups = Object.fromEntries(fetchedGroups);
+  return {
+    rowsByGroup: Object.fromEntries(SOURCE_GROUPS.map((group) => [group, groups[group].rows])),
+    manifestRowsByGroup: Object.fromEntries(SOURCE_GROUPS.map((group) => [group, groups[group].manifestRows])),
+  };
 }
 
 export async function runFetchOrchestration(options) {
@@ -109,13 +138,14 @@ export async function runFetchOrchestration(options) {
       const manifestFile = path.join(root, ...NOTION_MANIFEST_PATH.split("/"));
       const persistManifest = fs.existsSync(manifestFile) || options.persistManifest === true;
       let rowsByGroup;
+      let manifestRowsByGroup;
       try {
-        rowsByGroup = await fetchRows(client, configuration, {
-        querySourcePages: options.querySourcePages,
-        pageToIndexRow: options.pageToIndexRow,
-        allowEmpty: options.allowEmpty,
-        previousRowsByGroup: options.previousRowsByGroup || readPreviousRows(root),
-        });
+        ({ rowsByGroup, manifestRowsByGroup } = await fetchRows(client, configuration, {
+          querySourcePages: options.querySourcePages,
+          pageToIndexRow: options.pageToIndexRow,
+          allowEmpty: options.allowEmpty,
+          previousRowsByGroup: options.previousRowsByGroup || readPreviousRows(root),
+        }));
       } catch (error) {
         if (error?.quarantine?.entries) {
           writeQuarantineReport(root, error.quarantine.entries);
@@ -139,7 +169,7 @@ export async function runFetchOrchestration(options) {
         managedPaths.push(...result.managedPaths);
       }
       await generateContent(stageRoot);
-      if (persistManifest) writeManifest(stageRoot, rowsByGroup);
+      if (persistManifest) writeManifest(stageRoot, manifestRowsByGroup);
       return { managedPaths: [...managedPaths, ...FIXED_GENERATED_PATHS, ...(persistManifest ? [NOTION_MANIFEST_PATH] : [])] };
     },
     validate(stageRoot, manifest) {
