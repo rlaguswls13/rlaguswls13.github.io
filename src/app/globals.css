@@ -3634,6 +3634,10 @@ body {
   font-size: var(--type-card-title);
 }
 
+.devlog-card .item-title {
+  text-wrap: pretty;
+}
+
 .devlog-description,
 .project-card p,
 .about-project-description,
