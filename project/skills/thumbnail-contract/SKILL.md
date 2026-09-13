@@ -5,6 +5,13 @@ description: Use when generating, reviewing, validating, or repairing 2.5D blog 
 
 # Thumbnail Contract
 
+## 실행 규모 경계
+
+- 1회 2~3개 썸네일 생성·교체는 경량 자산 작업이다. 기본 경로는 `imagegen` 생성, 파일 규격 검사, 288×192 축소본 시각 확인, 썸네일 계약 테스트, 콘텐츠 검증으로 끝낸다.
+- 경량 배치만을 이유로 `omo:start-work`, 전체 브라우저 반응형 매트릭스, 다중 리뷰 에이전트, 전역 `omo:review-work`를 자동 호출하지 않는다.
+- 전체 시리즈 교체 완료, UI 컴포넌트 변경, 릴리스·PR 인계처럼 기능 전체를 검증할 때만 무거운 오케스트레이션과 전체 화면 검증을 적용한다.
+- 사용자가 별도로 전체 검증을 요청하면 그 요청이 이 기본 경계보다 우선한다.
+
 썸네일 생성·검수 작업에서 사용합니다. 상세 시각 규칙은 `.wiki/pipeline/thumbnail-rules.md`(저장소 밖 `D:\obsidian-storage\project-rag\blog\pipeline\thumbnail-rules.md`, `$PROJECT_RAG_PATH` 우선)를 먼저 읽고, bitmap 생성·편집에는 설치된 `imagegen` skill의 built-in 경로를 사용합니다. 절차적 SVG/로컬 라인아트 생성기를 품질 fallback으로 사용하지 않습니다.
 
 ## Procedure
