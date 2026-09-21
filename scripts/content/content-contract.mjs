@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import matter from "gray-matter";
+import { emphasisDiagnostics } from "./emphasis-diagnostics.mjs";
 import { NOTION_SCHEMA } from "../notion/connect/schema-contract.mjs";
 
 const DEVLOG_ROOT = "src/content/devlog";
@@ -59,8 +60,9 @@ function walkMdx(root, relativeRoot) {
 function frontmatter(root, filePath) {
   const file = relative(root, filePath);
   let parsed;
+  const source = fs.readFileSync(filePath, "utf8");
   try {
-    parsed = matter(fs.readFileSync(filePath, "utf8"));
+    parsed = matter(source);
   } catch {
     fail(file, "invalid frontmatter");
   }
@@ -80,7 +82,8 @@ function frontmatter(root, filePath) {
   if (!id || !slug || !title || !date) fail(file, "missing required frontmatter id/title/date/slug");
   if (!SLUG_PATTERN.test(slug)) fail(file, "invalid slug");
   if (id !== path.basename(filePath, ".mdx")) fail(file, "frontmatter id must match filename");
-  return { file, id, slug, title, date, status };
+  const lineOffset = source.slice(0, source.length - parsed.content.length).split("\n").length - 1;
+  return { file, id, slug, title, date, status, warnings: emphasisDiagnostics(parsed.content, file, lineOffset) };
 }
 
 function presentCategories(root, sourceRoot, allowedCategories) {
@@ -194,7 +197,8 @@ export function validateContent(root = process.cwd()) {
   const projects = contentEntries(root, PROJECT_ROOT);
   validateSlugRoutes(root, devlog, projects);
   validateIndexes(root, devlog, projects);
-  return { contentFiles: devlog.length + projects.length, devlogFiles: devlog.length, projectFiles: projects.length };
+  const warnings = [...devlog, ...projects].flatMap((entry) => entry.warnings);
+  return { contentFiles: devlog.length + projects.length, devlogFiles: devlog.length, projectFiles: projects.length, warnings };
 }
 
 function fileManifest(root) {

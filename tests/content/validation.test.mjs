@@ -49,6 +49,29 @@ afterEach(async () => {
 });
 
 describe("content validation", () => {
+  it("reports stray emphasis after inline code without rejecting content", async () => {
+    const root = await createFixture();
+    const file = `src/content/devlog/blog/${id}.mdx`;
+    await writeMdx(root, file, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, "`Wrapper`*를 사용한다.");
+    expect(validateContent(root).warnings).toEqual([
+      { file, line: 8, column: 10, code: "suspicious-emphasis" },
+    ]);
+  });
+
+  it.each([
+    "`**`(거듭제곱), `*`, `*.js`",
+    "**`Wrapper`를 사용한다.**",
+    "*정상 강조*와 **정상 굵게**",
+    "```python\n`Wrapper`*를\n2 ** 3\n```",
+    "`Wrapper`\\*를 사용한다.",
+    "`Wrapper`&#42;를 사용한다.",
+    "`a` * `b`",
+  ])("does not warn for valid notation: %s", async (body) => {
+    const root = await createFixture();
+    await writeMdx(root, `src/content/devlog/blog/${id}.mdx`, `id: "${id}"\nslug: "fixture-post"\ntitle: "Fixture post"\ndate: "2026-01-01"`, body);
+    expect(validateContent(root).warnings).toEqual([]);
+  });
+
   it("accepts valid content and produces identical owned-root manifests twice", async () => {
     // Given
     const root = await createFixture();

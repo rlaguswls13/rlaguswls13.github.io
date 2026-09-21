@@ -9,6 +9,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const root = rootFlag === -1 ? process.cwd() : path.resolve(process.argv[rootFlag + 1] || "");
   if (rootFlag !== -1 && !process.argv[rootFlag + 1]) throw new Error("--root requires a directory");
   const validation = validateContent(root);
+  for (const warning of validation.warnings) {
+    console.warn(`${warning.file}:${warning.line}:${warning.column}: warning ${warning.code}: review stray emphasis after inline code in Notion source.`);
+  }
   const determinism = verifyDeterministicGenerators(root);
   console.log(`Validated ${validation.contentFiles} content files; deterministic owned-root manifest has ${Object.values(determinism.first).reduce((count, root) => count + Object.keys(root).length, 0)} files.`);
 }
