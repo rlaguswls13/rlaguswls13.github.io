@@ -9,7 +9,7 @@ description: "jre, jdk, jvm 용어에 대해서 간략하게 정리해 봤습니
 title: "Java : JVM, JRE, JDK 이들의 차이가 뭘까?"
 page_id: "3c819946-ca76-8094-bfeb-e1e7bea97aa6"
 source_id: "3c819946ca768094bfebe1e7bea97aa6"
-last_edited_time: "2026-09-01T02:52:00.000Z"
+last_edited_time: "2026-09-16T08:59:00.000Z"
 notion_url: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7bea97aa6"
 id: "3c819946ca768094bfebe1e7bea97aa6"
 sourceId: "3c819946-ca76-8094-bfeb-e1e7bea97aa6"
@@ -157,11 +157,11 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 - <strong>JVM (Java Virtual Machine: 실행 엔진)</strong>
 - 자바 바이트코드(`.class`)를 운영체제에 종속되지 않고 실행할 수 있도록 변환해 주는 가상머신입니다.
-- 단순히 코드를 해석하는 인터프리터를 넘어, 자주 실행되는 핫스팟 코드를 기계어로 컴파일하는 <strong>JIT(Just-In-Time) 컴파일러</strong>와 메모리를 자동 관리하는 <strong>GC(Garbage Collector)</strong>가 핵심 엔진 역할을 합니다.
+- 단순히 코드를 해석하는 인터프리터를 넘어, 자주 실행되는 핫스팟 코드를 기계어로 컴파일하는 <strong>JIT(Just-In-Time) 컴파일러</strong>와 메모리를 자동 관리하는 GC(Garbage Collector)가 핵심 엔진 역할을 합니다.
 - 대표적인 구현체로는 오라클과 오픈소스 진영의 표준인 <strong>HotSpot JVM</strong>이 있으며, 최근에는 빠른 기동 속도(Cold Start 개선)와 AOT(Ahead-Of-Time) 네이티브 바이너리 빌드를 지원하는 <strong>GraalVM</strong>, 메모리 효율에 특화된 <strong>Eclipse OpenJ9</strong> 등으로 워크로드에 맞춰 대체할 수 있습니다.
 
 - <strong>JRE (Java Runtime Environment: 실행 환경)</strong>
-- *JVM + Java 표준 라이브러리(Java Core API)**로 구성됩니다.
+- JVM + Java 표준 라이브러리(Java Core API)로 구성됩니다.
 - `java.util`, `java.lang(System 등)`, `java.io`와 같은 필수 런타임 클래스 라이브러리와 구동 환경을 제공하여, 이미 컴파일된 애플리케이션을 실행하기 위한 최소한의 패키지입니다.
 
 - <strong>JDK (Java Development Kit: 개발 및 진단 도구 모음)</strong>
@@ -200,5 +200,5 @@ notionUrl: "https://app.notion.com/p/Java-JVM-JRE-JDK-3c819946ca768094bfebe1e7be
 
 <NotionDivider />
 
-<strong>결론적으로</strong>, 개발 단계에서는 풍부한 도구를 제공하는 <strong>JDK</strong>를 기본으로 활용하고, 운영 단계에서는 <strong>보안과 경량화</strong>를 고려한 런타임을 구성하되, 서비스의 부하 특성과 클라우드 아키텍처에 맞춰 <strong>최적의 JVM(HotSpot vs GraalVM 등)</strong>을 선별하는 것이 가장 이상적인 엔지니어링 접근 방식입니다.
+<strong>결론적으로</strong>, 개발 단계에서는 풍부한 도구를 제공하는 <strong>JDK</strong>를 기본으로 활용하고, 운영 단계에서는 <strong>보안과 경량화</strong>를 고려한 런타임을 구성하되, 서비스의 부하 특성과 클라우드 아키텍처에 맞춰 최적의 JVM(HotSpot vs GraalVM 등)을 선별하는 것이 가장 이상적인 엔지니어링 접근 방식입니다.
 

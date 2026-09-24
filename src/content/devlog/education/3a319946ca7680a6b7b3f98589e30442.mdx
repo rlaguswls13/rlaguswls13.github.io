@@ -10,7 +10,7 @@ slug: "spring-filter-and-interceptor"
 title: "Spring에서 Filter와 Interceptor의 쓰임 +AOP"
 page_id: "3a319946-ca76-80a6-b7b3-f98589e30442"
 source_id: "3a319946ca7680a6b7b3f98589e30442"
-last_edited_time: "2026-08-26T01:30:00.000Z"
+last_edited_time: "2026-09-23T05:40:00.000Z"
 notion_url: "https://app.notion.com/p/Spring-Filter-Interceptor-AOP-3a319946ca7680a6b7b3f98589e30442"
 id: "3a319946ca7680a6b7b3f98589e30442"
 sourceId: "3a319946-ca76-80a6-b7b3-f98589e30442"
@@ -155,7 +155,7 @@ public class CustomLoggingFilter implements Filter{
 
 서블릿 환경에서 Forward(`RequestDispatcher.forward()`) 발생 시 동일한 요청에 대해 일반 `Filter`가 2번 이상 중복 호출될 수 있다.
 
-Spring이 제공하는 <strong>`OncePerRequestFilter`</strong>를 상속하면 <strong>하나의 HTTP 요청당 단 1회 실행</strong>을 완벽히 보장한다. (JWT 인증 필터 구현 시 필수)
+Spring이 제공하는 `OncePerRequestFilter`를 상속하면 <strong>하나의 HTTP 요청당 단 1회 실행</strong>을 완벽히 보장한다. (JWT 인증 필터 구현 시 필수)
 
 
 ```java
@@ -191,7 +191,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 #### <strong>2) Request Body (`InputStream`) 재사용 불가 문제</strong>
 
 - 로깅 목적으로 `request.getInputStream()`을 필터에서 읽으면, 스트림 소진으로 인해 `@RequestBody`에서 데이터를 읽지 못해 `HttpRequestMethodNotSupportedException` 또는 빈 바디 에러가 발생한다.
-- <strong>해결책</strong>: Spring의 **`ContentCachingRequestWrapper`*를 사용하여 요청을 감싸 캐싱 후 읽어야 한다.
+- <strong>해결책</strong>: Spring의 `ContentCachingRequestWrapper`를 사용하여 요청을 감싸 캐싱 후 읽어야 한다.
 
 <NotionDivider />
 

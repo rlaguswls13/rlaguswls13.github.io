@@ -10,7 +10,7 @@ slug: "python-basic"
 title: "파이썬 기초 문법"
 page_id: "3c019946-ca76-80f5-aa3e-f175479b1dba"
 source_id: "3c019946ca7680f5aa3ef175479b1dba"
-last_edited_time: "2026-08-26T01:32:00.000Z"
+last_edited_time: "2026-09-16T08:58:00.000Z"
 notion_url: "https://app.notion.com/p/3c019946ca7680f5aa3ef175479b1dba"
 id: "3c019946ca7680f5aa3ef175479b1dba"
 sourceId: "3c019946-ca76-80f5-aa3e-f175479b1dba"
@@ -37,7 +37,7 @@ notionUrl: "https://app.notion.com/p/3c019946ca7680f5aa3ef175479b1dba"
 
 ## <strong>핵심 요약</strong>
 
-파이썬(Python)은 문법이 간결하고 가독성이 뛰어난 <strong>인터프리터 방식의 동적 타이핑(Dynamic Typing) 고급 프로그래밍 언어</strong>다. 코드 블록을 중괄호(`{}`) 대신 <strong>들여쓰기(Indentation)</strong>로 구분한다.
+파이썬(Python)은 문법이 간결하고 가독성이 뛰어난 인터프리터 방식의 동적 타이핑(Dynamic Typing) 고급 프로그래밍 언어다. 코드 블록을 중괄호(`{}`) 대신 들여쓰기(Indentation)로 구분한다.
 
 
 <NotionDivider />
@@ -69,7 +69,7 @@ print(id(name))   # 객체 메모리 주소 출력
 
 ## <strong>2. 주요 연산자</strong>
 
-- <strong>산술 연산자</strong>: `+`, `-`,`*` , `/` (실수 나눗셈), `//` (정수 몫), `%` (나머지), `**` (거듭제곱)
+- <strong>산술 연산자</strong>: `+`,  `-`, `*`, `/` (실수 나눗셈), `//` (정수 몫), `%` (나머지),  `**`(거듭제곱)
 - <strong>비교 연산자</strong>: `==`, `!=`, `>`, `<`, `>=`, `<=`
 - <strong>논리 연산자</strong>: `and`, `or`, `not`
 - <strong>멤버십 연산자</strong>: `in`, `not in` (리스트, 튜플, 문자열 내부 포함 여부 확인)
@@ -133,7 +133,7 @@ while count < 5:
 
 파이썬은 Java나 C 계열 언어와 달리 중괄호(`{}`)로 코드 블록(Block Scope)을 나누지 않는다.
 
-대신 <strong>콜론(`:`)과 들여쓰기(Indentation)</strong>를 사용하여 코드의 제어 범위와 블록 구획을 나눈다.
+대신 콜론(`:`)과 들여쓰기(Indentation)를 사용하여 코드의 제어 범위와 블록 구획을 나눈다.
 
 
 ```python
@@ -157,7 +157,7 @@ if score >= 90:
 - 파이썬 공식 스타일 가이드(PEP 8)에서는 코드 블록 1단계당 <strong>스페이스 4칸(4 Spaces)</strong> 사용을 표준으로 정의한다.
 
 1. <strong>Tab과 Space 혼용 금지</strong>:
-- 탭(Tab)과 스페이스(Space)를 같은 파일 안에서 혼용하면 **`TabError`*가 발생한다. 대부분의 현대 IDE(VS Code, PyCharm)는 Tab 키를 누르면 자동으로 공백 4칸으로 변환해 준다.
+- 탭(Tab)과 스페이스(Space)를 같은 파일 안에서 혼용하면 `TabError`가 발생한다. 대부분의 현대 IDE(VS Code, PyCharm)는 Tab 키를 누르면 자동으로 공백 4칸으로 변환해 준다.
 
 1. <strong>빈 블록 처리 키워드 (`pass`)</strong>:
 - 콜론(`:`) 뒤에 구문상 들여써야 하지만 아직 구현할 내용이 없는 경우 <strong>`pass`</strong> 키워드를 써서 에러를 방지한다.

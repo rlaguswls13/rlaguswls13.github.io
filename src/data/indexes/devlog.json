@@ -248,8 +248,8 @@
         "polymorphism"
       ],
       "description": "그동안 무심코 overwrite로 혼동하며 쓰던 개념은 객체지향 상속 구조에서 유래한 override(재정의)가 올바른 표현임을 알게 되었습니다. 부모 클래스의 메서드를 자식 클래스가 자신의 목적에 맞게 재정의하여 사용하는 상속의 특성이 오버라이드의 핵심 원리입니다.\n반면 overload(오버로드)는 동일한 이름의 메서드를 매개변수의 개수나 타입에 따라 여러 개 선언하는 방식으로, 하나의 이름이 다양한 형태를 가질 수 있게 만드는 다형성 개념에서 출발합니다. 이처럼 두 용어의 정확한 기원과 객체지향적 배경을 정리함으로써 코드의 구조적 의미를 더욱 선명하게 이해할 수 있습니다.",
-      "subcategory": "jvav",
-      "package": "jvav",
+      "subcategory": "전체",
+      "package": "전체",
       "notionUrl": "https://app.notion.com/p/Java-Override-Overload-3ce19946ca7680c19677fb9fa7f3dea7"
     },
     {
@@ -258,7 +258,7 @@
       "sourceId": "3c819946-ca76-8094-bfeb-e1e7bea97aa6",
       "source_id": "3c819946ca768094bfebe1e7bea97aa6",
       "page_id": "3c819946-ca76-8094-bfeb-e1e7bea97aa6",
-      "last_edited_time": "2026-09-01T02:52:00.000Z",
+      "last_edited_time": "2026-09-16T08:59:00.000Z",
       "title": "Java : JVM, JRE, JDK 이들의 차이가 뭘까?",
       "date": "2026.08.27",
       "tags": [
