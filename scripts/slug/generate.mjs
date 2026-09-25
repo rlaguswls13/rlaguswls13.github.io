@@ -37,6 +37,16 @@ function walkMdxFiles(directory) {
   });
 }
 
+function collisionGroups(entries, keyOf) {
+  const paths = new Map();
+  for (const entry of entries) {
+    const key = keyOf(entry);
+    if (!paths.has(key)) paths.set(key, []);
+    paths.get(key).push(entry[2]);
+  }
+  return [...paths.entries()].filter(([, entryPaths]) => entryPaths.length > 1);
+}
+
 const output = {};
 
 for (const category of CATEGORIES) {
@@ -62,15 +72,25 @@ for (const category of CATEGORIES) {
         );
       }
 
-      return [[normalizedId, slug]];
+      return [[normalizedId, slug, path.relative(process.cwd(), filePath)]];
     })
     .sort(([left], [right]) => left.localeCompare(right, "en", { numeric: true }));
 
-  if (new Set(entries.map(([id]) => id)).size !== entries.length) {
-    throw new Error(`Duplicate frontmatter id found in ${category}`);
+  const idCollisions = collisionGroups(entries, ([id]) => id);
+  if (idCollisions.length > 0) {
+    throw new Error(
+      `Duplicate frontmatter id found in ${category}: ${idCollisions
+        .map(([id, paths]) => `${id} (${paths.join(", ")})`)
+        .join("; ")}`,
+    );
   }
-  if (new Set(entries.map(([, slug]) => slug)).size !== entries.length) {
-    throw new Error(`Duplicate frontmatter slug found in ${category}`);
+  const slugCollisions = collisionGroups(entries, ([, slug]) => slug);
+  if (slugCollisions.length > 0) {
+    throw new Error(
+      `Duplicate frontmatter slug found in ${category}: ${slugCollisions
+        .map(([slug, paths]) => `${slug} (${paths.join(", ")})`)
+        .join("; ")}`,
+    );
   }
   output[category] = Object.fromEntries(entries);
 }
