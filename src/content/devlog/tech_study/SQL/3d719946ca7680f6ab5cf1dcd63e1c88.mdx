@@ -1,0 +1,608 @@
+---
+category: "tech_study"
+created_date: "2026-09-28"
+tag: []
+slug: "3d719946ca7680f6ab5cf1dcd63e1c88"
+subcategory: "SQL"
+status: "temp"
+description: "쿼리가 느릴 때 원인을 찾는 방법 - 애플리케이션·네트워크·DB 계층 분리 진단과 튜닝 Case Report"
+title: "쿼리가 느릴 때 원인을 찾는 방법 - 애플리케이션·네트워크·DB 계층 분리 진단과 튜닝 Case Report"
+page_id: "3d719946-ca76-80f6-ab5c-f1dcd63e1c88"
+source_id: "3d719946ca7680f6ab5cf1dcd63e1c88"
+last_edited_time: "2026-10-07T05:30:00.000Z"
+notion_url: "https://app.notion.com/p/DB-Case-Report-3d719946ca7680f6ab5cf1dcd63e1c88"
+id: "3d719946ca7680f6ab5cf1dcd63e1c88"
+sourceId: "3d719946-ca76-80f6-ab5c-f1dcd63e1c88"
+date: "2026-09-28"
+tags: []
+package: "SQL"
+notionUrl: "https://app.notion.com/p/DB-Case-Report-3d719946ca7680f6ab5cf1dcd63e1c88"
+---
+
+## 목차
+
+- [핵심 요약](#핵심-요약)
+- [0. 논의 범위 획정](#0-논의-범위-획정)
+- [1. 1단계 - "느린 곳"이 앱인가 DB인가 (측정 3지점)](#1-1단계-느린-곳이-앱인가-db인가-측정-3지점)
+  - [1.1 판정표](#11-판정표)
+  - [1.2 앱에서 T_app 재는 코드 (Java 예시)](#12-앱에서-tapp-재는-코드-java-예시)
+  - [1.3 DB가 실제로 쓴 시간 직접 확인](#13-db가-실제로-쓴-시간-직접-확인)
+- [2. 2단계 - DB 바깥(네트워크·커넥션·풀) 점검](#2-2단계-db-바깥네트워크커넥션풀-점검)
+  - [2.1 커넥션 풀 고갈 - "쿼리는 빠른데 요청이 느림"](#21-커넥션-풀-고갈-쿼리는-빠른데-요청이-느림)
+  - [2.2 커넥션 누수 진단](#22-커넥션-누수-진단)
+  - [2.3 N+1 쿼리 - "목록 API만 느림"](#23-n1-쿼리-목록-api만-느림)
+  - [2.4 fetch size / 스트리밍 - "결과가 큰데 앱 메모리·시간 급증"](#24-fetch-size-스트리밍-결과가-큰데-앱-메모리시간-급증)
+  - [2.5 락 대기 - "특정 시간대에만 느림"](#25-락-대기-특정-시간대에만-느림)
+  - [2.6 네트워크·옵션 체크리스트](#26-네트워크옵션-체크리스트)
+- [3. CLI는 빠른데 앱에서만 느린 경우 (플랜·바인드)](#3-cli는-빠른데-앱에서만-느린-경우-플랜바인드)
+- [4. DB 내부가 느린 경우 - EXPLAIN 읽기](#4-db-내부가-느린-경우-explain-읽기)
+  - [4.1 무엇을 보는가](#41-무엇을-보는가)
+  - [4.2 "인덱스가 있는데 안 타는" 대표 패턴](#42-인덱스가-있는데-안-타는-대표-패턴)
+  - [4.3 복합 인덱스 컬럼 순서](#43-복합-인덱스-컬럼-순서)
+- [5. Case Report - DB 내부 병목 유형별](#5-case-report-db-내부-병목-유형별)
+  - [5.1 Case A - 인덱스 부재로 인한 Full Scan](#51-case-a-인덱스-부재로-인한-full-scan)
+  - [5.2 Case B - OFFSET 페이지네이션이 뒤로 갈수록 느림](#52-case-b-offset-페이지네이션이-뒤로-갈수록-느림)
+  - [5.3 Case C - 반복 집계 쿼리 (요약 테이블)](#53-case-c-반복-집계-쿼리-요약-테이블)
+  - [5.4 Case D - 단일 거대 테이블 → 파티셔닝](#54-case-d-단일-거대-테이블-파티셔닝)
+  - [5.5 Case E - 단일 서버 쓰기·용량 한계 → 읽기 복제본 후 샤딩](#55-case-e-단일-서버-쓰기용량-한계-읽기-복제본-후-샤딩)
+  - [5.6 Case F - 평소 빠른데 가끔 느림 (플랜 변동)](#56-case-f-평소-빠른데-가끔-느림-플랜-변동)
+- [6. 진단 순서 요약 (Runbook)](#6-진단-순서-요약-runbook)
+
+<a id="핵심-요약"></a>
+
+## <strong>핵심 요약</strong>
+
+
+```text
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ 1. [분리 원칙]  : "느린 곳"을 위에서부터 잘라낸다 → 클라이언트 / 앱+드라이버 / 네트워크·풀 / DB 내부   │
+│ 2. [측정 3지점] : ① DB 콘솔 직접(T_db)  ② 앱에서 드라이버로(T_app)  ③ 클라이언트 체감(T_client)     │
+│ 3. [판정]       : T_app ≫ T_db → DB 바깥 문제 / T_db 자체가 큼 → DB 내부 문제 / CLI만 빠름 → 플랜·페치│
+│ 4. [DB 바깥]    : 커넥션 풀 고갈·누수, RTT, fetch size, 락 대기, 트랜잭션 미종료, 타임아웃 옵션       │
+│ 5. [DB 내부]    : EXPLAIN ANALYZE → 인덱스·sargable·OFFSET 페이징·집계·파티셔닝·샤딩 순서로 escalate │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+<NotionDivider />
+
+<a id="0-논의-범위-획정"></a>
+
+## <strong>0. 논의 범위 획정</strong>
+
+"쿼리가 느리다"는 신고는 최소 4개의 서로 다른 원인을 뭉뚱그린 표현입니다. 진단은 아래 계층을 <strong>위에서 아래로 하나씩 배제</strong>하며 좁힙니다.
+
+
+```text
+[클라이언트 체감]   브라우저/앱 응답 대기 = 큐잉 + 서버 처리 + 직렬화 + 전송
+      │
+[애플리케이션 + 드라이버]   ORM 매핑, N+1, prepared statement 플랜, fetch size
+      │
+[네트워크 + 커넥션 풀]   RTT, 풀 acquire 대기, 커넥션 누수, keepalive, 락 대기
+      │
+[DB 내부]   파싱/플랜 + 스캔 + 조인 + 정렬 + I/O
+```
+
+핵심 질문 두 가지:
+
+1. <strong>"쿼리 자체가 느린가"</strong> 를 어떻게 검증하는가 → 1~3장
+1. <strong>DB 내부가 느리다면</strong> 무엇을 확인하는가 (index / pagination / partitioning / sharding) → 4~5장
+
+<NotionDivider />
+
+<a id="1-1단계-느린-곳이-앱인가-db인가-측정-3지점"></a>
+
+## <strong>1. 1단계 - "느린 곳"이 앱인가 DB인가 (측정 3지점)</strong>
+
+같은 쿼리를 세 지점에서 재고 비교합니다.
+
+
+<NotionTable>
+  <tbody>
+    <tr><td><strong>측정 지점</strong></td><td><strong>방법</strong></td><td><strong>측정값</strong></td><td><strong>포함 요소</strong></td></tr>
+    <tr><td>DB 콘솔 직접</td><td>`psql` / `mysql` CLI에서 동일 쿼리 실행</td><td>`T_db`</td><td>순수 DB 실행</td></tr>
+    <tr><td>앱 서버 (드라이버)</td><td>쿼리 직전/직후 타임스탬프 로깅</td><td>`T_app`</td><td>`T_db` + 네트워크 + 드라이버 + 매핑</td></tr>
+    <tr><td>클라이언트</td><td>APM / 브라우저 네트워크 탭</td><td>`T_client`</td><td>`T_app` + 큐잉 + 직렬화 + 응답 전송</td></tr>
+  </tbody>
+</NotionTable>
+
+<a id="11-판정표"></a>
+
+### <strong>1.1 판정표</strong>
+
+
+<NotionTable>
+  <tbody>
+    <tr><td><strong>관찰</strong></td><td><strong>결론</strong></td><td><strong>다음 장</strong></td></tr>
+    <tr><td>`T_app` ≫ `T_db` (예: 2000ms vs 20ms)</td><td>DB 바깥 문제 (풀·네트워크·매핑)</td><td>2장</td></tr>
+    <tr><td>`T_db` 자체가 큼 (예: 1800ms)</td><td>DB 내부 문제</td><td>4장</td></tr>
+    <tr><td>CLI는 빠른데 앱에서만 느림</td><td>prepared statement 플랜 캐시 / 바인드 변수 / fetch size</td><td>2.4, 3장</td></tr>
+    <tr><td>단건은 빠른데 목록 API가 느림</td><td>N+1 쿼리</td><td>2.3</td></tr>
+    <tr><td>평소 빠른데 가끔 느림</td><td>parameter sniffing(플랜 변동) / 락 대기 / GC</td><td>2.5, 5.6</td></tr>
+  </tbody>
+</NotionTable>
+
+<a id="12-앱에서-tapp-재는-코드-java-예시"></a>
+
+### <strong>1.2 앱에서 T_app 재는 코드 (Java 예시)</strong>
+
+
+```java
+long t0 = System.nanoTime();
+List<OrderRow> rows = jdbcTemplate.query(SQL, mapper, params);
+long tQuery = System.nanoTime();
+List<OrderDto> dto = rows.stream().map(this::toDto).toList();  // 매핑 비용 분리 측정
+long tMap = System.nanoTime();
+
+log.info("query={}ms map={}ms rows={}",
+        (tQuery - t0) / 1_000_000,
+        (tMap - tQuery) / 1_000_000,
+        rows.size());
+```
+
+`query`는 20ms인데 전체 API가 800ms라면 매핑·직렬화·다른 호출을 의심합니다.
+
+<a id="13-db가-실제로-쓴-시간-직접-확인"></a>
+
+### <strong>1.3 DB가 실제로 쓴 시간 직접 확인</strong>
+
+
+```sql
+-- PostgreSQL: 서버가 인지한 실행 시간
+EXPLAIN (ANALYZE, TIMING) SELECT ...;      -- "Execution Time: N ms"
+
+-- MySQL: 프로파일링
+SET profiling = 1;
+SELECT ...;
+SHOW PROFILES;                              -- Query_ID별 Duration
+SHOW PROFILE FOR QUERY 1;                   -- 단계별(Sending data, Sorting result 등)
+
+-- 느린 쿼리 로그 (운영에서 상시)
+-- postgresql.conf:  log_min_duration_statement = 500      (500ms 이상 로깅)
+-- my.cnf:           slow_query_log = 1
+--                   long_query_time = 0.5
+--                   log_queries_not_using_indexes = 1
+```
+
+
+<NotionDivider />
+
+<a id="2-2단계-db-바깥네트워크커넥션풀-점검"></a>
+
+## <strong>2. 2단계 - DB 바깥(네트워크·커넥션·풀) 점검</strong>
+
+<a id="21-커넥션-풀-고갈-쿼리는-빠른데-요청이-느림"></a>
+
+### <strong>2.1 커넥션 풀 고갈 - "쿼리는 빠른데 요청이 느림"</strong>
+
+풀에서 커넥션을 못 받아 대기하면, 쿼리 실행 시간과 무관하게 요청이 느려집니다.
+
+
+```java
+// HikariCP: acquire 대기 시간·활성 커넥션 메트릭 노출
+HikariDataSource ds = ...;
+HikariPoolMXBean pool = ds.getHikariPoolMXBean();
+log.info("active={} idle={} waiting={} total={}",
+        pool.getActiveConnections(),
+        pool.getIdleConnections(),
+        pool.getThreadsAwaitingConnection(),   // 이 값이 0보다 크면 풀 부족 신호
+        pool.getTotalConnections());
+```
+
+
+```text
+# 진단용: 커넥션을 200ms 안에 못 받으면 예외로 빠르게 실패시켜 병목을 표면화
+spring.datasource.hikari.connection-timeout=200
+spring.datasource.hikari.leak-detection-threshold=5000   # 5초 넘게 안 반환된 커넥션 경고
+```
+
+
+```sql
+-- DB 쪽에서 현재 연결 상태 확인
+-- PostgreSQL
+SELECT state, count(*) FROM pg_stat_activity GROUP BY state;
+--  idle in transaction 이 많으면 → 앱이 트랜잭션을 안 닫고 있음 (커넥션 누수의 전형)
+
+-- MySQL
+SHOW STATUS LIKE 'Threads_connected';
+SHOW STATUS LIKE 'Threads_running';
+SELECT @@max_connections;
+```
+
+<a id="22-커넥션-누수-진단"></a>
+
+### <strong>2.2 커넥션 누수 진단</strong>
+
+
+```text
+증상: active 커넥션 수가 시간에 따라 우상향, 재기동하면 정상 → 서서히 다시 증가
+확인:
+  1) HikariCP leak-detection-threshold 로그의 스택트레이스 → 반환 안 한 코드 위치
+  2) pg_stat_activity 에서 state='idle in transaction', query_start 오래된 세션
+  3) 트랜잭션 경계(@Transactional) 밖에서 커넥션을 수동 획득 후 close() 누락
+조치: try-with-resources / @Transactional 범위 정리, 외부 API 호출을 트랜잭션 밖으로
+```
+
+<a id="23-n1-쿼리-목록-api만-느림"></a>
+
+### <strong>2.3 N+1 쿼리 - "목록 API만 느림"</strong>
+
+
+```text
+로그 관찰:
+  SELECT * FROM orders WHERE ordered_at >= ?          (1회, 50건)
+  SELECT * FROM shipments WHERE order_id = ?           (50회)   ← N+1
+  SELECT * FROM customers WHERE id = ?                 (50회)   ← N+1
+=> 쿼리 각각은 1ms지만 101회 × RTT(2ms) = 200ms+
+```
+
+
+```java
+// JPA: fetch join 또는 @EntityGraph 로 한 번에
+@Query("SELECT o FROM Order o JOIN FETCH o.shipment JOIN FETCH o.customer " +
+       "WHERE o.orderedAt >= :from")
+List<Order> findWithDetails(@Param("from") LocalDateTime from);
+
+// 또는 배치 IN 조회
+// SELECT * FROM shipments WHERE order_id IN (:ids)   -- 50건을 1회로
+```
+
+<a id="24-fetch-size-스트리밍-결과가-큰데-앱-메모리시간-급증"></a>
+
+### <strong>2.4 fetch size / 스트리밍 - "결과가 큰데 앱 메모리·시간 급증"</strong>
+
+
+```java
+// JDBC 기본 fetch size는 드라이버마다 다름.
+// PostgreSQL 드라이버는 autoCommit=true면 전체 결과를 한 번에 받음.
+stmt.setFetchSize(1000);           // 1000행씩 커서로 가져오기
+conn.setAutoCommit(false);         // PG에서 서버 사이드 커서 활성 조건
+
+// MyBatis
+<select id="streamAll" fetchSize="1000" resultSetType="FORWARD_ONLY">
+```
+
+<a id="25-락-대기-특정-시간대에만-느림"></a>
+
+### <strong>2.5 락 대기 - "특정 시간대에만 느림"</strong>
+
+
+```sql
+-- PostgreSQL: 무엇이 무엇을 막고 있는가
+SELECT blocked.pid   AS blocked_pid,
+       blocked.query AS blocked_query,
+       blocking.pid  AS blocking_pid,
+       blocking.query AS blocking_query
+FROM pg_stat_activity blocked
+JOIN pg_stat_activity blocking
+  ON blocking.pid = ANY(pg_blocking_pids(blocked.pid));
+
+-- MySQL 8
+SELECT * FROM performance_schema.data_lock_waits;
+SELECT * FROM sys.innodb_lock_waits;
+```
+
+
+```text
+원인 예: 배치가 긴 트랜잭션으로 UPDATE 락 보유 → 화면 조회 SELECT ... FOR UPDATE 가 대기
+조치: 트랜잭션 범위 축소, 배치를 청크 커밋으로, 조회는 FOR UPDATE 제거 또는 SKIP LOCKED
+```
+
+<a id="26-네트워크옵션-체크리스트"></a>
+
+### <strong>2.6 네트워크·옵션 체크리스트</strong>
+
+
+<NotionTable>
+  <tbody>
+    <tr><td><strong>항목</strong></td><td><strong>확인</strong></td><td><strong>조치</strong></td></tr>
+    <tr><td>RTT</td><td>앱↔DB `ping`, 같은 AZ/리전인지</td><td>같은 AZ 배치, RTT 큰 환경은 라운드트립 줄이기</td></tr>
+    <tr><td>TCP keepalive</td><td>방화벽이 유휴 커넥션 끊는지 (`connection reset`)</td><td>`tcpKeepAlive=true`, 풀 `keepaliveTime` &lt; 방화벽 타임아웃</td></tr>
+    <tr><td>statement timeout</td><td>무한 대기 쿼리 존재</td><td>`statement_timeout` / `socketTimeout` 설정</td></tr>
+    <tr><td>풀 validation</td><td>죽은 커넥션 재사용</td><td>`connectionTestQuery` 또는 JDBC4 `isValid`</td></tr>
+    <tr><td>TLS 핸드셰이크</td><td>커넥션 생성마다 비용</td><td>풀 min-idle 유지해 재협상 최소화</td></tr>
+  </tbody>
+</NotionTable>
+
+
+<NotionDivider />
+
+<a id="3-cli는-빠른데-앱에서만-느린-경우-플랜바인드"></a>
+
+## <strong>3. CLI는 빠른데 앱에서만 느린 경우 (플랜·바인드)</strong>
+
+
+```text
+현상: psql에서 SELECT ... WHERE status = 'PAID' → 5ms
+      앱(PreparedStatement, 바인드 파라미터) → 900ms
+
+원인 후보:
+  1) Generic Plan: PG는 prepared statement를 5회 실행 후 파라미터 무관 일반 플랜으로 고정.
+     특정 값에서만 유리한 인덱스를 안 타게 될 수 있음.
+  2) 파라미터 데이터 타입 불일치: 컬럼은 varchar인데 바인드가 다른 타입 → 인덱스 미사용, 암시적 캐스팅.
+  3) 바인드 변수 sniffing (SQL Server/Oracle): 첫 실행 파라미터 기준 플랜이 캐시됨.
+
+확인/조치:
+  - PG: plan_cache_mode = force_custom_plan (세션/함수 단위)
+  - 타입 명시 캐스팅, 파라미터 타입을 컬럼과 일치
+  - 편차 큰 쿼리는 리터럴 분기 또는 힌트/플랜 고정
+```
+
+
+```sql
+-- PG: prepared statement가 실제로 어떤 플랜을 쓰는지
+PREPARE p1(text) AS SELECT * FROM orders WHERE status = $1;
+EXPLAIN (ANALYZE) EXECUTE p1('PAID');
+```
+
+
+<NotionDivider />
+
+<a id="4-db-내부가-느린-경우-explain-읽기"></a>
+
+## <strong>4. DB 내부가 느린 경우 - EXPLAIN 읽기</strong>
+
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS, VERBOSE)
+SELECT o.id, o.ordered_at
+FROM orders o
+WHERE o.status = 'PAID'
+  AND o.ordered_at >= '2026-06-01'
+ORDER BY o.ordered_at DESC
+LIMIT 20;
+```
+
+<a id="41-무엇을-보는가"></a>
+
+### <strong>4.1 무엇을 보는가</strong>
+
+
+<NotionTable>
+  <tbody>
+    <tr><td><strong>관찰 지점</strong></td><td><strong>정상</strong></td><td><strong>문제 신호</strong></td><td><strong>해석</strong></td></tr>
+    <tr><td>estimated rows vs actual rows</td><td>비슷함</td><td>10배+ 차이</td><td>통계 부정확 → `ANALYZE` / 히스토그램</td></tr>
+    <tr><td>Scan 방식</td><td>큰 테이블에 Index Scan</td><td>큰 테이블에 Seq Scan / Full Table Scan</td><td>인덱스 부재 또는 미사용</td></tr>
+    <tr><td>Rows Removed by Filter</td><td>작음</td><td>큼 (읽고 나서 대부분 버림)</td><td>인덱스가 조건을 못 걸러냄</td></tr>
+    <tr><td>Sort 노드</td><td>없음(인덱스 순서 활용) 또는 메모리</td><td>`external merge Disk: NkB`</td><td>`work_mem` 부족, 디스크 정렬</td></tr>
+    <tr><td>Nested Loop loops</td><td>작음</td><td>큼 + 내부 Seq Scan</td><td>조인 순서/인덱스 문제</td></tr>
+    <tr><td>Buffers</td><td>hit 위주</td><td>read(디스크) 많음</td><td>캐시 미스, I/O 바운드</td></tr>
+    <tr><td>지배 노드</td><td>고르게 분포</td><td>actual time이 한 노드에 집중</td><td>그 노드가 튜닝 타깃</td></tr>
+  </tbody>
+</NotionTable>
+
+<a id="42-인덱스가-있는데-안-타는-대표-패턴"></a>
+
+### <strong>4.2 "인덱스가 있는데 안 타는" 대표 패턴</strong>
+
+
+```sql
+-- (X) 컬럼에 함수 적용 → 인덱스 무력화
+WHERE DATE(ordered_at) = '2026-09-10'
+-- (O) 범위 조건으로 (sargable)
+WHERE ordered_at >= '2026-09-10' AND ordered_at < '2026-09-11'
+
+-- (X) 앞부분 와일드카드
+WHERE name LIKE '%kim'
+-- (O) 뒷부분만 / 전문검색 인덱스 / reverse 인덱스
+WHERE name LIKE 'kim%'
+
+-- (X) 타입 불일치 (bigint 컬럼에 문자열 바인드)
+WHERE customer_id = '12345'
+-- (O) 타입 일치
+WHERE customer_id = 12345
+
+-- (X) OR로 서로 다른 컬럼
+WHERE status = 'PAID' OR customer_id = 10
+-- (O) UNION ALL 분리 또는 각각 인덱스
+
+-- 낮은 선택도: status 값이 2종뿐이면 인덱스보다 Seq Scan이 빠를 수 있음(정상)
+```
+
+<a id="43-복합-인덱스-컬럼-순서"></a>
+
+### <strong>4.3 복합 인덱스 컬럼 순서</strong>
+
+
+```text
+규칙: 등가(=) 조건 컬럼 → 범위(<,>,BETWEEN) 조건 컬럼 → ORDER BY 컬럼
+
+WHERE status = 'PAID' AND ordered_at >= ? ORDER BY ordered_at DESC
+  => INDEX(status, ordered_at DESC)
+     status로 구간 진입 → ordered_at은 인덱스 순서 그대로 → Sort 제거 + LIMIT 조기 종료
+```
+
+
+<NotionDivider />
+
+<a id="5-case-report-db-내부-병목-유형별"></a>
+
+## <strong>5. Case Report - DB 내부 병목 유형별</strong>
+
+<a id="51-case-a-인덱스-부재로-인한-full-scan"></a>
+
+### <strong>5.1 Case A - 인덱스 부재로 인한 Full Scan</strong>
+
+
+```text
+증상: SELECT ... WHERE email = ?  → 2.4초 (users 800만 행)
+EXPLAIN: Seq Scan on users, Rows Removed by Filter: 7,999,999
+```
+
+
+```sql
+-- 조치
+CREATE INDEX ix_users_email ON users(email);
+-- 재측정: Index Scan, Execution Time 2,400ms → 1.2ms
+```
+
+<a id="52-case-b-offset-페이지네이션이-뒤로-갈수록-느림"></a>
+
+### <strong>5.2 Case B - OFFSET 페이지네이션이 뒤로 갈수록 느림</strong>
+
+
+```text
+증상: 1페이지 8ms, 5000페이지(OFFSET 100000) 1,900ms
+원인: LIMIT 20 OFFSET 100000 은 앞 100,000행을 읽고 버린 뒤 20행 반환
+```
+
+
+```sql
+-- (X) 오프셋 방식
+SELECT * FROM orders ORDER BY id DESC LIMIT 20 OFFSET 100000;
+
+-- (O) 키셋(seek) 페이지네이션: 직전 페이지 마지막 키를 커서로
+SELECT * FROM orders
+WHERE id < :last_seen_id          -- 첫 페이지는 조건 생략
+ORDER BY id DESC
+LIMIT 20;
+-- 재측정: 어느 페이지든 8~10ms (인덱스 진입점만 바뀜)
+
+-- 정렬 키가 유니크하지 않으면 복합 커서
+WHERE (ordered_at, id) < (:last_ordered_at, :last_id)
+ORDER BY ordered_at DESC, id DESC
+LIMIT 20;
+```
+
+<a id="53-case-c-반복-집계-쿼리-요약-테이블"></a>
+
+### <strong>5.3 Case C - 반복 집계 쿼리 (요약 테이블)</strong>
+
+
+```text
+증상: 대시보드가 매 요청마다 "일자별 매출 합계"를 orders 전체 스캔으로 계산 → 3초
+```
+
+
+```sql
+-- (O) 사전 집계 테이블 + 증분 갱신
+CREATE TABLE daily_sales (
+    sales_date DATE PRIMARY KEY,
+    total_amount DECIMAL(18,2),
+    order_count INT
+);
+
+-- 배치(또는 트리거/CDC)로 증분 반영
+INSERT INTO daily_sales (sales_date, total_amount, order_count)
+SELECT DATE(ordered_at), SUM(amount), COUNT(*)
+FROM orders
+WHERE ordered_at >= :since        -- 마지막 집계 시점 이후만
+GROUP BY DATE(ordered_at)
+ON CONFLICT (sales_date)
+DO UPDATE SET total_amount = EXCLUDED.total_amount,
+              order_count  = EXCLUDED.order_count;
+
+-- 조회: SELECT * FROM daily_sales WHERE sales_date BETWEEN ? AND ?  → 1ms
+-- 또는 PostgreSQL MATERIALIZED VIEW + REFRESH ... CONCURRENTLY
+```
+
+<a id="54-case-d-단일-거대-테이블-파티셔닝"></a>
+
+### <strong>5.4 Case D - 단일 거대 테이블 → 파티셔닝</strong>
+
+
+```text
+판단 기준: 데이터가 매우 크지만(수억 행) 쓰기·커넥션 부하는 한 인스턴스가 감당 가능,
+           조회가 특정 키(주로 기간)로 잘 잘림 → 파티셔닝
+```
+
+
+```sql
+-- PostgreSQL: 월 단위 range 파티션
+CREATE TABLE events (
+    id BIGINT, occurred_at DATE NOT NULL, payload JSONB
+) PARTITION BY RANGE (occurred_at);
+
+CREATE TABLE events_2026_09 PARTITION OF events
+    FOR VALUES FROM ('2026-09-01') TO ('2026-10-01');
+CREATE TABLE events_2026_10 PARTITION OF events
+    FOR VALUES FROM ('2026-10-01') TO ('2026-11-01');
+
+-- 조회에 파티션 키를 포함해야 pruning 발생
+EXPLAIN SELECT * FROM events WHERE occurred_at >= '2026-09-10' AND occurred_at < '2026-09-11';
+--> events_2026_09 하나만 스캔 (나머지 파티션 제외)
+
+-- 효과: 오래된 파티션은 DETACH/DROP 으로 즉시 삭제(대량 DELETE 회피),
+--       인덱스가 파티션별로 작아져 캐시 효율 상승
+```
+
+<a id="55-case-e-단일-서버-쓰기용량-한계-읽기-복제본-후-샤딩"></a>
+
+### <strong>5.5 Case E - 단일 서버 쓰기·용량 한계 → 읽기 복제본 후 샤딩</strong>
+
+
+```text
+escalation 순서 (아래로 갈수록 운영 복잡도 급증):
+  쿼리·인덱스 튜닝 → 캐싱/요약 테이블 → 읽기 복제본 분산 → 파티셔닝 → 샤딩
+
+읽기 복제본: 조회 트래픽을 replica로. 복제 지연(replication lag) 허용 가능한 화면만.
+샤딩: 단일 인스턴스의 쓰기 TPS·저장 용량·커넥션 한계에 도달했을 때. 최후 수단.
+```
+
+
+```sql
+-- 애플리케이션 레벨 샤딩 예: customer_id 기준 4개 샤드
+-- shard_index = customer_id % 4
+--   shard0: db-0,  shard1: db-1,  shard2: db-2,  shard3: db-3
+
+-- 크로스 샤드 조인/트랜잭션은 불가에 가까움 →
+--   1) 샤드 키를 대부분의 조회가 공유하도록 설계 (여기서는 customer_id)
+--   2) 집계는 각 샤드에서 부분 집계 후 애플리케이션에서 병합(scatter-gather)
+--   3) 핫 샤드 방지: 해시 기반 분산, 특정 대형 고객 전용 샤드 분리
+```
+
+<a id="56-case-f-평소-빠른데-가끔-느림-플랜-변동"></a>
+
+### <strong>5.6 Case F - 평소 빠른데 가끔 느림 (플랜 변동)</strong>
+
+
+```sql
+-- PostgreSQL: 통계 오래됨 → 갱신 주기 강화
+ALTER TABLE orders SET (autovacuum_analyze_scale_factor = 0.02);
+ANALYZE orders;
+
+-- 특정 컬럼 상관관계 통계
+CREATE STATISTICS st_orders (dependencies) ON status, customer_id FROM orders;
+ANALYZE orders;
+
+-- 편차가 큰 쿼리는 pg_hint_plan / 플랜 고정, 또는 리터럴 분기
+```
+
+
+<NotionDivider />
+
+<a id="6-진단-순서-요약-runbook"></a>
+
+## <strong>6. 진단 순서 요약 (Runbook)</strong>
+
+
+```text
+1. APM/로그로 T_client, T_app, T_db 분리
+     └ T_app ≫ T_db → 2번으로 (DB 바깥)
+     └ T_db 큼      → 4번으로 (DB 내부)
+
+2. DB 바깥
+   ├ HikariCP: threadsAwaitingConnection > 0 → 풀 크기 / 누수 (leak-detection 로그)
+   ├ pg_stat_activity: 'idle in transaction' 다수 → 트랜잭션 미종료
+   ├ 목록 API만 느림 → N+1 (fetch join / IN 배치)
+   ├ 결과 큼 → fetch size / 스트리밍
+   ├ 특정 시간대 → 락 대기 (pg_blocking_pids)
+   └ CLI만 빠름 → prepared statement generic plan / 타입 불일치 → 3번
+
+3. 플랜·바인드
+   └ force_custom_plan, 타입 캐스팅 일치, 편차 큰 쿼리 분기
+
+4. DB 내부: EXPLAIN (ANALYZE, BUFFERS)
+   ├ estimated vs actual 10배+ → ANALYZE / 통계
+   ├ 큰 테이블 Seq Scan → 인덱스 (sargable 재작성)
+   ├ Sort external Disk → work_mem, 인덱스로 정렬 제거
+   └ Nested Loop loops 큼 → 조인 순서 / 인덱스
+
+5. 구조 개선 (위에서 안 되면 순서대로)
+   OFFSET 페이징 → 키셋 페이징
+   반복 집계     → 요약 테이블 / MATERIALIZED VIEW
+   거대 테이블   → 파티셔닝 (조회에 파티션 키 포함)
+   읽기 과부하   → 읽기 복제본
+   쓰기·용량 한계 → 샤딩 (최후, 크로스 샤드 제약 감수)
+```
+
