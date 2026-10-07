@@ -5,6 +5,7 @@ import { acquireContentLock, ContentLockError } from "./content-lock.mjs";
 import { ManagedPathError, normalizeManagedPath } from "./content-manifest.mjs";
 
 const STATE_DIRECTORY = ".notion-content-transaction";
+const DELETABLE_PATH = /^src\/content\/(devlog|projects)\/.+\.mdx$/u;
 export class ContentTransactionError extends Error {}
 export { acquireContentLock, ContentLockError, ManagedPathError };
 
@@ -71,7 +72,7 @@ function restoreOriginals(root, entries) {
   for (const entry of [...entries].reverse()) {
     const target = path.join(root, entry.path);
     const backup = path.join(root, entry.backupPath);
-    const staged = path.join(root, entry.stagedPath);
+    const staged = entry.stagedPath ? path.join(root, entry.stagedPath) : null;
     if (fs.existsSync(backup)) {
       fs.rmSync(target, { force: true });
       fs.renameSync(backup, target);
@@ -80,13 +81,14 @@ function restoreOriginals(root, entries) {
       fs.rmSync(target, { force: true });
       fsyncDirectory(path.dirname(target));
     }
-    fs.rmSync(staged, { force: true });
+    if (staged) fs.rmSync(staged, { force: true });
   }
 }
 
 function verifyCommitted(root, entries) {
   return entries.every((entry) => {
     const target = path.join(root, entry.path);
+    if (entry.delete) return !fs.existsSync(target);
     return fs.existsSync(target) && hashFile(target) === entry.sha256;
   });
 }
@@ -117,10 +119,13 @@ function parseJournal(paths) {
     const relativePath = normalizeManagedPath(entry.path);
     const targetDirectory = path.posix.dirname(relativePath);
     const expectedSuffix = `${journal.transactionId}-${path.posix.basename(relativePath)}`;
+    const isDeletion = entry.delete === true;
     if (entry.backupPath !== `${targetDirectory}/.notion-backup-${expectedSuffix}`
-      || entry.stagedPath !== `${targetDirectory}/.notion-stage-${expectedSuffix}`
-      || typeof entry.hadOriginal !== "boolean"
-      || !/^[a-f0-9]{64}$/u.test(entry.sha256)) {
+      || (isDeletion
+        ? entry.stagedPath !== null || entry.sha256 !== null || entry.hadOriginal !== true || !DELETABLE_PATH.test(relativePath)
+        : entry.stagedPath !== `${targetDirectory}/.notion-stage-${expectedSuffix}`
+          || typeof entry.hadOriginal !== "boolean"
+          || !/^[a-f0-9]{64}$/u.test(entry.sha256))) {
       throw new ContentTransactionError(`Malformed content transaction journal path: ${relativePath}`);
     }
   }
@@ -169,6 +174,17 @@ export async function promoteContentTransaction({ root, managedPaths, prepare, v
       ? prepared.managedPaths
       : [];
     const manifest = [...new Set([...(managedPaths || []), ...emittedPaths].map(normalizeManagedPath))].sort();
+    const requestedDeletions = prepared && typeof prepared === "object" && Array.isArray(prepared.deletedPaths)
+      ? [...new Set(prepared.deletedPaths.map(normalizeManagedPath))].sort()
+      : [];
+    for (const relativePath of requestedDeletions) {
+      if (!DELETABLE_PATH.test(relativePath)) throw new ContentTransactionError(`Only content MDX files may be deleted: ${relativePath}`);
+      if (manifest.includes(relativePath)) throw new ContentTransactionError(`Path is both managed and deleted: ${relativePath}`);
+    }
+    const deletedPaths = requestedDeletions.filter((relativePath) => {
+      const target = path.join(paths.root, relativePath);
+      return fs.existsSync(target) && fs.statSync(target).isFile();
+    });
     if (validate) await validate(paths.stageRoot, manifest);
 
     const transactionId = crypto.randomUUID();
@@ -187,6 +203,12 @@ export async function promoteContentTransaction({ root, managedPaths, prepare, v
       fsyncFile(path.join(paths.root, stagedPath));
       return { path: relativePath, stagedPath, backupPath, hadOriginal: fs.existsSync(target), sha256: hashFile(source) };
     });
+    for (const relativePath of deletedPaths) {
+      const target = path.join(paths.root, relativePath);
+      const suffix = `${transactionId}-${path.basename(target)}`;
+      const backupPath = path.relative(paths.root, path.join(path.dirname(target), `.notion-backup-${suffix}`)).replaceAll("\\", "/");
+      entries.push({ path: relativePath, stagedPath: null, backupPath, hadOriginal: true, sha256: null, delete: true });
+    }
     const journal = {
       version: 1,
       transactionId,
@@ -213,6 +235,7 @@ export async function promoteContentTransaction({ root, managedPaths, prepare, v
         writeJournal(paths.journal, journal);
       }
       for (const entry of entries) {
+        if (entry.delete) continue;
         const target = path.join(paths.root, entry.path);
         journal.currentPath = entry.path;
         writeJournal(paths.journal, journal);
@@ -229,7 +252,11 @@ export async function promoteContentTransaction({ root, managedPaths, prepare, v
       if (!verifyCommitted(paths.root, entries)) throw new ContentTransactionError("Committed content manifest verification failed.");
       removeBackups(paths.root, entries);
       removeState(paths);
-      return { state: "committed", manifest: entries.map(({ path: relativePath, sha256 }) => ({ path: relativePath, sha256 })) };
+      return {
+        state: "committed",
+        manifest: entries.filter((entry) => !entry.delete).map(({ path: relativePath, sha256 }) => ({ path: relativePath, sha256 })),
+        deleted: deletedPaths,
+      };
     } catch (error) {
       restoreOriginals(paths.root, entries);
       removeState(paths);

@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { validateContent as validateStagedContent } from "../../content/validate-content.mjs";
 import { FIXED_GENERATED_PATHS } from "./content-manifest.mjs";
 import { promoteContentTransaction } from "./content-transaction.mjs";
+import { findMovedOrphans } from "./orphan-paths.mjs";
 import { SOURCE_GROUPS, parseSourceConfiguration } from "./source-config.mjs";
 import { classifyNotionPages, validateNotionPage, writeQuarantineReport } from "./schema-contract.mjs";
 
@@ -168,9 +169,17 @@ export async function runFetchOrchestration(options) {
         if (!result || !Array.isArray(result.managedPaths)) throw new Error(`Malformed writer result for ${group}.`);
         managedPaths.push(...result.managedPaths);
       }
+      const deletedPaths = findMovedOrphans({ stageRoot, rowsByGroup });
+      for (const relativePath of deletedPaths) {
+        console.log(`[notion] moved page: removing previous location ${relativePath}`);
+        fs.rmSync(path.join(stageRoot, ...relativePath.split("/")), { force: true });
+      }
       await generateContent(stageRoot);
       if (persistManifest) writeManifest(stageRoot, manifestRowsByGroup);
-      return { managedPaths: [...managedPaths, ...FIXED_GENERATED_PATHS, ...(persistManifest ? [NOTION_MANIFEST_PATH] : [])] };
+      return {
+        managedPaths: [...managedPaths, ...FIXED_GENERATED_PATHS, ...(persistManifest ? [NOTION_MANIFEST_PATH] : [])],
+        deletedPaths,
+      };
     },
     validate(stageRoot, manifest) {
       return validateContent(stageRoot, manifest);

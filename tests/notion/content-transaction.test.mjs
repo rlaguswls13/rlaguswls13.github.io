@@ -322,3 +322,101 @@ describe("content transaction", () => {
     }
   });
 });
+
+const orphanPath = "src/content/devlog/old-category/orphan.mdx";
+
+function fixtureRootWithOrphan() {
+  const root = fixtureRoot();
+  const destination = path.join(root, orphanPath);
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+  fs.writeFileSync(destination, `old:${orphanPath}`);
+  return root;
+}
+
+function prepareNewWithDeletion(stageRoot) {
+  prepareNew(stageRoot);
+  return { deletedPaths: [orphanPath] };
+}
+
+describe("content transaction deletions", () => {
+  it("Given a deleted path When promotion commits Then the orphan is gone and unrelated files stay", async () => {
+    const root = fixtureRootWithOrphan();
+
+    const result = await promoteContentTransaction({ root, managedPaths, prepare: prepareNewWithDeletion });
+
+    expect(fs.existsSync(path.join(root, orphanPath))).toBe(false);
+    expect(fs.readFileSync(path.join(root, "src/content/devlog/unrelated.mdx"), "utf8")).toBe("old:src/content/devlog/unrelated.mdx");
+    expect(result.deleted).toEqual([orphanPath]);
+    expect(fs.existsSync(path.join(root, ".notion-content-transaction"))).toBe(false);
+    expect(fs.readdirSync(path.join(root, "src/content/devlog/old-category")).filter((name) => name.startsWith(".notion-"))).toEqual([]);
+  });
+
+  it.each(["validation", "rename"])("Given a deleted path When %s fails Then the orphan is restored byte for byte", async (failure) => {
+    const root = fixtureRootWithOrphan();
+    const before = shaManifest(root);
+    const validate = failure === "validation" ? () => { throw new Error("injected validation"); } : undefined;
+    const fault = failure === "rename" ? { throwAfterRename: 7 } : undefined;
+
+    await expect(promoteContentTransaction({ root, managedPaths, prepare: prepareNewWithDeletion, validate, fault })).rejects.toThrow("injected");
+
+    expect(shaManifest(root)).toEqual(before);
+    expect(fs.readFileSync(path.join(root, orphanPath), "utf8")).toBe(`old:${orphanPath}`);
+    expect(fs.existsSync(path.join(root, ".notion-content-transaction"))).toBe(false);
+  });
+
+  it("Given unsafe deletion requests Then promotion fails closed before touching anything", async () => {
+    for (const deletedPaths of [
+      ["public/images/notion/two.png"],
+      ["src/data/indexes/journal.json"],
+      ["src/content/devlog/../../../outside.mdx"],
+      [managedPaths[0]],
+    ]) {
+      const root = fixtureRootWithOrphan();
+      const before = shaManifest(root);
+      await expect(promoteContentTransaction({
+        root, managedPaths, prepare(stageRoot) { prepareNew(stageRoot); return { deletedPaths }; },
+      })).rejects.toThrow();
+      expect(shaManifest(root)).toEqual(before);
+      expect(fs.readFileSync(path.join(root, orphanPath), "utf8")).toBe(`old:${orphanPath}`);
+    }
+  });
+
+  it("Given a deleted path that no longer exists When promotion commits Then it is ignored", async () => {
+    const root = fixtureRoot();
+
+    await promoteContentTransaction({ root, managedPaths, prepare: prepareNewWithDeletion });
+
+    expect(fs.readFileSync(path.join(root, managedPaths[0]), "utf8")).toBe(`new:${managedPaths[0]}`);
+  });
+
+  it("Given a killed child after every rename including deletion When relaunched Then recovery restores the orphan", async () => {
+    for (let killAfterRename = 1; killAfterRename <= managedPaths.length * 2 + 1; killAfterRename += 1) {
+      const root = fixtureRootWithOrphan();
+      const before = shaManifest(root);
+      const child = spawnSync(process.execPath, [
+        path.resolve("tests/notion/content-transaction-child.mjs"), root, String(killAfterRename), "delete",
+      ]);
+      expect(child.status).not.toBe(0);
+
+      await recoverContentTransaction({ root });
+
+      expect(shaManifest(root)).toEqual(before);
+      expect(fs.readFileSync(path.join(root, orphanPath), "utf8")).toBe(`old:${orphanPath}`);
+      expect(fs.existsSync(path.join(root, ".notion-content-transaction"))).toBe(false);
+      expect(fs.existsSync(path.join(root, ".notion-content.lock"))).toBe(false);
+    }
+  }, 60_000);
+
+  it("Given a killed child after committed with deletion When relaunched Then the orphan stays deleted", async () => {
+    const root = fixtureRootWithOrphan();
+    const child = spawnSync(process.execPath, [path.resolve("tests/notion/content-transaction-child.mjs"), root, "committed", "delete"]);
+
+    expect(child.status).not.toBe(0);
+    await expect(recoverContentTransaction({ root })).resolves.toMatchObject({ state: "committed" });
+    expect(fs.existsSync(path.join(root, orphanPath))).toBe(false);
+    for (const relativePath of managedPaths) {
+      expect(fs.readFileSync(path.join(root, relativePath), "utf8")).toBe(`new:${relativePath}`);
+    }
+    expect(fs.readdirSync(path.join(root, "src/content/devlog/old-category")).filter((name) => name.startsWith(".notion-"))).toEqual([]);
+  });
+});

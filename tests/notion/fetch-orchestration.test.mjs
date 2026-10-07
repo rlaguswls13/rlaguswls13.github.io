@@ -489,3 +489,64 @@ describe("Notion fetch orchestration", () => {
     expect(fs.readFileSync(path.join(root, ".notion-content.lock"), "utf8")).toBe("");
   });
 });
+
+describe("Notion fetch orchestration moved pages", () => {
+  function movedPageRun(root, overrides = {}) {
+    return main({
+      root,
+      env: configuredEnv({
+        NOTION_REQUIRED_GROUPS: "journal",
+        NOTION_PAGE_ID_DEVLOG: undefined,
+        NOTION_PAGE_ID_PROJECT: undefined,
+      }),
+      createClient: () => ({
+        queryCollection: async () => [{
+          id: ids.journal,
+          properties: {
+            title: { type: "title", title: [{ plain_text: "Moved page" }] },
+            slug: { type: "select", select: { name: "moved-page" } },
+            category: { type: "select", select: { name: "personal" } },
+            created_date: { type: "date", date: { start: "2026-08-01" } },
+          },
+        }],
+        getBlockChildren: async () => [],
+      }),
+      syncPageContentFn: syncPageContent,
+      generateContent(stageRoot) {
+        const duplicates = ["education", "blog"].filter((category) => fs.existsSync(path.join(stageRoot, `src/content/devlog/${category}/${ids.journal}.mdx`)));
+        if (duplicates.length > 1) throw new Error(`Duplicate frontmatter id found in devlog: ${ids.journal}`);
+        writeGenerated(stageRoot);
+      },
+      validateContent() {},
+      ...overrides,
+    });
+  }
+
+  function seedOrphan(root) {
+    const orphan = path.join(root, `src/content/devlog/education/${ids.journal}.mdx`);
+    fs.mkdirSync(path.dirname(orphan), { recursive: true });
+    fs.writeFileSync(orphan, "old location");
+    return orphan;
+  }
+
+  it("Given a page moved to another category When fetch succeeds Then the old copy is removed and no duplicate id blocks generation", async () => {
+    const root = fixtureRoot();
+    const orphan = seedOrphan(root);
+
+    const result = await movedPageRun(root);
+
+    expect(result.state).toBe("committed");
+    expect(fs.existsSync(orphan)).toBe(false);
+    expect(fs.existsSync(path.join(root, `src/content/devlog/blog/${ids.journal}.mdx`))).toBe(true);
+  });
+
+  it("Given a moved page When validation fails Then the old copy is restored", async () => {
+    const root = fixtureRoot();
+    const orphan = seedOrphan(root);
+
+    await expect(movedPageRun(root, { validateContent() { throw new Error("injected validation"); } })).rejects.toThrow("injected");
+
+    expect(fs.readFileSync(orphan, "utf8")).toBe("old location");
+    expect(fs.existsSync(path.join(root, `src/content/devlog/blog/${ids.journal}.mdx`))).toBe(false);
+  });
+});
