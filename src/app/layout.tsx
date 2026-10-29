@@ -29,6 +29,13 @@ export default function RootLayout({
     <html lang="ko" suppressHydrationWarning className="theme-light">
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
+        {adsenseAccount ? (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseAccount}`}
+            crossOrigin="anonymous"
+          />
+        ) : null}
       </head>
       <body>
         {ga4MeasurementId ? <GoogleAnalytics measurementId={ga4MeasurementId} /> : null}
