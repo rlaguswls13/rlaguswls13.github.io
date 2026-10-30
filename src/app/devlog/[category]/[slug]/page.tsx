@@ -14,6 +14,7 @@ import { LazyMdxDiagram, type LazyMdxDiagramName } from "@/components/ui/LazyMdx
 import { CodePopup } from "@/components/layout/CodePopup";
 import { Collapsible } from "@/components/ui/Collapsible";
 import { MdxImageFigure } from "@/components/ui/MdxImageFigure";
+import { MdxLink } from "@/components/ui/MdxLink";
 import { NotionImage } from "@/components/ui/notion/NotionImage";
 import { NotionTable } from "@/components/ui/notion/NotionTable";
 import { NotionToggle } from "@/components/ui/notion/NotionToggle";
@@ -72,6 +73,7 @@ const lazyDiagram = (name: LazyMdxDiagramName) => function LazyDiagramSlot() {
 };
 
 const components = {
+  a: MdxLink,
   G1GCMemory: lazyDiagram("G1GCMemory"),
   KahaDBBlocks: lazyDiagram("KahaDBBlocks"),
   QuartzMechanism: lazyDiagram("QuartzMechanism"),

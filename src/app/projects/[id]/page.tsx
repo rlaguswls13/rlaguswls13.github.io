@@ -13,6 +13,7 @@ import {
 import ProjectDetailClient from "./ProjectDetailClient";
 import { ProjectBackLink } from "@/components/layout/ProjectBackLink";
 import { EditingPlaceholder } from "@/components/ui/EditingPlaceholder";
+import { MdxLink } from "@/components/ui/MdxLink";
 import { TagList } from "@/components/ui/TagBadge";
 import { CalendarIcon } from "@/components/ui/Icons";
 import { formatPeriods } from "@/lib/utils";
@@ -30,6 +31,7 @@ import { ProjectTab, ProjectTabs } from "@/components/ui/ProjectTabs";
 
 const projects = projectsMeta.projects as Project[];
 const components = {
+  a: MdxLink,
   NotionImage,
   NotionTable,
   NotionToggle,

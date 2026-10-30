@@ -6,6 +6,7 @@ import { formatMiniPeriod } from "@/lib/utils";
 
 type ProjectCarouselItem = {
   id: string;
+  readonly slug?: string;
   title: string;
   periods: string[];
   tags: string[];
@@ -145,7 +146,7 @@ export function AboutProjectCarousel({ projects }: AboutProjectCarouselProps) {
                   <article key={`${project.id}-${pageIndex}`} className="about-project-slide">
                     <span className="about-project-period">{formatMiniPeriod(project.periods)}</span>
                     <h3 className="about-project-title">
-                      <Link href={`/projects/${project.id}`}>{project.title}</Link>
+                      <Link href={`/projects/${project.slug || project.id}`}>{project.title}</Link>
                     </h3>
                     <p className="about-project-description">{project.description}</p>
                     <div className="about-project-tags">

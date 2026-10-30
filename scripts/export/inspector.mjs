@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { parse } from "parse5";
 import { parsePublicBuildConfig } from "../config/giscus-info.mjs";
@@ -184,6 +184,26 @@ function validateDetailJsonLd(contract, jsonLd) {
 async function inspectRoute(outputRoot, contract, siteUrl) {
   const file = await resolveExportFile(outputRoot, contract.route, contract.file);
   const html = await readFile(file, "utf8");
+  const origin = new URL(siteUrl).origin;
+  const links = descendants(parse(html)).filter((node) => node.tagName === "a" && attribute(node, "href"));
+  for (const node of links) {
+    const url = new URL(attribute(node, "href"), expectedCanonical(siteUrl, contract.route));
+    if (url.origin !== origin) continue;
+    const basePath = canonicalBasePath();
+    let destination = decodeURIComponent(url.pathname);
+    if (basePath && (destination === basePath || destination.startsWith(`${basePath}/`))) {
+      destination = destination.slice(basePath.length);
+    }
+    destination = destination.replace(/\/+$/u, "") || "/";
+    if (path.extname(destination)) {
+      const target = path.resolve(outputRoot, `.${destination}`);
+      if (path.relative(outputRoot, target).startsWith("..") || !(await stat(target)).isFile()) {
+        throw new Error(`${contract.route}: invalid link target ${destination}`);
+      }
+    } else {
+      await resolveExportFile(outputRoot, destination);
+    }
+  }
   const body = inspectBody(html, contract);
   const metadata = contract.kind === "not-found" ? null : inspectMetadata(html, contract.route, siteUrl);
   if (metadata) validateDetailJsonLd(contract, metadata.jsonLd);

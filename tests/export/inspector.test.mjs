@@ -1,7 +1,7 @@
 import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolveExportFile, validateStaticExport } from "../../scripts/export/inspector.mjs";
 
 const temporaryRoots = [];
@@ -64,10 +64,47 @@ async function fixture() {
 }
 
 afterEach(async () => {
+  vi.unstubAllEnvs();
   await Promise.all(temporaryRoots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
 
 describe("recursive static export inspector", () => {
+  it("resolves base-prefixed and trailing-slash links against unprefixed output", async () => {
+    // Given: a project Pages deployment whose output files omit the base path.
+    const paths = await fixture();
+    vi.stubEnv("BASE_PATH", "/blog");
+    const files = ["index.html", "about/index.html", "career.html", "contact.html", "devlog.html", "journal.html", "projects.html", "projects/project-slug.html", "devlog/study/devlog-slug.html"];
+    for (const relative of files) {
+      const file = path.join(paths.outputRoot, relative);
+      const markup = (await readFile(file, "utf8")).replaceAll("https://example.test", "https://example.test/blog");
+      await writeFile(file, markup.replace("</main>", '<a href="/blog/projects/project-slug/">Project</a></main>'));
+    }
+    // When: destination validation inspects prefixed URLs.
+    const report = await validateStaticExport(paths);
+    // Then: the actual unprefixed export files satisfy those URLs.
+    expect(report.verdict).toBe("PASS");
+  });
+
+  it("rejects an ID link when only the slug detail was exported", async () => {
+    // Given: an otherwise valid export whose about card bypasses its slug.
+    const paths = await fixture();
+    const file = path.join(paths.outputRoot, "about", "index.html");
+    await writeFile(file, (await readFile(file, "utf8")).replace("</main>", '<a href="/projects/project-id">Project</a></main>'));
+    // When / Then: the missing destination blocks release.
+    await expect(validateStaticExport(paths)).rejects.toThrow("/projects/project-id");
+  });
+
+  it("accepts existing slug links with queries and fragments and ignores external links", async () => {
+    // Given: links to exported content and a third party.
+    const paths = await fixture();
+    const file = path.join(paths.outputRoot, "about", "index.html");
+    await writeFile(file, (await readFile(file, "utf8")).replace("</main>", '<a href="/projects/project-slug?page=2#section">Project</a><a href="https://other.test/missing">External</a></main>'));
+    // When: the export is inspected.
+    const report = await validateStaticExport(paths);
+    // Then: only destination paths on this site are required.
+    expect(report.verdict).toBe("PASS");
+  });
+
   it("validates every indexed detail, static route, and 404 while reporting the resolved nested output", async () => {
     // Given: a complete export with a nested static route and indexed details.
     const { root, outputRoot } = await fixture();

@@ -13,7 +13,7 @@ function ProjectGroup({ title, eyebrow, projects, startIndex }: { title: string;
       </div>
       <div className="about-work-grid">
         {projects.map((project, index) => (
-          <Link key={project.id} href={`/projects/${project.id}`} className="about-work-card">
+          <Link key={project.id} href={`/projects/${project.slug || project.id}`} className="about-work-card">
             <div className={`about-work-thumbnail work-thumb-${(startIndex + index) % 6}`}>
               <CardThumbnail src={getProjectThumbnail(project.id)} alt="" className="about-work-thumbnail-image" priority={startIndex + index === 0} />
               <span>{String(startIndex + index + 1).padStart(2, "0")}</span>
